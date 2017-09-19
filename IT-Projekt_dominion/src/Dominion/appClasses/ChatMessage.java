@@ -3,7 +3,7 @@ package Dominion.appClasses;
 import java.io.Serializable;
 
 /**
- * @author Joel Henz test änderung
+ * @author Joel Henz
  */
 public class ChatMessage implements Serializable {
 	
