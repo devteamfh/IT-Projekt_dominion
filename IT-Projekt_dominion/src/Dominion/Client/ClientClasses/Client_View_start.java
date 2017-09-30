@@ -64,7 +64,7 @@ public class Client_View_start extends View<Client_Model> {
 		root.setPrefWidth(300);
 
 		//test kab  <- this line can be deleted
-		
+		//test kab  <- this line can be deleted line 2
 		
 		this.scene = new Scene (root);
 
