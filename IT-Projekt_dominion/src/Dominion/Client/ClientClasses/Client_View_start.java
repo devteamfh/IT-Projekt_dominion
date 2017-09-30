@@ -63,6 +63,9 @@ public class Client_View_start extends View<Client_Model> {
 		root.setCenter(vb);
 		root.setPrefWidth(300);
 
+		//test kab  <- this line can be deleted
+		
+		
 		this.scene = new Scene (root);
 
         return scene;
