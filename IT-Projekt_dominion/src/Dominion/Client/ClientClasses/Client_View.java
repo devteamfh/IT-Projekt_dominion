@@ -82,7 +82,7 @@ public class Client_View extends View<Client_Model> {
 		VBox.setMargin(send, new Insets(0, 0, 40, 0));
 
 		root.setLeft(vb1);
-		
+		//test
 		BorderPane.setAlignment(send, Pos.CENTER_LEFT);
 
 		this.scene = new Scene (root, 800,800);
