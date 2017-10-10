@@ -85,6 +85,8 @@ public class Client_View extends View<Client_Model> {
 		
 		BorderPane.setAlignment(send, Pos.CENTER_LEFT);
 
+		//10.10.  17:06
+		
 		this.scene = new Scene (root, 800,800);
 
         return scene;
