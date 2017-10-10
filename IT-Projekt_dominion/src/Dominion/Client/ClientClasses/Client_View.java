@@ -80,7 +80,7 @@ public class Client_View extends View<Client_Model> {
 		VBox.setMargin(this.name, new Insets(0, 0, 20, 0));
 		VBox.setMargin(hb1, new Insets(0, 0, 20, 0));
 		VBox.setMargin(send, new Insets(0, 0, 40, 0));
-
+//kjnlkjlkjlkj
 		root.setLeft(vb1);
 		
 		BorderPane.setAlignment(send, Pos.CENTER_LEFT);
