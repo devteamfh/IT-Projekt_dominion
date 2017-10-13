@@ -50,7 +50,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {
             	     
-            	//Prüfe ob Felder nicht leer sind
+            /*	//Prüfe ob Felder nicht leer sind
             	String logInfo = "";
             	int fehler = 0;
             	
@@ -76,33 +76,35 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	
             	//Gebe Fehlermeldungen aus
             	if (fehler == 1){
-            	  model.sl.getLogger().info(logInfo);        	
-            	} else {
-            	            	
-            	try { 
-            		
-            		addr = InetAddress.getByName(view.tf_ip.getText());
-            		int portNr = Integer.parseInt(view.tf_port.getText());
-                	String name = view.tf_userName.getText();
-                	model.setName(name);
-    				model.connectToServer(addr,portNr);	
-    				
-    				if (model.connected){
-    		        	
-    		        	view.btn_connect.getStyleClass().add("connected");
-    		        	view.btn_connect.setText("Verbunden");
-    		        }				
-			
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					model.sl.getLogger().info("Verbindung mit Server nicht erfolgreich");
-				}
-     
-            	}        	
-       
-		        
-		        
+            	  model.sl.getLogger().info(logInfo);   
+            	  
+            	       	
+            	} else {  */
+            	
+            	checkFields.getInstance().checkfields(view.btn_connect.getText(), view.tf_ip.getText(),view.tf_port.getText());
+            	
+            	if (checkFields.getInstance().getRdyToConnect())
+            	
+            	   	try { 
+                		
+                		addr = InetAddress.getByName(view.tf_ip.getText());
+                		int portNr = Integer.parseInt(view.tf_port.getText());
+                    	String name = view.tf_userName.getText();
+                    	model.setName(name);
+        				model.connectToServer(addr,portNr);	
+        				
+        				if (model.connected){
+        		        	
+        		        	view.btn_connect.getStyleClass().add("connected");
+        		        	view.btn_connect.setText("Verbunden");
+        		        }				
+    			
+    				} catch (Exception e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    					model.sl.getLogger().info("Verbindung mit Server nicht erfolgreich");
+    				}
+     		        
             }
         });   
         
@@ -115,6 +117,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 		            	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
 		            	return;
 		            	}
+		            	
+		            	
 		            
 		            	/* prüfen ob name und pw vorhanden in feld, info etwas fehlt
 		            	 * ->return
