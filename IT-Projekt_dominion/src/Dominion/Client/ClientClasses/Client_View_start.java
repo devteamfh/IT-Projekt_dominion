@@ -65,7 +65,7 @@ public class Client_View_start extends View<Client_Model> {
 
 		//test kab  <- this line can be deleted
 		//test kab  <- this line can be deleted line 2
-		
+		// test joel
 		this.scene = new Scene (root);
 
         return scene;
