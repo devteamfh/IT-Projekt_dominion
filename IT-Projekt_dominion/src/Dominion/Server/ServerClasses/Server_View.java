@@ -35,8 +35,8 @@ public class Server_View extends View<Server_Model> {
 	    
 	    Label IPAdress = new Label ("IP Adresse:  ");
 	    Label portNr = new Label ("Port:           ");
-	    ip = new TextField();
-	    port = new TextField();
+	    ip = new TextField("127.0.0.1");
+	    port = new TextField("55");
 	    
 	    connect = new Button ("verbinden");
 	    
