@@ -32,67 +32,92 @@ public class dbClass {
 	
 	
 	
+	//prüft ob user File da
 	public boolean userFileExists(){
 		
 		try { 
-			this.userFile = new File("user.dat");	    			
-	
-			
+			this.userFile = new File("user.dat");	
+			return true;
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			sl.getLogger().info("USer File existiert nicht");
-			if (createUserFile()){
-			sl.getLogger().info("User File wurde erstellt");
-			return true;
-			}
-			
-		}
-		
-		return false;
-	
+				
+				if (createUserFile()){
+				sl.getLogger().info("User File wurde erstellt");
+				return true;
+				}
+				return false;
+			}		
 	}
 
 	
 	public boolean createUserFile(){
 
 		try {
+			
+			this.userFile = new File("user.dat");
 			userFile.createNewFile();
+			
 			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			sl.getLogger().info("USer File konnte nicht erstellt werden");
+			return false;
 			}
-		
-		return false;
-		
 	}
 	
+	
+	/**
+	 * @author kab: registirert user
+	 */
 	public boolean enterUserData(String tf1, String tf2){
 		this.tf1 = tf1;
 		this.tf2 = tf2;
 		try {
 			FileWriter fw = new FileWriter(this.userFile, true);
-			
-			
-			
+					
 			fw.write(tf1+" "+tf2+"/n");
 			fw.close();
+			sl.getLogger().info("User erfolgreich registriert");
+			return true;
+			
 		} catch (IOException e) {
-			sl.getLogger().info("Konnte Datei nicht erstellen");
+			sl.getLogger().info("Konnte User nicht registireren");
+			return false;
 		}
-		
-		
-		
-		return false;
-	
-	
 	}
 	
 	
-	public boolean doesUserExist(String tf1){
+	
+	public boolean checkRegistration(){
+		
+		if (userFileExists()){
+			if (userExists(this.tf1)){
+				sl.getLogger().info("User ist bereits angelegt");
+				return true;
+			} else {
+			enterUserData(this.tf1,this.tf2);	
+			}
+			
+		}
+		
+	return false;
+	
+		
+				
+	}
+	
+	
+	
+	
+	/**
+	 * @author kab: prüft ob User existiert
+	 */
+	public boolean userExists(String tf1){
+
 		this.tf1 = tf1;
 		FileReader reader = null;
 		String line;
@@ -106,10 +131,10 @@ public class dbClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			sl.getLogger().info("UserFile konnte nicht gefunden werden");
+		
 		}
 		
-		
-		
+	
 		try {
 			line = bReader.readLine();
 			
@@ -120,7 +145,9 @@ public class dbClass {
 			
 			for (int i = 0; i < strArr.length; i++ ) {
 				if (tf1.compareTo(strArr[i]) == 0 && (i&1) == 0) {
-				return true;
+					sl.getLogger().info("User ist  angelegt.");
+					return true;
+				
 				}
 			}
 			
@@ -129,10 +156,11 @@ public class dbClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			sl.getLogger().info("userFile konnte nicht durchsucht werden");
+			return false;
 		}
 		
-		
-	return false;	
+		return false;
+	
 	}
 	
 	
@@ -183,6 +211,9 @@ public class dbClass {
 		
 	return false;	
 	}
+	
+
+	
 	
 	
 	

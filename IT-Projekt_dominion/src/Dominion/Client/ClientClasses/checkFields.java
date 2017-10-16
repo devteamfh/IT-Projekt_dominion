@@ -14,10 +14,12 @@ public class checkFields {
 	private String btn;
 	private String tf1;
 	private String tf2;
-	
+	private String errMsg = "";
+
 	private boolean rdyToConnect;
-	String errMsg = "";
-	//private String errFlags;
+	private boolean userRegistred;
+	private boolean userPwOk;
+
 	
 	ServiceLocator sl = ServiceLocator.getServiceLocator();
 	
@@ -39,53 +41,68 @@ public class checkFields {
 		this.tf1 = tf1;
 		this.tf2 = tf2;
 	
-		switch(btn) {
+		switch(this.btn) {
 		
 			case "Verbinden": 	
 				//checkTfEmptyness(tf1,tf2);
 					
-				if (tf1 == "")
+				if (this.tf1.equals(""))
 					this.errMsg =  "IP-Nr. fehlt";
-				if (tf1 == "" && tf2 =="")
-					this.errMsg = errMsg+"/n";
-				if (tf2 == "")
+				if (this.equals("") && this.tf2.equals(""))
+					this.errMsg = errMsg +" "+System.lineSeparator();
+				if (this.tf2.equals(""))
 				this.errMsg = errMsg+"Port-Nr. fehlt";
 				
-				if (this.errMsg != "") {
+				if (!this.errMsg.equals("")) {
 					sl.getLogger().info(errMsg);     
 				this.errMsg = "";
 					break;
-				} 		
-				
+				} else { 		
 				setRdyToConnect(true);
-				
+				}
 				break;
 				
 			case "Registrieren":
+				
 				checkTfUserAndPw(this.tf1, this.tf2);
 				
-				if (this.errMsg != "") {
-					//methode registirerung
+				if (this.errMsg.equals("")) {
+
+					if (dbClass.getInstance().checkRegistration()) {
+					setUserRegistred(true);	
+					}
+
 					this.errMsg = "";
 					break;
 				}
 				
-				break;
 				
 			case "Einloggen":
 				
-				checkTfUserAndPw(this.tf1, this.tf2);
+				if (checkTfUserAndPw(this.tf1, this.tf2)) {
 				
-				if (this.errMsg != "") {
-					//methode checkregistr
-					this.errMsg = "";
-					break;
+				if (dbClass.getInstance().checkRegistration()) {
+						setUserRegistred(true);	
+						
+						}
+					
+				if(getUserRegistred() && dbClass.getInstance().pwCorrect(this.tf1,this.tf2)){
+					
+					setUserPwOk(true);
+					
 				}
 				
+					
+				}  
+				
+				
+				this.errMsg = "";
+
 				break;
 				
 				
 		}
+		
 		
 		
 		
@@ -95,6 +112,7 @@ public class checkFields {
 	public void setRdyToConnect(boolean bol){
 		this.rdyToConnect = bol;
 	}
+
 	
 	public boolean getRdyToConnect(){
 		boolean rdyToConnect = this.rdyToConnect;
@@ -102,75 +120,51 @@ public class checkFields {
 		}
 	
 	
+	public void setUserRegistred(boolean bol){
+		this.userRegistred = bol;
+	}
 	
-	public void checkTfUserAndPw(String tf1, String tf2){
+	
+	public boolean getUserRegistred(){
+		boolean userRegistred = this.userRegistred;
+				return userRegistred;
+	}
+	
+	
+	public void setUserPwOk(boolean bol){
+		this.userPwOk = bol;
+	}
+	
+	
+	public boolean getUserPwOk(){
+		boolean userPwOk = this.userPwOk;
+				return userPwOk;
+	}
+	
+	
+	
+	public boolean checkTfUserAndPw(String tf1, String tf2){
 		this.tf1 = tf1;
 		this.tf2 = tf2;
 		
-		if (tf1 == "")
+		if (tf1.equals(""))
 			this.errMsg =  "User fehlt";
-		if (tf1 == "" && tf2 =="")
+		if (tf1.equals("") && tf2.equals(""))
 			this.errMsg = errMsg+"/n";
-		if (tf2 == "")
+		if (tf2.equals(""))
 		this.errMsg = errMsg+"Passwort fehlt";
 		
-		if (this.errMsg != "") {
-			sl.getLogger().info(errMsg);     
-		this.errMsg = "";
-		} 		
-	}
-	
-	
-	public void checkRegistration(){
-	
-		if (dbClass.getInstance().userFileExists()){
-			
-		}
-		
-		
-		/*
-		 * 
-		 * 
-		 * file vorhanden 
-		 * 		ja
-		 * wenn file vorhanden, name vorhanden 
-		 *		ja  registration succesfull
-		 *		nein   call methode registrierung
-		 * 				registierung succesfull
-		 * filevorhanden
-		 * 		nein  mache file, registirere, registierung succesvul
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * */
+		if (this.errMsg.equals("")) {
+			sl.getLogger().info(errMsg);  
+			return false;
+		} 	
+		return true;	
 		
 	}
 	
 	
-	public void checkDBUserAndPw(){
-	}
 	
-	/*public String checkTfEmptyness(String tf1, String tf2){
-		this.tf1 = tf1;
-		this.tf2 = tf2;
-		
-		int paramOne =     0;
-		int paramTwo =     0;
-		String errFlag = "00";	
-		
-		if (tf1 == "")
-			paramOne = 1;
-		
-		if (tf2 == "")
-		   	paramTwo = 1;
-		
-		errFlag = Integer.toString(paramOne).concat(Integer.toString(paramTwo));
-		
-		return this.errFlags = errFlag;		
-	}
-	*/
+
 	
 	
 }

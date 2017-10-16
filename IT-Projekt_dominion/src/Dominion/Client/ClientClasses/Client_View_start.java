@@ -42,8 +42,8 @@ public class Client_View_start extends View<Client_Model> {
 		    Label lbl_password = new Label ("Passwort:   ");
 		       
 		    
-		    tf_ip = new TextField();  
-		    tf_port = new TextField(); 
+		    tf_ip = new TextField("127.0.0.1");  
+		    tf_port = new TextField("55"); 
 		    tf_userName = new TextField();
 		    tf_password = new TextField();
 		    

@@ -3,6 +3,7 @@ package Dominion.Client.ClientClasses;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import com.sun.glass.ui.View;
 import com.sun.media.jfxmedia.logging.Logger;
 
 import Dominion.ServiceLocator;
@@ -27,6 +28,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
     Client_View_start view;
     InetAddress addr;
 
+
     
     public Client_Controller_start(Client_Model model, Client_View_start view) {
         super(model, view);
@@ -50,36 +52,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {
             	     
-            /*	//Prüfe ob Felder nicht leer sind
-            	String logInfo = "";
-            	int fehler = 0;
-            	
-            	if (view.tf_ip.getText().compareTo("") == 0) {
-            		logInfo = "Server IP nicht eingegeben"; 
-            		fehler = 1;
-            	}
-            	
-            	if (view.tf_port.getText().compareTo("") == 0) {
-            		logInfo = logInfo +"\n"+ "Port Nr. nicht eingegeben";
-            		fehler = 1;
-            	}
- 
-            	if (view.tf_userName.getText().compareTo("") == 0) {
-            		logInfo = logInfo +"\n"+ "User Name nicht eingegeben";
-            		fehler = 1;
-            	}
-            	
-            	if(view.tf_password.getText().compareTo("") == 0) {
-            		logInfo = logInfo +"\n"+ "Passwort nicht eingegeben";   		
-            		fehler = 1;
-            	}
-            	
-            	//Gebe Fehlermeldungen aus
-            	if (fehler == 1){
-            	  model.sl.getLogger().info(logInfo);   
-            	  
-            	       	
-            	} else {  */
+          
             	
             	checkFields.getInstance().checkfields(view.btn_connect.getText(), view.tf_ip.getText(),view.tf_port.getText());
             	
@@ -115,19 +88,12 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 		            	
 		            	if (!model.connected) {
 		            	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
-		            	return;
+		            	}         	else {
+		            		//prüfe ob felder ausgefüllt
+			            	checkFields.getInstance().checkfields(view.btn_register.getText(), view.tf_userName.getText(),view.tf_password.getText());
+			            	
+		            		
 		            	}
-		            	
-		            	
-		            
-		            	/* prüfen ob name und pw vorhanden in feld, info etwas fehlt
-		            	 * ->return
-		            	 * prüfen ob file vorhanden und name existiert 
-		            	 * -> user schon registirert, return
-		            	 * -> user jetzt registriert, return
-		            	 * 
-		            	 *
-		            	 */
 		            	
 		            }
 		            });
@@ -144,32 +110,17 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 		            	return;
 		            	}
 		            	
-		            	/*prüfen ob user und pw eingetragen
-		            	 * prüfen ob file vorhanden und name existiert  -> sie sind noch nicht registriret, return
-		            	 *                                              -> sie sind registriet, pw inkorrekt, return
-		            	 *  prüfen ob benutzer bereits auf server vorhanden -> benutzer ist bereits angemeldet, return
-		            	 */                                                
-		            	
-		            	
-		            	if (model.connected){
-				    	Stage playingStage = new Stage();				
-				        Client_View view2 = new Client_View(playingStage, model);
-				        new Client_Controller(model, view2); 
-				        view2.start();
-				        view.stop();
-		            	}  else {
-		            		
-		            		model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
-		            	}
-		        
-		        
-			
+		            	if (model.connected && checkFields.getInstance().getUserPwOk()){
+					    	Stage playingStage = new Stage();				
+					        Client_View view2 = new Client_View(playingStage, model);
+					        new Client_Controller(model, view2); 
+					        view2.start();
+					        view.stop();
+			            	}                                             	
+		    			
 		            }
 		            });
 
-		        
-		        
-		        
 		        
 		        
         
