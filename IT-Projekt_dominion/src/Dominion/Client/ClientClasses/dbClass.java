@@ -16,6 +16,7 @@ public class dbClass {
 	private File userFile;
 	private String tf1;
 	private String tf2;
+	private String workingDirectory = System.getProperty("user.dir");
 	
 	ServiceLocator sl = ServiceLocator.getServiceLocator();
 	
@@ -36,38 +37,28 @@ public class dbClass {
 	public boolean userFileExists(){
 		
 		try { 
-			this.userFile = new File("user.dat");	
-			return true;
+			this.userFile = new File(workingDirectory+"/user.txt");	
+				
+			if (userFile.createNewFile()){
+				sl.getLogger().info("User File wurde erstellt");
+				return true;
+			} else {
+				sl.getLogger().info("USer File existiert schon");
+				return true;
+			}
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			sl.getLogger().info("USer File existiert nicht");
-				
-				if (createUserFile()){
-				sl.getLogger().info("User File wurde erstellt");
-				return true;
-				}
+			
 				return false;
-			}		
+				}	
+
+
 	}
 
 	
-	public boolean createUserFile(){
-
-		try {
-			
-			this.userFile = new File("user.dat");
-			userFile.createNewFile();
-			
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			sl.getLogger().info("USer File konnte nicht erstellt werden");
-			return false;
-			}
-	}
+	
 	
 	
 	/**
@@ -119,14 +110,15 @@ public class dbClass {
 	public boolean userExists(String tf1){
 
 		this.tf1 = tf1;
-		FileReader reader = null;
 		String line;
 		String[] strArr = null;
+		FileReader reader = null;
+		BufferedReader bReader = null;
 		
-		BufferedReader bReader = new BufferedReader(reader);
 		
 		try {
 			reader = new FileReader(this.userFile);
+			bReader = new BufferedReader(reader);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,12 +165,14 @@ public class dbClass {
 		this.tf2 = tf2;
 		FileReader reader = null;
 		String line;
-		String[] strArr = null;
+		String[] strArr = new String[9];
 		
-		BufferedReader bReader = new BufferedReader(reader);
+		BufferedReader bReader = null;
 		
 		try {
 			reader = new FileReader(this.userFile);
+			bReader = new BufferedReader(reader);
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

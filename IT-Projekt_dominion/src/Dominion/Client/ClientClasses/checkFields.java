@@ -22,6 +22,7 @@ public class checkFields {
 
 	
 	ServiceLocator sl = ServiceLocator.getServiceLocator();
+
 	
 	protected checkFields(){
 		//verhindert Instanzierung
@@ -44,8 +45,7 @@ public class checkFields {
 		switch(this.btn) {
 		
 			case "Verbinden": 	
-				//checkTfEmptyness(tf1,tf2);
-					
+									
 				if (this.tf1.equals(""))
 					this.errMsg =  "IP-Nr. fehlt";
 				if (this.equals("") && this.tf2.equals(""))
@@ -61,21 +61,22 @@ public class checkFields {
 				setRdyToConnect(true);
 				}
 				break;
+			
+				
 				
 			case "Registrieren":
 				
-				checkTfUserAndPw(this.tf1, this.tf2);
+				if (checkTfUserAndPw(this.tf1, this.tf2)){
 				
-				if (this.errMsg.equals("")) {
 
 					if (dbClass.getInstance().checkRegistration()) {
 					setUserRegistred(true);	
 					}
 
-					this.errMsg = "";
-					break;
+				
 				}
 				
+				break;
 				
 			case "Einloggen":
 				
@@ -147,15 +148,16 @@ public class checkFields {
 		this.tf1 = tf1;
 		this.tf2 = tf2;
 		
-		if (tf1.equals(""))
+		if (this.tf1.equals(""))
 			this.errMsg =  "User fehlt";
-		if (tf1.equals("") && tf2.equals(""))
-			this.errMsg = errMsg+"/n";
-		if (tf2.equals(""))
+		if (this.tf1.equals("") && this.tf2.equals(""))
+			this.errMsg = errMsg+"\n";
+		if (this.tf2.equals(""))
 		this.errMsg = errMsg+"Passwort fehlt";
 		
-		if (this.errMsg.equals("")) {
+		if (!this.errMsg.equals("")) {
 			sl.getLogger().info(errMsg);  
+			this.errMsg = "";
 			return false;
 		} 	
 		return true;	
