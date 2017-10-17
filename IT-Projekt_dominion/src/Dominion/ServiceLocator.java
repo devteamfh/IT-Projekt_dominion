@@ -1,6 +1,5 @@
 package Dominion;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javafx.scene.control.TextArea;
