@@ -45,7 +45,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         /**
          * @author Joel Henz:
          * connecting a client to the server by getting the IP address and the port number from the TextFields and then creating the playing Stage
-         * edited kab: 10.10.17: Neue Buttons btn_register und btn_login und diverse Prüfmechanismen auf tf_ eingebaut
+         * edited kab: 10.10.17: Neue Buttons btn_register und btn_login und diverse Prï¿½fmechanismen auf tf_ eingebaut
          */    
       
         view.btn_connect.setOnAction(new EventHandler<ActionEvent>() { 
@@ -89,10 +89,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 		            	if (!model.connected) {
 		            	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
 		            	}         	else {
-		            		//prüfe ob felder ausgefüllt
+
+		            		//prï¿½fe ob felder ausgefï¿½llt
 			            	checkFields.getInstance().checkfields(view.btn_register.getText(), view.tf_userName.getText(),view.tf_password.getText());
-			            	
-		            		
+
 		            	}
 		            	
 		            }

@@ -4,7 +4,7 @@ import Dominion.ServiceLocator;
 
 /**
  * 
- * Prüft Eingaben der client_View_start Klasse
+ * Prï¿½ft Eingaben der client_View_start Klasse
  * @author kab618
  *
  */
@@ -62,51 +62,32 @@ public class checkFields {
 				}
 				break;
 			
-				
-				
+
 			case "Registrieren":
 				
 				if (checkTfUserAndPw(this.tf1, this.tf2)){
-				
-
-					if (dbClass.getInstance().checkRegistration()) {
+					if (dbClass.getInstance().checkRegistration(this.tf1)) {
 					setUserRegistred(true);	
 					}
-
-				
 				}
-				
 				break;
-				
+
+
 			case "Einloggen":
 				
 				if (checkTfUserAndPw(this.tf1, this.tf2)) {
 				
-				if (dbClass.getInstance().checkRegistration()) {
-						setUserRegistred(true);	
-						
-						}
-					
-				if(getUserRegistred() && dbClass.getInstance().pwCorrect(this.tf1,this.tf2)){
-					
-					setUserPwOk(true);
-					
-				}
-				
-					
-				}  
-				
-				
-				this.errMsg = "";
+					if (dbClass.getInstance().checkRegistration(this.tf1)) {
+							setUserRegistred(true);
+					}
 
+					if(getUserRegistred() && dbClass.getInstance().pwCorrect(this.tf1,this.tf2)){
+						setUserPwOk(true);
+					}
+				}
+				this.errMsg = "";
 				break;
-				
-				
 		}
-		
-		
-		
-		
 	}
 	
 	

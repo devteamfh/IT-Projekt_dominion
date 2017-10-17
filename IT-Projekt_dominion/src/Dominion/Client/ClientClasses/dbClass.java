@@ -33,7 +33,7 @@ public class dbClass {
 	
 	
 	
-	//prüft ob user File da
+	//prï¿½ft ob user File da
 	public boolean userFileExists(){
 		
 		try { 
@@ -52,9 +52,7 @@ public class dbClass {
 			e.printStackTrace();
 			
 				return false;
-				}	
-
-
+				}
 	}
 
 	
@@ -83,77 +81,66 @@ public class dbClass {
 	
 	
 	
-	public boolean checkRegistration(){
-		
-		if (userFileExists()){
-			if (userExists(this.tf1)){
-				sl.getLogger().info("User ist bereits angelegt");
+	public boolean checkRegistration(String tf1){
+		this.tf1 = tf1;
+		if (userFileExists()) {
+			if (userExists(this.tf1)) {
 				return true;
 			} else {
-			enterUserData(this.tf1,this.tf2);	
+				enterUserData(this.tf1, this.tf2);
 			}
-			
 		}
-		
 	return false;
-	
-		
-				
 	}
 	
 	
 	
 	
 	/**
-	 * @author kab: prüft ob User existiert
+	 * @author kab: prÃ¼ft ob User existiert
 	 */
 	public boolean userExists(String tf1){
-
 		this.tf1 = tf1;
-		String line;
-		String[] strArr = null;
 		FileReader reader = null;
+		String line;
+		Integer iLines = 0;
+
+		String[] strArr = null;
+		Integer strArr_Capacity = null;
+		Integer MAX_NO_OF_ATTRIBUTES_PER_LINE = 10;
+
 		BufferedReader bReader = null;
-		
-		
+
+		iLines = countLines();
+		strArr_Capacity = iLines * MAX_NO_OF_ATTRIBUTES_PER_LINE;
+		strArr = new String[strArr_Capacity];
+
 		try {
 			reader = new FileReader(this.userFile);
 			bReader = new BufferedReader(reader);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			sl.getLogger().info("UserFile konnte nicht gefunden werden");
-		
-		}
-		
-	
-		try {
-			line = bReader.readLine();
-			
-			while (line !=null) {
+
+			while ((line = bReader.readLine()) != null) {
 				strArr = line.split(";");
-			
-			}
-			
-			for (int i = 0; i < strArr.length; i++ ) {
-				if (tf1.compareTo(strArr[i]) == 0 && (i&1) == 0) {
-					sl.getLogger().info("User ist  angelegt.");
-					return true;
-				
+
+				for (int i = 0; i < strArr.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
+					if (this.tf1.equals(strArr[i].toString())) {
+						sl.getLogger().info("User existiert bereits");
+						return true;
+					}
 				}
 			}
-			
-			
+			bReader.close();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			sl.getLogger().info("userFile konnte nicht durchsucht werden");
-			return false;
 		}
-		
+		sl.getLogger().info("User existiert noch nicht");
 		return false;
-	
 	}
+
+
 	
 	
 	
@@ -161,51 +148,77 @@ public class dbClass {
 	
 
 	public boolean pwCorrect(String tf1, String tf2){
-		this.tf1 = tf2;
+		this.tf1 = tf1;
 		this.tf2 = tf2;
 		FileReader reader = null;
 		String line;
-		String[] strArr = new String[9];
+        Integer iLines = 0;
+
+        String[] strArr = null;
+		Integer strArr_Capacity = null;
+		Integer MAX_NO_OF_ATTRIBUTES_PER_LINE = 10;
 		
 		BufferedReader bReader = null;
-		
+
+		iLines = countLines();
+        strArr_Capacity = iLines * MAX_NO_OF_ATTRIBUTES_PER_LINE;
+        strArr = new String[strArr_Capacity];
+
 		try {
-			reader = new FileReader(this.userFile);
-			bReader = new BufferedReader(reader);
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			sl.getLogger().info("UserFile konnte nicht gefunden werden");
-		}
-		
-		
-		
-		try {
-			line = bReader.readLine();
-			
-			while (line !=null) {
-				strArr = line.split(";");
-			
-			}
-			
-			for (int i = 0; i < strArr.length; i++ ) {
-				if (tf1.compareTo(strArr[i]) == 0 && (i&1) == 1 && tf2.compareTo(strArr[i-1]) == 0) {
-				return true;
-				}
-			}
-			
+            reader = new FileReader(this.userFile);
+            bReader = new BufferedReader(reader);
+
+			while ((line = bReader.readLine()) != null) {
+                strArr = line.split(";");
+
+
+                for (int i = 0; i < strArr.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
+                    if ((this.tf1.equals(strArr[i].toString()) == true) && (this.tf2.equals(strArr[i + 1].toString()) == true)) {
+                        return true;
+                    }
+                }
+            }
+			bReader.close();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			sl.getLogger().info("userFile konnte nicht durchsucht werden");
-		}
-		
-		
-	return false;	
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            sl.getLogger().info("userFile konnte nicht durchsucht werden");
+        }
+	return false;
 	}
-	
+
+
+
+	public int countLines() {
+
+        String line;
+        Integer iLines = 0;
+
+        FileReader reader = null;
+        BufferedReader bReader = null;
+
+        //initialisiere this.userfile
+        userFileExists();
+
+        try {
+            reader = new FileReader(this.userFile);
+            bReader = new BufferedReader(reader);
+
+            while ((line = bReader.readLine()) != null) {
+                iLines++;
+            }
+            bReader.close();
+
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            sl.getLogger().info("UserFile konnte nicht gefunden werden");
+        }
+
+	    return iLines;
+    }
 
 	
 	
