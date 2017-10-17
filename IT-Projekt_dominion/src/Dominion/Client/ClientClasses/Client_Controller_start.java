@@ -53,17 +53,17 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             public void handle(ActionEvent event) {
             	     
           
-            	
+            	//prüft ob Felder IP und Port ausgefüllt
             	checkFields.getInstance().checkfields(view.btn_connect.getText(), view.tf_ip.getText(),view.tf_port.getText());
             	
+            	//wenn IP und Port ausgefüllt, versuche mit Server zu verbinden
             	if (checkFields.getInstance().getRdyToConnect())
             	
             	   	try { 
-                		
                 		addr = InetAddress.getByName(view.tf_ip.getText());
                 		int portNr = Integer.parseInt(view.tf_port.getText());
-                    	String name = view.tf_userName.getText();
-                    	model.setName(name);
+                    	//String name = view.tf_userName.getText();
+                    	//model.setName(name);
         				model.connectToServer(addr,portNr);	
         				
         				if (model.connected){
@@ -110,7 +110,12 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 		            	return;
 		            	}
 		            	
+		            	checkFields.getInstance().checkfields(view.btn_login.getText(), view.tf_userName.getText(),view.tf_password.getText());
+
+		            	
 		            	if (model.connected && checkFields.getInstance().getUserPwOk()){
+		            		String name = view.tf_userName.getText();
+	                    	model.setName(name);
 					    	Stage playingStage = new Stage();				
 					        Client_View view2 = new Client_View(playingStage, model);
 					        new Client_Controller(model, view2); 

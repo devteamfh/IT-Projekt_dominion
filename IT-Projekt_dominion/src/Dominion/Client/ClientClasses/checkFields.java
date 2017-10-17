@@ -11,18 +11,16 @@ import Dominion.ServiceLocator;
 
 public class checkFields {
 	private static checkFields instance = null;
-	private String btn;
+	private String btnStr;
 	private String tf1;
 	private String tf2;
 	private String errMsg = "";
-
+	
 	private boolean rdyToConnect;
 	private boolean userRegistred;
 	private boolean userPwOk;
-
 	
 	ServiceLocator sl = ServiceLocator.getServiceLocator();
-
 	
 	protected checkFields(){
 		//verhindert Instanzierung
@@ -35,21 +33,24 @@ public class checkFields {
 		return instance;
 		}
 	
-	
-	
-	public void checkfields(String btn, String tf1, String tf2){
-		this.btn = btn;
+	/**
+	 * @author kab: Überprüft für Verbinden, ob Eingaben in Textfelder gemacht worden sind.
+	 * 				Überprüft für Registrieren und Einloggen, ob sich der User Registrieren und Einloggen kann,
+	 *              die Prüfung nimmt Klasse checkUserData vor
+	 */	
+	public void checkfields(String btnStr, String tf1, String tf2){
+		this.btnStr = btnStr;
 		this.tf1 = tf1;
 		this.tf2 = tf2;
 	
-		switch(this.btn) {
+		switch(this.btnStr) {
 		
 			case "Verbinden": 	
 									
 				if (this.tf1.equals(""))
 					this.errMsg =  "IP-Nr. fehlt";
 				if (this.equals("") && this.tf2.equals(""))
-					this.errMsg = errMsg +" "+System.lineSeparator();
+					this.errMsg = errMsg +" "+System.getProperty("line.separator");
 				if (this.tf2.equals(""))
 				this.errMsg = errMsg+"Port-Nr. fehlt";
 				
@@ -66,7 +67,7 @@ public class checkFields {
 			case "Registrieren":
 				
 				if (checkTfUserAndPw(this.tf1, this.tf2)){
-					if (dbClass.getInstance().checkRegistration(this.tf1)) {
+					if (checkUserData.getInstance().checkRegistration(this.btnStr, this.tf1, this.tf2)) {
 					setUserRegistred(true);	
 					}
 				}
@@ -77,12 +78,11 @@ public class checkFields {
 				
 				if (checkTfUserAndPw(this.tf1, this.tf2)) {
 				
-					if (dbClass.getInstance().checkRegistration(this.tf1)) {
-							setUserRegistred(true);
+					if (checkUserData.getInstance().checkRegistration(this.btnStr, this.tf1, this.tf2)) {
 					}
 
-					if(getUserRegistred() && dbClass.getInstance().pwCorrect(this.tf1,this.tf2)){
-						setUserPwOk(true);
+					if(getUserRegistred() && checkUserData.getInstance().pwCorrect(this.tf1,this.tf2)){
+						setUserPwOk(true);	
 					}
 				}
 				this.errMsg = "";
@@ -124,7 +124,9 @@ public class checkFields {
 	}
 	
 	
-	
+	/**
+	 * @author kab: überprüft ob Textfelder nicht leer sind
+	 */
 	public boolean checkTfUserAndPw(String tf1, String tf2){
 		this.tf1 = tf1;
 		this.tf2 = tf2;
@@ -132,7 +134,7 @@ public class checkFields {
 		if (this.tf1.equals(""))
 			this.errMsg =  "User fehlt";
 		if (this.tf1.equals("") && this.tf2.equals(""))
-			this.errMsg = errMsg+"\n";
+			this.errMsg = errMsg+System.getProperty("line.separator");
 		if (this.tf2.equals(""))
 		this.errMsg = errMsg+"Passwort fehlt";
 		

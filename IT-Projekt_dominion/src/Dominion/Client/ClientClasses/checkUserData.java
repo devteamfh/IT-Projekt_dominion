@@ -2,42 +2,43 @@ package Dominion.Client.ClientClasses;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.InetAddress;
 
 import Dominion.ServiceLocator;
 
-public class dbClass {
-	private static dbClass instance = null;
+public class checkUserData {
+	private static checkUserData instance = null;
 	
 	private File userFile;
 	private String tf1;
 	private String tf2;
-	private String workingDirectory = System.getProperty("user.dir");
+	private String btnStr;
 	
 	ServiceLocator sl = ServiceLocator.getServiceLocator();
 	
-	protected dbClass(){
+	protected checkUserData(){
 		//verhindert Instanzierung
 	}
 	
-	public static dbClass getInstance(){
+	public static checkUserData getInstance(){
 		if(instance == null) {
-			instance = new dbClass();
+			instance = new checkUserData();
 		}
 		return instance;
 		}
 	
 	
 	
-	//prï¿½ft ob user File da
+	/**
+	 * @author kab: Überprüft, ob ein File mit Benutzerdaten existiert und erstellt, sofern nötig, eines
+	 * 
+	 */
 	public boolean userFileExists(){
 		
 		try { 
-			this.userFile = new File(workingDirectory+"/user.txt");	
+			this.userFile = new File("user.dat");	
 				
 			if (userFile.createNewFile()){
 				sl.getLogger().info("User File wurde erstellt");
@@ -60,7 +61,7 @@ public class dbClass {
 	
 	
 	/**
-	 * @author kab: registirert user
+	 * @author kab: Benutzer wird registriert
 	 */
 	public boolean enterUserData(String tf1, String tf2){
 		this.tf1 = tf1;
@@ -68,7 +69,7 @@ public class dbClass {
 		try {
 			FileWriter fw = new FileWriter(this.userFile, true);
 					
-			fw.write(tf1+" "+tf2+"/n");
+			fw.write(this.tf1+";"+this.tf2+System.getProperty("line.separator"));
 			fw.close();
 			sl.getLogger().info("User erfolgreich registriert");
 			return true;
@@ -80,24 +81,42 @@ public class dbClass {
 	}
 	
 	
-	
-	public boolean checkRegistration(String tf1){
+	/**
+	 * @author kab: registirert Benutzer und oder überprüft ob eingeloggt werden kann
+	 * 
+	 * 
+	 */
+	public boolean checkRegistration(String btnStr, String tf1, String tf2){
 		this.tf1 = tf1;
-		if (userFileExists()) {
-			if (userExists(this.tf1)) {
-				return true;
-			} else {
-				enterUserData(this.tf1, this.tf2);
+		this.tf2 = tf2;
+		this.btnStr = btnStr;
+		
+			
+			switch (this.btnStr){
+			
+			case "Registrieren":
+									if (userFileExists()) {
+										if (userExists(this.tf1)) {
+										return true;
+										} 
+										return enterUserData(this.tf1, this.tf2);
+									}
+			
+			case "Einloggen":
+									if(userFileExists()) {
+										return userExists(this.tf1);
+									}else {
+										return false;
+									}
 			}
-		}
-	return false;
+			return false;	
 	}
 	
 	
 	
 	
 	/**
-	 * @author kab: prÃ¼ft ob User existiert
+	 * @author kab: prüft ob Benutzer existiert
 	 */
 	public boolean userExists(String tf1){
 		this.tf1 = tf1;
@@ -125,6 +144,7 @@ public class dbClass {
 				for (int i = 0; i < strArr.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
 					if (this.tf1.equals(strArr[i].toString())) {
 						sl.getLogger().info("User existiert bereits");
+						bReader.close();
 						return true;
 					}
 				}
@@ -140,13 +160,11 @@ public class dbClass {
 		return false;
 	}
 
-
 	
-	
-	
-	
-	
-
+			/**
+			 * @auathor kab: überprüft ob Username und Passwort zu einander passen
+			 * 
+			 */
 	public boolean pwCorrect(String tf1, String tf2){
 		this.tf1 = tf1;
 		this.tf2 = tf2;
@@ -174,7 +192,9 @@ public class dbClass {
 
                 for (int i = 0; i < strArr.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
                     if ((this.tf1.equals(strArr[i].toString()) == true) && (this.tf2.equals(strArr[i + 1].toString()) == true)) {
-                        return true;
+                        bReader.close();
+                        sl.getLogger().info("Passwort korrekt. Eintritt gewährt.");
+                    	return true;
                     }
                 }
             }
@@ -185,13 +205,18 @@ public class dbClass {
             e.printStackTrace();
             sl.getLogger().info("userFile konnte nicht durchsucht werden");
         }
+		sl.getLogger().info("Passwort nicht korrekt. Eintritt verwehrt");
 	return false;
 	}
 
 
-
+	/**
+	 * @author kab: zählt die Anzahl Zeilen in User.dat Datei
+	 * 
+	 * 
+	 */
+	
 	public int countLines() {
-
         String line;
         Integer iLines = 0;
 
@@ -199,7 +224,9 @@ public class dbClass {
         BufferedReader bReader = null;
 
         //initialisiere this.userfile
+        if (this.userFile == null) {
         userFileExists();
+        }
 
         try {
             reader = new FileReader(this.userFile);
@@ -220,8 +247,6 @@ public class dbClass {
 	    return iLines;
     }
 
-	
-	
 	
 	
 

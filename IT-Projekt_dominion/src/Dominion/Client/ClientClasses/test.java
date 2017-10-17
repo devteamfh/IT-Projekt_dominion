@@ -17,7 +17,8 @@ public class test {
         	
         	//System.out.println(dbClass.getInstance().userFileExists());
             //System.out.println(workingDirectory);
-            System.out.println(dbClass.getInstance().pwCorrect("jada","2222"));
+            //System.out.println(dbClass.getInstance().pwCorrect("jada","2222"));
+            System.out.println("jada"+System.getProperty("line.separator")+"jada");
 
         }
     }
