@@ -102,8 +102,15 @@ public class Client_View_start extends View<Client_Model> {
 			root.setPrefWidth(735);
 			root.setPrefHeight(400);
 
+<<<<<<< HEAD
 			root.setCenter(vb_wrapperContent);
 			
+=======
+		//test kab  <- this line can be deleted
+		//test kab  <- this line can be deleted line 2
+		// test joel
+		this.scene = new Scene (root);
+>>>>>>> copyOfMaster_17.10.2017
 
 	
 			this.scene = new Scene (root);
