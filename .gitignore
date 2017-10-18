@@ -1,16 +1,11 @@
 /bin/
-<<<<<<< HEAD
 /.idea/
 /out/
 /IT-Projekt_dominion/IT-Projekt_dominion/src/Dominion/Client/ClientClasses/test.java
 .user.dat
 .bashrc.swp
 .IT-Projekt_dominion.iml
-=======
-<<<<<<< HEAD
 .classpath
 .project
 .user.dat
-=======
->>>>>>> copyOfMaster_17.10.2017
->>>>>>> 19ede26bd63255fd0a52c767be2ca9b079431255
+.user.db
