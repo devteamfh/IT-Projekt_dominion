@@ -1,6 +1,11 @@
 /bin/
+/.idea/
+/out/
+.user.dat
 <<<<<<< HEAD
 =======
+/.idea/
+/out/
 .classpath
 .project
 .user.dat
