@@ -1,12 +1,6 @@
 /bin/
 /.idea/
 /out/
+/IT-Projekt_dominion/IT-Projekt_dominion/src/Dominion/Client/ClientClasses/test.java
 .user.dat
-<<<<<<< HEAD
-=======
-/.idea/
-/out/
-.classpath
-.project
-.user.dat
->>>>>>> kab_workingonit
+
