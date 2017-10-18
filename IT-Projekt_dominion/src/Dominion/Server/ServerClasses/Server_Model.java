@@ -30,6 +30,8 @@ public class Server_Model extends Model { //creates the connection to the server
 	ServiceLocator sl = ServiceLocator.getServiceLocator();
 	
 	Thread clientThread_chat;
+	
+	Database db;
 
     public Server_Model() {
         
@@ -45,6 +47,7 @@ public class Server_Model extends Model { //creates the connection to the server
 			this.server = new ServerSocket (portNr,10,addr);
 			list_clients_chat = new ArrayList <ObjectOutputStream>();
 			logger.info("Server gestartet"); 
+			startDatabase(); // kab: kreiert und startet Datenbank und kreiert Tabelle
 			return true;
 		} catch (IOException e) {
 			logger.info("Server konnte nicht gestartet werden");
@@ -52,6 +55,16 @@ public class Server_Model extends Model { //creates the connection to the server
 			return false;
 		}
 	}
+	
+	/**
+	 * @author kab: startet Datenbank und kreiert Tabelle
+	*/	
+		public void startDatabase(){	
+		db = new Database();
+        db.createNewDatabase();
+        db.createTables();
+		}
+	
 	
 	/**
      * @author Joel Henz

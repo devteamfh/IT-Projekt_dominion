@@ -7,33 +7,39 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import Dominion.ServiceLocator;
+
 /**
  *
  *
 public class Database {
      *
-     * @author sqlitetutorial.net
+     * 
      */
+
     public class Database {
 
-
         private String workingDirecotry = System.getProperty("user.dir");
-        private String url =  "jdbc:sqlite:"+workingDirecotry+"/" + "test.db";
+        private String url =  "JDBC:sqlite:"+workingDirecotry+"/" + "user.db";
+
+        
+        ServiceLocator sl = ServiceLocator.getServiceLocator();
+        
+        
         /**
-         * Connect to a sample database
-         *
-         * @param fileName the database file name
+         * @author kab: kreiere und connecte zu Datenbank
+         * @param fileName name der Datenbank
          */
+             
 
-
-        public  void createNewDatabase(String fileName) {
+        public  void createNewDatabase() {
 
 
             try (Connection conn = DriverManager.getConnection(url)) {
                 if (conn != null) {
                     DatabaseMetaData meta = conn.getMetaData();
-                    System.out.println("The driver name is " + meta.getDriverName());
-                    System.out.println("A new database has been created.");
+                    sl.getLogger().info("The driver name is " + meta.getDriverName());
+                    sl.getLogger().info("A new Database has been created");
                 }
 
             } catch (SQLException e) {
@@ -42,59 +48,108 @@ public class Database {
         }
 
 
+        /**
+         * @author kab: kreiere Tabelle Users
+         * 
+         */      
         public  void createTables() {
 
             String sql_createTables = "CREATE TABLE IF NOT EXISTS Users (\n"
-                    + "	id integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n"
-                    + "	name text NOT NULL\n"
-                    + ");\n"
-                    + "CREATE TABLE IF NOT EXISTS Statistics (\n"
-                    + "	id integer,\n"
-                    + "	gamesStarted text NOT NULL\n"
-                    + "	gamesWon text NOT NULL\n"
-                    + "	gamesLost text NOT NULL\n"
-                    + "	FOREIGN KEY (id) REFERENCES Users(id)"
+                    + "	Name text NOT NULL,\n"
+                    + "	PassWrd text NOT NULL,\n"
+                    + "	gamesStarted INT NULL,\n"
+                    + "	gamesWon INT NULL,\n"
+                    + "	gamesLost INT NULL,\n"
+                    + "	Column05 INT NULL,\n"
+                    + "	Column06 INT NULL,\n"
+                    + "	Column07 INT NULL,\n"
+                    + "	Column08 INT NULL,\n"
+                    + "	Column09 INT NULL,\n"
+                    + "	PRIMARY KEY (Name, PassWrd)"
                     + ");";
 
-                sql_execute(sql_createTables);
+                if(sql_execute(sql_createTables)) {
+                    sl.getLogger().info("User Table has been created");
+                }
         }
 
 
-        public void sql_execute(String sqlStatement){
+        /**
+         * @author sqlitetutorial.net
+         *  führt SQL STatements aus
+         */
+        public boolean sql_execute(String sqlStatement){
 
             try (Connection conn = DriverManager.getConnection(url);
                  Statement stmt = conn.createStatement()) {
-
                 stmt.execute(sqlStatement);
+                return true;
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                sl.getLogger().info(e.getMessage());
+                return false;
             }
 
         }
 
 
-        public void addPlayer(String user, String pw) {
+        /**
+         * @author kab:
+         */
+        public void addPlayer(String user, String pw, String att2, String att3, String att4, String att5, String att6, String att7, String att8, String att9){
+        	String sql_userData = 
+        			  " INSERT INTO Users (\n"
+                    + "	Name,        \n"
+                    + "	PassWrd,     \n"
+                    + "	gamesStarted,\n"
+                    + "	gamesWon,    \n"
+                    + "	gamesLost,   \n"
+                    + "	Column05,    \n"
+                    + "	Column06,    \n"
+                    + "	Column07,    \n"
+                    + "	Column08,    \n"
+                    + "	Column09)    \n"
+                    + " VALUES       \n"
+                    + " ('"+user+"', \n"
+                    + "  '"+pw+  "', \n"
+                    + "  '"+att2+"', \n"
+                    + "  '"+att3+"', \n"
+                    + "  '"+att4+"', \n"
+                    + "  '"+att5+"', \n"
+                    + "  '"+att6+"', \n"
+                    + "  '"+att7+"', \n"
+                    + "  '"+att8+"', \n"
+                    + "  '"+att9+ "' \n"    
+                    + ");";
 
+                if(sql_execute(sql_userData)) {
+                    sl.getLogger().info("User Data has been entered into Table Users");
+                }
         }
 
-
+       //methode update statistik
+        
+        
+        /**
+         * @author kab:
+         */
         public void addStatistics(String s) {
 
         }
 
 
 
-        /**
+    /*    /**
+         * @author sqlitetutorial.net
          * @param args the command line arguments
-         */
+         /
         public static void main(String[] args) {
 
             Database db = new Database();
-            db.createNewDatabase("test.db");
+            db.createNewDatabase();
             db.createTables();
 
 
-        }
+        }*/
     }
 
 
