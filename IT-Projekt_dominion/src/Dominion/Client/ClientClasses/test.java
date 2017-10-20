@@ -1,25 +1,56 @@
 package Dominion.Client.ClientClasses;
 
+import java.io.File;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 
-import com.sun.xml.internal.fastinfoset.util.StringArray;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+public class test extends Application {
+
+		  public static void main(String[] args) {
+			  Application.launch(args);
+
+		  }
+
+		  @Override
+		  public void start(Stage primaryStage) {
+		    primaryStage.setTitle("BorderPane Test");
+		    
+		    //Creating StackPane
+		    StackPane sp = new StackPane();
+		   
+		    Pane pane1 = new Pane();
+		    Pane pane2 = new Pane();
+		    Pane pane3 = new Pane();
+		    Pane pane4 = new Pane();
+		    Pane pane5 = new Pane();
+		    
+
+		    sp.getChildren().add(pane1);
+		    sp.getChildren().add(pane2);
+		    sp.getChildren().add(pane3);
+		    sp.getChildren().add(pane4);
+		    sp.getChildren().add(pane5);
+		   
+			pane1.getStyleClass().addAll("corner","cr_pane1");
+			pane2.getStyleClass().addAll("corner","cr_pane2");
+			pane3.getStyleClass().addAll("corner","cr_pane3");
+			pane4.getStyleClass().addAll("corner","cr_pane4");
+			pane5.getStyleClass().addAll("cr_pane5");
 
 
-
-public class test {
-	private static String workingDirectory = System.getProperty("user.dir");
-        public static void main(String[] args) {
-        	
-        	//System.out.println(dbClass.getInstance().userFileExists());
-            //System.out.println(workingDirectory);
-            //System.out.println(dbClass.getInstance().pwCorrect("jada","2222"));
-            System.out.println("jada"+System.getProperty("line.separator")+"jada");
-
-        }
-    }
-
+		    Scene scene = new Scene(sp,300,200);
+			scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());
+		    primaryStage.setScene(scene);
+		    
+		    primaryStage.show();
+		  }
+		}

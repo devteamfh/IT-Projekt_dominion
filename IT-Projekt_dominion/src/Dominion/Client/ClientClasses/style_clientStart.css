@@ -7,3 +7,40 @@
 	    -fx-background-color: green;
 	
 }
+
+
+.corner {
+			-fx-background-repeat: no-repeat;
+
+}
+
+.cr_pane1 {
+			-fx-background-image: url('bl1.png');
+		-fx-background-position: left top;
+
+}
+.cr_pane2 {
+			-fx-background-image: url('bl2.png');
+		-fx-background-position: right top;
+
+}
+
+
+.cr_pane3 {
+			-fx-background-image: url('bl3.png');
+			-fx-background-position: right bottom;
+
+		
+}
+.cr_pane4 {
+			-fx-background-image: url('bl4.png');
+		-fx-background-position: left bottom;
+}
+
+.cr_pane5 {
+		-fx-border-width: 5.4px;
+		-fx-border-color: #483d2c;
+		-fx-stroke-width: 5px;
+	}
+
+		   
