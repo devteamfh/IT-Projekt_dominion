@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import Dominion.appClasses.ChatMessage;
+import Dominion.appClasses.GameObject;
 
 /**
  * @author Joel Henz: 
@@ -15,13 +16,13 @@ import Dominion.appClasses.ChatMessage;
  * Each connected client gets an ClientHandler thread. Each ClientHandler reads messages from his client and will send them to ALL clients by iterating through the ObjectOutputStream ArrayList.
  * This implementation (reading and writing with a Runnable) was inspired by youtube XXX
  */
-public class ClientHandler_chat implements Runnable {
+public class ClientHandler implements Runnable {
 	Socket s; 
 	ArrayList <ObjectOutputStream> list;
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	
-	public ClientHandler_chat(Socket s, ArrayList <ObjectOutputStream> list){ 
+	public ClientHandler(Socket s, ArrayList <ObjectOutputStream> list){ 
 		this.s = s;
 		this.list = list;
 		try {
@@ -36,11 +37,11 @@ public class ClientHandler_chat implements Runnable {
 	@Override
 	public void run() {
 
-		ChatMessage message;
+		GameObject obj;
 		
 		try {
-			while ((message = (ChatMessage) this.in.readObject()) !=null){
-				sendToAllClients (message);			
+			while ((obj = (GameObject) this.in.readObject()) !=null){
+				sendToAllClients (obj);			
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -49,17 +50,28 @@ public class ClientHandler_chat implements Runnable {
 	}
 	
 	//ID for the serialized object is set here
-	private void sendToAllClients(ChatMessage message) throws IOException {
-		Iterator<ObjectOutputStream> iter = this.list.iterator();
-		message.setID();
-		
-		//sending the chat messages to all clients
-		while (iter.hasNext()){
-			ObjectOutputStream current = (ObjectOutputStream) iter.next();
-			current.writeObject(message);
-			current.flush();			
-		}
-		
+	private void sendToAllClients(GameObject obj) throws IOException {
+				
+		switch (obj.getType()) {
+		 case ChatMessage:
+			 ChatMessage msg = (ChatMessage) obj;
+			 
+			 Iterator<ObjectOutputStream> iter = this.list.iterator();
+			 
+			//sending the chat messages to all clients
+				while (iter.hasNext()){
+					ObjectOutputStream current = (ObjectOutputStream) iter.next();
+					current.writeObject(msg);
+					current.flush();			
+				} 
+			 break;
+		 
+		 case InformationObject:
+			 break;
+
+		 default:
+		 }
+	
 	}
 	
 }

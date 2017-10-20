@@ -78,7 +78,7 @@ public class Server_Model extends Model { //creates the connection to the server
 				ObjectOutputStream os = new ObjectOutputStream (client_chat.getOutputStream()); 
 				list_clients_chat.add(os); 
 							
-				clientThread_chat = new Thread (new ClientHandler_chat(client_chat, list_clients_chat)); 
+				clientThread_chat = new Thread (new ClientHandler(client_chat, list_clients_chat)); 
 				clientThread_chat.start();			
 				
 			} catch (IOException e) {

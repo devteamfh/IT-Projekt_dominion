@@ -4,6 +4,7 @@ import java.io.IOException;
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessage;
+import Dominion.appClasses.GameObject;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -81,9 +82,14 @@ public class Client_Controller extends Controller<Client_Model, Client_View> {
 		String name = model.getName();
 		String msg = view.tf_message.getText();
 		ChatMessage cmsg = new ChatMessage(name, msg);
+		cmsg.setID();
+		
+		GameObject obj = new GameObject (GameObject.ObjectType.ChatMessage);
+		obj.setID();
+		obj = cmsg;
 		
 		try {
-			model.out.writeObject(cmsg);
+			model.out.writeObject(obj);
 			model.out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

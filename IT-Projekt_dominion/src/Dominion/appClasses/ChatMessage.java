@@ -1,11 +1,10 @@
 package Dominion.appClasses;
 
-import java.io.Serializable;
 
 /**
  * @author Joel Henz
  */
-public class ChatMessage implements Serializable {
+public class ChatMessage extends GameObject {
 	
 	private static final long serialVersionUID = 1; // This is version 1 of the message class
 	// Data included in a message
@@ -18,8 +17,9 @@ public class ChatMessage implements Serializable {
 	private static long nextMessageID() {		
 		return messageID++;
 	}
-	 
+	
 	public ChatMessage(String client, String message) {
+		super(GameObject.ObjectType.ChatMessage);
 		this. id = -1;
 		this.client = client;
 		this.message = message;
