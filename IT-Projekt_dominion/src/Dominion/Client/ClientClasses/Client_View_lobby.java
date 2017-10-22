@@ -1,12 +1,17 @@
 package Dominion.Client.ClientClasses;
 
+import java.util.ArrayList;
+
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.View;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -20,10 +25,14 @@ import javafx.stage.Stage;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards
+ * @author Brad Richards (MVC Pattern), Joel Henz (GUI)
  */
-public class Client_View extends View<Client_Model> {
+public class Client_View_lobby extends View<Client_Model> {
     Button send;
+    Button profile;
+    Button newGame;
+    Button enterGame;
+    
     TextField tf_message;
 
     TextArea ta;
@@ -32,8 +41,11 @@ public class Client_View extends View<Client_Model> {
     String PlayerName;
     Label name;
     Label yourSign;
+    
+    ListView <String> gameList;
+    ObservableList<String> names;
 
-	public Client_View(Stage stage, Client_Model model) {
+	public Client_View_lobby(Stage stage, Client_Model model) {
 		super(stage, model);
         stage.setTitle("Dominion");
     }
@@ -46,14 +58,21 @@ public class Client_View extends View<Client_Model> {
 	    ServiceLocator sl = ServiceLocator.getServiceLocator();  
 	    
 		BorderPane root = new BorderPane();
+		
+		//resources
+		
+		names = FXCollections.observableArrayList(
+		          "Julia", "Ian", "Sue", "Matthew", "Hannah", "Stephan", "Denise");
+		gameList = new ListView<String>(names);
 
-		/**
-	     * creating the GUI elements for the chat
-	     */
 		send = new Button("senden");
+		profile = new Button ("Profil");
+		newGame = new Button ("neues Spiel");
+		enterGame = new Button ("Spiel beitreten");
+		enterGame.setDisable(true);
+		
 		tf_message = new TextField();
 		name = new Label();
-
 		name.setText("Ihr Name: "+model.getName());
 		
 		Label message = new Label();
@@ -61,8 +80,8 @@ public class Client_View extends View<Client_Model> {
 		sl.setTextArea();
 		ta = sl.getTextArea();
 		ta.setEditable(false);
-		ta.setMaxWidth(1000);
-		ta.setMaxHeight(400);
+		ta.setMaxWidth(500);
+		ta.setMaxHeight(200);
 		
 		/**
 	     * auto resize when window is resized
@@ -70,20 +89,23 @@ public class Client_View extends View<Client_Model> {
 		ta.prefWidthProperty().bind(root.widthProperty());
 		ta.prefHeightProperty().bind(root.heightProperty());
 		
-		HBox hb1 = new HBox();
-		hb1.getChildren().addAll(message,this.tf_message);
-		
-		root.setBottom(ta);
 		VBox vb1 = new VBox();
+		HBox hb2 = new HBox();
+		hb2.getChildren().addAll(message,tf_message,send);
 		
-		vb1.getChildren().addAll(this.name,hb1,send);
-		VBox.setMargin(this.name, new Insets(0, 0, 20, 0));
-		VBox.setMargin(hb1, new Insets(0, 0, 20, 0));
-		VBox.setMargin(send, new Insets(0, 0, 40, 0));
-
-		root.setLeft(vb1);
+		vb1.getChildren().addAll(name,hb2);
 		
-		BorderPane.setAlignment(send, Pos.CENTER_LEFT);
+		HBox hb1 = new HBox();
+		hb1.getChildren().addAll(profile,vb1,ta);
+		HBox.setMargin(profile, new Insets(0,20,0,0));
+		//hb1.setAlignment(Pos.CENTER);
+		
+		HBox hb3 = new HBox();
+		hb3.getChildren().addAll(gameList,enterGame);
+		
+		root.setTop(hb1);
+		root.setLeft(newGame);
+		root.setBottom(hb3);
 
 		this.scene = new Scene (root, 800,800);
 

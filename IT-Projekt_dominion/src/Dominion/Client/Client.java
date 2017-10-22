@@ -1,7 +1,11 @@
 package Dominion.Client;
 
+import java.net.InetAddress;
+
+import Dominion.Client.ClientClasses.Client_Controller_lobby;
 import Dominion.Client.ClientClasses.Client_Controller_start;
 import Dominion.Client.ClientClasses.Client_Model;
+import Dominion.Client.ClientClasses.Client_View_lobby;
 import Dominion.Client.ClientClasses.Client_View_start;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -25,6 +29,20 @@ public class Client extends Application {
         new Client_Controller_start(model, view);
 
         view.start();
+        
+        InetAddress addr = InetAddress.getByName("127.0.0.1");
+		int portNr = 8000;
+    	//String name = view.tf_userName.getText();
+    	//model.setName(name);
+		model.connectToServer(addr,portNr);	
+		
+		String name = "joel";
+    	model.setName(name);
+    	Stage playingStage = new Stage();				
+        Client_View_lobby view2 = new Client_View_lobby(playingStage, model);
+        new Client_Controller_lobby(model, view2); 
+        view2.start();
+        view.stop();
        
 	}
 	

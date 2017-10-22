@@ -78,7 +78,7 @@ public class Server_Model extends Model { //creates the connection to the server
 				ObjectOutputStream os = new ObjectOutputStream (client_chat.getOutputStream()); 
 				list_clients_chat.add(os); 
 							
-				clientThread_chat = new Thread (new ClientHandler_chat(client_chat, list_clients_chat)); 
+				clientThread_chat = new Thread (new ClientHandler(client_chat, list_clients_chat)); 
 				clientThread_chat.start();			
 				
 			} catch (IOException e) {
@@ -86,4 +86,21 @@ public class Server_Model extends Model { //creates the connection to the server
 			}
 		}	
 	}	
+	
+	public boolean runServer2() {
+		
+		try {
+			InetAddress addr = InetAddress.getByName("127.0.0.1");
+			this.server = new ServerSocket (8000,10,addr);
+			list_clients_chat = new ArrayList <ObjectOutputStream>();
+			logger.info("Server gestartet"); 
+			//startDatabase(); // kab: kreiert und startet Datenbank und kreiert Tabelle
+			return true;
+		} catch (IOException e) {
+			logger.info("Server konnte nicht gestartet werden");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 }

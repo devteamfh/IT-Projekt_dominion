@@ -22,8 +22,11 @@ public class Server extends Application{
 		Server_Model model = new Server_Model();
         view = new Server_View(stage, model);
         new Server_Controller(model, view);
-
         view.start();
+        
+        if (model.runServer2()){
+        	model.listenToClient();
+        }
         
 	}
 

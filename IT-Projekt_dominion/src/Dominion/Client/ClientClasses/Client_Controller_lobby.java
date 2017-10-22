@@ -1,29 +1,36 @@
 package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
-import Dominion.ServiceLocator;
+import java.io.ObjectOutputStream;
+import java.util.Iterator;
+
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessage;
+import Dominion.appClasses.GameObject;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * MVC Pattern:
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards
+ * @author Brad Richards (MVC), Joel Henz (Events)
  */
-public class Client_Controller extends Controller<Client_Model, Client_View> {
-    ServiceLocator serviceLocator;
-    Client_View view;
+public class Client_Controller_lobby extends Controller<Client_Model, Client_View_lobby> {
+    ServiceLocatorClient serviceLocator;
+    Client_View_lobby view;
+    Client_View_createGame view2;
        
-    public Client_Controller(Client_Model model, Client_View view) {
+    public Client_Controller_lobby(Client_Model model, Client_View_lobby view) {
         super(model, view);
         this.view = view;
                
@@ -70,7 +77,44 @@ public class Client_Controller extends Controller<Client_Model, Client_View> {
             		sendMessageToServer();	
             	}
             }
-        });  
+        }); 
+        
+        /**
+         * @author Joel Henz
+         *event for ListView mouse clicks
+         * */
+        view.gameList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				view.enterGame.setDisable(false);
+                ObservableList<String> selected = view.gameList.getSelectionModel().getSelectedItems();
+                Iterator<String> iter = selected.iterator();
+                
+                while (iter.hasNext()){
+                	System.out.println(iter.next());
+                }
+				
+			}
+		});
+        
+        /**
+         * @author Joel Henz
+         *opens a new stage for creating the configs of a new game
+         * */
+        view.newGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	Stage createNewGame = new Stage();
+            	createNewGame.initModality(Modality.APPLICATION_MODAL);
+                
+                view2 = new Client_View_createGame(createNewGame, model);
+                new Client_Controller_createGame(model, view2);
+
+                view2.start();
+            }
+        });
+        
     }
        
     /**
@@ -81,6 +125,11 @@ public class Client_Controller extends Controller<Client_Model, Client_View> {
 		String name = model.getName();
 		String msg = view.tf_message.getText();
 		ChatMessage cmsg = new ChatMessage(name, msg);
+		cmsg.setID();
+		
+		GameObject obj = new GameObject (GameObject.ObjectType.ChatMessage);
+		obj.setID();
+		obj = cmsg;
 		
 		try {
 			model.out.writeObject(cmsg);
