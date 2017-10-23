@@ -1,6 +1,7 @@
 package Dominion.Client.ClientClasses;
 
 import Dominion.ServiceLocator;
+import javafx.scene.control.Button;
 
 /**
  * 
@@ -40,6 +41,7 @@ public class checkFields {
 	 */	
 	public void checkfields(String btnStr, String tf1, String tf2){
 		this.btnStr = btnStr;
+		
 		this.tf1 = tf1;
 		this.tf2 = tf2;
 	
