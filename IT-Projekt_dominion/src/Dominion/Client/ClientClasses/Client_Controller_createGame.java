@@ -6,7 +6,8 @@ import java.util.Iterator;
 
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Controller;
-import Dominion.appClasses.ChatMessage;
+import Dominion.appClasses.ChatMessageLobby;
+import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -112,8 +113,19 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	String creator = model.PlayerName;
             	
             	GameParty newParty = new GameParty(selectedMode,creator,numberOfPlayers);
-            	//model.out.writeObject(arg0);
-            	//model.out.flush();
+            	newParty.setID();
+            	
+            	GameObject obj = new GameObject (GameObject.ObjectType.GameParty);
+            	obj.setID();
+            	
+            	obj=newParty;
+            	try {
+					model.out.writeObject(obj);
+					model.out.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             	
             	view2.stop();
             			

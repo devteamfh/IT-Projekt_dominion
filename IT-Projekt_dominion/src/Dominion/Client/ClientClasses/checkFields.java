@@ -34,9 +34,9 @@ public class checkFields {
 		}
 	
 	/**
-	 * @author kab: Überprüft für Verbinden, ob Eingaben in Textfelder gemacht worden sind.
-	 * 				Überprüft für Registrieren und Einloggen, ob sich der User Registrieren und Einloggen kann,
-	 *              die Prüfung nimmt Klasse checkUserData vor
+	 * @author kab: ï¿½berprï¿½ft fï¿½r Verbinden, ob Eingaben in Textfelder gemacht worden sind.
+	 * 				ï¿½berprï¿½ft fï¿½r Registrieren und Einloggen, ob sich der User Registrieren und Einloggen kann,
+	 *              die Prï¿½fung nimmt Klasse checkUserData vor
 	 */	
 	public void checkfields(String btnStr, String tf1, String tf2){
 		this.btnStr = btnStr;
@@ -125,7 +125,7 @@ public class checkFields {
 	
 	
 	/**
-	 * @author kab: überprüft ob Textfelder nicht leer sind
+	 * @author kab: ï¿½berprï¿½ft ob Textfelder nicht leer sind
 	 */
 	public boolean checkTfUserAndPw(String tf1, String tf2){
 		this.tf1 = tf1;

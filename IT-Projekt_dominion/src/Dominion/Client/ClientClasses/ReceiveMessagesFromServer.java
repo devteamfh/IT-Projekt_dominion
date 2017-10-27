@@ -6,8 +6,10 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
 import Dominion.ServiceLocator;
-import Dominion.appClasses.ChatMessage;
+import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
+import Dominion.appClasses.GameParty;
+import javafx.application.Platform;
 
 /**
  * @author Joel Henz: 
@@ -15,8 +17,8 @@ import Dominion.appClasses.GameObject;
  * */
 public class ReceiveMessagesFromServer implements Runnable {
 	ObjectInputStream in;
-	ServiceLocator sl = ServiceLocator.getServiceLocator();
-	ChatMessage msg;
+	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
+	ChatMessageLobby msg;
 	
 	public ReceiveMessagesFromServer (ObjectInputStream in){
 		this.in = in;	
@@ -30,15 +32,28 @@ public class ReceiveMessagesFromServer implements Runnable {
 			while ((obj = (GameObject) this.in.readObject()) !=null){
 				
 				switch (obj.getType()) {
-				 case ChatMessage:
-					 ChatMessage msg = (ChatMessage) obj;					 
+				 case ChatMessageLobby:
+					 ChatMessageLobby msg = (ChatMessageLobby) obj;					 
 					 String name = msg.getName();
 					 String text = msg.getMsg();
-					 sl.getTextArea().appendText(name+": "+text+"\n");
-					 sl.getTextArea().selectPositionCaret(sl.getTextArea().getText().length());				 
+					 sl.getTextAreaLobby().appendText(name+": "+text+"\n");
+					 sl.getTextAreaLobby().selectPositionCaret(sl.getTextAreaLobby().getText().length());				 
 					 break;
 				 
 				 case InformationObject:
+					 break;
+					 
+				 case GameParty:
+					 GameParty newGame = (GameParty) obj;
+					 System.out.println(newGame.toString());
+					 
+					 Platform.runLater(new Runnable() {
+				            @Override 
+				            public void run() {
+				            	sl.addNewGame(newGame);
+				            }
+				        });
+					 
 					 break;
 
 				 default:

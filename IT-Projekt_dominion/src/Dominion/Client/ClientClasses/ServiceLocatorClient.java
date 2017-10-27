@@ -1,10 +1,17 @@
 package Dominion.Client.ClientClasses;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import Dominion.appClasses.GameParty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.VBox;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -33,6 +40,13 @@ public class ServiceLocatorClient {
 
     private String selectedMode = new String();
     private int numberOfPlayers;
+    
+    private TextArea ta_lobby = new TextArea();
+    
+    private ObservableList<GameParty> obsList = FXCollections.observableArrayList();
+    
+    private ListView <GameParty> gameList;
+    
 
     /**
      * Factory method for returning the singleton
@@ -106,5 +120,23 @@ public class ServiceLocatorClient {
     public int getNumberOfPlayers(){
     	return this.numberOfPlayers;
     }
+    
+    public TextArea getTextAreaLobby(){
+    	return this.ta_lobby;
+    }
+
+	public ListView <GameParty> getListView() {
+		// TODO Auto-generated method stub
+		return this.gameList;
+	}
+	
+	public void setListView(){		 
+		 this.gameList = new ListView<>(obsList);
+	}
+	
+	public void addNewGame(GameParty newGame){
+		this.obsList.add(newGame);
+		
+	}
   
 }

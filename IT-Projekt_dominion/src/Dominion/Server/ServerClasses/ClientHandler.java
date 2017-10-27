@@ -7,8 +7,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import Dominion.appClasses.ChatMessage;
+import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
+import Dominion.appClasses.GameParty;
 
 /**
  * @author Joel Henz: 
@@ -22,9 +23,12 @@ public class ClientHandler implements Runnable {
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	
+	ServiceLocatorServer sl;
+	
 	public ClientHandler(Socket s, ArrayList <ObjectOutputStream> list){ 
 		this.s = s;
 		this.list = list;
+		sl = ServiceLocatorServer.getServiceLocator();
 		try {
 			this.in = new ObjectInputStream(s.getInputStream());
 			
@@ -52,21 +56,33 @@ public class ClientHandler implements Runnable {
 	//ID for the serialized object is set here
 	private void sendToAllClients(GameObject obj) throws IOException {
 				
+		Iterator<ObjectOutputStream> iter = this.list.iterator();
+		
 		switch (obj.getType()) {
-		 case ChatMessage:
-			 ChatMessage msg = (ChatMessage) obj;
+		 case ChatMessageLobby:
+			System.out.println(obj.getID()); 
 			 
-			 Iterator<ObjectOutputStream> iter = this.list.iterator();
 			 
 			//sending the chat messages to all clients
 				while (iter.hasNext()){
 					ObjectOutputStream current = (ObjectOutputStream) iter.next();
-					current.writeObject(msg);
+					current.writeObject(obj);
 					current.flush();			
 				} 
 			 break;
 		 
-		 case InformationObject:
+		 case GameParty:
+			 GameParty newParty = (GameParty) obj;
+			 sl.addOpenGame(newParty);
+			 Player creator
+			 
+			//sending the chat messages to all clients
+				while (iter.hasNext()){
+					ObjectOutputStream current = (ObjectOutputStream) iter.next();
+					current.writeObject(obj);
+					current.flush();
+				}
+
 			 break;
 
 		 default:

@@ -11,7 +11,8 @@ public class GameObject implements Serializable {
 	private static long messageID = 0;
 	
 	public enum ObjectType {
-		 ChatMessage, InformationObject,
+		 ChatMessageLobby, InformationObject,
+		 GameParty
 		 };
 		 
 	public GameObject(ObjectType type){

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author Joel Henz
  */
-public class ChatMessage extends GameObject {
+public class ChatMessageLobby extends GameObject {
 	
 	private static final long serialVersionUID = 1; // This is version 1 of the message class
 	// Data included in a message
@@ -19,8 +19,8 @@ public class ChatMessage extends GameObject {
 		return messageID++;
 	}
 	
-	public ChatMessage(String client, String message) {
-		super(GameObject.ObjectType.ChatMessage);
+	public ChatMessageLobby(String client, String message) {
+		super(GameObject.ObjectType.ChatMessageLobby);
 		this. id = -1;
 		this.client = client;
 		this.message = message;

@@ -5,8 +5,9 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
 import Dominion.Client.abstractClasses.Controller;
-import Dominion.appClasses.ChatMessage;
+import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
+import Dominion.appClasses.GameParty;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,13 +27,14 @@ import javafx.stage.WindowEvent;
  * @author Brad Richards (MVC), Joel Henz (Events)
  */
 public class Client_Controller_lobby extends Controller<Client_Model, Client_View_lobby> {
-    ServiceLocatorClient serviceLocator;
+    ServiceLocatorClient sl;
     Client_View_lobby view;
     Client_View_createGame view2;
        
     public Client_Controller_lobby(Client_Model model, Client_View_lobby view) {
         super(model, view);
         this.view = view;
+        sl = ServiceLocatorClient.getServiceLocator();
                
         /**
          * @author Joel Henz
@@ -83,20 +85,25 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
          * @author Joel Henz
          *event for ListView mouse clicks
          * */
-        view.gameList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+       sl.getListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				view.enterGame.setDisable(false);
-                ObservableList<String> selected = view.gameList.getSelectionModel().getSelectedItems();
-                Iterator<String> iter = selected.iterator();
-                
-                while (iter.hasNext()){
-                	System.out.println(iter.next());
-                }
+				if(!sl.getListView().getSelectionModel().isEmpty()){
+					view.enterGame.setDisable(false);
+	                ObservableList<GameParty> text = view.sl.getListView().getSelectionModel().getSelectedItems();
+	            
+	                Iterator<GameParty> iter = text.iterator();
+	                
+	                while (iter.hasNext()){
+	                	GameParty newGame = iter.next();
+	                	System.out.println(newGame.toString());
+	                }
+				}
 				
 			}
 		});
+        
         
         /**
          * @author Joel Henz
@@ -124,15 +131,15 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 	protected void sendMessageToServer() {
 		String name = model.getName();
 		String msg = view.tf_message.getText();
-		ChatMessage cmsg = new ChatMessage(name, msg);
+		ChatMessageLobby cmsg = new ChatMessageLobby(name, msg);
 		cmsg.setID();
 		
-		GameObject obj = new GameObject (GameObject.ObjectType.ChatMessage);
+		GameObject obj = new GameObject (GameObject.ObjectType.ChatMessageLobby);
 		obj.setID();
 		obj = cmsg;
 		
 		try {
-			model.out.writeObject(cmsg);
+			model.out.writeObject(obj);
 			model.out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

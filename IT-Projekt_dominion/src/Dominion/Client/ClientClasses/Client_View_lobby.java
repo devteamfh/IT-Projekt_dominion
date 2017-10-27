@@ -12,10 +12,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -37,13 +39,10 @@ public class Client_View_lobby extends View<Client_Model> {
 
     TextArea ta;
     Scene scene;
-    ServiceLocator sl = ServiceLocator.getServiceLocator();
+    ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
     String PlayerName;
     Label name;
     Label yourSign;
-    
-    ListView <String> gameList;
-    ObservableList<String> names;
 
 	public Client_View_lobby(Stage stage, Client_Model model) {
 		super(stage, model);
@@ -55,15 +54,12 @@ public class Client_View_lobby extends View<Client_Model> {
      */
 	protected Scene create_GUI() {
 
-	    ServiceLocator sl = ServiceLocator.getServiceLocator();  
+	    ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();  
+	    sl.setListView();
 	    
 		BorderPane root = new BorderPane();
 		
 		//resources
-		
-		names = FXCollections.observableArrayList(
-		          "Julia", "Ian", "Sue", "Matthew", "Hannah", "Stephan", "Denise");
-		gameList = new ListView<String>(names);
 
 		send = new Button("senden");
 		profile = new Button ("Profil");
@@ -77,8 +73,7 @@ public class Client_View_lobby extends View<Client_Model> {
 		
 		Label message = new Label();
 		message.setText("Ihre Nachricht");
-		sl.setTextArea();
-		ta = sl.getTextArea();
+		ta = sl.getTextAreaLobby();
 		ta.setEditable(false);
 		ta.setMaxWidth(500);
 		ta.setMaxHeight(200);
@@ -100,12 +95,20 @@ public class Client_View_lobby extends View<Client_Model> {
 		HBox.setMargin(profile, new Insets(0,20,0,0));
 		//hb1.setAlignment(Pos.CENTER);
 		
+		ScrollPane sp1 = new ScrollPane();
+
+		sp1.setContent(sl.getListView());
+		
+		
 		HBox hb3 = new HBox();
-		hb3.getChildren().addAll(gameList,enterGame);
+		hb3.getChildren().addAll(sp1,enterGame);
 		
 		root.setTop(hb1);
 		root.setLeft(newGame);
 		root.setBottom(hb3);
+
+		sp1.setVmax(440);
+        sp1.setPrefSize(115, 150);
 
 		this.scene = new Scene (root, 800,800);
 
