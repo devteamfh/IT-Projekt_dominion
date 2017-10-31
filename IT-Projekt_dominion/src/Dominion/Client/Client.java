@@ -36,7 +36,7 @@ public class Client extends Application {
 
         view.start();
         
-        InetAddress addr = InetAddress.getByName("127.0.0.1");
+        /**InetAddress addr = InetAddress.getByName("127.0.0.1");
 		int portNr = 8000;
     	//String name = view.tf_userName.getText();
     	//model.setName(name);
@@ -64,7 +64,7 @@ public class Client extends Application {
         Client_View_lobby view2 = new Client_View_lobby(playingStage, model);
         new Client_Controller_lobby(model, view2); 
         view2.start();
-        view.stop();
+        view.stop();*/
        
 	}
 	
