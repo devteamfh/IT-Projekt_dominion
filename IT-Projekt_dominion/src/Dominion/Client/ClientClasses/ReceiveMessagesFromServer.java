@@ -9,6 +9,7 @@ import Dominion.ServiceLocator;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
 
 /**
@@ -32,34 +33,50 @@ public class ReceiveMessagesFromServer implements Runnable {
 			while ((obj = (GameObject) this.in.readObject()) !=null){
 				
 				switch (obj.getType()) {
-				 case ChatMessageLobby:
-					 ChatMessageLobby msg = (ChatMessageLobby) obj;					 
-					 String name = msg.getName();
-					 String text = msg.getMsg();
-					 sl.getTextAreaLobby().appendText(name+": "+text+"\n");
-					 sl.getTextAreaLobby().selectPositionCaret(sl.getTextAreaLobby().getText().length());				 
-					 break;
+				
+				case ChatMessageLobby:
+					ChatMessageLobby msg = (ChatMessageLobby) obj;					 
+					String name = msg.getName();
+					String text = msg.getMsg();
+					sl.getTextAreaLobby().appendText(name+": "+text+"\n");
+					sl.getTextAreaLobby().selectPositionCaret(sl.getTextAreaLobby().getText().length());				 
+					break;
 				 
-				 case InformationObject:
-					 break;
+				case InformationObject:
+					break;
 					 
-				 case GameParty:
-					 GameParty newGame = (GameParty) obj;
-					 System.out.println(newGame.toString());
+				case GameParty:
+					GameParty newGame = (GameParty) obj;
 					 
-					 Platform.runLater(new Runnable() {
-				            @Override 
-				            public void run() {
-				            	sl.addNewGame(newGame);
-				            }
-				        });
+					Platform.runLater(new Runnable() {
+				           @Override 
+				           public void run() {
+				            sl.addNewGame(newGame);
+				           }
+				       });
 					 
-					 break;
-
-				 default:
-				 }
+					break;
 				
+				//updating the ListView of this client when he logs in (he needs to see all open games when he enters the lobby)	
+				case UpdateLobby:
+					
+					UpdateLobby toUpdate = (UpdateLobby) obj;
+					
+					Iterator<GameParty> iter = toUpdate.getListOfOpenGames().iterator();
+						Platform.runLater(new Runnable() {
+					           @Override 
+					           public void run() {
+					        	   
+					        	   while (iter.hasNext()){
+					        		   sl.addNewGame(iter.next());
+					        	   }
+					           }
+					       });
+						
+				default:
+				}
 				
+	
 				
 			}
 		} catch (IOException | ClassNotFoundException e) {

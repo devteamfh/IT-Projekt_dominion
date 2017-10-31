@@ -47,7 +47,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
             	model.t1.interrupt();
                
                 try {
-					model.client_chat.close();				
+					model.client.close();				
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -91,18 +91,35 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 			public void handle(MouseEvent event) {
 				if(!sl.getListView().getSelectionModel().isEmpty()){
 					view.enterGame.setDisable(false);
-	                ObservableList<GameParty> text = view.sl.getListView().getSelectionModel().getSelectedItems();
+					
+					GameParty newGAME = sl.getListView().getSelectionModel().getSelectedItem();
+					System.out.println(newGAME);
+					
+	                //ObservableList<GameParty> text = view.sl.getListView().getSelectionModel().getSelectedItems();
 	            
-	                Iterator<GameParty> iter = text.iterator();
+	               /** Iterator<GameParty> iter = text.iterator();
 	                
 	                while (iter.hasNext()){
 	                	GameParty newGame = iter.next();
 	                	System.out.println(newGame.toString());
-	                }
+	                }*/
 				}
 				
 			}
 		});
+       
+       /**view.enterGame.setOnAction(new EventHandler<ActionEvent>() {
+           @Override
+           public void handle(ActionEvent event) {
+           	GameParty joinGame = sl.getListView().getSelectionModel().getSelectedItem();
+           	createNewGame.initModality(Modality.APPLICATION_MODAL);
+               
+               view2 = new Client_View_createGame(createNewGame, model);
+               new Client_Controller_createGame(model, view2);
+
+               view2.start();
+           }
+       });*/
         
         
         /**

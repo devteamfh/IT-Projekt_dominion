@@ -50,7 +50,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	model.t1.interrupt();
                
                 try {
-					model.client_chat.close();				
+					model.client.close();				
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -110,7 +110,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             public void handle(ActionEvent event) {
             	String selectedMode = sl.getSelectedMode();
             	int numberOfPlayers = sl.getNumberOfPlayers();
-            	String creator = model.PlayerName;
+            	String creator = model.playerName;
             	
             	GameParty newParty = new GameParty(selectedMode,creator,numberOfPlayers);
             	newParty.setID();

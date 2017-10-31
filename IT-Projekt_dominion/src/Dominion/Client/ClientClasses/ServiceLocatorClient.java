@@ -47,6 +47,8 @@ public class ServiceLocatorClient {
     
     private ListView <GameParty> gameList;
     
+    private boolean connected;
+    
 
     /**
      * Factory method for returning the singleton
@@ -137,6 +139,18 @@ public class ServiceLocatorClient {
 	public void addNewGame(GameParty newGame){
 		this.obsList.add(newGame);
 		
+	}
+	
+	public void clearListOfOpenGames(){
+		this.obsList.clear();
+	}
+	
+	public void setConnected(){
+		this.connected = true;
+	}
+	
+	public boolean getConnected(){
+		return this.connected;
 	}
   
 }

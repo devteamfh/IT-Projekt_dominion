@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GameParty extends GameObject{
 	
-	private static final long serialVersionUID = 1; // This is version 1 of the message class
+	private static final long serialVersionUID = 1;
 	// Data included in a message
 	private long id;
 	// Generator for a unique message ID
@@ -13,7 +13,7 @@ public class GameParty extends GameObject{
 	private String selectedMode;
 	private String creator;
 	private int numberOfPlayers;
-	private int loggedInPlayers = 1;
+	private int loggedInPlayers = 0;
 	private ArrayList <Player> playerListOfGame;
 	
 	private static long nextMessageID() {		
@@ -42,11 +42,12 @@ public class GameParty extends GameObject{
 	}
 	
 	public String toString(){
-		return this.creator+", "+this.selectedMode+", "+this.numberOfPlayers;
+		return this.creator+", "+this.selectedMode+", "+this.loggedInPlayers+" Spieler von, "+this.numberOfPlayers;
 	}
 	
 	public void addPlayer(Player player){
 		this.playerListOfGame.add(player);
+		this.loggedInPlayers++;
 	}
 
 }

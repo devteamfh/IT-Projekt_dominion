@@ -1,9 +1,11 @@
 package Dominion.Client.ClientClasses;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.View;
+import Dominion.appClasses.UpdateLobby;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -98,6 +100,18 @@ public class Client_View_lobby extends View<Client_Model> {
 		ScrollPane sp1 = new ScrollPane();
 
 		sp1.setContent(sl.getListView());
+		
+		UpdateLobby update = new UpdateLobby();
+		update.setID();
+		
+		try {
+			model.out.writeObject(update);
+			model.out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		
 		HBox hb3 = new HBox();

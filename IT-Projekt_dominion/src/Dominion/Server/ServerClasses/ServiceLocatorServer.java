@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.Player;
 import javafx.scene.control.TextArea;
 
 
@@ -28,6 +29,7 @@ public class ServiceLocatorServer {
     // Resources
     private Logger logger = Logger.getLogger("");
     private ArrayList <GameParty> listOfOpenGames = new ArrayList <GameParty>();
+    private ArrayList<Player> connectedPlayers = new ArrayList<Player>();
     
 
     /**
@@ -68,8 +70,15 @@ public class ServiceLocatorServer {
     }
     
     public ArrayList <GameParty> getGameList(){
-    	return this.listOfOpenGames;
-    	
+    	return this.listOfOpenGames;    	
+    }
+    
+    public void addConnectedPlayer(Player player){
+    	this.connectedPlayers.add(player);
+    }
+    
+    public ArrayList <Player> getConnectedPlayers(){
+    	return this.connectedPlayers;
     }
     
 }

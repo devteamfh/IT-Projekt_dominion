@@ -1,13 +1,12 @@
 package Dominion.appClasses;
 
-import java.io.Serializable;
 
 /**
  * @author Joel Henz
  */
 public class ChatMessageLobby extends GameObject {
 	
-	private static final long serialVersionUID = 1; // This is version 1 of the message class
+	private static final long serialVersionUID = 1;
 	// Data included in a message
 	private long id;
 	private String client;

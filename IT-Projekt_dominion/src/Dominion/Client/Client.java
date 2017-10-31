@@ -7,6 +7,11 @@ import Dominion.Client.ClientClasses.Client_Controller_start;
 import Dominion.Client.ClientClasses.Client_Model;
 import Dominion.Client.ClientClasses.Client_View_lobby;
 import Dominion.Client.ClientClasses.Client_View_start;
+import Dominion.Client.ClientClasses.ServiceLocatorClient;
+import Dominion.appClasses.GameObject;
+import Dominion.appClasses.GameObject.ObjectType;
+import Dominion.appClasses.Player;
+import Dominion.appClasses.StartInformation;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -16,6 +21,7 @@ import javafx.stage.Stage;
 public class Client extends Application {
 	
 	private Client_View_start view;
+	private ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
 	public static void main(String[] args) {		
 		launch (args);
@@ -34,10 +40,26 @@ public class Client extends Application {
 		int portNr = 8000;
     	//String name = view.tf_userName.getText();
     	//model.setName(name);
-		model.connectToServer(addr,portNr);	
 		
 		String name = "joel";
     	model.setName(name);
+		
+		model.connectToServer(addr,portNr);	
+		
+		if(sl.getConnected()){
+			model.setPlayer();
+			StartInformation current = new StartInformation(model.getName());
+			current.setID();
+			
+			GameObject obj= new GameObject (GameObject.ObjectType.StartInformation);
+			obj.setID();
+			
+			obj = current;
+			
+			model.getOutput().writeObject(obj);
+			model.getOutput().flush();
+		}
+    	
     	Stage playingStage = new Stage();				
         Client_View_lobby view2 = new Client_View_lobby(playingStage, model);
         new Client_Controller_lobby(model, view2); 
