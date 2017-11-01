@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import Dominion.ServiceLocator;
 import Dominion.Server.abstractClasses.Model;
+import Dominion.appClasses.Player;
 
 
 
@@ -25,11 +26,11 @@ public class Server_Model extends Model { //creates the connection to the server
     
     ServerSocket server;
     
-    ArrayList <ObjectOutputStream> list_clients_chat;;
+    ArrayList <ObjectOutputStream> list_clients_output;
 	
 	ServiceLocator sl = ServiceLocator.getServiceLocator();
 	
-	Thread clientThread_chat;
+	Thread clientThread;
 	
 	Database db;
 
@@ -45,7 +46,7 @@ public class Server_Model extends Model { //creates the connection to the server
 	public boolean runServer(InetAddress addr, int portNr) {
 		try {
 			this.server = new ServerSocket (portNr,10,addr);
-			list_clients_chat = new ArrayList <ObjectOutputStream>();
+			list_clients_output = new ArrayList <ObjectOutputStream>();
 			logger.info("Server gestartet"); 
 			startDatabase(); // kab: kreiert und startet Datenbank und kreiert Tabelle
 			return true;
@@ -73,17 +74,20 @@ public class Server_Model extends Model { //creates the connection to the server
 		
 		while (true){
 			try {
-				Socket client_chat = this.server.accept();
 
-				ObjectOutputStream os = new ObjectOutputStream (client_chat.getOutputStream()); 
-				list_clients_chat.add(os); 
+				Socket client = this.server.accept();
+										
+				ObjectOutputStream os = new ObjectOutputStream (client.getOutputStream()); 
+				list_clients_output.add(os); 
 							
-				clientThread_chat = new Thread (new ClientHandler(client_chat, list_clients_chat)); 
-				clientThread_chat.start();			
+				clientThread = new Thread (new ClientHandler(client, list_clients_output,os)); 
+				clientThread.start();
 				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}	
 	}	
+
+	
 }

@@ -9,6 +9,7 @@ import java.net.Socket;
 
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Model;
+import Dominion.appClasses.Player;
 
 /**
  * MVC Pattern:
@@ -19,22 +20,22 @@ import Dominion.Client.abstractClasses.Model;
  * @author Brad Richards
  */
 public class Client_Model extends Model {	
-    ServiceLocator sl;
-    Socket client_chat;
+    ServiceLocatorClient sl;
+    Socket client;
     ObjectInputStream in;
     ObjectOutputStream out;    
     Thread t1;    
-    String PlayerName;    
+    String playerName;    
     InetAddress addr;
     int port;    
     boolean connected = false;
+    Player player;
   
     /**
      * @author Joel Henz
      */
     public Client_Model() {     
-    	sl = ServiceLocator.getServiceLocator();
-        ServiceLocator.getServiceLocator().increaseLoggedPlayer();
+    	sl = ServiceLocatorClient.getServiceLocator();
     }
        
     /**
@@ -43,17 +44,19 @@ public class Client_Model extends Model {
      */
 	public void connectToServer(InetAddress addr,int port) {
 		try {
-			this.client_chat = new Socket(addr, port);
-			this.in = new ObjectInputStream (this.client_chat.getInputStream());
-			this.out = new ObjectOutputStream (this.client_chat.getOutputStream());
+			
+			
+			this.client = new Socket(addr, port);
+			this.in = new ObjectInputStream (this.client.getInputStream());
+			this.out = new ObjectOutputStream (this.client.getOutputStream());
 			sl.getLogger().info("Netzwerkverbindung hergestellt");
 			Client_View_start.connectionResult.setText("Netzwerkverbindung hergestellt");
-			connected = true;
+			this.connected = true;
 			
 			/** 
 		     * this thread will read the messages from the server
 		     */
-			t1 = new Thread (new ReceiveMessagesFromServer(this.getInput_chat()));
+			t1 = new Thread (new ReceiveMessagesFromServer(this.getInput()));
 	        t1.start();			
 		} catch (ConnectException e) {
 			sl.getLogger().info("Netzwerkverbindung konnte nicht hergestellt werden");
@@ -69,15 +72,31 @@ public class Client_Model extends Model {
      * getter and setter
      */	
 	public void setName(String name){
-		this.PlayerName = name;
+		this.playerName = name;
 	}
 	
 	public String getName(){
-		return this.PlayerName;
+		return this.playerName;
 	}
 		
-	public ObjectInputStream getInput_chat(){
+	public ObjectInputStream getInput(){
 		return this.in;
+	}
+	
+	public ObjectOutputStream getOutput(){
+		return this.out;
+	}
+	
+	public Socket getSocket (){
+		return this.client;
+	}
+	
+	public Player getPlayer(){
+		return this.player;
+	}
+	
+	public void setPlayer(){
+		this.player = new Player(this.getName(),this.getOutput());
 	}
 	
 }
