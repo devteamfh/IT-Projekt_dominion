@@ -1,0 +1,58 @@
+
+/*Client View Start -BEGIN- */
+/*---------------------------------------------------------------------------------------- */
+.background {
+	-fx-background-image: url('img/bg_screen_login.png');
+	-fx-background-repeat: stretch;
+}
+
+.lbl {
+	-fx-font-family: "Times New Roman";
+	-fx-font-size: 18px;
+	-fx-text-fill: white;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
+	)
+	}
+	
+.lbl_tfDescription {
+		-fx-font-family: "Arial";
+	-fx-font-size: 18px;
+    -fx-text-fill: white; 
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */)
+}
+
+.btn {
+	-fx-background-repeat: stretch;
+	-fx-background-color: transparent;
+}
+
+
+
+.btn_view {
+	  -fx-background-image: url('img/btn_view.png');
+}
+
+.btn_view_hover {
+	  -fx-background-image: url('img/btn_view_hover.png');
+}
+
+.btn_view_verbunden {
+	  -fx-background-image: url('img/btn_verbunden.png');
+}
+
+
+
+
+/*close Button */
+.btn_close_normal{
+	-fx-background-image: url('img/btn_close_normal.png');	
+}
+
+.btn_close_hover {
+	-fx-background-image: url('img/btn_close_hover.png'); }
+/*---------------------------------------------------------------------------------------- */
+/*Client View Start -END- */
+
+
+
+		   
