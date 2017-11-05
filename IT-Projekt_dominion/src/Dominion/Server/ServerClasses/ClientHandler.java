@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
-import Dominion.appClasses.GameParty;
+import Dominion.appClasses.NewGameParty;
 import Dominion.appClasses.Player;
 import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
@@ -72,9 +72,14 @@ public class ClientHandler implements Runnable {
 				} 
 			 break;
 		 
-		 case GameParty:
-			 GameParty game = (GameParty) obj;
-			 sl.addOpenGame(game);
+		 case NewGameParty:
+			 NewGameParty game = (NewGameParty) obj;
+			 
+			 GamePartyOnServer newGameOnServer = new GamePartyOnServer (game);
+			 Player current_player = new Player (game.getCreator(), this.out);			 
+			 newGameOnServer.addPlayer(current_player);
+			 
+			 sl.addNewGame(newGameOnServer);
 			 //Player creator
 			 
 			//sending the chat messages to all clients
@@ -89,8 +94,15 @@ public class ClientHandler implements Runnable {
 		 case UpdateLobby:
 			 UpdateLobby toUpdate = new UpdateLobby ();
 			 
-			 if(!sl.getGameList().isEmpty()){
-				 toUpdate.setListOfOpenGames(sl.getGameList());
+			 if(!sl.getGameListFromServer().isEmpty()){
+				 ArrayList <NewGameParty> gamePartyListClient = new ArrayList <NewGameParty>();
+				 Iterator <GamePartyOnServer> iter2 = sl.getGameListFromServer().iterator();
+				 
+				 while (iter2.hasNext()){
+					 gamePartyListClient.add(iter2.next().getGameParty());
+				 }
+				 
+				 toUpdate.setListOfOpenGames(gamePartyListClient);
 				 
 				 this.out.writeObject(toUpdate);
 				 this.out.flush();
@@ -108,11 +120,14 @@ public class ClientHandler implements Runnable {
 			 
 			 sl.addConnectedPlayer(newPlayer);
 			 
-			 Iterator<Player> iter2 = sl.getConnectedPlayers().iterator();
+			 /**Iterator<Player> iter2 = sl.getConnectedPlayers().iterator();
+			 
+			 while(iter2.hasNext()){
+				 System.out.println(iter2.next().getUsername());
+			 }*/
 
 			 break;
 			 
-
 		 default:
 		 }
 	

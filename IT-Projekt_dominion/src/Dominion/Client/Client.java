@@ -27,8 +27,4 @@ public class Client extends Application {
         view.start();
        
 	}
-	
-	
-	
-
 }

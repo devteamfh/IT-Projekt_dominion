@@ -13,8 +13,7 @@ public class UpdateLobby extends GameObject {
 	private long id;
 	// Generator for a unique message ID
 	private static long messageID = 0;
-	private ArrayList <GameParty> listOfOpenGames = new ArrayList <GameParty>();
-	private Player player;
+	private ArrayList <NewGameParty> listOfOpenGames = new ArrayList <NewGameParty>();
 	
 	private static long nextMessageID() {		
 		return messageID++;
@@ -31,22 +30,17 @@ public class UpdateLobby extends GameObject {
 			this. id = nextMessageID();
 		}
 	}
-
 	
 	public long getID(){
 		return this.id;
 	}
 	
-	public void setListOfOpenGames(ArrayList <GameParty> list){
+	public void setListOfOpenGames(ArrayList <NewGameParty> list){
 		this.listOfOpenGames = list;
 	}
 	
-	public ArrayList <GameParty> getListOfOpenGames(){
+	public ArrayList <NewGameParty> getListOfOpenGames(){
 		return this.listOfOpenGames;
-	}
-	
-	public Player getPlayer(){
-		return this.player;
 	}
 
 }

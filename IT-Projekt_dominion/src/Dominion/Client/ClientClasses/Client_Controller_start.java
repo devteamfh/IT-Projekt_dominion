@@ -11,6 +11,7 @@ import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.Client.abstractClasses.Model;
 import Dominion.appClasses.GameObject;
+import Dominion.appClasses.Player;
 import Dominion.appClasses.StartInformation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -162,7 +163,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	if (model.connected && checkFields.getInstance().getUserPwOk()){
             		String name = view.tf_userName.getText();
                 	model.setName(name);
-                	model.setPlayer();
+                	Player player = new Player (name, model.getOutput());
+                	model.setPlayer(player);
                 	
                 	StartInformation current = new StartInformation(model.getName());
         			current.setID();
@@ -180,8 +182,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 						e.printStackTrace();
 					}
                 	
-			    	Stage playingStage = new Stage();				
-			        Client_View_lobby view2 = new Client_View_lobby(playingStage, model);
+			    	Stage lobby_stage = new Stage();				
+			        Client_View_lobby view2 = new Client_View_lobby(lobby_stage, model);
 			        new Client_Controller_lobby(model, view2); 
 			        view2.start();
 			        view.stop();

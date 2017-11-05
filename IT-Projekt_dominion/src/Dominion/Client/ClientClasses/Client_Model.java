@@ -95,8 +95,8 @@ public class Client_Model extends Model {
 		return this.player;
 	}
 	
-	public void setPlayer(){
-		this.player = new Player(this.getName(),this.getOutput());
+	public void setPlayer(Player player){
+		this.player = player;
 	}
 	
 }

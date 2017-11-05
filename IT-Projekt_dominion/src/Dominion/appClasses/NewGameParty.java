@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * @author Joel Henz
  */
-public class GameParty extends GameObject{
+public class NewGameParty extends GameObject{
 	
 	private static final long serialVersionUID = 1;
 	// Data included in a message
@@ -23,8 +23,8 @@ public class GameParty extends GameObject{
 		return messageID++;
 	}
 	
-	public GameParty(String selectedMode, String creator, int number){
-		super(GameObject.ObjectType.GameParty);
+	public NewGameParty(String selectedMode, String creator, int number){
+		super(GameObject.ObjectType.NewGameParty);
 		this.selectedMode=selectedMode;
 		this.creator=creator;
 		this.numberOfPlayers=number;
@@ -51,6 +51,10 @@ public class GameParty extends GameObject{
 	public void addPlayer(Player player){
 		this.playerListOfGame.add(player);
 		this.loggedInPlayers++;
+	}
+	
+	public String getCreator(){
+		return this.creator;
 	}
 
 }

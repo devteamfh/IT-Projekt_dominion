@@ -7,7 +7,7 @@ import java.util.Iterator;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
-import Dominion.appClasses.GameParty;
+import Dominion.appClasses.NewGameParty;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -92,7 +92,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 				if(!sl.getListView().getSelectionModel().isEmpty()){
 					view.enterGame.setDisable(false);
 					
-					GameParty newGAME = sl.getListView().getSelectionModel().getSelectedItem();
+					NewGameParty newGAME = sl.getListView().getSelectionModel().getSelectedItem();
 				}
 				
 			}

@@ -8,7 +8,7 @@ import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
-import Dominion.appClasses.GameParty;
+import Dominion.appClasses.NewGameParty;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,14 +29,14 @@ import javafx.stage.WindowEvent;
  */
 public class Client_Controller_createGame extends Controller<Client_Model, Client_View_createGame> {
     ServiceLocatorClient sl;
-    Client_View_createGame view2;
+    Client_View_createGame view_createGame;
        
     /**
      * @author Joel Henz
      * */
     public Client_Controller_createGame(Client_Model model, Client_View_createGame view) {
         super(model, view);
-        this.view2 = view;
+        this.view_createGame = view;
         sl = ServiceLocatorClient.getServiceLocator();
                
         /**
@@ -101,7 +101,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         view.cancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	view2.stop();
+            	view_createGame.stop();
             }
         });
         
@@ -112,10 +112,10 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	int numberOfPlayers = sl.getNumberOfPlayers();
             	String creator = model.playerName;
             	
-            	GameParty newParty = new GameParty(selectedMode,creator,numberOfPlayers);
+            	NewGameParty newParty = new NewGameParty(selectedMode,creator,numberOfPlayers);
             	newParty.setID();
             	
-            	GameObject obj = new GameObject (GameObject.ObjectType.GameParty);
+            	GameObject obj = new GameObject (GameObject.ObjectType.NewGameParty);
             	obj.setID();
             	
             	obj=newParty;
@@ -127,7 +127,11 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
 					e.printStackTrace();
 				}
             	
-            	view2.stop();
+            	Stage playingStage = new Stage();				
+		        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model);
+		        new Client_Controller_playingStage(model, view_playingStage); 
+		        view_playingStage.start();
+		        view_createGame.stop();
             			
             			
             }
