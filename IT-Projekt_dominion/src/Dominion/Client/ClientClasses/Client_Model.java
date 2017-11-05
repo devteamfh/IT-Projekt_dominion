@@ -17,7 +17,7 @@ import Dominion.appClasses.Player;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards
+ * @author Brad Richards (MVC), Joel Henz (resources, methods)
  */
 public class Client_Model extends Model {	
     ServiceLocatorClient sl;
@@ -56,7 +56,7 @@ public class Client_Model extends Model {
 			/** 
 		     * this thread will read the messages from the server
 		     */
-			t1 = new Thread (new ReceiveMessagesFromServer(this.getInput()));
+			t1 = new Thread (new ReadMsgFromServer(this.getInput()));
 	        t1.start();			
 		} catch (ConnectException e) {
 			sl.getLogger().info("Netzwerkverbindung konnte nicht hergestellt werden");
@@ -69,7 +69,7 @@ public class Client_Model extends Model {
 	
 	/**
      * @author Joel Henz: 
-     * getter and setter
+     * getter and setter for resources
      */	
 	public void setName(String name){
 		this.playerName = name;

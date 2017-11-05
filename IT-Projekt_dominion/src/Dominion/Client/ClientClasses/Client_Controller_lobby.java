@@ -93,16 +93,6 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 					view.enterGame.setDisable(false);
 					
 					GameParty newGAME = sl.getListView().getSelectionModel().getSelectedItem();
-					System.out.println(newGAME);
-					
-	                //ObservableList<GameParty> text = view.sl.getListView().getSelectionModel().getSelectedItems();
-	            
-	               /** Iterator<GameParty> iter = text.iterator();
-	                
-	                while (iter.hasNext()){
-	                	GameParty newGame = iter.next();
-	                	System.out.println(newGame.toString());
-	                }*/
 				}
 				
 			}

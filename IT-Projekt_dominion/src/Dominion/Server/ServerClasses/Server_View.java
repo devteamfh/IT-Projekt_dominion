@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards
+ * @author Brad Richards (MVC), Joel Henz (GUI)
  */
 public class Server_View extends View<Server_Model> {
 	Button connect;

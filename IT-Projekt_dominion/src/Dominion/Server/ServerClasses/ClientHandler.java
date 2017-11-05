@@ -19,7 +19,6 @@ import Dominion.appClasses.UpdateLobby;
  * @author Joel Henz: 
  * the ClientHandler is a server-side Runnable.
  * Each connected client gets an ClientHandler thread. Each ClientHandler reads messages from his client and will send them to ALL clients by iterating through the ObjectOutputStream ArrayList.
- * This implementation (reading and writing with a Runnable) was inspired by youtube XXX
  */
 public class ClientHandler implements Runnable {
 	Socket s; 

@@ -19,7 +19,7 @@ import Dominion.appClasses.Player;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards
+ * @author Brad Richards (MVC), Joel Henz (methods), Beda Kaufmann (database)
  */
 public class Server_Model extends Model { //creates the connection to the server
     Logger logger;

@@ -17,7 +17,7 @@ import javafx.scene.control.TextArea;
  * used by the program. It also defines application-global constants, such as
  * the application name.
  * 
- * @author Brad Richards, resources by Joel Henz
+ * @author Brad Richards, resources/methods by Joel Henz
  * 
  */
 public class ServiceLocatorServer {

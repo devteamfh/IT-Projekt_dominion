@@ -2,7 +2,9 @@ package Dominion.appClasses;
 
 import java.io.ObjectOutputStream;
 
-
+/**
+ * @author Joel Henz
+ */
 public class Player {
 
 	

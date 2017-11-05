@@ -27,20 +27,17 @@ import javafx.stage.WindowEvent;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards
+ * @author Brad Richards (MVC), Joel Henz (events), Beda Kaufmann (database, events)
  */
 public class Client_Controller_start extends Controller<Client_Model, Client_View_start> {
     
     Client_View_start view;
     InetAddress addr;
 
-
-    
     public Client_Controller_start(Client_Model model, Client_View_start view) {
         super(model, view);
         this.view = view;
-        
-        
+               
         // register ourselves to handle window-closing event
         view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -56,198 +53,172 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
          */    
         
         	//connect button MouseHandler
-     		view.btn_connect.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+		view.btn_connect.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+  		    new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_connect.getStyleClass().addAll("btn_view_hover");
+  		        	view.btn_connect.getStyleClass().remove("btn_view");
+  		        }
+  		});
+      		
+  		view.btn_connect.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_connect.getStyleClass().remove("btn_view_hover");
+  		        	view.btn_connect.getStyleClass().addAll("btn_view");
+  		        }
+  		});
+      		    		
+        view.btn_connect.setOnAction(new EventHandler<ActionEvent>() { 
+            @Override
+            public void handle(ActionEvent event) {  
+          
+            	//pr�ft ob Felder IP und Port ausgef�llt
+            	checkFields.getInstance().checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
+            	
+            	//wenn IP und Port ausgef�llt, versuche mit Server zu verbinden
+            	if (checkFields.getInstance().getRdyToConnect())
+            	
+            	   	try { 
+                		addr = InetAddress.getByName(view.tf_ip.getText());
+                		int portNr = Integer.parseInt(view.tf_port.getText());
+                    	//String name = view.tf_userName.getText();
+                    	//model.setName(name);
+        				model.connectToServer(addr,portNr);	
+        				
+        				if (model.connected){
+        					
+        		        	view.btn_connect.getStyleClass().removeAll("btn_view","btn_view_hover");            		        				
+        					view.btn_connect.getStyleClass().addAll("btn_view_verbunden");
+        		        }				
+    			
+    				} catch (Exception e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    					model.sl.getLogger().info("Verbindung mit Server nicht erfolgreich");
+    				}     		        
+            }
+        });  
+      		     		
+    	//register button MouseHandler     		
+ 		view.btn_register.addEventHandler(MouseEvent.MOUSE_ENTERED, 
       		    new EventHandler<MouseEvent>() {
       		        @Override public void handle(MouseEvent e) {
-      		        	view.btn_connect.getStyleClass().addAll("btn_view_hover");
-      		        	view.btn_connect.getStyleClass().remove("btn_view");
+      		        	view.btn_register.getStyleClass().addAll("btn_view_hover");
+      		        	view.btn_register.getStyleClass().remove("btn_view");
       		        }
-      		});
-      		
-      		//
-      		view.btn_connect.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+      	});
+          		
+          		
+  		view.btn_register.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_register.getStyleClass().remove("btn_view_hover");
+  		        	view.btn_register.getStyleClass().addAll("btn_view");
+  		        }
+  		});
+        
+        view.btn_register.setOnAction(new EventHandler<ActionEvent>() { 
+            @Override
+            public void handle(ActionEvent event) {
+            	
+            	if (!model.connected) {
+            	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
+            	}         	else {
+
+	            	checkFields.getInstance().checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
+
+            	}
+            	
+            }
+         });
+          		     		
+    	//login button MouseHandler          		
+ 		view.btn_login.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+      		    new EventHandler<MouseEvent>() {
       		        @Override public void handle(MouseEvent e) {
-      		        	view.btn_connect.getStyleClass().remove("btn_view_hover");
-      		        	view.btn_connect.getStyleClass().addAll("btn_view");
+      		        	view.btn_login.getStyleClass().addAll("btn_view_hover");
+      		        	view.btn_login.getStyleClass().remove("btn_view");
       		        }
       		});
-      		
-      		
-            view.btn_connect.setOnAction(new EventHandler<ActionEvent>() { 
-                @Override
-                public void handle(ActionEvent event) {  
-              
-                	//pr�ft ob Felder IP und Port ausgef�llt
-                	checkFields.getInstance().checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
+              		           		
+  		view.btn_login.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_login.getStyleClass().remove("btn_view_hover");
+  		        	view.btn_login.getStyleClass().addAll("btn_view");
+  		        }
+  		});
+    	   
+        view.btn_login.setOnAction(new EventHandler<ActionEvent>() { 
+            @Override
+            public void handle(ActionEvent event) {
+           
+            	if (!model.connected) {
+            	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
+            	return;
+            	}
+            	
+            	checkFields.getInstance().checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
+
+            	
+            	if (model.connected && checkFields.getInstance().getUserPwOk()){
+            		String name = view.tf_userName.getText();
+                	model.setName(name);
+                	model.setPlayer();
                 	
-                	//wenn IP und Port ausgef�llt, versuche mit Server zu verbinden
-                	if (checkFields.getInstance().getRdyToConnect())
-                	
-                	   	try { 
-                    		addr = InetAddress.getByName(view.tf_ip.getText());
-                    		int portNr = Integer.parseInt(view.tf_port.getText());
-                        	//String name = view.tf_userName.getText();
-                        	//model.setName(name);
-            				model.connectToServer(addr,portNr);	
-            				
-            				if (model.connected){
-            					
-            		        	view.btn_connect.getStyleClass().removeAll("btn_view","btn_view_hover");            		        				
-            					view.btn_connect.getStyleClass().addAll("btn_view_verbunden");
-            		        }				
+                	StartInformation current = new StartInformation(model.getName());
+        			current.setID();
         			
-        				} catch (Exception e) {
-        					// TODO Auto-generated catch block
-        					e.printStackTrace();
-        					model.sl.getLogger().info("Verbindung mit Server nicht erfolgreich");
-        				}
-         		        
-                }
-            });  
-      		
-      		
-        	//register button MouseHandler     		
-     		view.btn_register.addEventHandler(MouseEvent.MOUSE_ENTERED, 
-          		    new EventHandler<MouseEvent>() {
-          		        @Override public void handle(MouseEvent e) {
-          		        	view.btn_register.getStyleClass().addAll("btn_view_hover");
-          		        	view.btn_register.getStyleClass().remove("btn_view");
-          		        }
-          		});
-          		
-          		//
-          		view.btn_register.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-          		        @Override public void handle(MouseEvent e) {
-          		        	view.btn_register.getStyleClass().remove("btn_view_hover");
-          		        	view.btn_register.getStyleClass().addAll("btn_view");
-          		        }
-          		});
-        
-		        view.btn_register.setOnAction(new EventHandler<ActionEvent>() { 
-		            @Override
-		            public void handle(ActionEvent event) {
-		            	
-		            	if (!model.connected) {
-		            	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
-		            	}         	else {
+        			GameObject obj= new GameObject (GameObject.ObjectType.StartInformation);
+        			obj.setID();
+        			
+        			obj = current;
+        			
+        			try {
+						model.getOutput().writeObject(obj);
+						model.getOutput().flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                	
+			    	Stage playingStage = new Stage();				
+			        Client_View_lobby view2 = new Client_View_lobby(playingStage, model);
+			        new Client_Controller_lobby(model, view2); 
+			        view2.start();
+			        view.stop();
+	            	}                                             	
+    			
+            }
+        });
 
-			            	checkFields.getInstance().checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
-
-		            	}
-		            	
-		            }
-		            });
-          		
-          		
-          		
-            	//login button MouseHandler          		
-         		view.btn_login.addEventHandler(MouseEvent.MOUSE_ENTERED, 
-              		    new EventHandler<MouseEvent>() {
-              		        @Override public void handle(MouseEvent e) {
-              		        	view.btn_login.getStyleClass().addAll("btn_view_hover");
-              		        	view.btn_login.getStyleClass().remove("btn_view");
-              		        }
-              		});
-              		
-              		//
-              		view.btn_login.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-              		        @Override public void handle(MouseEvent e) {
-              		        	view.btn_login.getStyleClass().remove("btn_view_hover");
-              		        	view.btn_login.getStyleClass().addAll("btn_view");
-              		        }
-              		});
-            
-          		
-              		
-              	   
-    		        view.btn_login.setOnAction(new EventHandler<ActionEvent>() { 
-    		            @Override
-    		            public void handle(ActionEvent event) {
-    		           
-    		            	if (!model.connected) {
-    		            	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
-    		            	return;
-    		            	}
-    		            	
-    		            	checkFields.getInstance().checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
-
-    		            	
-    		            	if (model.connected && checkFields.getInstance().getUserPwOk()){
-    		            		String name = view.tf_userName.getText();
-    	                    	model.setName(name);
-    	                    	model.setPlayer();
-    	                    	
-    	                    	StartInformation current = new StartInformation(model.getName());
-    	            			current.setID();
-    	            			
-    	            			GameObject obj= new GameObject (GameObject.ObjectType.StartInformation);
-    	            			obj.setID();
-    	            			
-    	            			obj = current;
-    	            			
-    	            			try {
-									model.getOutput().writeObject(obj);
-									model.getOutput().flush();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-    	                    	
-    					    	Stage playingStage = new Stage();				
-    					        Client_View_lobby view2 = new Client_View_lobby(playingStage, model);
-    					        new Client_Controller_lobby(model, view2); 
-    					        view2.start();
-    					        view.stop();
-    			            	}                                             	
-    		    			
-    		            }
-    		            });
-    		        
-    		        
- 
-        
-
-
-
-
-		        
-		     
-		        
-		        
-		        
-		        // Button Close Style Hover und Action press
-		    	view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
-		      		    new EventHandler<MouseEvent>() {
-		      		        @Override public void handle(MouseEvent e) {
-		      		        	view.btn_close.getStyleClass().addAll("btn_close_hover");
-		      		        	view.btn_close.getStyleClass().remove("btn_close_normal");
-		      		        }
-		      		});
+        // Button Close Style Hover und Action press
+    	view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+      		    new EventHandler<MouseEvent>() {
+      		        @Override public void handle(MouseEvent e) {
+      		        	view.btn_close.getStyleClass().addAll("btn_close_hover");
+      		        	view.btn_close.getStyleClass().remove("btn_close_normal");
+      		        }
+  		});
 		      		
-		      		//
-		      		view.btn_close.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-		      		        @Override public void handle(MouseEvent e) {
-		      		        	view.btn_close.getStyleClass().remove("btn_close_hover");
-		      		        	view.btn_close.getStyleClass().addAll("btn_close_normal");
-		      		        }
-		      		});
+		      		
+  		view.btn_close.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_close.getStyleClass().remove("btn_close_hover");
+  		        	view.btn_close.getStyleClass().addAll("btn_close_normal");
+  		        }
+  		});
 		        
-		        view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
-		            @Override
-		            public void handle(ActionEvent event) {
-		            
-		            	if(model.connected){
-		            	//disconnect from server	
-		            	}
-		            	
-		            view.stop();
-		            	 	
-		            }
-		            });
-
-		        
-		        
-        
+        view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
+            @Override
+            public void handle(ActionEvent event) {
+            
+            	if(model.connected){
+            	//disconnect from server	
+            	}
+            	
+            view.stop();
+            	 	
+            }
+        });	                
     }
     
 }

@@ -2,6 +2,9 @@ package Dominion.appClasses;
 
 import java.io.Serializable;
 
+/**
+ * @author Joel Henz
+ */
 public class GameObject implements Serializable {
 	
 	private static final long serialVersionUID = 1;

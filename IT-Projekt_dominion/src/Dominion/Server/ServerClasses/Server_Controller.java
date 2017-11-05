@@ -16,7 +16,7 @@ import javafx.stage.WindowEvent;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards
+ * @author Brad Richards (MVC), Joel Henz (resources/events)
  */
 public class Server_Controller extends Controller<Server_Model, Server_View> {
     ServiceLocator sl;

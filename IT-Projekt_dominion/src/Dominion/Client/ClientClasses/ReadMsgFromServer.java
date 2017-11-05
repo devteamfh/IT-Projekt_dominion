@@ -16,12 +16,12 @@ import javafx.application.Platform;
  * @author Joel Henz: 
  * this is the class for receiving chat messages from the server. If a client sends a chat message to server, the server will send that message to all clients
  * */
-public class ReceiveMessagesFromServer implements Runnable {
+public class ReadMsgFromServer implements Runnable {
 	ObjectInputStream in;
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	ChatMessageLobby msg;
 	
-	public ReceiveMessagesFromServer (ObjectInputStream in){
+	public ReadMsgFromServer (ObjectInputStream in){
 		this.in = in;	
 	}
 

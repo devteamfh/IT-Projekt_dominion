@@ -19,7 +19,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
- * @author: Initial: Joel
+ * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
+ * is licensed under the terms of the BSD 3-clause license (see the file
+ * license.txt).
+ * 
+ * @author Brad Richards (MVC Pattern)
+ */
+
+/**
+ * @author: Initial: Joel (GUI without styling)
  * @author: Styling und Anordnung: kab
  * 
  * 			Aufbau: root--vb_wrapperContent<---hb_custom_menue (Schliessen Button) 
@@ -78,16 +86,16 @@ public class Client_View_start extends View<Client_Model> {
 			btn_register.getStyleClass().addAll("btn","btn_view");
 			btn_login.getStyleClass().addAll("btn","btn_view");
 			
-			//Primäre Panes initialisieren
+			//Primï¿½re Panes initialisieren
 		    VBox vb_wrapperContent = new VBox();		    
 		    GridPane gp_wrapper = new GridPane();
 		    
-		    //Vbox für Abstand zwischen tf IP-Adresse und tf Port
+		    //Vbox fï¿½r Abstand zwischen tf IP-Adresse und tf Port
 		    VBox vb_spacer = new VBox();			
 			vb_spacer.getChildren().add(tf_ip);
 			vb_spacer.setPadding(new Insets(0,0,7,0));
 			
-			//Wrapper mit lbls und tf befüllen
+			//Wrapper mit lbls und tf befï¿½llen
 			gp_wrapper.add(lbl_IPAdress, 0, 0); 
 			gp_wrapper.add(lbl_port,     0, 1);
 			gp_wrapper.add(lbl_userName, 2, 1);
@@ -102,7 +110,7 @@ public class Client_View_start extends View<Client_Model> {
 			lbl_password.setPadding(new Insets(0,0,0,20));
 			
 			
-			//Buttons: Abstände festlegen und in gp einfügen    
+			//Buttons: Abstï¿½nde festlegen und in gp einfï¿½gen    
 			btn_connect.setPrefSize(206, 54);
 			btn_register.setPrefSize(206,54);
 			btn_login.setPrefSize(206, 54);
@@ -189,7 +197,7 @@ public class Client_View_start extends View<Client_Model> {
 
 	}
 	
-	// Für Drag und Drop verschiebung: relative x und y Position herausfinden
+	// Fï¿½r Drag und Drop verschiebung: relative x und y Position herausfinden
 	class Delta { double x, y; }
 
 		}

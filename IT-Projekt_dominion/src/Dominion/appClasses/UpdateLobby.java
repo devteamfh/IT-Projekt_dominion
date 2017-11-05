@@ -2,6 +2,9 @@ package Dominion.appClasses;
 
 import java.util.ArrayList;
 
+/**
+ * @author Joel Henz
+ */
 public class UpdateLobby extends GameObject {
 	
 

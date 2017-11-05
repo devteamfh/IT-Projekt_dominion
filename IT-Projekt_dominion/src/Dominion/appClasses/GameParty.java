@@ -2,6 +2,9 @@ package Dominion.appClasses;
 
 import java.util.ArrayList;
 
+/**
+ * @author Joel Henz
+ */
 public class GameParty extends GameObject{
 	
 	private static final long serialVersionUID = 1;

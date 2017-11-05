@@ -16,7 +16,10 @@ public class Database {
      *
      * 
      */
-
+	
+   /**
+    * @author Beda Kaufmann
+    */ 
     public class Database {
 
         private String workingDirecotry = System.getProperty("user.dir");
@@ -76,7 +79,7 @@ public class Database {
 
         /**
          * @author sqlitetutorial.net
-         *  führt SQL STatements aus
+         *  fï¿½hrt SQL STatements aus
          */
         public boolean sql_execute(String sqlStatement){
 

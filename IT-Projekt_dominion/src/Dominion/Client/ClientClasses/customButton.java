@@ -8,6 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * @author Beda Kaufmann
+ */
 public class customButton extends Button {
 	private customButton btn;
 	private Label lbl;
@@ -37,7 +40,7 @@ public class customButton extends Button {
 	
 	
 	
-	//TextEffekt dem Button hinzufügen
+	//TextEffekt dem Button hinzufï¿½gen
 	/*id setLblTextEffect(customButton btn){
 		this.btn = btn;
 		this.lbl = (Label) this.btn.getGraphic();
