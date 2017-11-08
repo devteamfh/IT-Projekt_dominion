@@ -24,7 +24,6 @@ public class Client extends Application {
         view = new Client_View_start(stage, model);
         new Client_Controller_start(model, view);
 
-        view.start();
-       
+        view.start();       
 	}
 }

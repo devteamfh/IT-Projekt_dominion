@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
-import Dominion.appClasses.NewGameParty;
+import Dominion.appClasses.GameParty;
 import Dominion.appClasses.Player;
 import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
@@ -25,7 +25,7 @@ public class ClientHandler implements Runnable {
 	ArrayList <ObjectOutputStream> list;
 	ObjectOutputStream out;
 	ObjectInputStream in;
-	
+
 	ServiceLocatorServer sl;
 	
 	public ClientHandler(Socket s, ArrayList <ObjectOutputStream> list, ObjectOutputStream out){ 
@@ -72,20 +72,21 @@ public class ClientHandler implements Runnable {
 				} 
 			 break;
 		 
-		 case NewGameParty:
-			 NewGameParty game = (NewGameParty) obj;
+		 case GameParty:
+			 GameParty game = (GameParty) obj;
 			 
+			 //on server-side we must store the ObjectOutpuStream within the Player object
 			 GamePartyOnServer newGameOnServer = new GamePartyOnServer (game);
-			 Player current_player = new Player (game.getCreator(), this.out);			 
+			 Player current_player = new Player (game.getPlayer(), this.out);
 			 newGameOnServer.addPlayer(current_player);
 			 
 			 sl.addNewGame(newGameOnServer);
-			 //Player creator
 			 
-			//sending the chat messages to all clients
+			 	//sending the message to all clients; we must send the GameParty-object, not the GamePartyOnServer because the class
+			 	//ObjectOutputStream (instance variable of Player class) is not serializable
 				while (iter.hasNext()){
 					ObjectOutputStream current = (ObjectOutputStream) iter.next();
-					current.writeObject(obj);
+					current.writeObject(game);
 					current.flush();
 				}
 
@@ -94,8 +95,10 @@ public class ClientHandler implements Runnable {
 		 case UpdateLobby:
 			 UpdateLobby toUpdate = new UpdateLobby ();
 			 
+			 //the server searches all open gameparties, adds them to an ArrayList and sends this list (within an UpdateLobby-object) to the client which has made the request for updating his ListView
+			 ///(message was send on client-side from class Client_View_lobby)
 			 if(!sl.getGameListFromServer().isEmpty()){
-				 ArrayList <NewGameParty> gamePartyListClient = new ArrayList <NewGameParty>();
+				 ArrayList <GameParty> gamePartyListClient = new ArrayList <GameParty>();
 				 Iterator <GamePartyOnServer> iter2 = sl.getGameListFromServer().iterator();
 				 
 				 while (iter2.hasNext()){
@@ -110,7 +113,8 @@ public class ClientHandler implements Runnable {
 				 
 			 }
 			 break;
-			 
+		 
+		 //the server reads the username of each connected player and stores them
 		 case StartInformation:
 			 StartInformation start = (StartInformation) obj;
 			 

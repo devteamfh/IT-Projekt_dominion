@@ -1,11 +1,10 @@
 package Dominion.appClasses;
 
-import java.util.ArrayList;
-
 /**
  * @author Joel Henz
+ * instances of this class are sent/read by client and server. The equivalent class of GameParty is GamePartyOnServer and is used only on server side (to store Player objects and ObjectOutputStream-objects)
  */
-public class NewGameParty extends GameObject{
+public class GameParty extends GameObject{
 	
 	private static final long serialVersionUID = 1;
 	// Data included in a message
@@ -15,22 +14,20 @@ public class NewGameParty extends GameObject{
 	
 	private String selectedMode;
 	private String creator;
+	private String player;
 	private int numberOfPlayers;
 	private int loggedInPlayers = 0;
-	private ArrayList <Player> playerListOfGame;
 	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-	public NewGameParty(String selectedMode, String creator, int number){
-		super(GameObject.ObjectType.NewGameParty);
+	public GameParty(String selectedMode, String creator, int number,String player){
+		super(GameObject.ObjectType.GameParty);
 		this.selectedMode=selectedMode;
 		this.creator=creator;
 		this.numberOfPlayers=number;
-		this. id = -1;
-
-		
+		this. id = -1;	
 	}
 	
 	public void setID(){
@@ -38,7 +35,6 @@ public class NewGameParty extends GameObject{
 			this. id = nextMessageID();
 		}
 	}
-
 	
 	public long getID(){
 		return this.id;
@@ -48,13 +44,12 @@ public class NewGameParty extends GameObject{
 		return this.creator+", "+this.selectedMode+", "+this.loggedInPlayers+" Spieler von, "+this.numberOfPlayers;
 	}
 	
-	public void addPlayer(Player player){
-		this.playerListOfGame.add(player);
-		this.loggedInPlayers++;
-	}
-	
 	public String getCreator(){
 		return this.creator;
+	}
+	
+	public String getPlayer(){
+		return this.player;
 	}
 
 }

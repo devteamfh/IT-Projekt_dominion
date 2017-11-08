@@ -8,7 +8,8 @@ import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
-import Dominion.appClasses.NewGameParty;
+import Dominion.appClasses.GameParty;
+import Dominion.appClasses.Player;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -111,16 +112,13 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	String selectedMode = sl.getSelectedMode();
             	int numberOfPlayers = sl.getNumberOfPlayers();
             	String creator = model.playerName;
+            	String player = model.playerName;
             	
-            	NewGameParty newParty = new NewGameParty(selectedMode,creator,numberOfPlayers);
+            	GameParty newParty = new GameParty(selectedMode,creator,numberOfPlayers,player);
             	newParty.setID();
-            	
-            	GameObject obj = new GameObject (GameObject.ObjectType.NewGameParty);
-            	obj.setID();
-            	
-            	obj=newParty;
+
             	try {
-					model.out.writeObject(obj);
+					model.out.writeObject(newParty);
 					model.out.flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -131,9 +129,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
 		        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model);
 		        new Client_Controller_playingStage(model, view_playingStage); 
 		        view_playingStage.start();
-		        view_createGame.stop();
-            			
-            			
+		        view_createGame.stop();        			
             }
         });
         

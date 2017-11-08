@@ -3,7 +3,7 @@ package Dominion.Client.ClientClasses;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import Dominion.appClasses.NewGameParty;
+import Dominion.appClasses.GameParty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -43,9 +43,9 @@ public class ServiceLocatorClient {
     
     private TextArea ta_lobby = new TextArea();
     
-    private ObservableList<NewGameParty> obsList = FXCollections.observableArrayList();
+    private ObservableList<GameParty> obsList = FXCollections.observableArrayList();
     
-    private ListView <NewGameParty> gameList;
+    private ListView <GameParty> gameList;
 
     /**
      * Factory method for returning the singleton
@@ -124,7 +124,7 @@ public class ServiceLocatorClient {
     	return this.ta_lobby;
     }
 
-	public ListView <NewGameParty> getListView() {
+	public ListView <GameParty> getListView() {
 		// TODO Auto-generated method stub
 		return this.gameList;
 	}
@@ -133,7 +133,7 @@ public class ServiceLocatorClient {
 		 this.gameList = new ListView<>(obsList);
 	}
 	
-	public void addNewGame(NewGameParty newGame){
+	public void addNewGame(GameParty newGame){
 		this.obsList.add(newGame);
 		
 	}

@@ -8,7 +8,7 @@ import java.util.Iterator;
 import Dominion.ServiceLocator;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
-import Dominion.appClasses.NewGameParty;
+import Dominion.appClasses.GameParty;
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
 
@@ -45,8 +45,8 @@ public class ReadMsgFromServer implements Runnable {
 				case InformationObject:
 					break;
 					 
-				case NewGameParty:
-					NewGameParty newGame = (NewGameParty) obj;
+				case GameParty:
+					GameParty newGame = (GameParty) obj;
 					 
 					Platform.runLater(new Runnable() {
 				           @Override 
@@ -62,7 +62,7 @@ public class ReadMsgFromServer implements Runnable {
 					
 					UpdateLobby toUpdate = (UpdateLobby) obj;
 					
-					Iterator<NewGameParty> iter = toUpdate.getListOfOpenGames().iterator();
+					Iterator<GameParty> iter = toUpdate.getListOfOpenGames().iterator();
 						Platform.runLater(new Runnable() {
 					           @Override 
 					           public void run() {

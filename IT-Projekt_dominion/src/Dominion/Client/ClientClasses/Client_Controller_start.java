@@ -163,19 +163,15 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	if (model.connected && checkFields.getInstance().getUserPwOk()){
             		String name = view.tf_userName.getText();
                 	model.setName(name);
-                	Player player = new Player (name, model.getOutput());
+                	Player player = new Player (name,model.getOutput());
                 	model.setPlayer(player);
                 	
+                	//the StartInformation object is needed on server-side so the server can store the username of all connected players
                 	StartInformation current = new StartInformation(model.getName());
         			current.setID();
         			
-        			GameObject obj= new GameObject (GameObject.ObjectType.StartInformation);
-        			obj.setID();
-        			
-        			obj = current;
-        			
         			try {
-						model.getOutput().writeObject(obj);
+						model.getOutput().writeObject(current);
 						model.getOutput().flush();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block

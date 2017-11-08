@@ -7,7 +7,7 @@ import java.util.Iterator;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
-import Dominion.appClasses.NewGameParty;
+import Dominion.appClasses.GameParty;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -92,7 +92,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 				if(!sl.getListView().getSelectionModel().isEmpty()){
 					view.enterGame.setDisable(false);
 					
-					NewGameParty newGAME = sl.getListView().getSelectionModel().getSelectedItem();
+					GameParty newGAME = sl.getListView().getSelectionModel().getSelectedItem();
 				}
 				
 			}
@@ -141,12 +141,8 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 		ChatMessageLobby cmsg = new ChatMessageLobby(name, msg);
 		cmsg.setID();
 		
-		GameObject obj = new GameObject (GameObject.ObjectType.ChatMessageLobby);
-		obj.setID();
-		obj = cmsg;
-		
 		try {
-			model.out.writeObject(obj);
+			model.out.writeObject(cmsg);
 			model.out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

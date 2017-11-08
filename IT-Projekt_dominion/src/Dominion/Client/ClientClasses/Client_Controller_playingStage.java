@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.GameObject;
-import Dominion.appClasses.NewGameParty;
+import Dominion.appClasses.GameParty;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

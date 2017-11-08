@@ -10,7 +10,7 @@ public class Player {
 	
 	private int points = 3;
 	private String username;
-	private ObjectOutputStream out;
+	private transient ObjectOutputStream out;
 	
 	public Player(String username, ObjectOutputStream out){
 		this.username = username;
