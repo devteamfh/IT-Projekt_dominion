@@ -141,7 +141,7 @@ public class Client_View_start extends View<Client_Model> {
 		   	
 		   	//Konfiguration Root-Node
 		    BorderPane root = new BorderPane();
-			root.getStyleClass().add("background");
+			root.getStyleClass().add("background_start");
 			
 		    root.setPrefWidth(1200);
 			root.setPrefHeight(600);

@@ -61,7 +61,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
          * @author Joel Henz:
          * action event for the chat program (sending the message by clicking on "Senden" button)
          * */
-        view.send.setOnAction(new EventHandler<ActionEvent>() {
+        view.btn_send.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 sendMessageToServer();
@@ -90,7 +90,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 			@Override
 			public void handle(MouseEvent event) {
 				if(!sl.getListView().getSelectionModel().isEmpty()){
-					view.enterGame.setDisable(false);
+					view.btn_enterGame.setDisable(false);
 					
 					GameParty newGAME = sl.getListView().getSelectionModel().getSelectedItem();
 					System.out.println(newGAME);
@@ -107,6 +107,39 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 				
 			}
 		});
+       
+       // Button-Close Style "Hover" und Action "press"
+       view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+     		    new EventHandler<MouseEvent>() {
+     		        @Override public void handle(MouseEvent e) {
+     		        	view.btn_close.getStyleClass().addAll("btn_close_hover");
+     		        	view.btn_close.getStyleClass().remove("btn_close_normal");
+     		        }
+     		});
+     		
+     		//
+     		view.btn_close.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+     		        @Override public void handle(MouseEvent e) {
+     		        	view.btn_close.getStyleClass().remove("btn_close_hover");
+     		        	view.btn_close.getStyleClass().addAll("btn_close_normal");
+     		        }
+     		});
+       
+       view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
+           @Override
+           public void handle(ActionEvent event) {
+           
+           	//if(model.connected){
+           	//disconnect from server	
+           	//}
+           	
+           view.stop();
+           	 	
+           }
+           });
+   	
+       
+       
        
        /**view.enterGame.setOnAction(new EventHandler<ActionEvent>() {
            @Override
@@ -126,7 +159,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
          * @author Joel Henz
          *opens a new stage for creating the configs of a new game
          * */
-        view.newGame.setOnAction(new EventHandler<ActionEvent>() {
+        view.btn_newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	Stage createNewGame = new Stage();
@@ -167,4 +200,9 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 		view.tf_message.requestFocus();	
 	}
 	
+	
+	
 }
+
+
+

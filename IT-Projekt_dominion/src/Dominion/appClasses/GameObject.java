@@ -19,6 +19,8 @@ public class GameObject implements Serializable {
 		this.type = type;
 		this. id = -1;
 	}
+	
+
 
 	private static long nextMessageID() {		
 		return messageID++;

@@ -69,7 +69,7 @@ public class checkUserData {
 		try {
 			FileWriter fw = new FileWriter(this.userFile, true);
 					
-			fw.write(this.tf1+";"+this.tf2+System.getProperty("line.separator"));
+			fw.write(this.tf1+";"+this.tf2+";"+";"+";"+";"+";"+";"+";"+";"+System.getProperty("line.separator"));
 			fw.close();
 			sl.getLogger().info("User erfolgreich registriert");
 			return true;

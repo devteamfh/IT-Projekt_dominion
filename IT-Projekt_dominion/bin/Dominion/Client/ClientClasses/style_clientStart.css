@@ -1,7 +1,6 @@
 
-/*Client View Start -BEGIN- */
-/*---------------------------------------------------------------------------------------- */
-.background {
+/*------------------------------Client View Start -BEGIN- ---------------------------------------------------------- */
+.background_start {
 	-fx-background-image: url('img/bg_screen_login.png');
 	-fx-background-repeat: stretch;
 }
@@ -50,8 +49,19 @@
 
 .btn_close_hover {
 	-fx-background-image: url('img/btn_close_hover.png'); }
-/*---------------------------------------------------------------------------------------- */
-/*Client View Start -END- */
+/*----------------------Client View Start -END-----------------*/
+
+
+
+
+/*----------------------Cient View Lobby Begin------------------------------------ */
+
+.background_lobby {
+	-fx-background-image: url('img/bg_screen_login.png');
+	-fx-background-repeat: stretch;
+}
+
+/*----------------------Cient View Lobby End-------------------------------------- */
 
 
 

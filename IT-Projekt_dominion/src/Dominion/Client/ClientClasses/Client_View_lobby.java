@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Dominion.ServiceLocator;
+import Dominion.Client.ClientClasses.Client_View_start.Delta;
 import Dominion.Client.abstractClasses.View;
 import Dominion.appClasses.UpdateLobby;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,11 +20,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 /**
@@ -32,10 +38,11 @@ import javafx.stage.Stage;
  * @author Brad Richards (MVC Pattern), Joel Henz (GUI)
  */
 public class Client_View_lobby extends View<Client_Model> {
-    Button send;
-    Button profile;
-    Button newGame;
-    Button enterGame;
+	Button btn_close;
+    Button btn_send;
+    Button btn_profile;
+    Button btn_newGame;
+    Button btn_enterGame;
     
     TextField tf_message;
 
@@ -43,8 +50,8 @@ public class Client_View_lobby extends View<Client_Model> {
     Scene scene;
     ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
     String PlayerName;
-    Label name;
-    Label yourSign;
+    Label lbl_name;
+    Label lbl_yourSign;
 
 	public Client_View_lobby(Stage stage, Client_Model model) {
 		super(stage, model);
@@ -58,75 +65,168 @@ public class Client_View_lobby extends View<Client_Model> {
 
 	    ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();  
 	    sl.setListView();
-	    
-		BorderPane root = new BorderPane();
+	   
 		
 		//resources
 
-		send = new Button("senden");
-		profile = new Button ("Profil");
-		newGame = new Button ("neues Spiel");
-		enterGame = new Button ("Spiel beitreten");
-		enterGame.setDisable(true);
+		btn_send = new Button("senden");
+		btn_profile = new Button ("Profil");
+		btn_newGame = new Button ("neues Spiel");
+		btn_enterGame = new Button ("Spiel beitreten");
+		btn_enterGame.setDisable(true);
 		
 		tf_message = new TextField();
-		name = new Label();
-		name.setText("Ihr Name: "+model.getName());
+		lbl_name = new Label();
+		lbl_name.setText("Ihr Name: "+model.getName());
 		
-		Label message = new Label();
-		message.setText("Ihre Nachricht");
+		Label lbl_message = new Label();
+		lbl_message.setText("Ihre Nachricht");
 		ta = sl.getTextAreaLobby();
 		ta.setEditable(false);
 		ta.setMaxWidth(500);
 		ta.setMaxHeight(200);
 		
+		/*
 		/**
 	     * auto resize when window is resized
-	     */
+	     *
 		ta.prefWidthProperty().bind(root.widthProperty());
 		ta.prefHeightProperty().bind(root.heightProperty());
+		*/
+
 		
 		VBox vb1 = new VBox();
-		HBox hb2 = new HBox();
-		hb2.getChildren().addAll(message,tf_message,send);
-		
-		vb1.getChildren().addAll(name,hb2);
-		
-		HBox hb1 = new HBox();
-		hb1.getChildren().addAll(profile,vb1,ta);
-		HBox.setMargin(profile, new Insets(0,20,0,0));
-		//hb1.setAlignment(Pos.CENTER);
-		
-		ScrollPane sp1 = new ScrollPane();
+		//HBox hb2 = new HBox();
+		//hb2.getChildren().addAll(lbl_message,tf_message,btn_send);
 
-		sp1.setContent(sl.getListView());
-		
-		UpdateLobby update = new UpdateLobby();
-		update.setID();
-		
-		try {
-			model.out.writeObject(update);
-			model.out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		
 		
-		HBox hb3 = new HBox();
-		hb3.getChildren().addAll(sp1,enterGame);
 		
-		root.setTop(hb1);
-		root.setLeft(newGame);
-		root.setBottom(hb3);
+		
+		
+		
+		
+		
+		//Primäre Panes initialisieren		
+		BorderPane root = new BorderPane();
+		
+		 //X Button top right, wrapper hb_custom menue
+	    HBox hb_custom_menue = new HBox();
+	      
+	   	btn_close = new Button();
+		btn_close.setPrefSize(35, 33);
+	   	btn_close.getStyleClass().addAll("btn","btn_close_normal");
+	   	btn_close.setAlignment(Pos.TOP_RIGHT);
+	   	
+	    HBox spacer =  new HBox();
+	   	HBox.setHgrow(spacer, Priority.ALWAYS);
+	   	
+	   	hb_custom_menue.getChildren().addAll(spacer, btn_close);
+	   	hb_custom_menue.setPadding(new Insets(20,15,0,0));		   	
+	   	//************************************************************/
+	   	
+	   	//vb in borderpane center.
+	    VBox vb_wrapperContent = new VBox();
+		
+	    	//obere hälfte in borderpane center
+		    HBox hb_wrapper_upperhalf = new HBox();
+			hb_wrapper_upperhalf.setAlignment(Pos.TOP_LEFT);
+			
+			//abstand zwischen upper und lower-half
+			hb_wrapper_upperhalf.setPadding(new Insets(0,0,30,0));
 
-		sp1.setVmax(440);
-        sp1.setPrefSize(115, 150);
+		    hb_wrapper_upperhalf.getChildren().addAll(btn_profile);
+		    
+		    
+		    
+		    VBox vb_wrapper_lowerhalf = new VBox();
+		
+		    HBox hb_wrapper_gameList_and_Chat = new HBox();
+		    
+		    hb_wrapper_gameList_and_Chat.getChildren().addAll(sl.getListView(),ta);
+	    
+	  
+			sl.getListView().setPrefSize(600,200);
+			
+			UpdateLobby update = new UpdateLobby();
+			update.setID();
+			
+			//Chat Wrapper
+			VBox vb_wrapper_chat = new VBox();
+			HBox hb_wrapper_chat_control = new HBox();
+			hb_wrapper_chat_control.getChildren().addAll(tf_message, btn_send);
+			hb_wrapper_chat_control.setPadding(new Insets(10,10,0,0));
+			    
+			vb_wrapper_chat.getChildren().addAll(ta, hb_wrapper_chat_control);
+			
+			
+		    HBox hb_wrapper_openGames_Chat = new HBox();
+		    hb_wrapper_openGames_Chat.getChildren().addAll(hb_wrapper_openGames, vb_wrapper_chat);
+		    hb_wrapper_lowerhalf.getChildren().addAll(hb_wrapper_openGames_Chat);
+			   
 
-		this.scene = new Scene (root, 800,800);
+		    
+			vb_wrapperContent.getChildren().addAll(hb_wrapper_upperhalf,hb_wrapper_lowerhalf);
+			vb_wrapperContent.setPadding(new Insets(10,75,10,75));
 
+			
+			try {
+				model.out.writeObject(update);
+				model.out.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    
+		  
+		//Konfiguration Root-Node		
+		root.setTop(hb_custom_menue);
+		root.setCenter(vb_wrapperContent);
+		root.getStyleClass().add("background_lobby");
+        
+
+		 /**
+		  * @author kab: Fenster via Drag und Drop verschieben
+		  */
+		
+	    Delta dragDelta = new Delta();
+	    root.setOnMousePressed(new EventHandler<MouseEvent>() {
+	      @Override public void handle(MouseEvent mouseEvent) {
+	        // record a delta distance for the drag and drop operation.
+	        dragDelta.x = stage.getX() - mouseEvent.getScreenX();
+	        dragDelta.y = stage.getY() - mouseEvent.getScreenY();
+	        scene.setCursor(Cursor.MOVE);
+	      }
+	    });
+	    root.setOnMouseReleased(new EventHandler<MouseEvent>() {
+	      @Override public void handle(MouseEvent mouseEvent) {
+	        scene.setCursor(Cursor.DEFAULT);
+	      }
+	    });
+	    root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+	      @Override public void handle(MouseEvent mouseEvent) {
+	        stage.setX(mouseEvent.getScreenX() + dragDelta.x);
+	        stage.setY(mouseEvent.getScreenY() + dragDelta.y);
+	      }
+	    });
+        
+        
+        
+        
+        
+		this.scene = new Scene (root, 1200,600);
+		scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());
+	    stage.initStyle(StageStyle.TRANSPARENT); 
+		
         return scene;
+      
+        
 	}
 
+	// Für Drag und Drop verschiebung: relative x und y Position herausfinden
+	class Delta { double x, y; }
+
+		
 }
+

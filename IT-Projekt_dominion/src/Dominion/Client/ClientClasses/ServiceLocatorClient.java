@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -44,9 +45,11 @@ public class ServiceLocatorClient {
     private TextArea ta_lobby = new TextArea();
     
     private ObservableList<GameParty> obsList = FXCollections.observableArrayList();
-    
     private ListView <GameParty> gameList;
 
+    
+    private ObservableList<Player> obsList_players = FXCollections.observableArrayList();
+    private ListView <Player> playerList;
     
 
     /**
