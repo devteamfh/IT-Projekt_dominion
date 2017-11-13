@@ -2,13 +2,12 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
-import Dominion.ServiceLocator;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.UpdateGameParty;
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
 
@@ -31,7 +30,7 @@ public class ReadMsgFromServer implements Runnable {
 		
 		try {
 			while ((obj = (GameObject) this.in.readObject()) !=null){
-				
+
 				switch (obj.getType()) {
 				
 				case ChatMessageLobby:
@@ -39,7 +38,7 @@ public class ReadMsgFromServer implements Runnable {
 					String name = msg.getName();
 					String text = msg.getMsg();
 					sl.getTextAreaLobby().appendText(name+": "+text+"\n");
-					sl.getTextAreaLobby().selectPositionCaret(sl.getTextAreaLobby().getText().length());				 
+					sl.getTextAreaLobby().selectPositionCaret(sl.getTextAreaLobby().getText().length());	
 					break;
 				 
 				case InformationObject:
@@ -54,7 +53,6 @@ public class ReadMsgFromServer implements Runnable {
 				            sl.addNewGame(newGame);
 				           }
 				       });
-					 
 					break;
 				
 				//updating the ListView of this client when he logs in (he needs to see all open games when he enters the lobby)	
@@ -72,12 +70,28 @@ public class ReadMsgFromServer implements Runnable {
 					        	   }
 					           }
 					       });
-						
+					break;
+					
+				case UpdateGameParty:
+
+					UpdateGameParty newUpdate = (UpdateGameParty) obj;
+					
+					Platform.runLater(new Runnable() {
+				           @Override 
+				           public void run() {
+				        	   sl.updateGameParty(newUpdate.getGameParty());
+				        	   
+				           }
+				       });
+					break;
+					
+				case JoinGameParty:
+					
+					
+											
 				default:
 				}
-				
-	
-				
+		
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block

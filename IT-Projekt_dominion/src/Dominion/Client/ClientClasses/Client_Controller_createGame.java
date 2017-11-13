@@ -112,10 +112,8 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	String selectedMode = sl.getSelectedMode();
             	int numberOfPlayers = sl.getNumberOfPlayers();
             	String creator = model.playerName;
-            	String player = model.playerName;
             	
-            	GameParty newParty = new GameParty(selectedMode,creator,numberOfPlayers,player);
-            	newParty.setID();
+            	GameParty newParty = new GameParty(selectedMode,creator,numberOfPlayers);
 
             	try {
 					model.out.writeObject(newParty);
@@ -125,7 +123,8 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
 					e.printStackTrace();
 				}
             	
-            	Stage playingStage = new Stage();				
+            	Stage playingStage = new Stage();			
+            	playingStage.initModality(Modality.APPLICATION_MODAL);
 		        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model);
 		        new Client_Controller_playingStage(model, view_playingStage); 
 		        view_playingStage.start();

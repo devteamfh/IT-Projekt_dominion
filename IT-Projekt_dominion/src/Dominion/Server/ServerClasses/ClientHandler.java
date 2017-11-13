@@ -11,9 +11,12 @@ import java.util.Iterator;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.JoinGameParty;
 import Dominion.appClasses.Player;
 import Dominion.appClasses.StartInformation;
+import Dominion.appClasses.UpdateGameParty;
 import Dominion.appClasses.UpdateLobby;
+import javafx.scene.input.TouchPoint;
 
 /**
  * @author Joel Henz: 
@@ -59,54 +62,104 @@ public class ClientHandler implements Runnable {
 	
 	//ID for the serialized object is set here
 	private void sendToAllClients(GameObject obj) throws IOException {
-				
-		Iterator<ObjectOutputStream> iter = this.list.iterator();
+		
+		//iterator for the OutPutStreams of all connected players in the lobby
+		Iterator<ObjectOutputStream> iterOut = this.list.iterator();
 		
 		switch (obj.getType()) {
 		 case ChatMessageLobby:		 
 			//sending the chat messages to all clients
-				while (iter.hasNext()){
-					ObjectOutputStream current = (ObjectOutputStream) iter.next();
+				while (iterOut.hasNext()){
+					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
 					current.writeObject(obj);
 					current.flush();			
 				} 
 			 break;
 		 
+		 //handle a client who is creating a new game
 		 case GameParty:
 			 GameParty game = (GameParty) obj;
+			 game.setID();
 			 
-			 //on server-side we must store the ObjectOutpuStream within the Player object
+			//on server-side we must store the ObjectOutpuStream within the Player object
 			 GamePartyOnServer newGameOnServer = new GamePartyOnServer (game);
-			 Player current_player = new Player (game.getPlayer(), this.out);
+			 Player current_player = new Player (game.getCreator(), this.out);
 			 newGameOnServer.addPlayer(current_player);
 			 
 			 sl.addNewGame(newGameOnServer);
 			 
-			 	//sending the message to all clients; we must send the GameParty-object, not the GamePartyOnServer because the class
-			 	//ObjectOutputStream (instance variable of Player class) is not serializable
-				while (iter.hasNext()){
-					ObjectOutputStream current = (ObjectOutputStream) iter.next();
-					current.writeObject(game);
-					current.flush();
-				}
+			 //sending the message to all clients so they can update their ListView; we must send the GameParty-object, not the GamePartyOnServer because the class
+			 //ObjectOutputStream (instance variable of Player class) is not serializable
+			 while (iterOut.hasNext()){
+				ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+				current.reset();
+				current.writeObject(game);
+				current.flush();
+			 }
+
+			 break;
+		 
+		 //handle a client entering an existing game
+		 case JoinGameParty:
+			 JoinGameParty gameToJoin = (JoinGameParty) obj;
+			 gameToJoin.setID();
+			 
+			 GameParty selectedGame = gameToJoin.getSelectedGameParty();
+			 long id = selectedGame.getID();
+			 
+			 
+			 Player newPlayerJoining = new Player (gameToJoin.getUsername(), this.out);
+			 
+			 //first we will add the joining player to the correct GamePartyOnServer
+			 Iterator <GamePartyOnServer> iterGameParty = sl.getGameListFromServer().iterator();
+			 
+			 GamePartyOnServer currentGame=null;
+			 
+			 while(iterGameParty.hasNext()){				 
+				 
+				 currentGame = iterGameParty.next();
+				 if(currentGame.getGameParty().getID()== id){
+					 currentGame.addPlayer(newPlayerJoining);
+					 break;
+				 }
+			 }			 
+
+			 //now we have to update the number of connected players to this GameParty (update on the ListView of each client which is already in the lobby)
+			 UpdateGameParty newUpdate = new UpdateGameParty (currentGame.getGameParty());
+			 newUpdate.setID();
+			 
+			 while(iterOut.hasNext()){			 
+				 ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+				 current.reset();
+				 current.writeObject(newUpdate);
+				 current.flush();
+			 }
+			 
+			 //finally we have to send a JoinGameParty object only to the joining client for creating his playing stage
+			 this.out.reset();
+			 this.out.writeObject(gameToJoin);
+			 this.out.flush();
+			 
 
 			 break;
 			 
 		 case UpdateLobby:
-			 UpdateLobby toUpdate = new UpdateLobby ();
+			 UpdateLobby toUpdate = (UpdateLobby) obj;
+			 toUpdate.setID();
 			 
 			 //the server searches all open gameparties, adds them to an ArrayList and sends this list (within an UpdateLobby-object) to the client which has made the request for updating his ListView
 			 ///(message was send on client-side from class Client_View_lobby)
 			 if(!sl.getGameListFromServer().isEmpty()){
 				 ArrayList <GameParty> gamePartyListClient = new ArrayList <GameParty>();
-				 Iterator <GamePartyOnServer> iter2 = sl.getGameListFromServer().iterator();
+				 Iterator <GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
 				 
-				 while (iter2.hasNext()){
-					 gamePartyListClient.add(iter2.next().getGameParty());
+				 while (iterGamePartyOnServer.hasNext()){
+					 gamePartyListClient.add(iterGamePartyOnServer.next().getGameParty());
 				 }
 				 
 				 toUpdate.setListOfOpenGames(gamePartyListClient);
 				 
+				 this.out.reset();
 				 this.out.writeObject(toUpdate);
 				 this.out.flush();
 		
@@ -117,18 +170,13 @@ public class ClientHandler implements Runnable {
 		 //the server reads the username of each connected player and stores them
 		 case StartInformation:
 			 StartInformation start = (StartInformation) obj;
+			 start.setID();
 			 
 			 String username = start.getUsername();
 			 
 			 Player newPlayer = new Player (username, this.out);
 			 
 			 sl.addConnectedPlayer(newPlayer);
-			 
-			 /**Iterator<Player> iter2 = sl.getConnectedPlayers().iterator();
-			 
-			 while(iter2.hasNext()){
-				 System.out.println(iter2.next().getUsername());
-			 }*/
 
 			 break;
 			 

@@ -1,6 +1,7 @@
 package Dominion.Client.ClientClasses;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
@@ -138,9 +139,22 @@ public class ServiceLocatorClient {
 		
 	}
 	
-	public void clearListOfOpenGames(){
-		this.obsList.clear();
-	}
-
-  
+	public void updateGameParty(GameParty newValue){
+		
+		Iterator <GameParty> iter = this.obsList.iterator();
+		
+		while(iter.hasNext()){
+			GameParty old = iter.next();
+			if(old.getID() == newValue.getID()){
+				this.obsList.remove(old);
+				
+				if (newValue.getLoggedInPlayers() < newValue.getMaxNumberOfPlayers()){
+					this.obsList.add(newValue);
+				}
+				
+				break;
+			}
+		}
+		
+	}  
 }

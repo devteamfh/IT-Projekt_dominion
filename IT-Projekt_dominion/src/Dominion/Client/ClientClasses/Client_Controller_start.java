@@ -168,7 +168,6 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
                 	
                 	//the StartInformation object is needed on server-side so the server can store the username of all connected players
                 	StartInformation current = new StartInformation(model.getName());
-        			current.setID();
         			
         			try {
 						model.getOutput().writeObject(current);

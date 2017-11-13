@@ -8,6 +8,7 @@ import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.JoinGameParty;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,6 +31,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
     ServiceLocatorClient sl;
     Client_View_lobby view;
     Client_View_createGame view2;
+    GameParty joinGame;
        
     public Client_Controller_lobby(Client_Model model, Client_View_lobby view) {
         super(model, view);
@@ -90,26 +92,34 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 			@Override
 			public void handle(MouseEvent event) {
 				if(!sl.getListView().getSelectionModel().isEmpty()){
-					view.enterGame.setDisable(false);
-					
-					GameParty newGAME = sl.getListView().getSelectionModel().getSelectedItem();
+					view.enterGame.setDisable(false);					
+					joinGame = sl.getListView().getSelectionModel().getSelectedItem();
 				}
 				
 			}
 		});
        
-       /**view.enterGame.setOnAction(new EventHandler<ActionEvent>() {
+       view.enterGame.setOnAction(new EventHandler<ActionEvent>() {
            @Override
            public void handle(ActionEvent event) {
-           	GameParty joinGame = sl.getListView().getSelectionModel().getSelectedItem();
-           	createNewGame.initModality(Modality.APPLICATION_MODAL);
-               
-               view2 = new Client_View_createGame(createNewGame, model);
-               new Client_Controller_createGame(model, view2);
-
-               view2.start();
+        	   /**Stage playingStage = new Stage();				
+		       Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model);
+		       new Client_Controller_playingStage(model, view_playingStage); 
+		       view_playingStage.start();*/
+		       
+        	   view.enterGame.setDisable(true);
+        	   JoinGameParty gameToJoin = new JoinGameParty(joinGame,model.getName());
+        	   
+        	   try {
+				model.out.writeObject(gameToJoin);
+				model.out.flush();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
            }
-       });*/
+       });
         
         
         /**
@@ -139,7 +149,6 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 		String name = model.getName();
 		String msg = view.tf_message.getText();
 		ChatMessageLobby cmsg = new ChatMessageLobby(name, msg);
-		cmsg.setID();
 		
 		try {
 			model.out.writeObject(cmsg);

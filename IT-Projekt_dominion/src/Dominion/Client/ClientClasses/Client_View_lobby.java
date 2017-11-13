@@ -103,7 +103,6 @@ public class Client_View_lobby extends View<Client_Model> {
 		
 		//each client can see all games which are currently open to enter. With the UpdateLobby object, the client sends a request to server for getting the list of the open games
 		UpdateLobby update = new UpdateLobby();
-		update.setID();
 		
 		try {
 			model.out.writeObject(update);

@@ -13,20 +13,20 @@ import Dominion.appClasses.Player;
 public class GamePartyOnServer {
 	
 	private ArrayList <Player> playerList = new ArrayList <Player>();
-	private int loggedInPlayers = 0;
 	GameParty party;
 
 	public GamePartyOnServer(GameParty party) {
-		this.party = party;
+		this.party=party;
 	}
 	
 	public void addPlayer(Player player){
 		this.playerList.add(player);
-		this.loggedInPlayers++;
+		this.party.addNewPlayer(player.getUsername());
 	}
 	
 	public GameParty getGameParty(){
 		return this.party;
 	}
+	
 
 }

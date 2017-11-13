@@ -64,6 +64,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		Label player1 = new Label("Spieler1");
 		Label player2 = new Label("Spieler2");
+		Label player3 = new Label("Spieler2");
+		Label player4 = new Label("Spieler2");
 		
 		vb_player.getChildren().addAll(player1,player2);
 		root.setTop(vb_player);
