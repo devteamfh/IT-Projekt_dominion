@@ -13,6 +13,9 @@ public class UpdateLobby extends GameObject {
 	private ArrayList <GameParty> listOfOpenGames = new ArrayList <GameParty>();
 	private Player player;
 	
+	//kab
+	private ArrayList <StartInformation> listStartInfo = new ArrayList <StartInformation>();
+	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
@@ -45,5 +48,14 @@ public class UpdateLobby extends GameObject {
 	public Player getPlayer(){
 		return this.player;
 	}
+	
+/*	//kab beide
+	public void setListStartInfo(ArrayList <StartInformation> list){
+		this.listStartInfo = list;
+	}
+	public ArrayList <StartInformation> getListStartInfo(){
+		return this.listStartInfo;
+	}*/
+
 
 }

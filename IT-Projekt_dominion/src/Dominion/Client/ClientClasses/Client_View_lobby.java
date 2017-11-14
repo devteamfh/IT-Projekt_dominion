@@ -227,17 +227,7 @@ public class Client_View_lobby extends View<Client_Model> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		StartInformation startInfo = new StartInformation(model.getName());
-		startInfo.setID();
-		try {
-			model.out.writeObject(startInfo);
-			model.out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 				
 
         

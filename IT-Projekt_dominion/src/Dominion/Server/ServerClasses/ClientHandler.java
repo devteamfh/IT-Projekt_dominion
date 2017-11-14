@@ -92,12 +92,12 @@ public class ClientHandler implements Runnable {
 			 
 			 if(!sl.getGameList().isEmpty()){
 				 toUpdate.setListOfOpenGames(sl.getGameList());
-				 
+								 
 				 this.out.writeObject(toUpdate);
 				 this.out.flush();
-		
-				 
+ 
 			 }
+			
 			 break;
 			 
 		 case StartInformation:
