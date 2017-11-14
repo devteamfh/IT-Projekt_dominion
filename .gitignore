@@ -1,4 +1,7 @@
 /bin/
+/IT-Projekt_dominion/bin/
+/IT-Projekt_dominion/user.dat
+/IT-Projekt_dominion/user.db
 /.idea/
 /out/
 /IT-Projekt_dominion/IT-Projekt_dominion/src/Dominion/Client/ClientClasses/test.java
@@ -9,3 +12,4 @@ IT-Projekt_dominion.iml
 .project
 user.dat
 user.db
+IT-Projekt_dominion/src/Dominion/Server/ServerClasses/test.java
