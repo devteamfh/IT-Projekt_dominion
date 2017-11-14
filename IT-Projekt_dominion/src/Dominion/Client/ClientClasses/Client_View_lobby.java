@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import Dominion.ServiceLocator;
 import Dominion.Client.ClientClasses.Client_View_start.Delta;
 import Dominion.Client.abstractClasses.View;
+import Dominion.appClasses.Player;
+import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,8 +20,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -65,10 +70,9 @@ public class Client_View_lobby extends View<Client_Model> {
 
 	    ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();  
 	    sl.setListView();
-	   
-		
-		//resources
+	    sl.setListView_StartInformation();
 
+	    
 		btn_send = new Button("senden");
 		btn_profile = new Button ("Profil");
 		btn_newGame = new Button ("neues Spiel");
@@ -86,29 +90,11 @@ public class Client_View_lobby extends View<Client_Model> {
 		ta.setMaxWidth(500);
 		ta.setMaxHeight(200);
 		
-		/*
-		/**
-	     * auto resize when window is resized
-	     *
-		ta.prefWidthProperty().bind(root.widthProperty());
-		ta.prefHeightProperty().bind(root.heightProperty());
-		*/
-
-		
-		VBox vb1 = new VBox();
-		//HBox hb2 = new HBox();
-		//hb2.getChildren().addAll(lbl_message,tf_message,btn_send);
-
+	
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		//Primäre Panes initialisieren		
+		//Primäre Nodes initialisieren		
 		BorderPane root = new BorderPane();
 		
 		 //X Button top right, wrapper hb_custom menue
@@ -126,31 +112,57 @@ public class Client_View_lobby extends View<Client_Model> {
 	   	hb_custom_menue.setPadding(new Insets(20,15,0,0));		   	
 	   	//************************************************************/
 	   	
-	   	//vb in borderpane center.
+	   	//vbox als wrapper welcher in border pane center kommt
 	    VBox vb_wrapperContent = new VBox();
 		
-	    	//obere hälfte in borderpane center
+	    
+	    	//obere hälfte von vb_wrapperContent ( borderpane center )
 		    HBox hb_wrapper_upperhalf = new HBox();
 			hb_wrapper_upperhalf.setAlignment(Pos.TOP_LEFT);
 			
+			
+		    //Inhalt upperhalf (TableList)
+			//***********************************//
+			//table kreieren//
+			TableView <StartInformation> tablePlayers = new TableView<>();
+			sl.getListView_StartInformation();
+			
+			TableColumn column00 = new TableColumn("User");
+			column00.setMinWidth(50);
+			column00.setCellValueFactory(new PropertyValueFactory<>("User"));
+			
+			TableColumn column01 = new TableColumn("pw");
+			column01.setMinWidth(100);
+			column01.setCellValueFactory(new PropertyValueFactory<>("pw"));
+			
+			tablePlayers.getColumns().addAll(column00,column01);
+			
+		    hb_wrapper_upperhalf.getChildren().addAll(tablePlayers, btn_profile,sl.getListView_StartInformation());
+			sl.getListView_StartInformation().setPrefSize(600,200);
+		    
 			//abstand zwischen upper und lower-half
 			hb_wrapper_upperhalf.setPadding(new Insets(0,0,30,0));
-
-		    hb_wrapper_upperhalf.getChildren().addAll(btn_profile);
 		    
+			
+			
+			
+			
 		    
-		    
-		    VBox vb_wrapper_lowerhalf = new VBox();
+		    //Inhalt lowerhalf(gameList und Chatbox)
+			//***********************************************//
+			
+		    HBox hb_wrapper_lowerhalf = new HBox();
 		
-		    HBox hb_wrapper_gameList_and_Chat = new HBox();
+		    //gameList und Controll Buttons gruppieren
+		    VBox vb_wrapper_gameList = new VBox();
 		    
-		    hb_wrapper_gameList_and_Chat.getChildren().addAll(sl.getListView(),ta);
-	    
+		    HBox hb_wrapper_gameList_ControlBtns = new HBox();
+		    hb_wrapper_gameList_ControlBtns.getChildren().addAll(btn_newGame,btn_enterGame);
+		    
+		    vb_wrapper_gameList.getChildren().addAll(sl.getListView(), hb_wrapper_gameList_ControlBtns);
 	  
 			sl.getListView().setPrefSize(600,200);
 			
-			UpdateLobby update = new UpdateLobby();
-			update.setID();
 			
 			//Chat Wrapper
 			VBox vb_wrapper_chat = new VBox();
@@ -160,24 +172,18 @@ public class Client_View_lobby extends View<Client_Model> {
 			    
 			vb_wrapper_chat.getChildren().addAll(ta, hb_wrapper_chat_control);
 			
-			
-		    HBox hb_wrapper_openGames_Chat = new HBox();
-		    hb_wrapper_openGames_Chat.getChildren().addAll(hb_wrapper_openGames, vb_wrapper_chat);
-		    hb_wrapper_lowerhalf.getChildren().addAll(hb_wrapper_openGames_Chat);
+			hb_wrapper_lowerhalf.getChildren().addAll(vb_wrapper_gameList, vb_wrapper_chat);
+		   
 			   
 
-		    
+			//nodes zusammenbringen
 			vb_wrapperContent.getChildren().addAll(hb_wrapper_upperhalf,hb_wrapper_lowerhalf);
 			vb_wrapperContent.setPadding(new Insets(10,75,10,75));
-
 			
-			try {
-				model.out.writeObject(update);
-				model.out.flush();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			
+			
+
 		    
 		  
 		//Konfiguration Root-Node		
@@ -212,6 +218,28 @@ public class Client_View_lobby extends View<Client_Model> {
 	    });
         
         
+		UpdateLobby update = new UpdateLobby();
+		update.setID();
+		try {
+			model.out.writeObject(update);
+			model.out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		StartInformation startInfo = new StartInformation(model.getName());
+		startInfo.setID();
+		try {
+			model.out.writeObject(startInfo);
+			model.out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+				
+
         
         
         

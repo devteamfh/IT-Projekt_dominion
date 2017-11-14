@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.Player;
+import Dominion.appClasses.StartInformation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -50,6 +51,11 @@ public class ServiceLocatorClient {
     
     private ObservableList<Player> obsList_players = FXCollections.observableArrayList();
     private ListView <Player> playerList;
+    
+    //kab
+    private ObservableList<StartInformation> obsList_StartInformation = FXCollections.observableArrayList();
+    private ListView <StartInformation> LV_StartInformation;
+    
     
 
     /**
@@ -145,6 +151,25 @@ public class ServiceLocatorClient {
 	
 	public void clearListOfOpenGames(){
 		this.obsList.clear();
+	}
+	
+	//kab ListView Start Information
+	public ListView <StartInformation> getListView_StartInformation() {
+		// TODO Auto-generated method stub
+		return this.LV_StartInformation;
+	}
+	//kab
+	public void setListView_StartInformation(){		 
+		 this.LV_StartInformation = new ListView<>(obsList_StartInformation);
+	}
+	//kab
+	public void addNewGame(StartInformation startInfo){
+		this.obsList_StartInformation.add(startInfo);
+		
+	}
+	//kab
+	public void clearList_obsList_StartInformation(){
+		this.obsList_StartInformation.clear();
 	}
 
   
