@@ -7,5 +7,6 @@
 .IT-Projekt_dominion.iml
 .classpath
 .project
-.user.dat
+user.dat
 .user.db
+/IT-Projekt_dominion/bin/
