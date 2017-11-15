@@ -33,9 +33,14 @@ public class customButton extends Button {
 	this.btn.setText("");    
     this.lbl.getStyleClass().add("lbl");
     this.btn.setGraphic(this.lbl);
-	
 	}
-	
+
+	public void setBtnText(String newText) {
+	this.lblText = newText;
+	this.lbl = new Label(this.lblText);
+	this.lbl.getStyleClass().add("lbl");
+	this.btn.setGraphic(this.lbl);
+	}
 	
 	
 	

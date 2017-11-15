@@ -14,12 +14,14 @@ import Dominion.appClasses.GameObject;
 import Dominion.appClasses.Player;
 import Dominion.appClasses.StartInformation;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
 
 
 /**
@@ -89,7 +91,13 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         				if (model.connected){
         					
         		        	view.btn_connect.getStyleClass().removeAll("btn_view","btn_view_hover");            		        				
-        					view.btn_connect.getStyleClass().addAll("btn_view_verbunden");
+        					view.btn_connect.getStyleClass().addAll("btn_view_green");
+							view.btn_connect.setBtnText("Verbunden!");
+
+							view.tf_ip.setDisable(true);
+							view.tf_port.setDisable(true);
+							view.tf_ip.setStyle("-fx-opacity: 0.65;");
+							view.tf_port.setStyle("-fx-opacity: 0.65;");
         		        }				
     			
     				} catch (Exception e) {
@@ -127,13 +135,34 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
 	            	checkFields.getInstance().checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
 
+
+
+	            	//wenn registiert, mache button grün und deaktiviere inputfelder
+	            	if (checkFields.getInstance().getUserRegistred()) {
+						view.btn_register.getStyleClass().removeAll("btn_view","btn_view_hover");
+						view.btn_register.getStyleClass().addAll("btn_view_green");
+
+						view.btn_register.setBtnText("Registriert!");
+						view.tf_userName.setDisable(true);
+						view.tf_password.setDisable(true);
+						view.tf_userName.setStyle("-fx-opacity: 0.65;");
+						view.tf_password.setStyle("-fx-opacity: 0.65;");
+				}
+
+
+
+
+
+
             	}
             	
             }
          });
-          		     		
-    	//login button MouseHandler          		
- 		view.btn_login.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+
+
+            	//login button MouseHandler
+
+		view.btn_login.addEventHandler(MouseEvent.MOUSE_ENTERED,
       		    new EventHandler<MouseEvent>() {
       		        @Override public void handle(MouseEvent e) {
       		        	view.btn_login.getStyleClass().addAll("btn_view_hover");
@@ -147,20 +176,117 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
   		        	view.btn_login.getStyleClass().addAll("btn_view");
   		        }
   		});
-    	   
-        view.btn_login.setOnAction(new EventHandler<ActionEvent>() { 
+
+
+
+        view.btn_login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-           
+
             	if (!model.connected) {
             	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
             	return;
             	}
-            	
+
             	checkFields.getInstance().checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
 
-            	
-            	if (model.connected && checkFields.getInstance().getUserPwOk()){
+
+
+/*
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run()
+						{
+							view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");
+							view.btn_login.getStyleClass().addAll("btn_view_green");
+
+							String dot = ".";
+							for (int i = 0;i < 3; i++) {
+								try {
+									Thread.sleep(500);
+									view.btn_login.setBtnText("Login" + dot);
+									dot = dot + ".";
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						}});
+						*/
+
+            	if (model.connected && checkFields.getInstance().getUserPwOk()) {
+
+
+					/*	Task task = new Task<Void>() {
+							@Override
+							public Void call() throws Exception {
+								int i = 0;
+								String dot = ".";
+								while (i != 1) {
+									final int finalI = i;
+									final String finalDot = dot;
+									Platform.runLater(new Runnable() {
+										@Override
+										public void run() {
+											view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");
+											view.btn_login.getStyleClass().addAll("btn_view_green");
+
+											view.btn_login.setBtnText("Login" + finalDot);
+
+
+										}
+									});
+									i++;
+									dot = dot + ".";
+									Thread.sleep(500);
+								}
+								return null;
+							}
+						};
+						Thread th = new Thread(task);
+						th.setDaemon(true);
+						th.start();
+
+						try {
+							th.wait();
+						} catch (Exception e) {
+
+						}*/
+
+
+
+
+/*
+					Task task = new Task<Void>() {
+						@Override public Void call() {
+							view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");
+							view.btn_login.getStyleClass().addAll("btn_view_green");
+
+							String dot = ".";
+							for (int i = 0;i < 3; i++) {
+								try {
+									Thread.sleep(1000);
+									view.btn_login.setBtnText("Login" + dot);
+									dot = dot + ".";
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+
+							return null;
+						}
+					};
+
+
+					new Thread(task).start();
+
+*/
+
+
+
+
+
+
+
             		String name = view.tf_userName.getText();
                 	model.setName(name);
                 	Player player = new Player (name,model.getOutput());
