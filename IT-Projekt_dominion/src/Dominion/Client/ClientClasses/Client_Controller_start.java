@@ -286,7 +286,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
 
 
-
+					view.tf_userName.setDisable(false);
             		String name = view.tf_userName.getText();
                 	model.setName(name);
                 	Player player = new Player (name,model.getOutput());
