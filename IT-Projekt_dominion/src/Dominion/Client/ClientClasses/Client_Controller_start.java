@@ -13,14 +13,17 @@ import Dominion.Client.abstractClasses.Model;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.Player;
 import Dominion.appClasses.StartInformation;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 
 
@@ -36,6 +39,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
     
     Client_View_start view;
     InetAddress addr;
+    private String str_Dot = ".";
+
 
     public Client_Controller_start(Client_Model model, Client_View_start view) {
         super(model, view);
@@ -150,10 +155,6 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 				}
 
 
-
-
-
-
             	}
             	
             }
@@ -177,7 +178,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
   		        }
   		});
 
-
+  
 
         view.btn_login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -190,102 +191,14 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
             	checkFields.getInstance().checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
 
-
-
-/*
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run()
-						{
-							view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");
-							view.btn_login.getStyleClass().addAll("btn_view_green");
-
-							String dot = ".";
-							for (int i = 0;i < 3; i++) {
-								try {
-									Thread.sleep(500);
-									view.btn_login.setBtnText("Login" + dot);
-									dot = dot + ".";
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-						}});
-						*/
-
+          
             	if (model.connected && checkFields.getInstance().getUserPwOk()) {
 
-
-					/*	Task task = new Task<Void>() {
-							@Override
-							public Void call() throws Exception {
-								int i = 0;
-								String dot = ".";
-								while (i != 1) {
-									final int finalI = i;
-									final String finalDot = dot;
-									Platform.runLater(new Runnable() {
-										@Override
-										public void run() {
-											view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");
-											view.btn_login.getStyleClass().addAll("btn_view_green");
-
-											view.btn_login.setBtnText("Login" + finalDot);
-
-
-										}
-									});
-									i++;
-									dot = dot + ".";
-									Thread.sleep(500);
-								}
-								return null;
-							}
-						};
-						Thread th = new Thread(task);
-						th.setDaemon(true);
-						th.start();
-
-						try {
-							th.wait();
-						} catch (Exception e) {
-
-						}*/
-
-
-
-
-/*
-					Task task = new Task<Void>() {
-						@Override public Void call() {
-							view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");
-							view.btn_login.getStyleClass().addAll("btn_view_green");
-
-							String dot = ".";
-							for (int i = 0;i < 3; i++) {
-								try {
-									Thread.sleep(1000);
-									view.btn_login.setBtnText("Login" + dot);
-									dot = dot + ".";
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-
-							return null;
-						}
-					};
-
-
-					new Thread(task).start();
-
-*/
-
-
-
-
-
-
+	            	view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");
+					view.btn_login.getStyleClass().addAll("btn_view_green");	
+					view.btn_login.setBtnText("entering...");					
+					
+				
 					view.tf_userName.setDisable(false);
             		String name = view.tf_userName.getText();
                 	model.setName(name);
@@ -306,8 +219,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 			    	Stage lobby_stage = new Stage();				
 			        Client_View_lobby view2 = new Client_View_lobby(lobby_stage, model);
 			        new Client_Controller_lobby(model, view2); 
-			        view2.start();
-			        view.stop();
+			       view2.start();
+			       view.stop();
 	            	}                                             	
     			
             }
@@ -339,7 +252,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	}
             	
             view.stop();
-            	 	
+         
             }
         });	                
     }
