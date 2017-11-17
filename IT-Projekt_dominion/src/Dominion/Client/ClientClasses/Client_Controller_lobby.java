@@ -63,7 +63,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
          * @author Joel Henz:
          * action event for the chat program (sending the message by clicking on "Senden" button)
          * */
-        view.send.setOnAction(new EventHandler<ActionEvent>() {
+        view.btn_send.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 sendMessageToServer();
@@ -92,14 +92,14 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 			@Override
 			public void handle(MouseEvent event) {
 				if(!sl.getListView().getSelectionModel().isEmpty()){
-					view.enterGame.setDisable(false);					
+					view.btn_enterGame.setDisable(false);					
 					joinGame = sl.getListView().getSelectionModel().getSelectedItem();
 				}
 				
 			}
 		});
        
-       view.enterGame.setOnAction(new EventHandler<ActionEvent>() {
+       view.btn_enterGame.setOnAction(new EventHandler<ActionEvent>() {
            @Override
            public void handle(ActionEvent event) {
         	   /**Stage playingStage = new Stage();				
@@ -107,7 +107,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 		       new Client_Controller_playingStage(model, view_playingStage); 
 		       view_playingStage.start();*/
 		       
-        	   view.enterGame.setDisable(true);
+        	   view.btn_enterGame.setDisable(true);
         	   JoinGameParty gameToJoin = new JoinGameParty(joinGame,model.getName());
         	   
         	   try {
@@ -126,7 +126,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
          * @author Joel Henz
          *opens a new stage for creating the configs of a new game
          * */
-        view.newGame.setOnAction(new EventHandler<ActionEvent>() {
+        view.btn_newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	Stage createNewGame = new Stage();

@@ -2,8 +2,13 @@
 /*Client View Start -BEGIN- */
 /*---------------------------------------------------------------------------------------- */
 /*author: Beda Kaufmann */
-.background {
-	-fx-background-image: url('img/bg_screen_login.png');
+.bg_login {
+	-fx-background-image: url('img/bg_login.png');
+	-fx-background-repeat: stretch;
+}
+
+.bglobby {
+	-fx-background-image: url('img/bg_lobby.png');
 	-fx-background-repeat: stretch;
 }
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.View;
+import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,8 +16,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -32,10 +36,11 @@ import javafx.stage.Stage;
  * @author Brad Richards (MVC Pattern), Joel Henz (GUI)
  */
 public class Client_View_lobby extends View<Client_Model> {
-    Button send;
-    Button profile;
-    Button newGame;
-    Button enterGame;
+    Button btn_send;
+    Button btn_profile;
+    Button btn_newGame;
+    Button btn_enterGame;
+    Button btn_close;
     
     TextField tf_message;
 
@@ -58,16 +63,15 @@ public class Client_View_lobby extends View<Client_Model> {
 
 	    ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();  
 	    sl.setListView();
-	    
-		BorderPane root = new BorderPane();
-		
+	    	
 		//resources
 
-		send = new Button("senden");
-		profile = new Button ("Profil");
-		newGame = new Button ("neues Spiel");
-		enterGame = new Button ("Spiel beitreten");
-		enterGame.setDisable(true);
+		btn_send = new Button("senden");
+		btn_profile = new Button ("Profil");
+		btn_newGame = new Button ("neues Spiel");
+		btn_enterGame = new Button ("Spiel beitreten");
+		btn_enterGame.setDisable(true);
+		
 		
 		tf_message = new TextField();
 		name = new Label();
@@ -80,50 +84,102 @@ public class Client_View_lobby extends View<Client_Model> {
 		ta.setMaxWidth(500);
 		ta.setMaxHeight(200);
 		
-		/**
-	     * auto resize when window is resized
-	     */
-		ta.prefWidthProperty().bind(root.widthProperty());
-		ta.prefHeightProperty().bind(root.heightProperty());
-		
-		VBox vb1 = new VBox();
-		HBox hb2 = new HBox();
-		hb2.getChildren().addAll(message,tf_message,send);
-		
-		vb1.getChildren().addAll(name,hb2);
-		
-		HBox hb1 = new HBox();
-		hb1.getChildren().addAll(profile,vb1,ta);
-		HBox.setMargin(profile, new Insets(0,20,0,0));
-		//hb1.setAlignment(Pos.CENTER);
-		
-		ScrollPane sp1 = new ScrollPane();
+		//Primäre Nodes initialisieren		
+				BorderPane root = new BorderPane();
+				
+				 //X Button top right, wrapper hb_custom menue
+			    HBox hb_custom_menue = new HBox();
+			      
+			   	btn_close = new Button();
+				btn_close.setPrefSize(35, 33);
+			   	btn_close.getStyleClass().addAll("btn","btn_close_normal");
+			   	btn_close.setAlignment(Pos.TOP_RIGHT);
+			   	
+			    HBox spacer =  new HBox();
+			   	HBox.setHgrow(spacer, Priority.ALWAYS);
+			   	
+			   	hb_custom_menue.getChildren().addAll(spacer, btn_close);
+			   	hb_custom_menue.setPadding(new Insets(20,15,0,0));		   	
+			   	//************************************************************/
+			   	
+			   	//vbox als wrapper welcher in border pane center kommt
+			    VBox vb_wrapperContent = new VBox();
+				
+			    
+			    	//obere hälfte von vb_wrapperContent ( borderpane center )
+				    HBox hb_wrapper_upperhalf = new HBox();
+					hb_wrapper_upperhalf.setAlignment(Pos.TOP_LEFT);
+					
+					
+				    //Inhalt upperhalf (TableList)
+					//***********************************//
+					//table kreieren//
+					TableView <StartInformation> tablePlayers = new TableView<>();
+					sl.getListView_StartInformation();
+					
+					TableColumn column00 = new TableColumn("User");
+					column00.setMinWidth(50);
+					column00.setCellValueFactory(new PropertyValueFactory<>("User"));
+					
+					TableColumn column01 = new TableColumn("pw");
+					column01.setMinWidth(100);
+					column01.setCellValueFactory(new PropertyValueFactory<>("pw"));
+					
+					tablePlayers.getColumns().addAll(column00,column01);
+					
+				    hb_wrapper_upperhalf.getChildren().addAll(tablePlayers, btn_profile,sl.getListView_StartInformation());
+					sl.getListView_StartInformation().setPrefSize(600,200);
+				    
+					//abstand zwischen upper und lower-half
+					hb_wrapper_upperhalf.setPadding(new Insets(0,0,30,0));
+				    
+					
+					
+					
+					
+				    
+				    //Inhalt lowerhalf(gameList und Chatbox)
+					//***********************************************//
+					
+				    HBox hb_wrapper_lowerhalf = new HBox();
+				
+				    //gameList und Controll Buttons gruppieren
+				    VBox vb_wrapper_gameList = new VBox();
+				    
+				    HBox hb_wrapper_gameList_ControlBtns = new HBox();
+				    hb_wrapper_gameList_ControlBtns.getChildren().addAll(btn_newGame,btn_enterGame);
+				    
+				    vb_wrapper_gameList.getChildren().addAll(sl.getListView(), hb_wrapper_gameList_ControlBtns);
+			  
+					sl.getListView().setPrefSize(600,200);
+					
+					
+					//Chat Wrapper
+					VBox vb_wrapper_chat = new VBox();
+					HBox hb_wrapper_chat_control = new HBox();
+					hb_wrapper_chat_control.getChildren().addAll(tf_message, btn_send);
+					hb_wrapper_chat_control.setPadding(new Insets(10,10,0,0));
+					    
+					vb_wrapper_chat.getChildren().addAll(ta, hb_wrapper_chat_control);
+					
+					hb_wrapper_lowerhalf.getChildren().addAll(vb_wrapper_gameList, vb_wrapper_chat);
+				   
+					   
 
-		sp1.setContent(sl.getListView());
-		
-		//each client can see all games which are currently open to enter. With the UpdateLobby object, the client sends a request to server for getting the list of the open games
-		UpdateLobby update = new UpdateLobby();
-		
-		try {
-			model.out.writeObject(update);
-			model.out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		HBox hb3 = new HBox();
-		hb3.getChildren().addAll(sp1,enterGame);
-		
-		root.setTop(hb1);
-		root.setLeft(newGame);
-		root.setBottom(hb3);
+					//nodes zusammenbringen
+					vb_wrapperContent.getChildren().addAll(hb_wrapper_upperhalf,hb_wrapper_lowerhalf);
+					vb_wrapperContent.setPadding(new Insets(10,75,10,75));
+					
+					
+					
+					
 
-		sp1.setVmax(440);
-        sp1.setPrefSize(115, 150);
-
+				    
+				  
+				//Konfiguration Root-Node		
+				root.setTop(hb_custom_menue);
+				root.setCenter(vb_wrapperContent);
+				root.getStyleClass().add("background_lobby");
 		this.scene = new Scene (root, 800,800);
 
         return scene;
