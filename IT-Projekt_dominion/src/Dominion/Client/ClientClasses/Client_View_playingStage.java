@@ -32,22 +32,10 @@ import javafx.stage.Stage;
  */
 public class Client_View_playingStage extends View<Client_Model> {
 	ServiceLocatorClient sl;
-    Label chooseTypeOfGame;
-    Label numberOfRounds; //->Wert kann man nur eingeben, wenn Modus gewählt worden ist
-    Label numberOfPlayers;
-	
-	RadioButton endOfGame1;
-	RadioButton endOfGame2;
-	
-	RadioButton twoPlayer;
-	RadioButton threePlayer;
-	RadioButton fourPlayer;
-	
-	Button finish;
-	Button cancel;
+	Button endGameHost;
 
-	public Client_View_playingStage(Stage stage, Client_Model model) {
-		super(stage, model);
+	public Client_View_playingStage(Stage stage, Client_Model model, boolean isHost) {
+		super(stage, model,isHost);
         stage.setTitle("Dominion - Spielplattform");
     }
 	
@@ -67,13 +55,18 @@ public class Client_View_playingStage extends View<Client_Model> {
 		Label player3 = new Label("Spieler2");
 		Label player4 = new Label("Spieler2");
 		
+		//if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
+		//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
+		//will be evaluated as a loss.
+		this.endGameHost = new Button ("Spiel abbrechen (Host)");
+		
 		vb_player.getChildren().addAll(player1,player2);
 		root.setTop(vb_player);
 		vb_player.setAlignment(Pos.TOP_RIGHT);
 		vb_player.setPrefHeight(60.0);
 		
 		//setting the treasure and point cards to buy
-		GridPane gr_left = new GridPane();
+		GridPane gp_left = new GridPane();
 		
 		Button province = new Button ("Province");
 		Button duchy = new Button ("Duchy");
@@ -93,10 +86,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 		GridPane.setConstraints(silver, 1, 1);
 		GridPane.setConstraints(copper, 1, 2);
 		
-		gr_left.getChildren().addAll(province,duchy,estate,curse,gold,silver,copper);
+		gp_left.getChildren().addAll(province,duchy,estate,curse,gold,silver,copper);
 		
 		VBox vb_center = new VBox();
-		GridPane gr_actionCards = new GridPane();
+		GridPane gp_actionCards = new GridPane();
 		
 		Button action1 = new Button ("action1");
 		Button action2 = new Button ("action1");
@@ -120,9 +113,9 @@ public class Client_View_playingStage extends View<Client_Model> {
 		GridPane.setConstraints(action9, 3, 1);
 		GridPane.setConstraints(action10, 4, 1);
 		
-		gr_actionCards.getChildren().addAll(action1,action2,action3,action4,action5,action6,action7,action8,action9,action10);
+		gp_actionCards.getChildren().addAll(action1,action2,action3,action4,action5,action6,action7,action8,action9,action10);
 		
-		vb_center.getChildren().add(gr_actionCards);
+		vb_center.getChildren().add(gp_actionCards);
 		
 		Label playedCards_label = new Label ("gespielte Karten");
 		vb_center.getChildren().add(playedCards_label);
@@ -135,10 +128,13 @@ public class Client_View_playingStage extends View<Client_Model> {
 		playedCards_hbox.getChildren().addAll(playedCard1,playedCard2,playedCard3);
 		vb_center.getChildren().add(playedCards_hbox);
 		
-		root.setLeft(gr_left);
-		BorderPane.setMargin(gr_left, new Insets(0, 20, 0, 0));
+		root.setLeft(gp_left);
+		BorderPane.setMargin(gp_left, new Insets(0, 20, 0, 0));
 		root.setCenter(vb_center);
-
+		
+		if(super.isHost){
+			root.setBottom(endGameHost);
+		}
 		
 		this.scene = new Scene (root, 800,800);
 

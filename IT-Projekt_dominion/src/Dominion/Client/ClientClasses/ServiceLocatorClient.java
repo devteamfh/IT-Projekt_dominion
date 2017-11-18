@@ -47,6 +47,9 @@ public class ServiceLocatorClient {
     private ObservableList<GameParty> obsList = FXCollections.observableArrayList();
     
     private ListView <GameParty> gameList;
+    
+    private Client_View_playingStage view_playingStage;
+    
 
     /**
      * Factory method for returning the singleton
@@ -150,11 +153,22 @@ public class ServiceLocatorClient {
 				
 				if (newValue.getLoggedInPlayers() < newValue.getMaxNumberOfPlayers()){
 					this.obsList.add(newValue);
+					System.out.println("test add");
 				}
 				
 				break;
 			}
 		}
 		
-	}  
+	} 
+	
+	public void setView_playingStage (Client_View_playingStage view){
+		this.view_playingStage=view;
+	}
+	
+	public Client_View_playingStage getPlayingStage(){
+		return this.view_playingStage;
+	}
+	
+
 }

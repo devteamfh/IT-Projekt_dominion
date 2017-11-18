@@ -56,7 +56,7 @@ public class Client_Model extends Model {
 			/** 
 		     * this thread will read the messages from the server
 		     */
-			t1 = new Thread (new ReadMsgFromServer(this.getInput()));
+			t1 = new Thread (new ReadMsgFromServer(this.getInput(),this));
 	        t1.start();			
 		} catch (ConnectException e) {
 			sl.getLogger().info("Netzwerkverbindung konnte nicht hergestellt werden");

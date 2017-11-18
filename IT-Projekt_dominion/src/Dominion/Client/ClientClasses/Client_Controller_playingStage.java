@@ -3,6 +3,7 @@ package Dominion.Client.ClientClasses;
 import java.io.IOException;
 
 import Dominion.Client.abstractClasses.Controller;
+import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import javafx.application.Platform;
@@ -25,12 +26,26 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
     /**
      * @author Joel Henz
      * */
-    public Client_Controller_playingStage(Client_Model model, Client_View_playingStage view) {
+    public Client_Controller_playingStage(Client_Model model, Client_View_playingStage view, GameParty gameParty) {
         super(model, view);
         this.view_playingStage = view;
-        sl = ServiceLocatorClient.getServiceLocator();
-
+        sl = ServiceLocatorClient.getServiceLocator(); 
         
+        view.endGameHost.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	CancelGame cancel = new CancelGame(gameParty);
+            	try {
+					model.out.writeObject(cancel);
+					model.out.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	
+            	
+            }
+        });
     }
 
 	

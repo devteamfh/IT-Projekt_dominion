@@ -17,6 +17,7 @@ public abstract class View<M extends Model> {
     protected Scene scene;
     protected M model;
     protected String name;
+    protected boolean isHost;
     
     /**
      * Set any options for the stage in the subclass constructor
@@ -28,6 +29,16 @@ public abstract class View<M extends Model> {
     protected View(Stage stage, M model) {
         this.stage = stage;
         this.model = model;
+        
+        scene = create_GUI(); // Create all controls within "root"
+        stage.setScene(scene);
+    }
+    
+    //only needed for Client_View_playingStage
+    protected View(Stage stage, M model, boolean isHost) {
+        this.stage = stage;
+        this.model = model;
+        this.isHost=isHost;
         
         scene = create_GUI(); // Create all controls within "root"
         stage.setScene(scene);

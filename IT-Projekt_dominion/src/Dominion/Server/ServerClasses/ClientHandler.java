@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
@@ -83,7 +84,7 @@ public class ClientHandler implements Runnable {
 			 
 			//on server-side we must store the ObjectOutpuStream within the Player object
 			 GamePartyOnServer newGameOnServer = new GamePartyOnServer (game);
-			 Player current_player = new Player (game.getCreator(), this.out);
+			 Player current_player = new Player (game.getHost(), this.out);
 			 newGameOnServer.addPlayer(current_player);
 			 
 			 sl.addNewGame(newGameOnServer);
@@ -154,16 +155,18 @@ public class ClientHandler implements Runnable {
 				 Iterator <GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
 				 
 				 while (iterGamePartyOnServer.hasNext()){
-					 gamePartyListClient.add(iterGamePartyOnServer.next().getGameParty());
+					 GamePartyOnServer currentGamePartyOnServer = iterGamePartyOnServer.next();
+					 
+					 if(!(currentGamePartyOnServer.getGameParty().getLoggedInPlayers() == currentGamePartyOnServer.getGameParty().getMaxNumberOfPlayers())){
+						 gamePartyListClient.add(currentGamePartyOnServer.getGameParty());
+					 }
 				 }
-				 
+			 
 				 toUpdate.setListOfOpenGames(gamePartyListClient);
 				 
 				 this.out.reset();
 				 this.out.writeObject(toUpdate);
-				 this.out.flush();
-		
-				 
+				 this.out.flush();				 
 			 }
 			 break;
 		 
@@ -179,6 +182,33 @@ public class ClientHandler implements Runnable {
 			 sl.addConnectedPlayer(newPlayer);
 
 			 break;
+			 
+		 case CancelGame:
+			 CancelGame cancel = (CancelGame) obj;
+			 GameParty gamePartyToCancel = cancel.getGameParty();
+			 
+			 //searching the correspondent GamePartyOnServer to write to the players of this GameParty
+			 long id2 = gamePartyToCancel.getID();
+			 Iterator <GamePartyOnServer> iterGameParty2 = sl.getGameListFromServer().iterator();
+			 
+			 GamePartyOnServer currentGame2=null;
+			 
+			 while(iterGameParty2.hasNext()){				 
+				 
+				 currentGame2 = iterGameParty2.next();
+				 if(currentGame2.getGameParty().getID()== id2){
+					 break;
+				 }
+			 }
+			 
+			 //writing the CancelGame object to all players of the GameParty
+			 for(int i=0; i < currentGame2.getPlayerList().size(); i++){
+				 Player current = currentGame2.getPlayerList().get(i);
+				 current.getOut().writeObject(cancel);
+				 current.getOut().flush();
+				// current.getOut().reset();
+			 }
+			 
 			 
 		 default:
 		 }

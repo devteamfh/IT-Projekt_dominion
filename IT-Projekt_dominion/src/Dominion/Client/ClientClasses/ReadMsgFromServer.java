@@ -7,9 +7,12 @@ import java.util.Iterator;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.JoinGameParty;
 import Dominion.appClasses.UpdateGameParty;
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * @author Joel Henz: 
@@ -19,9 +22,11 @@ public class ReadMsgFromServer implements Runnable {
 	ObjectInputStream in;
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	ChatMessageLobby msg;
+	Client_Model model;
 	
-	public ReadMsgFromServer (ObjectInputStream in){
+	public ReadMsgFromServer (ObjectInputStream in, Client_Model model){
 		this.in = in;	
+		this.model=model;
 	}
 
 	@Override
@@ -86,9 +91,37 @@ public class ReadMsgFromServer implements Runnable {
 					break;
 					
 				case JoinGameParty:
+					JoinGameParty join=(JoinGameParty) obj;
+					GameParty gamePartyToJoin=join.getSelectedGameParty();
+					
+					Platform.runLater(new Runnable() {
+
+						@Override 
+				           public void run() {
+				        	   Stage playingStage = new Stage();			
+				        	   playingStage.initModality(Modality.APPLICATION_MODAL);
+				        	   Client_View_playingStage view = new Client_View_playingStage (playingStage, model,false);
+				        	   sl.setView_playingStage(view);
+				        	   new Client_Controller_playingStage(model, sl.getPlayingStage(),gamePartyToJoin); 
+				        	   sl.getPlayingStage().start();
+						}
+				       });
 					
 					
-											
+					break;
+					
+				case CancelGame:
+					Platform.runLater(new Runnable() {
+
+						@Override 
+				           public void run() {
+								sl.getPlayingStage().stop();
+								
+				           }
+				      });
+					
+				break;
+								
 				default:
 				}
 		

@@ -1,5 +1,8 @@
 package Dominion.appClasses;
 
+/**
+ * @author Joel Henz
+ */
 public class JoinGameParty extends GameObject {
 	
 	private static final long serialVersionUID = 1;

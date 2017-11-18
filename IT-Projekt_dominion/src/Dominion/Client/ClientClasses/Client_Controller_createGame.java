@@ -125,9 +125,10 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	
             	Stage playingStage = new Stage();			
             	playingStage.initModality(Modality.APPLICATION_MODAL);
-		        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model);
-		        new Client_Controller_playingStage(model, view_playingStage); 
-		        view_playingStage.start();
+		        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model,true);
+		        sl.setView_playingStage(view_playingStage);
+		        new Client_Controller_playingStage(model, sl.getPlayingStage(), newParty); 
+		        sl.getPlayingStage().start();
 		        view_createGame.stop();        			
             }
         });

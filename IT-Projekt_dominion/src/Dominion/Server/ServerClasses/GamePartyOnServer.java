@@ -13,7 +13,7 @@ import Dominion.appClasses.Player;
 public class GamePartyOnServer {
 	
 	private ArrayList <Player> playerList = new ArrayList <Player>();
-	GameParty party;
+	private GameParty party;
 
 	public GamePartyOnServer(GameParty party) {
 		this.party=party;
@@ -26,6 +26,10 @@ public class GamePartyOnServer {
 	
 	public GameParty getGameParty(){
 		return this.party;
+	}
+	
+	public ArrayList <Player> getPlayerList(){
+		return this.playerList;
 	}
 	
 

@@ -30,6 +30,7 @@ public class ServiceLocatorServer {
     private Logger logger = Logger.getLogger("");
     private ArrayList <GamePartyOnServer> listOfOpenGamePartiesOnServer = new ArrayList <GamePartyOnServer>();
     private ArrayList<Player> connectedPlayers = new ArrayList<Player>();
+   
     
 
     /**
@@ -67,6 +68,10 @@ public class ServiceLocatorServer {
     
     public void addNewGame(GamePartyOnServer party){
     	this.listOfOpenGamePartiesOnServer.add(party);
+    }
+    
+    public void removeFullGame(GamePartyOnServer party){
+    	this.listOfOpenGamePartiesOnServer.remove(party);
     }
     
     public ArrayList <GamePartyOnServer> getGameListFromServer(){

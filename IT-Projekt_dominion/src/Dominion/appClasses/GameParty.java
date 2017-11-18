@@ -15,7 +15,7 @@ public class GameParty extends GameObject{
 	private static long messageID = 0;
 	
 	private String selectedMode;
-	private String creator;
+	private String host;
 	private int numberOfMaxPlayers;
 	private int numberOfLoggedInPlayers = 0;
 	private String [] playersOfThisGameParty;
@@ -24,10 +24,10 @@ public class GameParty extends GameObject{
 		return messageID++;
 	}
 	
-	public GameParty(String selectedMode, String creator, int number){
+	public GameParty(String selectedMode, String host, int number){
 		super(GameObject.ObjectType.GameParty);
 		this.selectedMode=selectedMode;
-		this.creator=creator;
+		this.host=host;
 		this.numberOfMaxPlayers=number;
 		this.playersOfThisGameParty = new String [this.numberOfMaxPlayers];
 		this. id = -1;	
@@ -44,11 +44,11 @@ public class GameParty extends GameObject{
 	}
 	
 	public String toString(){
-		return "Host: "+this.creator+", "+this.selectedMode+", "+this.numberOfLoggedInPlayers+" Spieler von "+this.numberOfMaxPlayers+" eingeloggt";
+		return "Host: "+this.host+", "+this.selectedMode+", "+this.numberOfLoggedInPlayers+" Spieler von "+this.numberOfMaxPlayers+" eingeloggt";
 	}
 	
-	public String getCreator(){
-		return this.creator;
+	public String getHost(){
+		return this.host;
 	}
 	
 	//adding the player who is entering an existing GameParty (choosing from the ListView in the lobby)

@@ -3,6 +3,7 @@ package Dominion.Client;
 import Dominion.Client.ClientClasses.Client_Controller_start;
 import Dominion.Client.ClientClasses.Client_Model;
 import Dominion.Client.ClientClasses.Client_View_start;
+import Dominion.Client.ClientClasses.ServiceLocatorClient;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 public class Client extends Application {
 	
 	private Client_View_start view;
+	private ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
 	public static void main(String[] args) {		
 		launch (args);
