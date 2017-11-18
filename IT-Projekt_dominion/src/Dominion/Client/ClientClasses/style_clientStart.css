@@ -2,8 +2,13 @@
 /*Client View Start -BEGIN- */
 /*---------------------------------------------------------------------------------------- */
 /*author: Beda Kaufmann */
-.background {
-	-fx-background-image: url('img/bg_screen_login.png');
+.bg_login {
+	-fx-background-image: url('img/bg_login.png');
+	-fx-background-repeat: stretch;
+}
+
+.bg_lobby {
+	-fx-background-image: url('img/bg_lobby_big2.png');
 	-fx-background-repeat: stretch;
 }
 
@@ -38,7 +43,16 @@
 }
 
 .btn_view_green {
-	  -fx-background-image: url('img/btn_verbunden.png');
+	  -fx-background-image: url('img/btn_view_green.png');
+}
+
+.btn_sendChatMsg {
+	  -fx-background-image: url('img/btn_chat_blue_small.png');  
+}
+
+.btn_sendChatMsg_hover {
+	  -fx-background-image: url('img/btn_chat_blue_small_hover.png');
+	  
 }
 
 

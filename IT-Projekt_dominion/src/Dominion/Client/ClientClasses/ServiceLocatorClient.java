@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.StartInformation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -51,6 +52,9 @@ public class ServiceLocatorClient {
     private Client_View_playingStage view_playingStage;
     
 
+    private ObservableList<StartInformation> ol_StartInformation = FXCollections.observableArrayList();
+    private ListView <StartInformation> lv_StartInformation;
+    
     /**
      * Factory method for returning the singleton
      * @param mainClass The main class of this program
@@ -169,6 +173,15 @@ public class ServiceLocatorClient {
 	public Client_View_playingStage getPlayingStage(){
 		return this.view_playingStage;
 	}
-	
 
+	
+	
+	
+	public void setListView_StartInformation(){
+		 this.lv_StartInformation = new ListView<>(ol_StartInformation);
+	}
+	
+	public ListView <StartInformation> getListView_StartInformation(){
+		return this.lv_StartInformation;
+	}
 }

@@ -110,7 +110,7 @@ public class Client_View_start extends View<Client_Model> {
 			lbl_password.setPadding(new Insets(0,0,0,20));
 			
 			
-			//Buttons: Abstï¿½nde festlegen und in gp einfï¿½gen    
+			//Buttons: Abstände festlegen und einfügen    
 			btn_connect.setPrefSize(206, 54);
 			btn_register.setPrefSize(206,54);
 			btn_login.setPrefSize(206, 54);
@@ -131,8 +131,9 @@ public class Client_View_start extends View<Client_Model> {
 			gp_wrapper.add(hb_BtnRegister, 3, 2);
 			gp_wrapper.add(hb_BtnLogin, 5, 2);
 			
+			
 
-		    //X Button top right, wrapper hb_custom menue
+		    //Close_Button top right, wrapper hb_custom menue
 		    HBox hb_custom_menue = new HBox();
 		      
 		   	btn_close = new Button();
@@ -149,7 +150,7 @@ public class Client_View_start extends View<Client_Model> {
 		   	
 		   	//Konfiguration Root-Node
 		    BorderPane root = new BorderPane();
-			root.getStyleClass().add("background");
+			root.getStyleClass().add("bg_login");
 			
 		    root.setPrefWidth(1200);
 			root.setPrefHeight(600);

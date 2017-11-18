@@ -37,12 +37,16 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
         super(model, view);
         this.view = view;
         sl = ServiceLocatorClient.getServiceLocator();
-               
+             
+        
+        
+        
+        /* kab ausgeblendet da eigener close btn gemacht
         /**
          * @author Joel Henz
          * register ourselves to handle window-closing event
          * interrupts all client threads and closes all client sockets
-         * */
+         * *
         view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
@@ -58,17 +62,79 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
                 Platform.exit();
             }
         });
+        */
+        
+        
+        
+     // Button Close Style Hover und Action press
+    	view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+      		    new EventHandler<MouseEvent>() {
+      		        @Override public void handle(MouseEvent e) {
+      		        	view.btn_close.getStyleClass().addAll("btn_close_hover");
+      		        	view.btn_close.getStyleClass().remove("btn_close_normal");
+      		        }
+  		});
+		      		
+		      		
+  		view.btn_close.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_close.getStyleClass().remove("btn_close_hover");
+  		        	view.btn_close.getStyleClass().addAll("btn_close_normal");
+  		        }
+  		});
+		        
+        view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
+            @Override
+            public void handle(ActionEvent event) {
+            
+            	model.t1.interrupt();
+                
+                try {
+					model.client.close();				
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+              
+                Platform.exit();
+            }
+            });
+        
+        
+        
+        
+        
+        
         
         /**
          * @author Joel Henz:
          * action event for the chat program (sending the message by clicking on "Senden" button)
          * */
-        view.send.setOnAction(new EventHandler<ActionEvent>() {
+        view.btn_sendChatMsg.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 sendMessageToServer();
             }
         });
+        
+       	//Button enterGame verhalten
+    	view.btn_sendChatMsg.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+    		    new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_sendChatMsg.getStyleClass().addAll("btn_sendChatMsg_hover");
+    		        	view.btn_sendChatMsg.getStyleClass().remove("btn_sendChatMsg");
+    		        }
+    		});
+     		
+    		view.btn_sendChatMsg.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_sendChatMsg.getStyleClass().remove("btn_sendChatMsg_hover");
+    		        	view.btn_sendChatMsg.getStyleClass().addAll("btn_sendChatMsg");
+    		        }
+    		});
+        
+       
         
         /**
          * @author Joel Henz
@@ -92,22 +158,23 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 			@Override
 			public void handle(MouseEvent event) {
 				if(!sl.getListView().getSelectionModel().isEmpty()){
-					view.enterGame.setDisable(false);					
+					view.btn_enterGame.setDisable(false);					
 					joinGame = sl.getListView().getSelectionModel().getSelectedItem();
 				}
 				
 			}
 		});
        
-       view.enterGame.setOnAction(new EventHandler<ActionEvent>() {
+       view.btn_enterGame.setOnAction(new EventHandler<ActionEvent>() {
            @Override
            public void handle(ActionEvent event) {
         	   /**Stage playingStage = new Stage();				
 		       Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model);
 		       new Client_Controller_playingStage(model, view_playingStage); 
 		       view_playingStage.start();*/
+        	   
 		       
-        	   view.enterGame.setDisable(true);
+        	   view.btn_enterGame.setDisable(true);
         	   JoinGameParty gameToJoin = new JoinGameParty(joinGame,model.getName());
         	   
         	   try {
@@ -120,27 +187,67 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 			}
            }
        });
+       
+       
+       
+		   	//Button enterGame verhalten
+			view.btn_enterGame.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+				    new EventHandler<MouseEvent>() {
+				        @Override public void handle(MouseEvent e) {
+				        	view.btn_enterGame.getStyleClass().addAll("btn_view_hover");
+				        	view.btn_enterGame.getStyleClass().remove("btn_view");
+				        }
+				});
+		 		
+				view.btn_enterGame.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+				        @Override public void handle(MouseEvent e) {
+				        	view.btn_enterGame.getStyleClass().remove("btn_view_hover");
+				        	view.btn_enterGame.getStyleClass().addAll("btn_view");
+				        }
+				});
         
         
         /**
          * @author Joel Henz
          *opens a new stage for creating the configs of a new game
          * */
-        view.newGame.setOnAction(new EventHandler<ActionEvent>() {
+        view.btn_newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	Stage createNewGame = new Stage();
             	createNewGame.initModality(Modality.APPLICATION_MODAL);
+            	
                 
-                view2 = new Client_View_createGame(createNewGame, model);
+		        	view2 = new Client_View_createGame(createNewGame, model);
                 new Client_Controller_createGame(model, view2);
 
                 view2.start();
             }
         });
         
+	   	//Button enterGame verhalten
+		view.btn_newGame.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+			    new EventHandler<MouseEvent>() {
+			        @Override public void handle(MouseEvent e) {
+			        	view.btn_newGame.getStyleClass().addAll("btn_view_hover");
+			        	view.btn_newGame.getStyleClass().remove("btn_view");
+			        }
+			});
+	 		
+			view.btn_newGame.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			        @Override public void handle(MouseEvent e) {
+			        	view.btn_newGame.getStyleClass().remove("btn_view_hover");
+			        	view.btn_newGame.getStyleClass().addAll("btn_view");
+			        }
+			});
+        
+    
+    
     }
        
+    
+    
+    
     /**
      * @author Joel Henz: 
      * method for sending the chat messages

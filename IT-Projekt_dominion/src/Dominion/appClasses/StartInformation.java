@@ -1,5 +1,7 @@
 package Dominion.appClasses;
 
+import javafx.beans.property.SimpleStringProperty;
+
 /**
  * @author Joel Henz
  */
@@ -12,6 +14,9 @@ public class StartInformation extends GameObject {
 	private static long messageID = 0;
 	
 	private String username;
+	
+	private SimpleStringProperty User;
+	private  SimpleStringProperty pw;
 	
 	private static long nextMessageID() {		
 		return messageID++;

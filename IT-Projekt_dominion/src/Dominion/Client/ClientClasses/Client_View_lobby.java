@@ -5,23 +5,31 @@ import java.util.ArrayList;
 
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.View;
+import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 /**
@@ -31,15 +39,17 @@ import javafx.stage.Stage;
  * 
  * @author Brad Richards (MVC Pattern), Joel Henz (GUI)
  */
+
+
 public class Client_View_lobby extends View<Client_Model> {
-    Button send;
-    Button profile;
-    Button newGame;
-    Button enterGame;
+    customButton btn_sendChatMsg;
+    customButton btn_newGame;
+    customButton btn_enterGame;
+    Button btn_close;
     
     TextField tf_message;
 
-    TextArea ta;
+    TextArea chatWindow;
     Scene scene;
     ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
     String PlayerName;
@@ -58,75 +68,248 @@ public class Client_View_lobby extends View<Client_Model> {
 
 	    ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();  
 	    sl.setListView();
-	    
-		BorderPane root = new BorderPane();
-		
-		//resources
+	    sl.setListView_StartInformation();
+		sl.getListView().setPrefSize(730,200);
+		sl.getListView().setStyle("-fx-opacity: 0.80;");
 
-		send = new Button("senden");
-		profile = new Button ("Profil");
-		newGame = new Button ("neues Spiel");
-		enterGame = new Button ("Spiel beitreten");
-		enterGame.setDisable(true);
+		btn_newGame = new customButton ("neues Spiel");
+		btn_newGame.getStyleClass().addAll("btn","btn_view");
+		btn_newGame.setBtnTextEmpty(btn_newGame);
+	    btn_newGame.setPrefSize(206, 54);
+		
+		btn_enterGame = new customButton ("Spiel beitreten");
+		btn_enterGame.getStyleClass().addAll("btn","btn_view");
+		btn_enterGame.setBtnTextEmpty(btn_enterGame);
+	    btn_enterGame.setPrefSize(206,54);
+		btn_enterGame.setDisable(true);
+		
+		//CHAT
+		chatWindow = sl.getTextAreaLobby();
+		chatWindow.setEditable(false);
+		chatWindow.setPrefSize(820, 150);
+		chatWindow.setStyle("-fx-opacity: 0.80;");
 		
 		tf_message = new TextField();
+		tf_message.setPrefSize(450,40);
+		tf_message.setStyle("-fx-opacity: 0.80;");
+		
+		btn_sendChatMsg = new customButton("senden");
+		btn_sendChatMsg.getStyleClass().addAll("btn","btn_sendChatMsg");
+		btn_sendChatMsg.setBtnTextEmpty(btn_sendChatMsg);
+		btn_sendChatMsg.setPrefSize(202, 40);
+		
+		
 		name = new Label();
 		name.setText("Ihr Name: "+model.getName());
-		
 		Label message = new Label();
 		message.setText("Ihre Nachricht");
-		ta = sl.getTextAreaLobby();
-		ta.setEditable(false);
-		ta.setMaxWidth(500);
-		ta.setMaxHeight(200);
 		
-		/**
-	     * auto resize when window is resized
-	     */
-		ta.prefWidthProperty().bind(root.widthProperty());
-		ta.prefHeightProperty().bind(root.heightProperty());
+		tf_message.setText("Ihre Nachricht");
 		
-		VBox vb1 = new VBox();
-		HBox hb2 = new HBox();
-		hb2.getChildren().addAll(message,tf_message,send);
-		
-		vb1.getChildren().addAll(name,hb2);
-		
-		HBox hb1 = new HBox();
-		hb1.getChildren().addAll(profile,vb1,ta);
-		HBox.setMargin(profile, new Insets(0,20,0,0));
-		//hb1.setAlignment(Pos.CENTER);
-		
-		ScrollPane sp1 = new ScrollPane();
+		//Primäre Nodes initialisieren		
+				
+		BorderPane root = new BorderPane();
+	    /*______________________________________________________________________________________________*/				    
 
-		sp1.setContent(sl.getListView());
-		
-		//each client can see all games which are currently open to enter. With the UpdateLobby object, the client sends a request to server for getting the list of the open games
-		UpdateLobby update = new UpdateLobby();
-		
-		try {
-			model.out.writeObject(update);
-			model.out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		
+				//Root BorderPane top
+				//***********************************//
 		
-		HBox hb3 = new HBox();
-		hb3.getChildren().addAll(sp1,enterGame);
-		
-		root.setTop(hb1);
-		root.setLeft(newGame);
-		root.setBottom(hb3);
+				 //X Button top right, wrapper hb_custom menue
+			    HBox hb_custom_menue = new HBox();
+			      
+			   	btn_close = new Button();
+				btn_close.setPrefSize(35, 33);
+			   	btn_close.getStyleClass().addAll("btn","btn_close_normal");
+			   	btn_close.setAlignment(Pos.TOP_RIGHT);
+			   	
+			    HBox spacer =  new HBox();
+			   	HBox.setHgrow(spacer, Priority.ALWAYS);
+			   	
+			   	hb_custom_menue.getChildren().addAll(spacer, btn_close);
+			   	hb_custom_menue.setPadding(new Insets(20,15,150,0));		   	
 
-		sp1.setVmax(440);
-        sp1.setPrefSize(115, 150);
+			   	
 
-		this.scene = new Scene (root, 800,800);
+				//Root BorderPane Center
+				//***********************************//
+			    VBox vb_wrapperContent = new VBox();
+			    vb_wrapperContent.setPadding(new Insets(0,30,0,30));
+			    /*______________________________________________________________________________________________*/				    
 
+							
+					
+				    //Inhalt upperhalf (TableList)
+					//***********************************//
+			    
+			    
+			    	HBox hb_wrapper_upperhalf = new HBox();
+			    	hb_wrapper_upperhalf.setAlignment(Pos.TOP_LEFT);
+				    /*______________________________________________________________________________________________*/				    
+
+			    	
+					
+					//table kreieren//
+					TableView <StartInformation> tablePlayers = new TableView<>();
+					sl.getListView_StartInformation();
+					
+					TableColumn column00 = new TableColumn("User");
+					column00.setMinWidth(50);
+					column00.setCellValueFactory(new PropertyValueFactory<>("User"));
+					
+					TableColumn column01 = new TableColumn("Games Played");
+					column01.setMinWidth(150);
+					column01.setCellValueFactory(new PropertyValueFactory<>("Games Played"));
+					
+					TableColumn column02= new TableColumn("Games Won");
+					column02.setMinWidth(150);
+					column02.setCellValueFactory(new PropertyValueFactory<>("Games Won"));
+					
+					TableColumn column03 = new TableColumn("Games Lost");
+					column03.setMinWidth(150);
+					column03.setCellValueFactory(new PropertyValueFactory<>("Games Lost"));
+					
+					TableColumn column04 = new TableColumn("Win/Loose Ratio");
+					column04.setMinWidth(300);
+					column04.setCellValueFactory(new PropertyValueFactory<>("Win/Loose Ratio"));
+					
+					tablePlayers.getColumns().addAll(column00,column01,column02,column03,column04);
+					tablePlayers.setPrefSize(1250, 200);
+					tablePlayers.setStyle("-fx-opacity: 0.80;");
+				    /*______________________________________________________________________________________________*/				    
+				    
+					
+					/*Upperhalf zusammenführen*/
+					hb_wrapper_upperhalf.getChildren().addAll(tablePlayers);
+				    /*______________________________________________________________________________________________*/				    
+				    /************************************************************************************************/				    
+
+				    
+				    
+				    
+					//abstand zwischen upper und lower-half
+					hb_wrapper_upperhalf.setPadding(new Insets(0,0,30,0));
+				    
+						
+					
+					
+				    
+				    //Inhalt lowerhalf(gameList und Chatbox)
+					//***********************************************//
+					
+				    HBox hb_wrapper_lowerhalf = new HBox();
+				
+				    
+				    //gameList und Controll Buttons gruppieren
+				    VBox vb_wrapper_gameList = new VBox();
+
+				    /*______________________________________________________________________________________________*/				    
+					HBox hb_wrapper_btnNewGame    = new HBox();
+					HBox hb_wrapper_btnEnterGame = new HBox();
+
+					hb_wrapper_btnNewGame.getChildren().add(btn_newGame);
+					hb_wrapper_btnEnterGame.getChildren().add(btn_enterGame);
+					
+				    HBox hb_wrapper_gameListControlBtns = new HBox();
+				    hb_wrapper_gameListControlBtns.getChildren().addAll(hb_wrapper_btnNewGame,hb_wrapper_btnEnterGame);
+					
+					hb_wrapper_btnNewGame.setPadding(new Insets(10,0,0,40));
+					hb_wrapper_btnEnterGame.setPadding(new Insets(10,0,0,60));
+				    vb_wrapper_gameList.setPadding(new Insets(0,20,0,0));
+				    
+				    
+				    vb_wrapper_gameList.getChildren().addAll(sl.getListView(), hb_wrapper_gameListControlBtns);
+				    /*______________________________________________________________________________________________*/					  
+					
+				    
+				    
+				    
+					//Chat und ChatControls gruppieren
+					VBox vb_wrapper_chat = new VBox();
+					
+					/*______________________________________________________________________________________________*/				
+					HBox hb_wrapper_chatControls = new HBox();
+					HBox hb_wrapper_btnSendChatMsg = new HBox();
+					HBox hb_wrapper_tfMessage = new HBox();
+					
+					hb_wrapper_tfMessage.getChildren().add(tf_message);
+					hb_wrapper_btnSendChatMsg.getChildren().add(btn_sendChatMsg);
+
+					hb_wrapper_chatControls.getChildren().addAll(hb_wrapper_tfMessage, hb_wrapper_btnSendChatMsg);
+						
+					hb_wrapper_btnSendChatMsg.setPadding(new Insets(0,0,0,10));
+					hb_wrapper_chatControls.setPadding(new Insets(10,0,0,0));   
+					
+					vb_wrapper_chat.getChildren().addAll(chatWindow, hb_wrapper_chatControls);
+					/*______________________________________________________________________________________________*/		
+					
+					
+					
+					/*Lowerhalf zusammenführen*/
+					hb_wrapper_lowerhalf.getChildren().addAll(vb_wrapper_gameList, vb_wrapper_chat);
+				    /*______________________________________________________________________________________________*/				    
+				    /************************************************************************************************/				    
+
+
+					
+					/*Upper und Lowerhalf zusammenführen*/
+					vb_wrapperContent.getChildren().addAll(hb_wrapper_upperhalf,hb_wrapper_lowerhalf);
+					vb_wrapperContent.setPadding(new Insets(10,75,10,75));
+				    /*______________________________________________________________________________________________*/				    
+				    /************************************************************************************************/				    
+
+					
+					
+				  
+					//Konfiguration Root-Node		
+					root.setTop(hb_custom_menue);
+					root.setCenter(vb_wrapperContent);
+					root.getStyleClass().add("bg_lobby");
+				
+
+					
+					
+				    /**
+					  * @author kab: Fenster via Drag und Drop verschieben
+					  */
+					/*______________________________________________________________________________________________*/				    
+				    Delta dragDelta = new Delta();
+				    root.setOnMousePressed(new EventHandler<MouseEvent>() {
+				      @Override public void handle(MouseEvent mouseEvent) {
+				        // record a delta distance for the drag and drop operation.
+				        dragDelta.x = stage.getX() - mouseEvent.getScreenX();
+				        dragDelta.y = stage.getY() - mouseEvent.getScreenY();
+				        scene.setCursor(Cursor.MOVE);
+				      }
+				    });
+				    root.setOnMouseReleased(new EventHandler<MouseEvent>() {
+				      @Override public void handle(MouseEvent mouseEvent) {
+				        scene.setCursor(Cursor.DEFAULT);
+				      }
+				    });
+				    root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+				      @Override public void handle(MouseEvent mouseEvent) {
+				        stage.setX(mouseEvent.getScreenX() + dragDelta.x);
+				        stage.setY(mouseEvent.getScreenY() + dragDelta.y);
+				      }
+				    });
+				    /*______________________________________________________________________________________________*/				    
+
+	    
+	    
+
+		this.scene = new Scene (root, 1400,800);
+		scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());
+	    stage.initStyle(StageStyle.TRANSPARENT);     
         return scene;
+        
+      		
 	}
+	
+	
+	// Fï¿½r Drag und Drop verschiebung: relative x und y Position herausfinden
+		class Delta { double x, y; }
 
-}
+			}
+
