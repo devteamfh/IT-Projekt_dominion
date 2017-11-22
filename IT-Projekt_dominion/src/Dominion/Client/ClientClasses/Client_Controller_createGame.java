@@ -76,21 +76,57 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	
             	((Node) toggle).getStyleClass().remove("btnRdo_active");
              	((Node) new_toggle).getStyleClass().add("btnRdo_active");
-            	
-            	
-            	/*
-            	
-            	if (ov.getValue().(sl.getToggleForNumberOfPlayers().getSelectedToggle()))
-            		((Node) new_toggle).getStyleClass().add("btnRdo");
-            	
-            	if (!ov.equals(sl.getToggleForNumberOfPlayers().getSelectedToggle()))
-            		((Node) new_toggle).getStyleClass().add("btnRdo_active");
-          
-            	if (ov == null)
-            		((Node) new_toggle).getStyleClass().add("btnRdo");
-            		*/
-            	}
+
+              	}
         });
+
+        sl.getToggleForEndOfGame().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle toggle, Toggle new_toggle) {
+
+                ((Node) toggle).getStyleClass().remove("btnRdo_active");
+                ((Node) new_toggle).getStyleClass().add("btnRdo_active");
+
+            }
+        });
+
+
+
+        //Button btn_iRundenPLUS
+        view.btn_iRundenPLUS.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+
+                        view.btn_iRundenPLUS.getStyleClass().addAll("btn_close_hover");
+                        view.btn_iRundenPLUS.getStyleClass().remove("btn_close_normal");
+
+                        //increase label iRunden
+                        String str_iRunden = view.lbl_iRunden.getText();
+                        int int_iRunden = Integer.parseInt(str_iRunden);
+                            if (int_iRunden < 50) {
+                                int_iRunden = int_iRunden + 1;
+                                view.lbl_iRunden.setText(String.valueOf(int_iRunden));
+                            }
+                    }
+                });
+
+        //Button btn_iRundenMINUS
+        view.btn_iRundenMINUS.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+                        view.btn_iRundenMINUS.getStyleClass().addAll("btn_close_hover");
+                        view.btn_iRundenMINUS.getStyleClass().remove("btn_close_normal");
+
+                        //decrease label iRunden
+
+                        String str_iRunden = view.lbl_iRunden.getText();
+                        int int_iRunden = Integer.parseInt(str_iRunden);
+                            if (int_iRunden > 10) {
+                                int_iRunden = int_iRunden - 1;
+                                view.lbl_iRunden.setText(String.valueOf(int_iRunden));
+                            }
+                    }
+                });
         
         
         

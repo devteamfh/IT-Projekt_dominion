@@ -35,7 +35,7 @@ import javafx.stage.StageStyle;
 public class Client_View_createGame extends View<Client_Model> {
 	ServiceLocatorClient sl;
     Label chooseTypeOfGame;
-    Label numberOfRounds; //->Wert kann man nur eingeben, wenn Modus gewählt worden ist
+    Label numberOfRounds; //->Wert kann man nur eingeben, wenn Modus gewï¿½hlt worden ist
     Label numberOfPlayers;
     
     Label lbl_AnzahlSpieler;
@@ -70,7 +70,7 @@ public class Client_View_createGame extends View<Client_Model> {
 	/**
      * @author Joel Henz: Initial
      * @author KAB: Recreation with according graphics and styles
-     *              View with Game-Properties when creating new Game
+     *
      */
 	
 	protected Scene create_GUI() {
@@ -125,7 +125,9 @@ public class Client_View_createGame extends View<Client_Model> {
 				lbl_iRunden = new Label(INITIALERUNDENANZAHL);
 				lbl_iRunden.getStyleClass().add("lbl_iRunden");
 			    btnRdo_mode1 = new RadioButton("");
-			    btnRdo_mode1.getStyleClass().addAll("btn","btnRdo");
+			    btnRdo_mode1.getStyleClass().addAll("btn","btnRdo","btnRdo_active");
+				btnRdo_mode1.getStyleClass().remove("radio-button");
+				btnRdo_mode1.setSelected(true);
 			    btnRdo_mode1.setPrefSize(31, 30);
 			    
 			    
@@ -133,7 +135,8 @@ public class Client_View_createGame extends View<Client_Model> {
 				lbl_mode2.getStyleClass().add("lbl_menuPoint");
 				
 			    btnRdo_mode2 = new RadioButton("");
-			    btnRdo_mode2.getStyleClass().addAll("btn","btnRdo");	
+			    btnRdo_mode2.getStyleClass().addAll("btn","btnRdo");
+				btnRdo_mode2.getStyleClass().remove("radio-button");
 			    btnRdo_mode2.setPrefSize(31, 30);
 			    	btn_iRundenPLUS = new Button("+");
 			    	btn_iRundenPLUS.getStyleClass().add("btn_PlusMinus");
@@ -142,11 +145,11 @@ public class Client_View_createGame extends View<Client_Model> {
 				    btn_iRundenMINUS = new Button("-");
 			    	btn_iRundenMINUS.getStyleClass().add("btn_PlusMinus");
 			    	btn_iRundenMINUS.setMaxSize(5, 5);
-			    	
+
 			    //ToggleGroup
 			    btnRdo_mode1.setToggleGroup(sl.getToggleForEndOfGame());
 		    	btnRdo_mode2.setToggleGroup(sl.getToggleForEndOfGame());
-	    
+
 	    
 	    btn_finish  = new customButton("Fertig");
 	    btn_finish.getStyleClass().addAll("btn","btn_sendChatMsg");
