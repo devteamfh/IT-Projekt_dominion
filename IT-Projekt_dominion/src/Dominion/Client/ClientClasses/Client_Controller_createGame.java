@@ -2,6 +2,7 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import Dominion.ServiceLocator;
@@ -11,9 +12,15 @@ import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.Player;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -39,7 +46,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         super(model, view);
         this.view_createGame = view;
         sl = ServiceLocatorClient.getServiceLocator();
-               
+        
         /**
          * @author Joel Henz
          * register ourselves to handle window-closing event
@@ -61,15 +68,65 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             }
         }); 
         
-        view.endOfGame2.setOnAction(new EventHandler<ActionEvent>() {
+       
+        //ToggleGroup Change listener
+        sl.getToggleForNumberOfPlayers().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                Toggle toggle, Toggle new_toggle) {
+            	
+            	((Node) toggle).getStyleClass().remove("btnRdo_active");
+             	((Node) new_toggle).getStyleClass().add("btnRdo_active");
+            	
+            	
+            	/*
+            	
+            	if (ov.getValue().(sl.getToggleForNumberOfPlayers().getSelectedToggle()))
+            		((Node) new_toggle).getStyleClass().add("btnRdo");
+            	
+            	if (!ov.equals(sl.getToggleForNumberOfPlayers().getSelectedToggle()))
+            		((Node) new_toggle).getStyleClass().add("btnRdo_active");
+          
+            	if (ov == null)
+            		((Node) new_toggle).getStyleClass().add("btnRdo");
+            		*/
+            	}
+        });
+        
+        
+        
+       /*
+        
+        view.btnRdo_twoPlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	view.sl.getTextFieldForRounds().setDisable(false);
-            	sl.setSelectedMode("rounds");
+            	
+            	if (view.btnRdo_twoPlayer.equals(sl.getToggleForNumberOfPlayers().getSelectedToggle())) {
+            	sl.setNumberOfPlayer(2);
+            	view.btnRdo_twoPlayer.getStyleClass().add("btnRdo_active");
+            	}
             }
         });
         
-        view.endOfGame1.setOnAction(new EventHandler<ActionEvent>() {
+        view.btnRdo_threePlayer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	if (view.btnRdo_threePlayer.equals(sl.getToggleForNumberOfPlayers().getSelectedToggle())) {
+            	sl.setNumberOfPlayer(3);
+            	view.btnRdo_threePlayer.getStyleClass().add("btnRdo_active");
+            	}
+            }
+        });
+        
+        view.btnRdo_fourPlayer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	sl.setNumberOfPlayer(4);
+            }
+        });
+        
+        */
+        
+        view.btnRdo_mode1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	view.sl.getTextFieldForRounds().clear();
@@ -78,35 +135,19 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             }
         });
         
-        view.twoPlayer.setOnAction(new EventHandler<ActionEvent>() {
+        view.btnRdo_mode2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(2);
+            	view.sl.getTextFieldForRounds().setDisable(false);
+            	sl.setSelectedMode("rounds");
             }
         });
         
-        view.threePlayer.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(3);
-            }
-        });
+      
         
-        view.fourPlayer.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(4);
-            }
-        });
+     
         
-        view.cancel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	view_createGame.stop();
-            }
-        });
-        
-        view.finish.setOnAction(new EventHandler<ActionEvent>() {
+        view.btn_finish.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	String selectedMode = sl.getSelectedMode();
