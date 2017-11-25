@@ -96,7 +96,6 @@ public class ReadMsgFromServer implements Runnable {
 					break;
 					
 				case JoinGameParty:
-					System.out.println("test");
 					JoinGameParty join=(JoinGameParty) obj;
 					GameParty gamePartyToJoin=join.getSelectedGameParty();
 					
