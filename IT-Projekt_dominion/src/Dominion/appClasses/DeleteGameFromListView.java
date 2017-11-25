@@ -3,24 +3,23 @@ package Dominion.appClasses;
 /**
  * @author Joel Henz
  */
-public class CancelGame extends GameObject {
+public class DeleteGameFromListView extends GameObject {
+
 	private static final long serialVersionUID = 1;
 	// Data included in a message
 	private long id;
 	// Generator for a unique message ID
 	private static long messageID = 0;
 	
-	private GameParty gamePartyToCancel;
-	
-	
+	private GameParty gamePartyToDelete;
 	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-	public CancelGame(GameParty gamePartyToCancel){
-		super(GameObject.ObjectType.CancelGame);
-		this.gamePartyToCancel=gamePartyToCancel;
+	public DeleteGameFromListView(GameParty gameParty){
+		super(GameObject.ObjectType.DeleteGameFromListView);
+		this.gamePartyToDelete=gameParty;
 		this. id = -1;	
 	}
 	
@@ -34,8 +33,7 @@ public class CancelGame extends GameObject {
 		return this.id;
 	}
 	
-	public GameParty getGameParty(){
-		return this.gamePartyToCancel;
+	public GameParty getGamePartyToDelete(){
+		return this.gamePartyToDelete;
 	}
-	
 }

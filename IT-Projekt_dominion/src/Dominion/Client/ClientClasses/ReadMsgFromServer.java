@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Iterator;
 
+import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
+import Dominion.appClasses.DeleteGameFromListView;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
@@ -31,6 +33,7 @@ public class ReadMsgFromServer implements Runnable {
 
 	@Override
 	public void run() {
+
 		GameObject obj;
 		
 		try {
@@ -75,6 +78,8 @@ public class ReadMsgFromServer implements Runnable {
 					        	   }
 					           }
 					       });
+					
+
 					break;
 					
 				case UpdateGameParty:
@@ -91,6 +96,7 @@ public class ReadMsgFromServer implements Runnable {
 					break;
 					
 				case JoinGameParty:
+					System.out.println("test");
 					JoinGameParty join=(JoinGameParty) obj;
 					GameParty gamePartyToJoin=join.getSelectedGameParty();
 					
@@ -107,7 +113,6 @@ public class ReadMsgFromServer implements Runnable {
 						}
 				       });
 					
-					
 					break;
 					
 				case CancelGame:
@@ -115,10 +120,22 @@ public class ReadMsgFromServer implements Runnable {
 
 						@Override 
 				           public void run() {
-								sl.getPlayingStage().stop();
-								
+								sl.getPlayingStage().stop();	
 				           }
-				      });
+				      });	
+				break;
+				
+				case DeleteGameFromListView:
+					
+					DeleteGameFromListView gameToDelete = (DeleteGameFromListView) obj;
+					
+					Platform.runLater(new Runnable() {
+
+						@Override 
+				           public void run() {
+				        	   sl.removeGame(gameToDelete.getGamePartyToDelete());
+						}
+				       });
 					
 				break;
 								

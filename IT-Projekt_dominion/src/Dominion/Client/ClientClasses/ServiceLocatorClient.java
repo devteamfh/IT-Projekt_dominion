@@ -1,5 +1,6 @@
 package Dominion.Client.ClientClasses;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -142,9 +143,17 @@ public class ServiceLocatorClient {
 	}
 	
 	public void addNewGame(GameParty newGame){
-		this.obsList.add(newGame);
-		
+		this.obsList.add(newGame);		
 	}
+	
+	public void removeGame(GameParty game){		
+		this.obsList.remove(game);
+		
+		Iterator <GameParty> iter = this.obsList.iterator();
+		while(iter.hasNext()){
+			System.out.println(iter.next());
+		}
+	}	
 	
 	public void updateGameParty(GameParty newValue){
 		
@@ -157,7 +166,6 @@ public class ServiceLocatorClient {
 				
 				if (newValue.getLoggedInPlayers() < newValue.getMaxNumberOfPlayers()){
 					this.obsList.add(newValue);
-					System.out.println("test add");
 				}
 				
 				break;
@@ -173,9 +181,6 @@ public class ServiceLocatorClient {
 	public Client_View_playingStage getPlayingStage(){
 		return this.view_playingStage;
 	}
-
-	
-	
 	
 	public void setListView_StartInformation(){
 		 this.lv_StartInformation = new ListView<>(ol_StartInformation);
@@ -184,4 +189,5 @@ public class ServiceLocatorClient {
 	public ListView <StartInformation> getListView_StartInformation(){
 		return this.lv_StartInformation;
 	}
+
 }

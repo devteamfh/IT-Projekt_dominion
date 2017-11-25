@@ -106,7 +106,7 @@ public class Client_View_lobby extends View<Client_Model> {
 		
 		tf_message.setText("Ihre Nachricht");
 		
-		//Primäre Nodes initialisieren		
+		//PrimÃ¤re Nodes initialisieren		
 				
 		BorderPane root = new BorderPane();
 	    /*______________________________________________________________________________________________*/				    
@@ -180,7 +180,7 @@ public class Client_View_lobby extends View<Client_Model> {
 				    /*______________________________________________________________________________________________*/				    
 				    
 					
-					/*Upperhalf zusammenführen*/
+					/*Upperhalf zusammenfÃ¼hren*/
 					hb_wrapper_upperhalf.getChildren().addAll(tablePlayers);
 				    /*______________________________________________________________________________________________*/				    
 				    /************************************************************************************************/				    
@@ -246,14 +246,14 @@ public class Client_View_lobby extends View<Client_Model> {
 					
 					
 					
-					/*Lowerhalf zusammenführen*/
+					/*Lowerhalf zusammenfÃ¼hren*/
 					hb_wrapper_lowerhalf.getChildren().addAll(vb_wrapper_gameList, vb_wrapper_chat);
 				    /*______________________________________________________________________________________________*/				    
 				    /************************************************************************************************/				    
 
 
 					
-					/*Upper und Lowerhalf zusammenführen*/
+					/*Upper und Lowerhalf zusammenfÃ¼hren*/
 					vb_wrapperContent.getChildren().addAll(hb_wrapper_upperhalf,hb_wrapper_lowerhalf);
 					vb_wrapperContent.setPadding(new Insets(10,75,10,75));
 				    /*______________________________________________________________________________________________*/				    
@@ -297,6 +297,15 @@ public class Client_View_lobby extends View<Client_Model> {
 				    /*______________________________________________________________________________________________*/				    
 
 	    
+	    UpdateLobby toUpdate = new UpdateLobby();
+	    
+	    try {
+			model.out.writeObject(toUpdate);
+			model.out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    
 
 		this.scene = new Scene (root, 1400,800);
@@ -308,8 +317,7 @@ public class Client_View_lobby extends View<Client_Model> {
 	}
 	
 	
-	// Fï¿½r Drag und Drop verschiebung: relative x und y Position herausfinden
+	// FÃ¯Â¿Â½r Drag und Drop verschiebung: relative x und y Position herausfinden
 		class Delta { double x, y; }
 
-			}
-
+}

@@ -1,6 +1,7 @@
 package Dominion.Server.ServerClasses;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -26,9 +27,9 @@ public class Server_Model extends Model { //creates the connection to the server
     
     ServerSocket server;
     
-    ArrayList <ObjectOutputStream> list_clients_output;
+    ArrayList <ObjectOutputStream> list_clients_output = new ArrayList <ObjectOutputStream>();
 	
-	ServiceLocator sl = ServiceLocator.getServiceLocator();
+	ServiceLocatorServer sl;
 	
 	Thread clientThread;
 	
@@ -36,7 +37,7 @@ public class Server_Model extends Model { //creates the connection to the server
 
     public Server_Model() {
         
-    	sl = ServiceLocator.getServiceLocator();
+    	sl = ServiceLocatorServer.getServiceLocator();
         logger = sl.getLogger(); 
     }
 
@@ -46,7 +47,6 @@ public class Server_Model extends Model { //creates the connection to the server
 	public boolean runServer(InetAddress addr, int portNr) {
 		try {
 			this.server = new ServerSocket (portNr,10,addr);
-			list_clients_output = new ArrayList <ObjectOutputStream>();
 			logger.info("Server gestartet"); 
 			startDatabase(); // kab: kreiert und startet Datenbank und kreiert Tabelle
 			return true;
@@ -76,13 +76,13 @@ public class Server_Model extends Model { //creates the connection to the server
 			try {
 
 				Socket client = this.server.accept();
-										
+				
 				ObjectOutputStream os = new ObjectOutputStream (client.getOutputStream()); 
 				list_clients_output.add(os); 
 							
 				clientThread = new Thread (new ClientHandler(client, list_clients_output,os)); 
 				clientThread.start();
-				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
