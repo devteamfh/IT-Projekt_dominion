@@ -89,6 +89,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         
        
         //ToggleGroup Change listener
+        
         sl.getToggleForNumberOfPlayers().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
             public void changed(ObservableValue<? extends Toggle> ov,
                 Toggle toggle, Toggle new_toggle) {
@@ -114,24 +115,18 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
 
         //Buttons #Players
         
+        sl.setNumberOfPlayer(2);
         view.btnRdo_twoPlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-            	
-            	if (view.btnRdo_twoPlayer.equals(sl.getToggleForNumberOfPlayers().getSelectedToggle())) {
+            public void handle(ActionEvent event) {           	
             	sl.setNumberOfPlayer(2);
-            	view.btnRdo_twoPlayer.getStyleClass().add("btnRdo_active");
-            	}
             }
         });
         
         view.btnRdo_threePlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-            	if (view.btnRdo_threePlayer.equals(sl.getToggleForNumberOfPlayers().getSelectedToggle())) {
+            public void handle(ActionEvent event) {   	
             	sl.setNumberOfPlayer(3);
-            	view.btnRdo_threePlayer.getStyleClass().add("btnRdo_active");
-            	}
             }
         });
         
@@ -146,7 +141,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         
         
         //Buttons Game Mode
-        
+        sl.setSelectedMode("province");
         view.btnRdo_mode1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -164,8 +159,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             }
         });
         
-        
-        
+              
         
         
       
@@ -206,6 +200,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
 
                         //decrease label iRunden
                         String str_iRunden = view.lbl_iRunden.getText();
+
                         int int_iRunden = Integer.parseInt(str_iRunden);
                             if (int_iRunden > 10) {
                                 int_iRunden = int_iRunden - 1;
