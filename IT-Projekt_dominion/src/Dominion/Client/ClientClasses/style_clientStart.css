@@ -104,20 +104,27 @@
 }
 
 .btn_Plus {
-    -fx-background-image:  url('img/btn_plus.png');
+    -fx-background-image:  url('img/btn_Plus.png');
 }
 
-.btn_Minus {
-    -fx-background-image:  url('img/btn_minus.png');
+.btn_Plus_clicked {
+    -fx-background-image:  url('img/btn_Plus_clicked.png');
 }
+.btn_Minus {
+    -fx-background-image:  url('img/btn_Minus.png');
+}
+.btn_Minus_clicked {
+    -fx-background-image:  url('img/btn_Minus_clicked.png');
+}
+
 
 /*close Button */
 .btn_close_normal{
-	-fx-background-image: url('img/btn_close_normal.png');	
+	-fx-background-image: url('img/btn_close_hover.png');	
 }
 
 .btn_close_hover {
-	-fx-background-image: url('img/btn_close_hover.png'); }
+	-fx-background-image: url('img/btn_close_normal.png'); }
 /*---------------------------------------------------------------------------------------- */
 /*Client View Start -END- */
 

@@ -20,6 +20,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -41,6 +42,8 @@ public class Client_View_createGame extends View<Client_Model> {
     Label lbl_AnzahlSpieler;
     Label lbl_Spielmodus;
 	
+    Button btn_close;
+    
 	RadioButton btnRdo_twoPlayer;
 	RadioButton btnRdo_threePlayer;
 	RadioButton btnRdo_fourPlayer;
@@ -83,6 +86,11 @@ public class Client_View_createGame extends View<Client_Model> {
 
 	    		
 	    //Node-Leafs
+		btn_close = new Button();
+		btn_close.setPrefSize(35, 33);
+	   	btn_close.getStyleClass().addAll("btn","btn_close_normal");
+	   	btn_close.setAlignment(Pos.TOP_RIGHT);
+			
 	    lbl_AnzahlSpieler = new Label("Anzahl Spieler");
 	    lbl_AnzahlSpieler.getStyleClass().add("h1");
 	   
@@ -139,12 +147,12 @@ public class Client_View_createGame extends View<Client_Model> {
 				btnRdo_mode2.getStyleClass().remove("radio-button");
 			    btnRdo_mode2.setPrefSize(31, 30);
 			    	btn_iRundenPLUS = new Button("+");
-			    	btn_iRundenPLUS.getStyleClass().add("btn_PlusMinus");
-			    	btn_iRundenPLUS.setMaxSize(5, 5);
+			    	btn_iRundenPLUS.getStyleClass().addAll("btn","btn_PlusMinus","btn_Plus");
+			    	btn_iRundenPLUS.setPrefSize(34,34);
 				    
 				    btn_iRundenMINUS = new Button("-");
-			    	btn_iRundenMINUS.getStyleClass().add("btn_PlusMinus");
-			    	btn_iRundenMINUS.setMaxSize(5, 5);
+			    	btn_iRundenMINUS.getStyleClass().addAll("btn","btn_PlusMinus","btn_Minus");
+			    	btn_iRundenMINUS.setPrefSize(34,34);
 
 			    //ToggleGroup
 			    btnRdo_mode1.setToggleGroup(sl.getToggleForEndOfGame());
@@ -155,16 +163,26 @@ public class Client_View_createGame extends View<Client_Model> {
 	    btn_finish.getStyleClass().addAll("btn","btn_sendChatMsg");
 	    btn_finish.setBtnTextEmpty(btn_finish);
 	    btn_finish.setPrefSize(202, 40);
-	
-	
+		    
+	    
 	    
 	    //Nodes
-	    Pane root = new Pane();
+	    BorderPane root = new BorderPane();
 
-	    
+		
+		 //X Button top right, wrapper hb_custom menue
+	    HBox hb_custom_menue = new HBox();
+	    HBox spacer =  new HBox();
+	   	HBox.setHgrow(spacer, Priority.ALWAYS);
+	   	
+	   	hb_custom_menue.getChildren().addAll(spacer, btn_close);
+	   	hb_custom_menue.setPadding(new Insets(5,5,5,0));		  
+	   	
+	   	
+	   	
 		    //Wrapper Content
 		    HBox hb_wrapper_Content = new HBox();
-		    hb_wrapper_Content.setPadding(new Insets(50,50,50,50));
+		    hb_wrapper_Content.setPadding(new Insets(0,50,20,0));
 		    
 		    VBox vb_wrapper_properties = new VBox();
 		    
@@ -201,13 +219,20 @@ public class Client_View_createGame extends View<Client_Model> {
 		    			HBox hb_wrapper_iRunden = new HBox();
 			    	hb_wrapper_mode2.getChildren().addAll(btnRdo_mode2, lbl_mode2, hb_wrapper_iRunden);
 			    	lbl_mode2.setPadding(new Insets(0,0,0,20));
-			    		
+			    	
+			    	VBox vb_wrapper_btn_finish = new VBox();
+			    	vb_wrapper_btn_finish.getChildren().add(btn_finish);
+			    	vb_wrapper_btn_finish.setPadding(new Insets(15,0,0,0));
+			    	
 			    		//Boxes 
 			    		VBox vb_wrapper_btns_iRunden = new VBox();
 			    			 vb_wrapper_btns_iRunden.getChildren().addAll(btn_iRundenPLUS,btn_iRundenMINUS);
-			    			 vb_wrapper_btns_iRunden.setPadding(new Insets(0,0,0,15));
+			    			 vb_wrapper_btns_iRunden.setPadding(new Insets(10,70,5,15));
 			    			 
-			    		hb_wrapper_iRunden.getChildren().addAll(lbl_iRunden,vb_wrapper_btns_iRunden);
+			    			 
+			    			 
+			    		hb_wrapper_iRunden.getChildren().addAll(lbl_iRunden,vb_wrapper_btns_iRunden,vb_wrapper_btn_finish);
+
 
 			    		hb_wrapper_iRunden.setPadding(new Insets(0,0,0,20));
 			    		
@@ -218,55 +243,18 @@ public class Client_View_createGame extends View<Client_Model> {
 			 
 			 
 	    //Wrap all content
-	   hb_wrapper_Content.getChildren().addAll(vb_wrapper_properties,btn_finish);
-	   hb_wrapper_Content.setAlignment(Pos.BOTTOM_RIGHT);    
+	   hb_wrapper_Content.getChildren().addAll(vb_wrapper_properties);
+	   hb_wrapper_Content.setPadding(new Insets(0,0,0,50));
 		    	
 			
-			//VBox vb1 = new VBox ();
-			
-		//	chooseTypeOfGame = new Label ("Spielmodus wählen:");
-		//btnRdo_mode1 = new RadioButton ("Provinzkarten aufbrauchen");
-		//btnRdo_mode2 = new RadioButton ("max. Anzahl Runden (höchstens 50)");
 		
-/*
-		endOfGame1.setToggleGroup(sl.getToggleForEndOfGame());
-		endOfGame2.setToggleGroup(sl.getToggleForEndOfGame());
-		
-		numberOfRounds= new Label ("Anzahl max. Runden:");
-		sl.getTextFieldForRounds().setDisable(true);
-		
-		numberOfPlayers= new Label ("Anzahl Spieler wählen:");
-		twoPlayer = new RadioButton ("2 Spieler");
-		twoPlayer.setToggleGroup(sl.getToggleForNumberOfPlayers());
-		threePlayer = new RadioButton ("3 Spieler");
-		threePlayer.setToggleGroup(sl.getToggleForNumberOfPlayers());
-		fourPlayer = new RadioButton ("4 Spieler");
-		fourPlayer.setToggleGroup(sl.getToggleForNumberOfPlayers());
-		
-		
-		vb1.getChildren().addAll(chooseTypeOfGame,endOfGame1,endOfGame2,numberOfRounds,sl.getTextFieldForRounds(),numberOfPlayers,twoPlayer,threePlayer,fourPlayer);
-		vb1.setMargin(endOfGame2, new Insets(0, 0, 30, 0));
-		vb1.setMargin(sl.getTextFieldForRounds(), new Insets(0, 0, 30, 0));
-		
-		root.setCenter(vb1);
-		
-		
-		finish = new Button ("Fertig");
-		cancel = new Button ("Abbrechen");
-		
-		HBox hb1 = new HBox ();
-		hb1.getChildren().addAll(finish,cancel);
-		hb1.setMargin(finish, new Insets(0, 20, 0, 0));
-		
-		root.setBottom(hb1);
-		*/
-		
-		root.getChildren().add(hb_wrapper_Content);
+		root.setTop(hb_custom_menue);
+		root.setCenter(hb_wrapper_Content);
 		root.getStyleClass().add("bg_createGame");
 		
-		this.scene = new Scene (root, 900, 350);
+		this.scene = new Scene (root, 750, 450);
 		scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());
-	    //stage.initStyle(StageStyle.TRANSPARENT);     
+	    stage.initStyle(StageStyle.TRANSPARENT);     
         return scene;
 		
 	}

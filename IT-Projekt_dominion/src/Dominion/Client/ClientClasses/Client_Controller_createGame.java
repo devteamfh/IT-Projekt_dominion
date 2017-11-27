@@ -41,22 +41,39 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
        
     /**
      * @author Joel Henz
+     * @author Kab
      * */
     public Client_Controller_createGame(Client_Model model, Client_View_createGame view) {
         super(model, view);
         this.view_createGame = view;
         sl = ServiceLocatorClient.getServiceLocator();
         
-        /**
-         * @author Joel Henz
-         * register ourselves to handle window-closing event
-         * interrupts all client threads and closes all client sockets
-         * */
-        view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+       
+        
+        
+     // Button Close Style Hover und Action press
+    	view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+      		    new EventHandler<MouseEvent>() {
+      		        @Override public void handle(MouseEvent e) {
+      		        	view.btn_close.getStyleClass().addAll("btn_close_hover");
+      		        	view.btn_close.getStyleClass().remove("btn_close_normal");
+      		        }
+  		});
+		      		
+		      		
+  		view.btn_close.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_close.getStyleClass().remove("btn_close_hover");
+  		        	view.btn_close.getStyleClass().addAll("btn_close_normal");
+  		        }
+  		});
+		        
+        view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
             @Override
-            public void handle(WindowEvent event) {
+            public void handle(ActionEvent event) {
+            
             	model.t1.interrupt();
-               
+                
                 try {
 					model.client.close();				
 				} catch (IOException e) {
@@ -66,7 +83,9 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
               
                 Platform.exit();
             }
-        }); 
+            });
+        
+        
         
        
         //ToggleGroup Change listener
@@ -90,47 +109,10 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             }
         });
 
-
-
-        //Button btn_iRundenPLUS
-        view.btn_iRundenPLUS.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                new EventHandler<MouseEvent>() {
-                    @Override public void handle(MouseEvent e) {
-
-                        view.btn_iRundenPLUS.getStyleClass().addAll("btn_close_hover");
-                        view.btn_iRundenPLUS.getStyleClass().remove("btn_close_normal");
-
-                        //increase label iRunden
-                        String str_iRunden = view.lbl_iRunden.getText();
-                        int int_iRunden = Integer.parseInt(str_iRunden);
-                            if (int_iRunden < 50) {
-                                int_iRunden = int_iRunden + 1;
-                                view.lbl_iRunden.setText(String.valueOf(int_iRunden));
-                            }
-                    }
-                });
-
-        //Button btn_iRundenMINUS
-        view.btn_iRundenMINUS.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                new EventHandler<MouseEvent>() {
-                    @Override public void handle(MouseEvent e) {
-                        view.btn_iRundenMINUS.getStyleClass().addAll("btn_close_hover");
-                        view.btn_iRundenMINUS.getStyleClass().remove("btn_close_normal");
-
-                        //decrease label iRunden
-
-                        String str_iRunden = view.lbl_iRunden.getText();
-                        int int_iRunden = Integer.parseInt(str_iRunden);
-                            if (int_iRunden > 10) {
-                                int_iRunden = int_iRunden - 1;
-                                view.lbl_iRunden.setText(String.valueOf(int_iRunden));
-                            }
-                    }
-                });
         
         
-        
-       /*
+
+        //Buttons #Players
         
         view.btnRdo_twoPlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -160,7 +142,10 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             }
         });
         
-        */
+       
+        
+        
+        //Buttons Game Mode
         
         view.btnRdo_mode1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -179,10 +164,88 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             }
         });
         
-      
         
+        
+        
+        
+      
+        //Button btn_iRundenPLUS
+        view.btn_iRundenPLUS.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+
+                        view.btn_iRundenPLUS.getStyleClass().addAll("btn_Plus_clicked");
+                        //view.btn_iRundenPLUS.getStyleClass().remove("btn_close_normal");
+
+                        //increase label iRunden
+                        String str_iRunden = view.lbl_iRunden.getText();
+                        int int_iRunden = Integer.parseInt(str_iRunden);
+                            if (int_iRunden < 50) {
+                                int_iRunden = int_iRunden + 1;
+                                view.lbl_iRunden.setText(String.valueOf(int_iRunden));
+                            }
+                    }
+                });
+        
+        //Button btn_iRundenPLUS
+        view.btn_iRundenPLUS.addEventHandler(MouseEvent.MOUSE_RELEASED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+
+                        view.btn_iRundenPLUS.getStyleClass().remove("btn_Plus_clicked");
+                      
+                    }
+                });
+
+        //Button btn_iRundenMINUS
+        view.btn_iRundenMINUS.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+                        view.btn_iRundenMINUS.getStyleClass().add("btn_Minus_clicked");
+                        view.btn_iRundenMINUS.getStyleClass().remove("btn_Minus");
+
+                        //decrease label iRunden
+                        String str_iRunden = view.lbl_iRunden.getText();
+                        int int_iRunden = Integer.parseInt(str_iRunden);
+                            if (int_iRunden > 10) {
+                                int_iRunden = int_iRunden - 1;
+                                view.lbl_iRunden.setText(String.valueOf(int_iRunden));
+                            }
+                    }
+                });
+        
+        //Button btn_iRundenMINUS
+        view.btn_iRundenMINUS.addEventHandler(MouseEvent.MOUSE_RELEASED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+                        view.btn_iRundenMINUS.getStyleClass().remove("btn_Minus_clicked");
+                        view.btn_iRundenMINUS.getStyleClass().add("btn_Minus");
+
+                    }
+                });
      
         
+        
+        
+        
+     	//Button btn_finish verhalten (create game)
+        
+    	view.btn_finish.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+    		    new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_finish.getStyleClass().addAll("btn_sendChatMsg_hover");
+    		        	view.btn_finish.getStyleClass().remove("btn_sendChatMsg");
+    		        }
+    		});
+     		
+    		view.btn_finish.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_finish.getStyleClass().remove("btn_sendChatMsg_hover");
+    		        	view.btn_finish.getStyleClass().addAll("btn_sendChatMsg");
+    		        }
+    		});
+        
+    		
         view.btn_finish.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -199,6 +262,9 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+            	
+            	
+            	
             	
             	Stage playingStage = new Stage();			
             	playingStage.initModality(Modality.APPLICATION_MODAL);
