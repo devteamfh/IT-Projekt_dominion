@@ -2,6 +2,7 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import Dominion.ServiceLocator;
@@ -11,9 +12,15 @@ import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.Player;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -34,22 +41,39 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
        
     /**
      * @author Joel Henz
+     * @author Kab
      * */
     public Client_Controller_createGame(Client_Model model, Client_View_createGame view) {
         super(model, view);
         this.view_createGame = view;
         sl = ServiceLocatorClient.getServiceLocator();
-               
-        /**
-         * @author Joel Henz
-         * register ourselves to handle window-closing event
-         * interrupts all client threads and closes all client sockets
-         * */
-        view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+        
+       
+        
+        
+     // Button Close Style Hover und Action press
+    	view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+      		    new EventHandler<MouseEvent>() {
+      		        @Override public void handle(MouseEvent e) {
+      		        	view.btn_close.getStyleClass().addAll("btn_close_hover");
+      		        	view.btn_close.getStyleClass().remove("btn_close_normal");
+      		        }
+  		});
+		      		
+		      		
+  		view.btn_close.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_close.getStyleClass().remove("btn_close_hover");
+  		        	view.btn_close.getStyleClass().addAll("btn_close_normal");
+  		        }
+  		});
+		        
+        view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
             @Override
-            public void handle(WindowEvent event) {
+            public void handle(ActionEvent event) {
+            
             	model.t1.interrupt();
-               
+                
                 try {
 					model.client.close();				
 				} catch (IOException e) {
@@ -59,17 +83,66 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
               
                 Platform.exit();
             }
-        }); 
+            });
         
-        view.endOfGame2.setOnAction(new EventHandler<ActionEvent>() {
+        
+        
+       
+        //ToggleGroup Change listener
+        
+        sl.getToggleForNumberOfPlayers().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                Toggle toggle, Toggle new_toggle) {
+            	
+            	((Node) toggle).getStyleClass().remove("btnRdo_active");
+             	((Node) new_toggle).getStyleClass().add("btnRdo_active");
+
+              	}
+        });
+
+        sl.getToggleForEndOfGame().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle toggle, Toggle new_toggle) {
+
+                ((Node) toggle).getStyleClass().remove("btnRdo_active");
+                ((Node) new_toggle).getStyleClass().add("btnRdo_active");
+
+            }
+        });
+
+        
+        
+
+        //Buttons #Players
+        
+        sl.setNumberOfPlayer(2);
+        view.btnRdo_twoPlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-            	view.sl.getTextFieldForRounds().setDisable(false);
-            	sl.setSelectedMode("rounds");
+            public void handle(ActionEvent event) {           	
+            	sl.setNumberOfPlayer(2);
             }
         });
         
-        view.endOfGame1.setOnAction(new EventHandler<ActionEvent>() {
+        view.btnRdo_threePlayer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {   	
+            	sl.setNumberOfPlayer(3);
+            }
+        });
+        
+        view.btnRdo_fourPlayer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	sl.setNumberOfPlayer(4);
+            }
+        });
+        
+       
+        
+        
+        //Buttons Game Mode
+        sl.setSelectedMode("province");
+        view.btnRdo_mode1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	view.sl.getTextFieldForRounds().clear();
@@ -78,35 +151,97 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             }
         });
         
-        view.twoPlayer.setOnAction(new EventHandler<ActionEvent>() {
+        view.btnRdo_mode2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(2);
+            	view.sl.getTextFieldForRounds().setDisable(false);
+            	sl.setSelectedMode("rounds");
             }
         });
         
-        view.threePlayer.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(3);
-            }
-        });
+              
         
-        view.fourPlayer.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(4);
-            }
-        });
         
-        view.cancel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	view_createGame.stop();
-            }
-        });
+      
+        //Button btn_iRundenPLUS
+        view.btn_iRundenPLUS.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+
+                        view.btn_iRundenPLUS.getStyleClass().addAll("btn_Plus_clicked");
+                        //view.btn_iRundenPLUS.getStyleClass().remove("btn_close_normal");
+
+                        //increase label iRunden
+                        String str_iRunden = view.lbl_iRunden.getText();
+                        int int_iRunden = Integer.parseInt(str_iRunden);
+                            if (int_iRunden < 50) {
+                                int_iRunden = int_iRunden + 1;
+                                view.lbl_iRunden.setText(String.valueOf(int_iRunden));
+                            }
+                    }
+                });
         
-        view.finish.setOnAction(new EventHandler<ActionEvent>() {
+        //Button btn_iRundenPLUS
+        view.btn_iRundenPLUS.addEventHandler(MouseEvent.MOUSE_RELEASED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+
+                        view.btn_iRundenPLUS.getStyleClass().remove("btn_Plus_clicked");
+                      
+                    }
+                });
+
+        //Button btn_iRundenMINUS
+        view.btn_iRundenMINUS.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+                        view.btn_iRundenMINUS.getStyleClass().add("btn_Minus_clicked");
+                        view.btn_iRundenMINUS.getStyleClass().remove("btn_Minus");
+
+                        //decrease label iRunden
+                        String str_iRunden = view.lbl_iRunden.getText();
+
+                        int int_iRunden = Integer.parseInt(str_iRunden);
+                            if (int_iRunden > 10) {
+                                int_iRunden = int_iRunden - 1;
+                                view.lbl_iRunden.setText(String.valueOf(int_iRunden));
+                            }
+                    }
+                });
+        
+        //Button btn_iRundenMINUS
+        view.btn_iRundenMINUS.addEventHandler(MouseEvent.MOUSE_RELEASED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+                        view.btn_iRundenMINUS.getStyleClass().remove("btn_Minus_clicked");
+                        view.btn_iRundenMINUS.getStyleClass().add("btn_Minus");
+
+                    }
+                });
+     
+        
+        
+        
+        
+     	//Button btn_finish verhalten (create game)
+        
+    	view.btn_finish.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+    		    new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_finish.getStyleClass().addAll("btn_sendChatMsg_hover");
+    		        	view.btn_finish.getStyleClass().remove("btn_sendChatMsg");
+    		        }
+    		});
+     		
+    		view.btn_finish.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_finish.getStyleClass().remove("btn_sendChatMsg_hover");
+    		        	view.btn_finish.getStyleClass().addAll("btn_sendChatMsg");
+    		        }
+    		});
+        
+    		
+        view.btn_finish.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	String selectedMode = sl.getSelectedMode();
@@ -122,6 +257,9 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+            	
+            	
+            	
             	
             	Stage playingStage = new Stage();			
             	playingStage.initModality(Modality.APPLICATION_MODAL);
