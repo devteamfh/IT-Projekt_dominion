@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import Dominion.Server.ServerClasses.Database;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.Player;
+import Dominion.appClasses.StartInformation;
 import javafx.scene.control.TextArea;
 
 
@@ -31,6 +32,7 @@ public class ServiceLocatorServer {
     private ArrayList <GamePartyOnServer> listOfOpenGamePartiesOnServer = new ArrayList <GamePartyOnServer>();
     private ArrayList<Player> connectedPlayers = new ArrayList<Player>();
     private Database database = new Database();
+    private ArrayList<StartInformation> al_userStatistics = new ArrayList <StartInformation>();
     
 
     /**
@@ -84,6 +86,22 @@ public class ServiceLocatorServer {
     
     public ArrayList <Player> getConnectedPlayers(){
     	return this.connectedPlayers;
+    }
+    
+    /**
+     * @author kab: statistic Information
+     * mit diesen weiterfahren
+     */
+    public void addNewGame(GamePartyOnServer party){
+    	this.al_userStatistics.add(party);
+    }
+    
+    public void removeFullGame(GamePartyOnServer party){
+    	this.al_userStatistics.remove(party);
+    }
+    
+    public ArrayList <StartInformation> getAl_StatisticsObjects(){
+    	return this.al_userStatistics;
     }
     
     /**

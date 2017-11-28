@@ -149,7 +149,7 @@ public class ClientHandler implements Runnable {
 			 toUpdate.setID();
 			 
 			 //the server searches all open gameparties, adds them to an ArrayList and sends this list (within an UpdateLobby-object) to the client which has made the request for updating his ListView
-			 ///(message was send on client-side from class Client_View_lobby)
+			 //(message was sent from client-side from class Client_View_lobby)
 			 if(!sl.getGameListFromServer().isEmpty()){
 				 ArrayList <GameParty> gamePartyListClient = new ArrayList <GameParty>();
 				 Iterator <GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
@@ -190,13 +190,17 @@ public class ClientHandler implements Runnable {
 			 
 			 sl.addConnectedPlayer(newPlayer);
 			 
-			 sl.db_addPlayer(username, PW, gamesPlayed, gamesWon, gamesLost, winLooseRto, att6,att7,att8,att9);
+			 sl.db_addPlayer(username, PW, gamesPlayed, gamesWon, gamesLost, winLooseRto, att6,att7,att8,att9); 
 			 
+
 			 
-			 //hier sende startInformationen (playerStatistics) an alle Clients
-			 this.out.reset();
-			 this.out.writeObject(start);
-			 this.out.flush();					 
+			 while (iterOut.hasNext()){
+					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+					current.reset();
+					current.writeObject(start);
+					current.flush();
+				 }
+			 
 			 
 			 break;
 			 

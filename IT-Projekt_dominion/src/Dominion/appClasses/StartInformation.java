@@ -1,6 +1,6 @@
 package Dominion.appClasses;
 
-import javafx.beans.property.SimpleStringProperty;
+import java.util.ArrayList;
 
 /**
  * @author Joel Henz
@@ -12,6 +12,7 @@ public class StartInformation extends GameObject {
 	private long id;
 	// Generator for a unique message ID
 	private static long messageID = 0;
+	private ArrayList<StartInformation> listOfStatrtInformation = new ArrayList <StartInformation>();
 	
 	private String 	username;
 	private String 	PW;
@@ -125,7 +126,15 @@ public class StartInformation extends GameObject {
 		this.att9 = att9;
 	}
 
-
+	
+	//wtf?
+	public void setListOfStartInformationObjects(ArrayList <StartInformation> list){
+		this.listOfStatrtInformation = list;
+	}
+	
+	public ArrayList <StartInformation> getListOfStartInformationObjects(){
+		return this.listOfStatrtInformation;
+	}
 	
 
 

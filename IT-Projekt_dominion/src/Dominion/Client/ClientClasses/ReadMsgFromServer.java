@@ -67,7 +67,7 @@ public class ReadMsgFromServer implements Runnable {
 				           public void run() {
 				            
 				            
-				            Iterator<StartInformation> iter2 = sl.getListStatistics().iterator();
+				            Iterator<StartInformation> iter2 = playerStatistics.getListOfStartInformationObjects().iterator();
 							Platform.runLater(new Runnable() {
 						           @Override 
 						           public void run() {
