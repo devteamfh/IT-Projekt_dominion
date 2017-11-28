@@ -44,7 +44,7 @@
 	
 .lbl_menuPoint {
 	-fx-font-family: "Kokila";
-	-fx-font-size: 28px;
+	-fx-font-size: 24px;
 	-fx-font-weight: bold;
 	-fx-text-fill: #666666;
 	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
@@ -53,7 +53,7 @@
 
 .lbl_iRunden {
 	-fx-font-family: "Kokila";
-	-fx-font-size: 60px;
+	-fx-font-size: 50px;
 	-fx-text-fill: #666666;
 	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
 	)
