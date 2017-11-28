@@ -63,13 +63,14 @@ public class Client_View_lobby extends View<Client_Model> {
     }
 	
 	/**
-     * @author Joel Henz
+     * @author Joel Henz initial
+     * @author Beda Kaufmann final view
      */
+	
 	protected Scene create_GUI() {
 
 	    ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();  
 	    sl.setListView();
-	    sl.setListView_StartInformation();
 		sl.getListView().setPrefSize(730,200);
 		sl.getListView().setStyle("-fx-opacity: 0.80;");
 
@@ -152,35 +153,43 @@ public class Client_View_lobby extends View<Client_Model> {
 			    	
 					
 					//table kreieren//
-					TableView <StartInformation> tablePlayers = new TableView<StartInformation>();
-					sl.getListView_StartInformation();
+					TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
 					
-					TableColumn column00 = new TableColumn("User");
-					column00.setMinWidth(50);
-					column00.setCellValueFactory(new PropertyValueFactory<>("User"));
 					
-					TableColumn column01 = new TableColumn("Games Played");
+					TableColumn<StartInformation,String> column00 = new TableColumn<StartInformation,String>("Spieler");
+					column00.setMinWidth(200);
+					column00.setCellValueFactory(new PropertyValueFactory<>("username"));
+					
+					TableColumn<StartInformation,Integer> column01 = new TableColumn<StartInformation,Integer>("Gespielte Spiele");
 					column01.setMinWidth(150);
-					column01.setCellValueFactory(new PropertyValueFactory<>("Games Played"));
+					column01.setCellValueFactory(new PropertyValueFactory<>("gamesPlayed"));
 					
-					TableColumn column02= new TableColumn("Games Won");
+					TableColumn<StartInformation,Integer> column02= new TableColumn<StartInformation,Integer>("Gewonnene Spiele");
 					column02.setMinWidth(150);
-					column02.setCellValueFactory(new PropertyValueFactory<>("Games Won"));
+					column02.setCellValueFactory(new PropertyValueFactory<>("gamesWon"));
 					
-					TableColumn column03 = new TableColumn("Games Lost");
+					TableColumn<StartInformation,Integer> column03 = new TableColumn<StartInformation,Integer>("Verlorene Spiele");
 					column03.setMinWidth(150);
-					column03.setCellValueFactory(new PropertyValueFactory<>("Games Lost"));
+					column03.setCellValueFactory(new PropertyValueFactory<>("gamesLost"));
 					
-					TableColumn column04 = new TableColumn("Win/Loose Ratio");
-					column04.setMinWidth(300);
-					column04.setCellValueFactory(new PropertyValueFactory<>("Win/Loose Ratio"));
+					TableColumn<StartInformation,Integer> column04 = new TableColumn<StartInformation,Integer>("Win/Loose Ratio");
+					column04.setMinWidth(150);
+					column04.setCellValueFactory(new PropertyValueFactory<>("winLooseRatio"));
+				
+					TableColumn<StartInformation,Integer> column05 = new TableColumn<StartInformation,Integer>("Rang");
+					column05.setMinWidth(250);
+					column05.setCellValueFactory(new PropertyValueFactory<>("att6"));
 					
-					tablePlayers.getColumns().addAll(column00,column01,column02,column03,column04);
-					tablePlayers.setPrefSize(1250, 200);
-					tablePlayers.setStyle("-fx-opacity: 0.80;");
+					tbl_playerStats.getColumns().addAll(column00,column01,column02,column03,column04,column05);
+					tbl_playerStats.setPrefSize(1250, 200);
+					tbl_playerStats.setStyle("-fx-opacity: 0.80;");
 					
 					
-				//	tablePlayers.setItems(sl.getListView_StartInformation());
+					
+					tbl_playerStats.getItems().addAll(sl.getListStatistics());
+					
+					
+					//tbl_playerStats.setItems(sl.getListStatistics());
 					/*https://examples.javacodegeeks.com/desktop-java/javafx-table-example/
 					 * https://www.youtube.com/watch?v=lpqZzHaGsyI
 					 */
@@ -190,7 +199,7 @@ public class Client_View_lobby extends View<Client_Model> {
 				    
 					///HIER WAR tablePLeayser drin!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 					/*Upperhalf zusammenführen*/
-					hb_wrapper_upperhalf.getChildren().addAll(sl.getListView_StartInformation());
+					hb_wrapper_upperhalf.getChildren().addAll(tbl_playerStats);
 				    /*______________________________________________________________________________________________*/				    
 				    /************************************************************************************************/				    
 
@@ -255,14 +264,14 @@ public class Client_View_lobby extends View<Client_Model> {
 					
 					
 					
-					/*Lowerhalf zusammenfÃ¼hren*/
+					/*Lowerhalf zusammenführen*/
 					hb_wrapper_lowerhalf.getChildren().addAll(vb_wrapper_gameList, vb_wrapper_chat);
 				    /*______________________________________________________________________________________________*/				    
 				    /************************************************************************************************/				    
 
 
 					
-					/*Upper und Lowerhalf zusammenfÃ¼hren*/
+					/*Upper und Lowerhalf zusammenführen*/
 					vb_wrapperContent.getChildren().addAll(hb_wrapper_upperhalf,hb_wrapper_lowerhalf);
 					vb_wrapperContent.setPadding(new Insets(10,75,10,75));
 				    /*______________________________________________________________________________________________*/				    
@@ -316,6 +325,7 @@ public class Client_View_lobby extends View<Client_Model> {
 			e.printStackTrace();
 		}
 	    
+	   
 
 		this.scene = new Scene (root, 1400,800);
 		scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());

@@ -92,7 +92,7 @@ public class ServiceLocatorServer {
      */
     
     //Player hinzufügen
-    public void db_addPlayer(String user, String pw, String att2, String att3, String att4, String att5, String att6, String att7, String att8, String att9){
+    public void db_addPlayer(String user, String pw, int att2, int att3, int att4, int att5, String att6, String att7, String att8, String att9){
     	this.database.addPlayer(user, pw, att2, att3, att4, att5, att6, att7, att8, att9);
     }
     

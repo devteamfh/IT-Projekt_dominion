@@ -52,6 +52,40 @@ public class ReadMsgFromServer implements Runnable {
 				 
 				case InformationObject:
 					break;
+				
+					/**
+					 * @author kab: handles incoming StartInformation with player statistics and sends to  tbl_playerStats in the bloody lobby
+					 */
+				case StartInformation:
+					
+					StartInformation playerStatistics = (StartInformation) obj;
+		
+					sl.addPlayerStatistics(playerStatistics);
+					
+					Platform.runLater(new Runnable() {
+				           @Override 
+				           public void run() {
+				            
+				            
+				            Iterator<StartInformation> iter2 = sl.getListStatistics().iterator();
+							Platform.runLater(new Runnable() {
+						           @Override 
+						           public void run() {
+						        	   
+						        	   while (iter2.hasNext()){
+						        		   sl.addPlayerStatistics(iter2.next());
+						        	   }
+						           }
+						       });	
+				            
+				            
+				            System.out.println("player statistic object recieved");
+				            System.out.println(sl.getListStatistics());
+				           
+				           }
+				       });
+					
+					break;
 					 
 				case GameParty:
 					GameParty newGame = (GameParty) obj;
@@ -78,21 +112,8 @@ public class ReadMsgFromServer implements Runnable {
 					        		   sl.addNewGame(iter.next());
 					        	   }
 					           }
-					       });
+					       });	
 						
-						
-					//update Player Statistics Table
-						Iterator<StartInformation> si_iter = toUpdate.getListOfStartInformation().iterator();
-						Platform.runLater(new Runnable() {
-					           @Override 
-					           public void run() {
-					        	   
-					        	   while (si_iter.hasNext()){
-					        		   sl.addPlayerStatistics(si_iter.next());
-					        	   }
-					           }
-					       });
-					
 
 					break;
 					

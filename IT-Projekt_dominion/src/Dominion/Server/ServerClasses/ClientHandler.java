@@ -177,13 +177,26 @@ public class ClientHandler implements Runnable {
 			 
 			 String username = start.getUsername();
 			 String PW       = start.getPW();
+			 int gamesPlayed = start.getGamesPlayed();
+			 int gamesWon    = start.getGamesWon();
+			 int gamesLost   = start.getGamesLost();
+			 int winLooseRto = start.getWinLooseRatio();
+			 String att6     = start.getAtt6();
+			 String att7	 = start.getAtt7();
+			 String att8	 = start.getAtt8();
+			 String att9 	 = start.getAtt9();
 			 
 			 Player newPlayer = new Player (username, this.out);
 			 
 			 sl.addConnectedPlayer(newPlayer);
 			 
-			 sl.db_addPlayer(username, PW, "att2", "att3", "att4", "att5", "att6", "att7", "att8", "att9");
+			 sl.db_addPlayer(username, PW, gamesPlayed, gamesWon, gamesLost, winLooseRto, att6,att7,att8,att9);
 			 
+			 
+			 //hier sende startInformationen (playerStatistics) an alle Clients
+			 this.out.reset();
+			 this.out.writeObject(start);
+			 this.out.flush();					 
 			 
 			 break;
 			 

@@ -52,8 +52,8 @@ public class ServiceLocatorClient {
     private Client_View_playingStage view_playingStage;
     
 
-    private ObservableList<StartInformation> ol_StartInformation = FXCollections.observableArrayList();
-    private ListView <StartInformation> lv_StartInformation;
+    private ObservableList<StartInformation> ol_statistics =  FXCollections.observableArrayList();
+
     
     /**
      * Factory method for returning the singleton
@@ -185,23 +185,22 @@ public class ServiceLocatorClient {
 	/**
 	 * @author kab: List information for Player Statistics Table
 	 */
-	public void setListView_StartInformation(){
-		 this.lv_StartInformation = new ListView<>(ol_StartInformation);
-	}
-	
-	public ListView <StartInformation> getListView_StartInformation(){
-		return this.lv_StartInformation;
+	public ObservableList<StartInformation> getListStatistics(){
+		
+		 return FXCollections.<StartInformation>observableArrayList(ol_statistics);
+		
+		//return this.ol_statistics;
 	}
 	
 	/////////////////////////////////
 	public void addPlayerStatistics(StartInformation startinfo){
-		this.ol_StartInformation.add(startinfo);		
+		this.ol_statistics.add(startinfo);		
 	}
 	
 	public void removePlayerStatistics(StartInformation startinfo){		
-		this.ol_StartInformation.remove(startinfo);
+		this.ol_statistics.remove(startinfo);
 		
-		Iterator<StartInformation> iter = this.ol_StartInformation.iterator();
+		Iterator<StartInformation> iter = this.ol_statistics.iterator();
 		while(iter.hasNext()){
 			System.out.println(iter.next());
 		}
@@ -209,12 +208,12 @@ public class ServiceLocatorClient {
 	
 	public void updatePlayerStatistics(StartInformation newValue){
 		
-		Iterator <StartInformation> iter = this.ol_StartInformation.iterator();
+		Iterator <StartInformation> iter = this.ol_statistics.iterator();
 		
 		while(iter.hasNext()){
 			StartInformation old = iter.next();
 			if(old.getID() == newValue.getID()){
-				this.ol_StartInformation.remove(old);
+				this.ol_statistics.remove(old);
 				
 			//	if (newValue.getLoggedInPlayers() < newValue.getMaxNumberOfPlayers()){
 			//		this.ol_StartInformation.add(newValue);

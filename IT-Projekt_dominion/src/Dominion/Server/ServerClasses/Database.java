@@ -62,16 +62,16 @@ import Dominion.Client.ClientClasses.checkFields;
         public  void createTables() {
 
             String sql_createTables = "CREATE TABLE IF NOT EXISTS Users (\n"
-                    + "	Name text NOT NULL,\n"
+                    + "	Name text NOT NULL,   \n"
                     + "	PassWrd text NOT NULL,\n"
                     + "	gamesStarted INT NULL,\n"
-                    + "	gamesWon INT NULL,\n"
-                    + "	gamesLost INT NULL,\n"
-                    + "	Column05 INT NULL,\n"
-                    + "	Column06 INT NULL,\n"
-                    + "	Column07 INT NULL,\n"
-                    + "	Column08 INT NULL,\n"
-                    + "	Column09 INT NULL,\n"
+                    + "	gamesWon  INT NULL,   \n"
+                    + "	gamesLost INT NULL,   \n"
+                    + "	wlRatio   INT NULL,   \n"
+                    + "	Column06 text NULL,   \n"
+                    + "	Column07 text NULL,   \n"
+                    + "	Column08 text NULL,   \n"
+                    + "	Column09 text NULL,   \n"
                     + "	PRIMARY KEY (Name, PassWrd)"
                     + ");";
 
@@ -102,7 +102,7 @@ import Dominion.Client.ClientClasses.checkFields;
         /**
          * @author kab:
          */
-        public void addPlayer(String user, String pw, String att2, String att3, String att4, String att5, String att6, String att7, String att8, String att9){
+        public void addPlayer(String user, String pw, int att2, int att3, int att4, int att5, String att6, String att7, String att8, String att9){
         	String sql_userData = 
         			  " INSERT INTO Users (\n"
                     + "	Name,        \n"
@@ -110,7 +110,7 @@ import Dominion.Client.ClientClasses.checkFields;
                     + "	gamesStarted,\n"
                     + "	gamesWon,    \n"
                     + "	gamesLost,   \n"
-                    + "	Column05,    \n"
+                    + "	wlRatio,     \n"
                     + "	Column06,    \n"
                     + "	Column07,    \n"
                     + "	Column08,    \n"
