@@ -176,11 +176,15 @@ public class ClientHandler implements Runnable {
 			 start.setID();
 			 
 			 String username = start.getUsername();
+			 String PW       = start.getPW();
 			 
 			 Player newPlayer = new Player (username, this.out);
 			 
 			 sl.addConnectedPlayer(newPlayer);
-
+			 
+			 sl.db_addPlayer(username, PW, "att2", "att3", "att4", "att5", "att6", "att7", "att8", "att9");
+			 
+			 
 			 break;
 			 
 		 case CancelGame:

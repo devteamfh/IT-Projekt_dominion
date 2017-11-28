@@ -10,6 +10,7 @@ import Dominion.appClasses.DeleteGameFromListView;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
+import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateGameParty;
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
@@ -75,6 +76,19 @@ public class ReadMsgFromServer implements Runnable {
 					        	   
 					        	   while (iter.hasNext()){
 					        		   sl.addNewGame(iter.next());
+					        	   }
+					           }
+					       });
+						
+						
+					//update Player Statistics Table
+						Iterator<StartInformation> si_iter = toUpdate.getListOfStartInformation().iterator();
+						Platform.runLater(new Runnable() {
+					           @Override 
+					           public void run() {
+					        	   
+					        	   while (si_iter.hasNext()){
+					        		   sl.addPlayerStatistics(si_iter.next());
 					        	   }
 					           }
 					       });

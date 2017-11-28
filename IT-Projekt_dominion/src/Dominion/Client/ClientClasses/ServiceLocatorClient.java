@@ -47,7 +47,6 @@ public class ServiceLocatorClient {
     private TextArea ta_lobby = new TextArea();
     
     private ObservableList<GameParty> obsList = FXCollections.observableArrayList();
-    
     private ListView <GameParty> gameList;
     
     private Client_View_playingStage view_playingStage;
@@ -182,6 +181,10 @@ public class ServiceLocatorClient {
 		return this.view_playingStage;
 	}
 	
+	
+	/**
+	 * @author kab: List information for Player Statistics Table
+	 */
 	public void setListView_StartInformation(){
 		 this.lv_StartInformation = new ListView<>(ol_StartInformation);
 	}
@@ -189,5 +192,46 @@ public class ServiceLocatorClient {
 	public ListView <StartInformation> getListView_StartInformation(){
 		return this.lv_StartInformation;
 	}
+	
+	/////////////////////////////////
+	public void addPlayerStatistics(StartInformation startinfo){
+		this.ol_StartInformation.add(startinfo);		
+	}
+	
+	public void removePlayerStatistics(StartInformation startinfo){		
+		this.ol_StartInformation.remove(startinfo);
+		
+		Iterator<StartInformation> iter = this.ol_StartInformation.iterator();
+		while(iter.hasNext()){
+			System.out.println(iter.next());
+		}
+	}	
+	
+	public void updatePlayerStatistics(StartInformation newValue){
+		
+		Iterator <StartInformation> iter = this.ol_StartInformation.iterator();
+		
+		while(iter.hasNext()){
+			StartInformation old = iter.next();
+			if(old.getID() == newValue.getID()){
+				this.ol_StartInformation.remove(old);
+				
+			//	if (newValue.getLoggedInPlayers() < newValue.getMaxNumberOfPlayers()){
+			//		this.ol_StartInformation.add(newValue);
+			//	}
+				
+				break;
+			}
+		}
+		////////////////////////////////////////
+	}
+	
+	
+	
+	
+
+	
+	
+	
 
 }

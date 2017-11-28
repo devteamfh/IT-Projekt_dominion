@@ -15,6 +15,8 @@ public class UpdateLobby extends GameObject {
 	private static long messageID = 0;
 	private ArrayList <GameParty> listOfOpenGames = new ArrayList <GameParty>();
 	
+	private ArrayList <StartInformation> al_startInformation = new ArrayList<StartInformation>();
+	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
@@ -41,5 +43,15 @@ public class UpdateLobby extends GameObject {
 	public ArrayList <GameParty> getListOfOpenGames(){
 		return this.listOfOpenGames;
 	}
+	
+	//PlayerStatistics
+	public ArrayList <StartInformation> getListOfStartInformation(){
+		return this.al_startInformation;
+	}
+	//PlayerStatistics
+	public void setListOfStartInformation(ArrayList <StartInformation> al_startInformation){
+		this.al_startInformation = al_startInformation;
+	}
+
 
 }

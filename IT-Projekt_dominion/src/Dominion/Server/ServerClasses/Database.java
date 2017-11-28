@@ -8,33 +8,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Dominion.ServiceLocator;
+import Dominion.Client.ClientClasses.checkFields;
 
-/**
- *
- *
-public class Database {
-     *
-     * 
-     */
-	
+
    /**
     * @author Beda Kaufmann
     */ 
     public class Database {
-
+    	private static Database instance = null;
         private String workingDirecotry = System.getProperty("user.dir");
         private String url =  "JDBC:sqlite:"+workingDirecotry+"/" + "user.db";
-
-        
+     
         ServiceLocator sl = ServiceLocator.getServiceLocator();
-        
+    	
+    	protected Database(){
+    		//verhindert Instanzierung
+    	}	
+    	
+    	public static Database getInstance(){
+    		if(instance == null) {
+    			instance = new Database();
+    		}
+    		return instance;
+    		}
+    	
+    	
+          
         
         /**
          * @author kab: kreiere und connecte zu Datenbank
          * @param fileName name der Datenbank
          */
-             
-
         public  void createNewDatabase() {
 
 
@@ -126,6 +130,7 @@ public class Database {
 
                 if(sql_execute(sql_userData)) {
                     sl.getLogger().info("User Data has been entered into Table Users");
+                    
                 }
         }
 
@@ -135,7 +140,7 @@ public class Database {
         /**
          * @author kab:
          */
-        public void addStatistics(String s) {
+        public void updateStatistics(String s) {
 
         }
 

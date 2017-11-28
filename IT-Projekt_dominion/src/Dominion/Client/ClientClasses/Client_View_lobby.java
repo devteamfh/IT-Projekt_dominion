@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 
+
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
  * is licensed under the terms of the BSD 3-clause license (see the file
@@ -106,7 +107,7 @@ public class Client_View_lobby extends View<Client_Model> {
 		
 		tf_message.setText("Ihre Nachricht");
 		
-		//PrimÃ¤re Nodes initialisieren		
+		//Primäre Nodes initialisieren		
 				
 		BorderPane root = new BorderPane();
 	    /*______________________________________________________________________________________________*/				    
@@ -151,7 +152,7 @@ public class Client_View_lobby extends View<Client_Model> {
 			    	
 					
 					//table kreieren//
-					TableView <StartInformation> tablePlayers = new TableView<>();
+					TableView <StartInformation> tablePlayers = new TableView<StartInformation>();
 					sl.getListView_StartInformation();
 					
 					TableColumn column00 = new TableColumn("User");
@@ -177,11 +178,19 @@ public class Client_View_lobby extends View<Client_Model> {
 					tablePlayers.getColumns().addAll(column00,column01,column02,column03,column04);
 					tablePlayers.setPrefSize(1250, 200);
 					tablePlayers.setStyle("-fx-opacity: 0.80;");
+					
+					
+				//	tablePlayers.setItems(sl.getListView_StartInformation());
+					/*https://examples.javacodegeeks.com/desktop-java/javafx-table-example/
+					 * https://www.youtube.com/watch?v=lpqZzHaGsyI
+					 */
+				    //sl.getListView_StartInformation().setCellFactory(sl.getListView_StartInformation());
+					
 				    /*______________________________________________________________________________________________*/				    
 				    
-					
-					/*Upperhalf zusammenfÃ¼hren*/
-					hb_wrapper_upperhalf.getChildren().addAll(tablePlayers);
+					///HIER WAR tablePLeayser drin!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					/*Upperhalf zusammenführen*/
+					hb_wrapper_upperhalf.getChildren().addAll(sl.getListView_StartInformation());
 				    /*______________________________________________________________________________________________*/				    
 				    /************************************************************************************************/				    
 

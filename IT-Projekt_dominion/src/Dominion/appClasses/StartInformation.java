@@ -14,9 +14,9 @@ public class StartInformation extends GameObject {
 	private static long messageID = 0;
 	
 	private String username;
+	private String PW;
 	
-	private SimpleStringProperty User;
-	private SimpleStringProperty pw;
+	private  SimpleStringProperty att2;
 	
 	private static long nextMessageID() {		
 		return messageID++;
@@ -41,6 +41,15 @@ public class StartInformation extends GameObject {
 	
 	public String getUsername(){
 		return this.username;
+	}
+	
+	public String getPW(){
+		return this.PW;
+	}
+
+	public int getLoggedInPlayers() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 
