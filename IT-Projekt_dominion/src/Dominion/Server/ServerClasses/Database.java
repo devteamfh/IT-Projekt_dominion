@@ -79,7 +79,7 @@ public class Database {
 
         /**
          * @author sqlitetutorial.net
-         *  fï¿½hrt SQL STatements aus
+         *  führt SQL STatements aus
          */
         public boolean sql_execute(String sqlStatement){
 

@@ -16,7 +16,7 @@ public class StartInformation extends GameObject {
 	private String username;
 	
 	private SimpleStringProperty User;
-	private  SimpleStringProperty pw;
+	private SimpleStringProperty pw;
 	
 	private static long nextMessageID() {		
 		return messageID++;
@@ -42,5 +42,7 @@ public class StartInformation extends GameObject {
 	public String getUsername(){
 		return this.username;
 	}
+	
+
 
 }
