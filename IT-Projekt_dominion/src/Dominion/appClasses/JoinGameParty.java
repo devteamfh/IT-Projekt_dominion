@@ -42,5 +42,9 @@ public class JoinGameParty extends GameObject {
 	public String getUsername(){
 		return this.username;
 	}
+	
+	public void setUpdatedGameParty(GameParty updated){
+		this.selectedGameParty = updated;
+	}
 
 }

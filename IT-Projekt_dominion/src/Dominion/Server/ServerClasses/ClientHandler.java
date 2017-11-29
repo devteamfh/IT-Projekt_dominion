@@ -15,7 +15,6 @@ import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
 import Dominion.appClasses.Player;
 import Dominion.appClasses.StartInformation;
-import Dominion.appClasses.UpdateGameParty;
 import Dominion.appClasses.UpdateLobby;
 import javafx.scene.input.TouchPoint;
 
@@ -68,7 +67,7 @@ public class ClientHandler implements Runnable {
 		Iterator<ObjectOutputStream> iterOut = this.list.iterator();
 		
 		switch (obj.getType()) {
-		 case ChatMessageLobby:		 
+		 case ChatMessageLobby:	
 			//sending the chat messages to all clients
 				while (iterOut.hasNext()){
 					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
@@ -93,7 +92,7 @@ public class ClientHandler implements Runnable {
 			 //ObjectOutputStream (instance variable of Player class) is not serializable
 			 while (iterOut.hasNext()){
 				ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
-				current.reset();
+				//current.reset();
 				current.writeObject(game);
 				current.flush();
 			 }
@@ -110,36 +109,45 @@ public class ClientHandler implements Runnable {
 			 
 			 
 			 Player newPlayerJoining = new Player (gameToJoin.getUsername(), this.out);
-			 
 			 //first we will add the joining player to the correct GamePartyOnServer
+			 
 			 Iterator <GamePartyOnServer> iterGameParty = sl.getGameListFromServer().iterator();
 			 
 			 GamePartyOnServer currentGame=null;
 			 
-			 while(iterGameParty.hasNext()){				 
-				 
-				 currentGame = iterGameParty.next();
-				 if(currentGame.getGameParty().getID()== id){
-					 currentGame.addPlayer(newPlayerJoining);
-					 break;
+			 for (int i=0; i<sl.getGameListFromServer().size();i++){
+				 if(id == sl.getGameListFromServer().get(i).getGameParty().getID()){
+					 sl.getGameListFromServer().get(i).addPlayer(newPlayerJoining);
+					 gameToJoin.setUpdatedGameParty(sl.getGameListFromServer().get(i).getGameParty());
 				 }
-			 }			 
-
+			 }
+			 
+			 //now we send the JoinGameParty to all clients.
+			 while(iterOut.hasNext()){			 
+				 ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+				 current.reset(); //reset is necessary so the clients will read the updated GameParty on switch case JoinGameParty
+				 current.writeObject(gameToJoin);
+				 current.flush();
+			 }
+			 
+			 
+			 /**
+			 
 			 //now we have to update the number of connected players to this GameParty (update on the ListView of each client which is already in the lobby)
 			 UpdateGameParty newUpdate = new UpdateGameParty (currentGame.getGameParty());
 			 newUpdate.setID();
 			 
 			 while(iterOut.hasNext()){			 
 				 ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
-				 current.reset();
+				 //current.reset();
 				 current.writeObject(newUpdate);
 				 current.flush();
-			 }
+			 }*/
 			 
 			 //finally we have to send a JoinGameParty object only to the joining client for creating his playing stage
-			 this.out.reset();
-			 this.out.writeObject(gameToJoin);
-			 this.out.flush();
+			 //this.out.reset();
+			 /**this.out.writeObject(gameToJoin);
+			 this.out.flush();*/
 			 
 
 			 break;
@@ -157,14 +165,14 @@ public class ClientHandler implements Runnable {
 				 while (iterGamePartyOnServer.hasNext()){
 					 GamePartyOnServer currentGamePartyOnServer = iterGamePartyOnServer.next();
 					 
-					 if(!(currentGamePartyOnServer.getGameParty().getLoggedInPlayers() == currentGamePartyOnServer.getGameParty().getMaxNumberOfPlayers())){
+					 if(!(currentGamePartyOnServer.getGameParty().getNumberOfLoggedInPlayers() == currentGamePartyOnServer.getGameParty().getMaxNumberOfPlayers())){
 						 gamePartyListClient.add(currentGamePartyOnServer.getGameParty());
 					 }
 				 }
 			 
 				 toUpdate.setListOfOpenGames(gamePartyListClient);
 				 
-				 this.out.reset();
+				 //this.out.reset();
 				 this.out.writeObject(toUpdate);
 				 this.out.flush();				 
 			 }
@@ -200,16 +208,15 @@ public class ClientHandler implements Runnable {
 					 break;
 				 }
 			 }
+
+			 while (iterOut.hasNext()){
+					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+					//current.reset();
+					current.writeObject(obj);
+					current.flush();			
+			 } 
 			 
-			 //writing the CancelGame object to all players of the GameParty
-			 for(int i=0; i < currentGame2.getPlayerList().size(); i++){
-				 Player current = currentGame2.getPlayerList().get(i);
-				 current.getOut().writeObject(cancel);
-				 current.getOut().flush();
-				// current.getOut().reset();
-			 }
-			 
-			 
+		 break;
 		 default:
 		 }
 	

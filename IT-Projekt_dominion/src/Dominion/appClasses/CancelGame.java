@@ -11,8 +11,7 @@ public class CancelGame extends GameObject {
 	private static long messageID = 0;
 	
 	private GameParty gamePartyToCancel;
-	
-	
+
 	
 	private static long nextMessageID() {		
 		return messageID++;

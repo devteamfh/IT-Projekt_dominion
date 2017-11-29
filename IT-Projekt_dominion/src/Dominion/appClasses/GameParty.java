@@ -1,10 +1,9 @@
 package Dominion.appClasses;
 
-import java.util.ArrayList;
-
 /**
  * @author Joel Henz
- * instances of this class are sent/read by client and server. The equivalent class of GameParty is GamePartyOnServer and is used only on server side (to store Player objects and ObjectOutputStream-objects)
+ * instances of this class are sent/read by client and server. The equivalent class of GameParty is GamePartyOnServer. Objects of this class are only used on server side (to store Player objects and ObjectOutputStream-objects) and will not be sent
+ * while communication
  */
 public class GameParty extends GameObject{
 	
@@ -54,19 +53,24 @@ public class GameParty extends GameObject{
 	//adding the player who is entering an existing GameParty (choosing from the ListView in the lobby)
 	public void addNewPlayer(String player){
 		this.playersOfThisGameParty[numberOfLoggedInPlayers] = player;
-		numberOfLoggedInPlayers++;
+		this.numberOfLoggedInPlayers++;
+		//this.propertyOfnumberOfLoggedInPlayers.set(numberOfLoggedInPlayers);
 	}
 	
 	public int getMaxNumberOfPlayers(){
 		return this.numberOfMaxPlayers;
 	}
 	
-	public int getLoggedInPlayers(){
+	public int getNumberOfLoggedInPlayers(){
 		return this.numberOfLoggedInPlayers;
 	}
 	
 	public String[] getArrayOfPlayers(){
 		return this.playersOfThisGameParty;
+	}
+	
+	public boolean isFull(){
+		return this.numberOfLoggedInPlayers == this.numberOfMaxPlayers;
 	}
 	
 

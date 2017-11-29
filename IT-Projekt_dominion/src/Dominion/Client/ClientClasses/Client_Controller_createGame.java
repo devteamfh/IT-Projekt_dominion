@@ -31,6 +31,8 @@ import javafx.stage.WindowEvent;
 public class Client_Controller_createGame extends Controller<Client_Model, Client_View_createGame> {
     ServiceLocatorClient sl;
     Client_View_createGame view_createGame;
+    String selectedGameMode;
+    int numberOfPlayers;
        
     /**
      * @author Joel Henz
@@ -65,7 +67,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             @Override
             public void handle(ActionEvent event) {
             	view.sl.getTextFieldForRounds().setDisable(false);
-            	sl.setSelectedMode("rounds");
+            	selectedGameMode = "Rundenanzahl: ";
             }
         });
         
@@ -74,28 +76,28 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             public void handle(ActionEvent event) {
             	view.sl.getTextFieldForRounds().clear();
             	view.sl.getTextFieldForRounds().setDisable(true);
-            	sl.setSelectedMode("province");
+            	selectedGameMode = "Provinzkarten";
             }
         });
         
         view.twoPlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(2);
+            	numberOfPlayers = 2;
             }
         });
         
         view.threePlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(3);
+            	numberOfPlayers = 3;
             }
         });
         
         view.fourPlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(4);
+            	numberOfPlayers = 4;
             }
         });
         
@@ -109,11 +111,9 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         view.finish.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	String selectedMode = sl.getSelectedMode();
-            	int numberOfPlayers = sl.getNumberOfPlayers();
             	String creator = model.playerName;
             	
-            	GameParty newParty = new GameParty(selectedMode,creator,numberOfPlayers);
+            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers);
 
             	try {
 					model.out.writeObject(newParty);

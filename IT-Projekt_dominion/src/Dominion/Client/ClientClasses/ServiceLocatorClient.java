@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.JoinGameParty;
 import Dominion.appClasses.StartInformation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,7 +53,7 @@ public class ServiceLocatorClient {
     
     private Client_View_playingStage view_playingStage;
     
-
+    
     private ObservableList<StartInformation> ol_StartInformation = FXCollections.observableArrayList();
     private ListView <StartInformation> lv_StartInformation;
     
@@ -113,22 +114,6 @@ public class ServiceLocatorClient {
     	this.inputNumberOfRounds = new TextField();
     }
     
-    public void setSelectedMode(String selectedMode){
-    	this.selectedMode = selectedMode;
-    }
-    
-    public String getSelectedMode (){
-    	return this.selectedMode;
-    }
-    
-    public void setNumberOfPlayer(int number){
-    	this.numberOfPlayers=number;
-    }
-    
-    public int getNumberOfPlayers(){
-    	return this.numberOfPlayers;
-    }
-    
     public TextArea getTextAreaLobby(){
     	return this.ta_lobby;
     }
@@ -155,23 +140,18 @@ public class ServiceLocatorClient {
 		}
 	}	
 	
-	public void updateGameParty(GameParty newValue){
-		
-		Iterator <GameParty> iter = this.obsList.iterator();
-		
-		while(iter.hasNext()){
-			GameParty old = iter.next();
-			if(old.getID() == newValue.getID()){
-				this.obsList.remove(old);
+	public void updateGameParty(JoinGameParty join){
+		GameParty gamePartyToJoin = join.getSelectedGameParty();
+		String newPlayer = join.getUsername();
+		for (int i=0; i<this.obsList.size();i++){
+			if(gamePartyToJoin.getID() == this.obsList.get(i).getID()){
+				this.obsList.set(i, gamePartyToJoin);
 				
-				if (newValue.getLoggedInPlayers() < newValue.getMaxNumberOfPlayers()){
-					this.obsList.add(newValue);
+				if(this.obsList.get(i).isFull()){
+					this.obsList.remove(i);
 				}
-				
-				break;
 			}
 		}
-		
 	} 
 	
 	public void setView_playingStage (Client_View_playingStage view){

@@ -10,7 +10,6 @@ import Dominion.appClasses.DeleteGameFromListView;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
-import Dominion.appClasses.UpdateGameParty;
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
 import javafx.stage.Modality;
@@ -79,47 +78,55 @@ public class ReadMsgFromServer implements Runnable {
 					           }
 					       });
 					
-
-					break;
-					
-				case UpdateGameParty:
-
-					UpdateGameParty newUpdate = (UpdateGameParty) obj;
-					
-					Platform.runLater(new Runnable() {
-				           @Override 
-				           public void run() {
-				        	   sl.updateGameParty(newUpdate.getGameParty());
-				        	   
-				           }
-				       });
 					break;
 					
 				case JoinGameParty:
 					JoinGameParty join=(JoinGameParty) obj;
-					GameParty gamePartyToJoin=join.getSelectedGameParty();
+					
+					for(int i=0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){
+						System.out.println(join.getSelectedGameParty().getArrayOfPlayers()[i]);
+					}
 					
 					Platform.runLater(new Runnable() {
 
 						@Override 
 				           public void run() {
-				        	   Stage playingStage = new Stage();			
-				        	   playingStage.initModality(Modality.APPLICATION_MODAL);
-				        	   Client_View_playingStage view = new Client_View_playingStage (playingStage, model,false);
-				        	   sl.setView_playingStage(view);
-				        	   new Client_Controller_playingStage(model, sl.getPlayingStage(),gamePartyToJoin); 
-				        	   sl.getPlayingStage().start();
+							//this method will update the number of joined players of this game. If the game is full, it will be removed from the ListView of every client
+							sl.updateGameParty(join);	
+							
+							//determine the joining player and create his playing stage
+							if(join.getUsername().equals(model.getName())){
+								GameParty gamePartyToJoin = join.getSelectedGameParty();
+								Stage playingStage = new Stage();			
+					        	playingStage.initModality(Modality.APPLICATION_MODAL);
+					        	Client_View_playingStage view = new Client_View_playingStage (playingStage, model,false);
+					        	sl.setView_playingStage(view);
+					        	new Client_Controller_playingStage(model, sl.getPlayingStage(),gamePartyToJoin); 
+					        	sl.getPlayingStage().start();
+							}
 						}
 				       });
-					
+									
 					break;
 					
 				case CancelGame:
+					CancelGame cancelObject = (CancelGame) obj;
+					
+					GameParty gamePartyToCancel = cancelObject.getGameParty();
+					
 					Platform.runLater(new Runnable() {
 
 						@Override 
 				           public void run() {
-								sl.getPlayingStage().stop();	
+							
+							for(int i=0; i<gamePartyToCancel.getArrayOfPlayers().length;i++){
+								if(model.getName().equals(gamePartyToCancel.getArrayOfPlayers()[i])){
+									System.out.println("test");
+									sl.getPlayingStage().stop();
+								}
+							}
+
+							sl.removeGame(gamePartyToCancel);
 				           }
 				      });	
 				break;
