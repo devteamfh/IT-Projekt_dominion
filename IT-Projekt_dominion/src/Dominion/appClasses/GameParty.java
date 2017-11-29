@@ -18,6 +18,7 @@ public class GameParty extends GameObject{
 	private int numberOfMaxPlayers;
 	private int numberOfLoggedInPlayers = 0;
 	private String [] playersOfThisGameParty;
+	private int rounds;
 	
 	private static long nextMessageID() {		
 		return messageID++;
@@ -43,7 +44,11 @@ public class GameParty extends GameObject{
 	}
 	
 	public String toString(){
-		return "Host: "+this.host+", "+this.selectedMode+", "+this.numberOfLoggedInPlayers+" Spieler von "+this.numberOfMaxPlayers+" eingeloggt";
+		if(this.withRounds()){
+			return "Host: "+this.host+", "+this.selectedMode+": "+this.rounds+", "+this.numberOfLoggedInPlayers+" Spieler von "+this.numberOfMaxPlayers+" eingeloggt";
+		}else{
+			return "Host: "+this.host+", "+this.selectedMode+", "+this.numberOfLoggedInPlayers+" Spieler von "+this.numberOfMaxPlayers+" eingeloggt";
+		}
 	}
 	
 	public String getHost(){
@@ -71,6 +76,14 @@ public class GameParty extends GameObject{
 	
 	public boolean isFull(){
 		return this.numberOfLoggedInPlayers == this.numberOfMaxPlayers;
+	}
+	
+	public boolean withRounds(){
+		return this.selectedMode.equals("Rundenanzahl");
+	}
+	
+	public void setRounds (int rounds){
+		this.rounds=rounds;
 	}
 	
 

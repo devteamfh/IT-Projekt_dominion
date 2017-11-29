@@ -83,10 +83,6 @@ public class ReadMsgFromServer implements Runnable {
 				case JoinGameParty:
 					JoinGameParty join=(JoinGameParty) obj;
 					
-					for(int i=0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){
-						System.out.println(join.getSelectedGameParty().getArrayOfPlayers()[i]);
-					}
-					
 					Platform.runLater(new Runnable() {
 
 						@Override 

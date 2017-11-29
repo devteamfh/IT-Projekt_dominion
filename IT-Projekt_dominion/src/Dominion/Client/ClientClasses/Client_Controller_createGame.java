@@ -38,6 +38,8 @@ import javafx.stage.WindowEvent;
 public class Client_Controller_createGame extends Controller<Client_Model, Client_View_createGame> {
     ServiceLocatorClient sl;
     Client_View_createGame view_createGame;
+    String selectedGameMode;
+    int numberOfPlayers;
        
     /**
      * @author Joel Henz
@@ -114,26 +116,25 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         
 
         //Buttons #Players
-        
-        sl.setNumberOfPlayer(2);
+        numberOfPlayers = 2;
         view.btnRdo_twoPlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {           	
-            	sl.setNumberOfPlayer(2);
+            	numberOfPlayers = 2;
             }
         });
         
         view.btnRdo_threePlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {   	
-            	sl.setNumberOfPlayer(3);
+            	numberOfPlayers = 3;
             }
         });
         
         view.btnRdo_fourPlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	sl.setNumberOfPlayer(4);
+            	numberOfPlayers = 4;
             }
         });
         
@@ -141,13 +142,13 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         
         
         //Buttons Game Mode
-        sl.setSelectedMode("province");
+        selectedGameMode = "Provinzkarten";
         view.btnRdo_mode1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	view.sl.getTextFieldForRounds().clear();
             	view.sl.getTextFieldForRounds().setDisable(true);
-            	sl.setSelectedMode("province");
+            	selectedGameMode = "Provinzkarten";
             }
         });
         
@@ -155,7 +156,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             @Override
             public void handle(ActionEvent event) {
             	view.sl.getTextFieldForRounds().setDisable(false);
-            	sl.setSelectedMode("rounds");
+            	selectedGameMode = "Rundenanzahl";
             }
         });
         
@@ -244,11 +245,14 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         view.btn_finish.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	String selectedMode = sl.getSelectedMode();
-            	int numberOfPlayers = sl.getNumberOfPlayers();
             	String creator = model.playerName;
             	
-            	GameParty newParty = new GameParty(selectedMode,creator,numberOfPlayers);
+            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers);
+            	
+            	if(newParty.withRounds()){
+            		int rounds = Integer.parseInt(view.lbl_iRunden.getText());
+            		newParty.setRounds(rounds);
+            	}
 
             	try {
 					model.out.writeObject(newParty);
@@ -257,10 +261,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-            	
-            	
-            	
-            	
+
             	Stage playingStage = new Stage();			
             	playingStage.initModality(Modality.APPLICATION_MODAL);
 		        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model,true);

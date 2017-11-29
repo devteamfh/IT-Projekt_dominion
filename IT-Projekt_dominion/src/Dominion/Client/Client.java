@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 public class Client extends Application {
 	
 	private Client_View_start view;
-	private ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
 	public static void main(String[] args) {		
 		launch (args);

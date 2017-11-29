@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
+import Dominion.appClasses.JoinGameParty;
 import Dominion.appClasses.StartInformation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -113,22 +114,6 @@ public class ServiceLocatorClient {
     	this.inputNumberOfRounds = new TextField();
     }
     
-    public void setSelectedMode(String selectedMode){
-    	this.selectedMode = selectedMode;
-    }
-    
-    public String getSelectedMode (){
-    	return this.selectedMode;
-    }
-    
-    public void setNumberOfPlayer(int number){
-    	this.numberOfPlayers=number;
-    }
-    
-    public int getNumberOfPlayers(){
-    	return this.numberOfPlayers;
-    }
-    
     public TextArea getTextAreaLobby(){
     	return this.ta_lobby;
     }
@@ -155,21 +140,20 @@ public class ServiceLocatorClient {
 		}
 	}	
 	
-	public void updateGameParty(GameParty newValue){
+	public void updateGameParty(JoinGameParty join){
+		GameParty gamePartyToJoin = join.getSelectedGameParty();
+		long id = gamePartyToJoin.getID();
 		
-		Iterator <GameParty> iter = this.obsList.iterator();
-		
-		while(iter.hasNext()){
-			GameParty old = iter.next();
-			if(old.getID() == newValue.getID()){
-				this.obsList.remove(old);
-				
-				if (newValue.getLoggedInPlayers() < newValue.getMaxNumberOfPlayers()){
-					this.obsList.add(newValue);
+		for (int i=0; i<this.obsList.size();i++){
+			if(id == this.obsList.get(i).getID()){
+				this.obsList.set(i, gamePartyToJoin);
+				if(this.obsList.get(i).isFull()){
+					this.obsList.remove(i);
+					break;
 				}
-				
 				break;
 			}
+
 		}
 		
 	} 
