@@ -32,7 +32,7 @@ public class checkUserData {
 	
 	
 	/**
-	 * @author kab: ï¿½berprï¿½ft, ob ein File mit Benutzerdaten existiert und erstellt, sofern nï¿½tig, eines
+	 * @author kab: überprüft, ob ein File mit Benutzerdaten existiert und erstellt, sofern nütig, eines
 	 * 
 	 */
 	public boolean userFileExists(){
@@ -82,7 +82,7 @@ public class checkUserData {
 	
 	
 	/**
-	 * @author kab: registirert Benutzer und oder ï¿½berprï¿½ft ob eingeloggt werden kann
+	 * @author kab: registirert Benutzer und oder überprüft ob eingeloggt werden kann
 	 * 
 	 * 
 	 */
@@ -116,7 +116,7 @@ public class checkUserData {
 	
 	
 	/**
-	 * @author kab: prï¿½ft ob Benutzer existiert
+	 * @author kab: prüft ob Benutzer existiert
 	 */
 	public boolean userExists(String tf1){
 		this.tf1 = tf1;
@@ -162,7 +162,7 @@ public class checkUserData {
 
 	
 			/**
-			 * @auathor kab: ï¿½berprï¿½ft ob Username und Passwort zu einander passen
+			 * @auathor kab: überprüft ob Username und Passwort zu einander passen
 			 * 
 			 */
 	public boolean pwCorrect(String tf1, String tf2){
@@ -193,7 +193,7 @@ public class checkUserData {
                 for (int i = 0; i < strArr.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
                     if ((this.tf1.equals(strArr[i].toString()) == true) && (this.tf2.equals(strArr[i + 1].toString()) == true)) {
                         bReader.close();
-                        sl.getLogger().info("Passwort korrekt. Eintritt gewï¿½hrt.");
+                        sl.getLogger().info("Passwort korrekt. Eintritt gewührt.");
                     	return true;
                     }
                 }
@@ -211,7 +211,7 @@ public class checkUserData {
 
 
 	/**
-	 * @author kab: zï¿½hlt die Anzahl Zeilen in User.dat Datei
+	 * @author kab: zählt die Anzahl Zeilen in User.dat Datei
 	 * 
 	 * 
 	 */

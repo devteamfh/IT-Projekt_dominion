@@ -12,6 +12,12 @@
 	-fx-background-repeat: stretch;
 }
 
+.bg_createGame {
+		-fx-background-image: url('img/bg_createGame.png');
+	-fx-background-repeat: stretch;
+	
+}
+
 .lbl {
 	-fx-font-family: "Times New Roman";
 	-fx-font-size: 18px;
@@ -27,12 +33,38 @@
 	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */)
 }
 
+.h1 {
+	-fx-font-family: "Times New Roman";
+	-fx-font-size: 32px;
+	-fx-font-weight: bold;
+	-fx-text-fill: #996633;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
+	)
+	}
+	
+.lbl_menuPoint {
+	-fx-font-family: "Kokila";
+	-fx-font-size: 24px;
+	-fx-font-weight: bold;
+	-fx-text-fill: #666666;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
+	)
+}
+
+.lbl_iRunden {
+	-fx-font-family: "Kokila";
+	-fx-font-size: 50px;
+	-fx-text-fill: #666666;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
+	)
+	
+}
+
+
 .btn {
 	-fx-background-repeat: stretch;
 	-fx-background-color: transparent;
 }
-
-
 
 .btn_view {
 	  -fx-background-image: url('img/btn_view.png');
@@ -51,20 +83,48 @@
 }
 
 .btn_sendChatMsg_hover {
-	  -fx-background-image: url('img/btn_chat_blue_small_hover.png');
-	  
+	  -fx-background-image: url('img/btn_chat_blue_small_hover.png');  
 }
 
 
+/*Radio Buttons */
+.btnRdo {
+	-fx-background-image: url('img/btnRdo.png')
+}
+
+.btnRdo_active {
+	-fx-background-image: url('img/btnRdo_hover.png')
+}
+
+
+.btn_PlusMinus {
+	-fx-font-size: 12px;
+	-fx-text-fill: #666666;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */)
+}
+
+.btn_Plus {
+    -fx-background-image:  url('img/btn_Plus.png');
+}
+
+.btn_Plus_clicked {
+    -fx-background-image:  url('img/btn_Plus_clicked.png');
+}
+.btn_Minus {
+    -fx-background-image:  url('img/btn_Minus.png');
+}
+.btn_Minus_clicked {
+    -fx-background-image:  url('img/btn_Minus_clicked.png');
+}
 
 
 /*close Button */
 .btn_close_normal{
-	-fx-background-image: url('img/btn_close_normal.png');	
+	-fx-background-image: url('img/btn_close_hover.png');	
 }
 
 .btn_close_hover {
-	-fx-background-image: url('img/btn_close_hover.png'); }
+	-fx-background-image: url('img/btn_close_normal.png'); }
 /*---------------------------------------------------------------------------------------- */
 /*Client View Start -END- */
 
