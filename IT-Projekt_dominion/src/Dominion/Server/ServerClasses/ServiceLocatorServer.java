@@ -2,9 +2,10 @@ package Dominion.Server.ServerClasses;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
+import Dominion.Server.ServerClasses.Database;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.Player;
+import Dominion.appClasses.StartInformation;
 import javafx.scene.control.TextArea;
 
 
@@ -30,7 +31,8 @@ public class ServiceLocatorServer {
     private Logger logger = Logger.getLogger("");
     private ArrayList <GamePartyOnServer> listOfOpenGamePartiesOnServer = new ArrayList <GamePartyOnServer>();
     private ArrayList<Player> connectedPlayers = new ArrayList<Player>();
-   
+    private Database database = new Database();
+    private ArrayList<StartInformation> al_startInfoStatistics = new ArrayList <StartInformation>();
     
 
     /**
@@ -85,6 +87,39 @@ public class ServiceLocatorServer {
     public ArrayList <Player> getConnectedPlayers(){
     	return this.connectedPlayers;
     }
+    
+    /**
+     * @author kab: statistic Information
+     * mit diesen weiterfahren
+     */
+   
+    
+   // public void removeFullGame(GamePartyOnServer party){
+   // 	this.al_startInfoStatistics.remove(party);
+   // }
+    
+    public ArrayList <StartInformation> get_al_AllStartInfoStatisitcsOnServer(){
+    	return this.al_startInfoStatistics;
+    }
+    public void addNewStartInfoStatistics(StartInformation startInfo){
+    	this.al_startInfoStatistics.add(startInfo);
+    }
+    
+    /**
+     * @author: kab
+     * Methoden Datenbank mit Statistik
+     */
+    
+    //Player hinzufügen
+    public void db_addPlayer(String user, String pw, int att2, int att3, int att4, int att5, String att6, String att7, String att8, String att9){
+    	this.database.addPlayer(user, pw, att2, att3, att4, att5, att6, att7, att8, att9);
+    }
+    
+    //Statistik updaten
+    public void db_updateStatistics(){
+    
+    }
+    
     
     
     

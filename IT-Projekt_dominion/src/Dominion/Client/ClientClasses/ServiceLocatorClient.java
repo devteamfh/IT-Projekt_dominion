@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -48,15 +49,12 @@ public class ServiceLocatorClient {
     private TextArea ta_lobby = new TextArea();
     
     private ObservableList<GameParty> obsList = FXCollections.observableArrayList();
-    
     private ListView <GameParty> gameList;
     
     private Client_View_playingStage view_playingStage;
     
-
-    private ObservableList<StartInformation> ol_StartInformation = FXCollections.observableArrayList();
-    private ListView <StartInformation> lv_StartInformation;
-    
+    private TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
+    private ArrayList<StartInformation> al_Statistics = new ArrayList <StartInformation>();
     /**
      * Factory method for returning the singleton
      * @param mainClass The main class of this program
@@ -166,12 +164,43 @@ public class ServiceLocatorClient {
 		return this.view_playingStage;
 	}
 	
-	public void setListView_StartInformation(){
-		 this.lv_StartInformation = new ListView<>(ol_StartInformation);
+	
+	/**
+	 * @author kab: List information for Player Statistics Table
+	 * 
+	 * 
+	 * 
+	 */
+		public TableView <StartInformation> getTbl_playerStats() {
+		return tbl_playerStats;
+	}
+
+	public void setTbl_playerStats(TableView <StartInformation> tbl_playerStats) {
+		this.tbl_playerStats = tbl_playerStats;
+	}
+
+
+	
+	
+	public ArrayList<StartInformation> getAl_Statistics() {
+		return al_Statistics;
+	}
+
+	public void setAl_Statistics(ArrayList<StartInformation> al_Statistics) {
+		this.al_Statistics = al_Statistics;
 	}
 	
-	public ListView <StartInformation> getListView_StartInformation(){
-		return this.lv_StartInformation;
+	public void add_AL_Statistics(ArrayList<StartInformation> statistics){
+		for(int i = 0;i<statistics.size();i++){
+			this.al_Statistics.add(statistics.get(i));
+		}
+		
 	}
+	
+	
+
+	
+	
+	
 
 }

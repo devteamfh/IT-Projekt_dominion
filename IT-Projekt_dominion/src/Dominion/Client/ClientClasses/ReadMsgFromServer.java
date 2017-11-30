@@ -10,6 +10,11 @@ import Dominion.appClasses.DeleteGameFromListView;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
+<<<<<<< HEAD
+=======
+import Dominion.appClasses.StartInformation;
+import Dominion.appClasses.UpdateGameParty;
+>>>>>>> kabSQL
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
 import javafx.stage.Modality;
@@ -50,6 +55,25 @@ public class ReadMsgFromServer implements Runnable {
 				 
 				case InformationObject:
 					break;
+				
+					/**
+					 * @author kab: handles incoming StartInformation with player statistics and sends to  tbl_playerStats in the bloody lobby
+					 */
+				case StartInformation:
+					
+					StartInformation playerStatistics = (StartInformation) obj;
+					
+				
+					sl.getAl_Statistics().clear();
+					sl.getTbl_playerStats().getItems().clear();
+		
+
+					sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
+					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());
+	
+		
+					
+					break;
 					 
 				case GameParty:
 					GameParty newGame = (GameParty) obj;
@@ -76,9 +100,13 @@ public class ReadMsgFromServer implements Runnable {
 					        		   sl.addNewGame(iter.next());
 					        	   }
 					           }
-					       });
-					
+
+					       });	
+						
+
 					break;
+					
+				
 					
 				case JoinGameParty:
 					JoinGameParty join=(JoinGameParty) obj;

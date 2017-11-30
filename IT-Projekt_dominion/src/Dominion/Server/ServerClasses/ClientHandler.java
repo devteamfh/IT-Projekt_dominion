@@ -157,7 +157,7 @@ public class ClientHandler implements Runnable {
 			 toUpdate.setID();
 			 
 			 //the server searches all open gameparties, adds them to an ArrayList and sends this list (within an UpdateLobby-object) to the client which has made the request for updating his ListView
-			 ///(message was send on client-side from class Client_View_lobby)
+			 //(message was sent from client-side from class Client_View_lobby)
 			 if(!sl.getGameListFromServer().isEmpty()){
 				 ArrayList <GameParty> gamePartyListClient = new ArrayList <GameParty>();
 				 Iterator <GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
@@ -184,11 +184,41 @@ public class ClientHandler implements Runnable {
 			 start.setID();
 			 
 			 String username = start.getUsername();
+			 String PW       = start.getPW();
+			 int gamesPlayed = start.getGamesPlayed();
+			 int gamesWon    = start.getGamesWon();
+			 int gamesLost   = start.getGamesLost();
+			 int winLooseRto = start.getWinLooseRatio();
+			 String att6     = start.getAtt6();
+			 String att7	 = start.getAtt7();
+			 String att8	 = start.getAtt8();
+			 String att9 	 = start.getAtt9();
 			 
 			 Player newPlayer = new Player (username, this.out);
 			 
 			 sl.addConnectedPlayer(newPlayer);
+			 
+			 sl.db_addPlayer(username, PW, gamesPlayed, gamesWon, gamesLost, winLooseRto, att6,att7,att8,att9); 
+			 
+			 //hier werden alle Start Ifno STatistics, die der Server mal erhalten hat in eine StartInfoSTatistics Array List hineingelegt
+			 sl.addNewStartInfoStatistics(start);
 
+			 //in das Objekt STartInformation wird die komplette Liste mit allen STart Info
+			 //Statistics auf dem Server gelegt
+			 start.setListOfStartInformationObjects(sl.get_al_AllStartInfoStatisitcsOnServer());
+			 System.out.println(start.getListOfStartInformationObjects());
+			 
+			 while (iterOut.hasNext()){
+					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+					current.reset();
+					current.writeObject(start);
+					current.flush();
+				 }
+
+			 
+			
+			 
+			 
 			 break;
 			 
 		 case CancelGame:

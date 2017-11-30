@@ -8,33 +8,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Dominion.ServiceLocator;
+import Dominion.Client.ClientClasses.checkFields;
 
-/**
- *
- *
-public class Database {
-     *
-     * 
-     */
-	
+
    /**
     * @author Beda Kaufmann
     */ 
     public class Database {
-
+    	private static Database instance = null;
         private String workingDirecotry = System.getProperty("user.dir");
         private String url =  "JDBC:sqlite:"+workingDirecotry+"/" + "user.db";
-
-        
+     
         ServiceLocator sl = ServiceLocator.getServiceLocator();
-        
+    	
+    	protected Database(){
+    		//verhindert Instanzierung
+    	}	
+    	
+    	public static Database getInstance(){
+    		if(instance == null) {
+    			instance = new Database();
+    		}
+    		return instance;
+    		}
+    	
+    	
+          
         
         /**
          * @author kab: kreiere und connecte zu Datenbank
          * @param fileName name der Datenbank
          */
-             
-
         public  void createNewDatabase() {
 
 
@@ -58,16 +62,16 @@ public class Database {
         public  void createTables() {
 
             String sql_createTables = "CREATE TABLE IF NOT EXISTS Users (\n"
-                    + "	Name text NOT NULL,\n"
+                    + "	Name text NOT NULL,   \n"
                     + "	PassWrd text NOT NULL,\n"
                     + "	gamesStarted INT NULL,\n"
-                    + "	gamesWon INT NULL,\n"
-                    + "	gamesLost INT NULL,\n"
-                    + "	Column05 INT NULL,\n"
-                    + "	Column06 INT NULL,\n"
-                    + "	Column07 INT NULL,\n"
-                    + "	Column08 INT NULL,\n"
-                    + "	Column09 INT NULL,\n"
+                    + "	gamesWon  INT NULL,   \n"
+                    + "	gamesLost INT NULL,   \n"
+                    + "	wlRatio   INT NULL,   \n"
+                    + "	Column06 text NULL,   \n"
+                    + "	Column07 text NULL,   \n"
+                    + "	Column08 text NULL,   \n"
+                    + "	Column09 text NULL,   \n"
                     + "	PRIMARY KEY (Name, PassWrd)"
                     + ");";
 
@@ -98,7 +102,7 @@ public class Database {
         /**
          * @author kab:
          */
-        public void addPlayer(String user, String pw, String att2, String att3, String att4, String att5, String att6, String att7, String att8, String att9){
+        public void addPlayer(String user, String pw, int att2, int att3, int att4, int att5, String att6, String att7, String att8, String att9){
         	String sql_userData = 
         			  " INSERT INTO Users (\n"
                     + "	Name,        \n"
@@ -106,7 +110,7 @@ public class Database {
                     + "	gamesStarted,\n"
                     + "	gamesWon,    \n"
                     + "	gamesLost,   \n"
-                    + "	Column05,    \n"
+                    + "	wlRatio,     \n"
                     + "	Column06,    \n"
                     + "	Column07,    \n"
                     + "	Column08,    \n"
@@ -126,6 +130,7 @@ public class Database {
 
                 if(sql_execute(sql_userData)) {
                     sl.getLogger().info("User Data has been entered into Table Users");
+                    
                 }
         }
 
@@ -135,7 +140,7 @@ public class Database {
         /**
          * @author kab:
          */
-        public void addStatistics(String s) {
+        public void updateStatistics(String s) {
 
         }
 
