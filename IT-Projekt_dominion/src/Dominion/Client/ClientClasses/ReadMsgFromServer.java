@@ -10,11 +10,7 @@ import Dominion.appClasses.DeleteGameFromListView;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
-<<<<<<< HEAD
-=======
 import Dominion.appClasses.StartInformation;
-import Dominion.appClasses.UpdateGameParty;
->>>>>>> kabSQL
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
 import javafx.stage.Modality;

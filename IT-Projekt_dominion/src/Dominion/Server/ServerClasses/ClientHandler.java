@@ -206,7 +206,7 @@ public class ClientHandler implements Runnable {
 			 //in das Objekt STartInformation wird die komplette Liste mit allen STart Info
 			 //Statistics auf dem Server gelegt
 			 start.setListOfStartInformationObjects(sl.get_al_AllStartInfoStatisitcsOnServer());
-			 System.out.println(start.getListOfStartInformationObjects());
+		
 			 
 			 while (iterOut.hasNext()){
 					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
