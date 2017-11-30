@@ -32,7 +32,7 @@ public class ServiceLocatorServer {
     private ArrayList <GamePartyOnServer> listOfOpenGamePartiesOnServer = new ArrayList <GamePartyOnServer>();
     private ArrayList<Player> connectedPlayers = new ArrayList<Player>();
     private Database database = new Database();
-    private ArrayList<StartInformation> al_userStatistics = new ArrayList <StartInformation>();
+    private ArrayList<StartInformation> al_startInfoStatistics = new ArrayList <StartInformation>();
     
 
     /**
@@ -92,16 +92,17 @@ public class ServiceLocatorServer {
      * @author kab: statistic Information
      * mit diesen weiterfahren
      */
-    public void addNewGame(GamePartyOnServer party){
-    	this.al_userStatistics.add(party);
-    }
+   
     
-    public void removeFullGame(GamePartyOnServer party){
-    	this.al_userStatistics.remove(party);
-    }
+   // public void removeFullGame(GamePartyOnServer party){
+   // 	this.al_startInfoStatistics.remove(party);
+   // }
     
-    public ArrayList <StartInformation> getAl_StatisticsObjects(){
-    	return this.al_userStatistics;
+    public ArrayList <StartInformation> get_al_AllStartInfoStatisitcsOnServer(){
+    	return this.al_startInfoStatistics;
+    }
+    public void addNewStartInfoStatistics(StartInformation startInfo){
+    	this.al_startInfoStatistics.add(startInfo);
     }
     
     /**

@@ -53,7 +53,7 @@ public class ServiceLocatorClient {
     
 
     private ObservableList<StartInformation> ol_statistics =  FXCollections.observableArrayList();
-
+    
     
     /**
      * Factory method for returning the singleton
@@ -185,7 +185,9 @@ public class ServiceLocatorClient {
 	/**
 	 * @author kab: List information for Player Statistics Table
 	 */
-	public ObservableList<StartInformation> getListStatistics(){
+	
+	
+	public ObservableList<StartInformation> get_ol_PlayerStatistics(){
 		
 		 return FXCollections.<StartInformation>observableArrayList(ol_statistics);
 		
@@ -193,17 +195,20 @@ public class ServiceLocatorClient {
 	}
 	
 	/////////////////////////////////
-	public void addPlayerStatistics(StartInformation startinfo){
-		this.ol_statistics.add(startinfo);		
+	public void add_ol_PlayerStatistics(ArrayList<StartInformation> startinfo){
+		
+		for(int i = 0;i<startinfo.size();i++){
+			this.ol_statistics.add(startinfo.get(i));
+		}
+	
 	}
 	
-	public void removePlayerStatistics(StartInformation startinfo){		
-		this.ol_statistics.remove(startinfo);
-		
-		Iterator<StartInformation> iter = this.ol_statistics.iterator();
-		while(iter.hasNext()){
-			System.out.println(iter.next());
-		}
+	
+	
+	public void clear_ol_PlayerStatistics(){		
+		this.ol_statistics.clear();
+		System.out.println("ol satistics cleared");
+
 	}	
 	
 	public void updatePlayerStatistics(StartInformation newValue){

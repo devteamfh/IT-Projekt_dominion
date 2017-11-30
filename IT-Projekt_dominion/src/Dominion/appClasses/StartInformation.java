@@ -12,6 +12,8 @@ public class StartInformation extends GameObject {
 	private long id;
 	// Generator for a unique message ID
 	private static long messageID = 0;
+	
+	//Liste von STartInformationobjekten vom Server
 	private ArrayList<StartInformation> listOfStatrtInformation = new ArrayList <StartInformation>();
 	
 	private String 	username;
@@ -33,6 +35,10 @@ public class StartInformation extends GameObject {
 		super(GameObject.ObjectType.StartInformation);
 		this.username = username;
 		
+	}
+	
+	public StartInformation(){
+	super(GameObject.ObjectType.StartInformation);
 	}
 	
 	public void setID(){
@@ -127,7 +133,7 @@ public class StartInformation extends GameObject {
 	}
 
 	
-	//wtf?
+	//hiermit werden alle StartInforamtionsobjkete vom Server draufgelegt
 	public void setListOfStartInformationObjects(ArrayList <StartInformation> list){
 		this.listOfStatrtInformation = list;
 	}

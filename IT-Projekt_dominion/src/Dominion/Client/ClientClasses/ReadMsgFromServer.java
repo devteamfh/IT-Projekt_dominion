@@ -59,31 +59,12 @@ public class ReadMsgFromServer implements Runnable {
 				case StartInformation:
 					
 					StartInformation playerStatistics = (StartInformation) obj;
-		
-					sl.addPlayerStatistics(playerStatistics);
 					
-					Platform.runLater(new Runnable() {
-				           @Override 
-				           public void run() {
-				            
-				            
-				            Iterator<StartInformation> iter2 = playerStatistics.getListOfStartInformationObjects().iterator();
-							Platform.runLater(new Runnable() {
-						           @Override 
-						           public void run() {
-						        	   
-						        	   while (iter2.hasNext()){
-						        		   sl.addPlayerStatistics(iter2.next());
-						        	   }
-						           }
-						       });	
-				            
-				            
-				            System.out.println("player statistic object recieved");
-				            System.out.println(sl.getListStatistics());
-				           
-				           }
-				       });
+					sl.get_ol_PlayerStatistics().removeAll();
+					sl.add_ol_PlayerStatistics(playerStatistics.getListOfStartInformationObjects());
+	
+					
+					
 					
 					break;
 					 

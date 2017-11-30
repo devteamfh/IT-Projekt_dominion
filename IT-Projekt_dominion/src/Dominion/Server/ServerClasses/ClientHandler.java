@@ -192,7 +192,13 @@ public class ClientHandler implements Runnable {
 			 
 			 sl.db_addPlayer(username, PW, gamesPlayed, gamesWon, gamesLost, winLooseRto, att6,att7,att8,att9); 
 			 
+			 //hier werden alle Start Ifno STatistics, die der Server mal erhalten hat in eine StartInfoSTatistics Array List hineingelegt
+			 sl.addNewStartInfoStatistics(start);
 
+			 //in das Objekt STartInformation wird die komplette Liste mit allen STart Info
+			 //Statistics auf dem Server gelegt
+			 start.setListOfStartInformationObjects(sl.get_al_AllStartInfoStatisitcsOnServer());
+			 
 			 
 			 while (iterOut.hasNext()){
 					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
@@ -200,6 +206,9 @@ public class ClientHandler implements Runnable {
 					current.writeObject(start);
 					current.flush();
 				 }
+
+			 
+			
 			 
 			 
 			 break;

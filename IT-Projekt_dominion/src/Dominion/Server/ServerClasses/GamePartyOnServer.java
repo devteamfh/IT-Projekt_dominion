@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.Player;
+import Dominion.appClasses.StartInformation;
 
 /**
  * @author Joel Henz
@@ -15,6 +16,7 @@ public class GamePartyOnServer {
 	private ArrayList <Player> playerList = new ArrayList <Player>();
 	private GameParty party;
 
+	
 	public GamePartyOnServer(GameParty party) {
 		this.party=party;
 	}
@@ -31,6 +33,8 @@ public class GamePartyOnServer {
 	public ArrayList <Player> getPlayerList(){
 		return this.playerList;
 	}
+	
+
 	
 
 }

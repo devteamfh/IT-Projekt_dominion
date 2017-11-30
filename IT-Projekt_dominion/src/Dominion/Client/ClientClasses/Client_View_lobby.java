@@ -186,7 +186,7 @@ public class Client_View_lobby extends View<Client_Model> {
 					
 					
 					
-					tbl_playerStats.getItems().addAll(sl.getListStatistics());
+					tbl_playerStats.getItems().addAll(sl.get_ol_PlayerStatistics());
 					
 					
 					//tbl_playerStats.setItems(sl.getListStatistics());
