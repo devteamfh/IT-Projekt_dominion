@@ -57,6 +57,8 @@ public class Client_View_lobby extends View<Client_Model> {
     Label name;
     Label yourSign;
 
+    TableView <StartInformation> tbl_playerStats;
+    
 	public Client_View_lobby(Stage stage, Client_Model model) {
 		super(stage, model);
         stage.setTitle("Dominion");
@@ -153,9 +155,9 @@ public class Client_View_lobby extends View<Client_Model> {
 			    	
 					
 					//table kreieren//
-					TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
 					
 					
+			    	tbl_playerStats = sl.getTbl_playerStats();
 					TableColumn<StartInformation,String> column00 = new TableColumn<StartInformation,String>("Spieler");
 					column00.setMinWidth(200);
 					column00.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -184,20 +186,7 @@ public class Client_View_lobby extends View<Client_Model> {
 					tbl_playerStats.setPrefSize(1250, 200);
 					tbl_playerStats.setStyle("-fx-opacity: 0.80;");
 					
-					
-					
-					tbl_playerStats.getItems().addAll(sl.get_ol_PlayerStatistics());
-					
-					
-					//tbl_playerStats.setItems(sl.getListStatistics());
-					/*https://examples.javacodegeeks.com/desktop-java/javafx-table-example/
-					 * https://www.youtube.com/watch?v=lpqZzHaGsyI
-					 */
-				    //sl.getListView_StartInformation().setCellFactory(sl.getListView_StartInformation());
-					
-				    /*______________________________________________________________________________________________*/				    
-				    
-					///HIER WAR tablePLeayser drin!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 					/*Upperhalf zusammenführen*/
 					hb_wrapper_upperhalf.getChildren().addAll(tbl_playerStats);
 				    /*______________________________________________________________________________________________*/				    

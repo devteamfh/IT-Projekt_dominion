@@ -60,10 +60,15 @@ public class ReadMsgFromServer implements Runnable {
 					
 					StartInformation playerStatistics = (StartInformation) obj;
 					
-					sl.get_ol_PlayerStatistics().removeAll();
-					sl.add_ol_PlayerStatistics(playerStatistics.getListOfStartInformationObjects());
+				
+					sl.getAl_Statistics().clear();
+					sl.getTbl_playerStats().getItems().clear();
+		
+
+					sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
+					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());
 	
-					
+
 					
 					
 					break;

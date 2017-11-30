@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -51,10 +52,8 @@ public class ServiceLocatorClient {
     
     private Client_View_playingStage view_playingStage;
     
-
-    private ObservableList<StartInformation> ol_statistics =  FXCollections.observableArrayList();
-    
-    
+    private TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
+    private ArrayList<StartInformation> al_Statistics = new ArrayList <StartInformation>();
     /**
      * Factory method for returning the singleton
      * @param mainClass The main class of this program
@@ -184,53 +183,35 @@ public class ServiceLocatorClient {
 	
 	/**
 	 * @author kab: List information for Player Statistics Table
+	 * 
+	 * 
+	 * 
 	 */
-	
-	
-	public ObservableList<StartInformation> get_ol_PlayerStatistics(){
-		
-		 return FXCollections.<StartInformation>observableArrayList(ol_statistics);
-		
-		//return this.ol_statistics;
+		public TableView <StartInformation> getTbl_playerStats() {
+		return tbl_playerStats;
 	}
-	
-	/////////////////////////////////
-	public void add_ol_PlayerStatistics(ArrayList<StartInformation> startinfo){
-		
-		for(int i = 0;i<startinfo.size();i++){
-			this.ol_statistics.add(startinfo.get(i));
-		}
-	
-	}
-	
-	
-	
-	public void clear_ol_PlayerStatistics(){		
-		this.ol_statistics.clear();
-		System.out.println("ol satistics cleared");
 
-	}	
+	public void setTbl_playerStats(TableView <StartInformation> tbl_playerStats) {
+		this.tbl_playerStats = tbl_playerStats;
+	}
+
+
 	
-	public void updatePlayerStatistics(StartInformation newValue){
-		
-		Iterator <StartInformation> iter = this.ol_statistics.iterator();
-		
-		while(iter.hasNext()){
-			StartInformation old = iter.next();
-			if(old.getID() == newValue.getID()){
-				this.ol_statistics.remove(old);
-				
-			//	if (newValue.getLoggedInPlayers() < newValue.getMaxNumberOfPlayers()){
-			//		this.ol_StartInformation.add(newValue);
-			//	}
-				
-				break;
-			}
-		}
-		////////////////////////////////////////
+	
+	public ArrayList<StartInformation> getAl_Statistics() {
+		return al_Statistics;
+	}
+
+	public void setAl_Statistics(ArrayList<StartInformation> al_Statistics) {
+		this.al_Statistics = al_Statistics;
 	}
 	
-	
+	public void add_AL_Statistics(ArrayList<StartInformation> statistics){
+		for(int i = 0;i<statistics.size();i++){
+			this.al_Statistics.add(statistics.get(i));
+		}
+		
+	}
 	
 	
 
