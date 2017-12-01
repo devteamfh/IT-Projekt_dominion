@@ -54,6 +54,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		labelArray = new Label[super.party.getMaxNumberOfPlayers()];
 		
+		//setting the labels of the players. Text (the usernames) will be set in the class ReadMsgFromServer, switch cases GameParty and JoinGameParty
 		for(int i=0;i<labelArray.length;i++){
 			labelArray[i] = new Label();
 			vb_player.getChildren().add(labelArray[i]);
@@ -135,6 +136,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		BorderPane.setMargin(gp_left, new Insets(0, 20, 0, 0));
 		root.setCenter(vb_center);
 		
+		//Only the will get the button for ending the game until the game isn't full (example 3 of 4 players -> host can end the game)
 		if(super.isHost){
 			root.setBottom(endGameHost);
 		}

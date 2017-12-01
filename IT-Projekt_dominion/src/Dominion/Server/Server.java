@@ -26,8 +26,5 @@ public class Server extends Application{
         view.start();
         
 	}
-
-	
-
 }
 

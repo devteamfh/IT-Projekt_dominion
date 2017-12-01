@@ -88,6 +88,8 @@ public class ReadMsgFromServer implements Runnable {
 						        new Client_Controller_playingStage(model, sl.getPlayingStage(), newGame); 
 						        sl.getPlayingStage().start();
 						        sl.getCreateGameView().stop();
+						        
+						        //adding the name of the host on the playing Stage and add the current GameParty to the ServiceLocatorCLient of the host
 						        for(int i=0; i<newGame.getArrayOfPlayers().length;i++){
 						        	sl.getPlayingStage().labelArray[i].setText(newGame.getArrayOfPlayers()[i]);
 						        }
@@ -115,22 +117,31 @@ public class ReadMsgFromServer implements Runnable {
 						
 
 					break;
-					
-				
-					
+			
 				case JoinGameParty:
 					JoinGameParty join=(JoinGameParty) obj;
+					
+					//updating the current GameParty object in the ServiceLocator for all players who have already joined this GameParty
+					for (int i=0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){						
+						try{
+							if(join.getSelectedGameParty().getArrayOfPlayers()[i].equals(model.getName())){
+								sl.setCurrentGameParty(join.getSelectedGameParty());
+							}							
+						}catch (NullPointerException e){
+							//NullPointerException caught
+						}				
+					}
+					
 					
 					Platform.runLater(new Runnable() {
 
 						@Override 
 				           public void run() {
-							//this method will update the number of joined players of this game. If the game is full, it will be removed from the ListView of every client
+							//this method will update the number of joined players of this game on the ListView (Lobby) of EACH client. If the game is full, it will be removed from the ListView of every client
 							sl.updateGameParty(join);	
 							
 							//determine the joining player and create his playing stage
 							if(join.getUsername().equals(model.getName())){
-								sl.setCurrentGameParty(join.getSelectedGameParty());
 								Stage playingStage = new Stage();			
 					        	playingStage.initModality(Modality.APPLICATION_MODAL);
 					        	Client_View_playingStage view = new Client_View_playingStage (playingStage, model,false,join.getSelectedGameParty());
@@ -139,17 +150,18 @@ public class ReadMsgFromServer implements Runnable {
 					        	sl.getPlayingStage().start();
 							}
 							
-							//determine the players who have already joined the game. On their playing stage we have to update the player list of the game
+							//determine the players who have already joined the game. On their playing stages we have to add the username of the new player
 							if(join.getSelectedGameParty().getID() == sl.getCurrentGameParty().getID()){
 								for(int i =0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){
-									
-								}
+									sl.getPlayingStage().labelArray[i].setText(sl.getCurrentGameParty().getArrayOfPlayers()[i]);
+								}	
 							}
 							
 						}
 				       });
 									
 					break;
+				
 					
 				case CancelGame:
 					CancelGame cancelObject = (CancelGame) obj;
@@ -161,30 +173,18 @@ public class ReadMsgFromServer implements Runnable {
 						@Override 
 				           public void run() {
 							
-							for(int i=0; i<gamePartyToCancel.getArrayOfPlayers().length;i++){
-								if(model.getName().equals(gamePartyToCancel.getArrayOfPlayers()[i])){
-									System.out.println("test");
+							try{
+								//stop the playing stage ONLY for the players who 
+								if(gamePartyToCancel.getID() == sl.getCurrentGameParty().getID()){
 									sl.getPlayingStage().stop();
 								}
+							}catch (NullPointerException e){
+								//NullPointerException caught
 							}
-
+							
 							sl.removeGame(gamePartyToCancel);
 				           }
 				      });	
-				break;
-				
-				case DeleteGameFromListView:
-					
-					DeleteGameFromListView gameToDelete = (DeleteGameFromListView) obj;
-					
-					Platform.runLater(new Runnable() {
-
-						@Override 
-				           public void run() {
-				        	   sl.removeGame(gameToDelete.getGamePartyToDelete());
-						}
-				       });
-					
 				break;
 								
 				default:

@@ -92,7 +92,6 @@ public class ClientHandler implements Runnable {
 			 //ObjectOutputStream (instance variable of Player class) is not serializable
 			 while (iterOut.hasNext()){
 				ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
-				//current.reset();
 				current.writeObject(game);
 				current.flush();
 			 }
@@ -109,8 +108,8 @@ public class ClientHandler implements Runnable {
 			 
 			 
 			 Player newPlayerJoining = new Player (gameToJoin.getUsername(), this.out);
-			 //first we will add the joining player to the correct GamePartyOnServer
 			 
+			 //first we will add the joining player to the correct GamePartyOnServer			 
 			 for (int i=0; i<sl.getGameListFromServer().size();i++){
 				 if(id == sl.getGameListFromServer().get(i).getGameParty().getID()){
 					 sl.getGameListFromServer().get(i).addPlayer(newPlayerJoining);
@@ -201,6 +200,8 @@ public class ClientHandler implements Runnable {
 			 CancelGame cancel = (CancelGame) obj;
 			 GameParty gamePartyToCancel = cancel.getGameParty();
 			 
+			 
+			 
 			 //searching the correspondent GamePartyOnServer to write to the players of this GameParty
 			 long id2 = gamePartyToCancel.getID();
 			 Iterator <GamePartyOnServer> iterGameParty2 = sl.getGameListFromServer().iterator();
@@ -214,10 +215,10 @@ public class ClientHandler implements Runnable {
 					 break;
 				 }
 			 }
-
+			 
+			 //sending the CancelGame object to all clients so the game will be removed from their ListViews
 			 while (iterOut.hasNext()){
 					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
-					//current.reset();
 					current.writeObject(obj);
 					current.flush();			
 			 } 

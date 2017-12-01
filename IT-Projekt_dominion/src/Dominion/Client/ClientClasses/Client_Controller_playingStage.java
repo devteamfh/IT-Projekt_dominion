@@ -34,7 +34,12 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         view.endGameHost.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	CancelGame cancel = new CancelGame(gameParty);
+            	//first we have to get the current GameParty object
+            	GameParty party = sl.getCurrentGameParty();
+            	
+            	//a host is able to end the game until the game isn't full. If a host ends the game, his playing stage will be closed. The same will happen to all other players who have joined the game.
+            	//In addition, the game will be removed from the ListView of EVERY client.
+            	CancelGame cancel = new CancelGame(party);
             	try {
 					model.out.writeObject(cancel);
 					model.out.flush();

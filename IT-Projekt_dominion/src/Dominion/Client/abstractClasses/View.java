@@ -36,7 +36,10 @@ public abstract class View<M extends Model> {
         stage.setScene(scene);
     }
     
-    //only needed for Client_View_playingStage
+    /**
+     * @author Joel Henz: 
+     * only needed for Client_View_playingStage
+     */
     protected View(Stage stage, M model, boolean isHost, GameParty party) {
         this.stage = stage;
         this.model = model;

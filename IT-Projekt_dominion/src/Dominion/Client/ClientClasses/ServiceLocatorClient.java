@@ -51,7 +51,6 @@ public class ServiceLocatorClient {
     private Client_View_playingStage view_playingStage;
     private Client_View_createGame view_createGame;
 
-    //private ObservableList<StartInformation> ol_StartInformation = FXCollections.observableArrayList();
     private ListView <StartInformation> lv_StartInformation;
     
     private GameParty currentGameParty;
@@ -133,13 +132,16 @@ public class ServiceLocatorClient {
 		this.obsList.add(newGame);		
 	}
 	
-	public void removeGame(GameParty game){		
-		this.obsList.remove(game);
-		
-		Iterator <GameParty> iter = this.obsList.iterator();
-		while(iter.hasNext()){
-			System.out.println(iter.next());
+	public void removeGame(GameParty game){	
+		long id = game.getID();
+		//this.obsList.remove(game);
+		for (int i=0; i<this.obsList.size();i++){
+			if(id == this.obsList.get(i).getID()){
+				this.obsList.remove(i);				
+				break;
+			}
 		}
+		
 	}	
 	
 	public void updateGameParty(JoinGameParty join){
@@ -174,10 +176,6 @@ public class ServiceLocatorClient {
 		return this.view_createGame;
 	}
 	
-	/**public void setListView_StartInformation(){
-		 this.lv_StartInformation = new ListView<>(ol_StartInformation);
-	}*/
-	
 	/**
 	 * @author kab: List information for Player Statistics Table
 	 * 
@@ -192,9 +190,6 @@ public class ServiceLocatorClient {
 		this.tbl_playerStats = tbl_playerStats;
 	}
 
-
-	
-	
 	public ArrayList<StartInformation> getAl_Statistics() {
 		return al_Statistics;
 	}
@@ -202,20 +197,23 @@ public class ServiceLocatorClient {
 	public void setAl_Statistics(ArrayList<StartInformation> al_Statistics) {
 		this.al_Statistics = al_Statistics;
 	}
-	
-	public void setCurrentGameParty(GameParty party){
-		this.currentGameParty=party;
-	}
-	
-	public GameParty getCurrentGameParty(){
-		return this.currentGameParty;
-	}
 
 	public void add_AL_Statistics(ArrayList<StartInformation> statistics){
 		for(int i = 0;i<statistics.size();i++){
 			this.al_Statistics.add(statistics.get(i));
 		}
 		
+	}
+	
+	/**
+	 * @author: Joel Henz getter and setter
+	 */
+	public void setCurrentGameParty(GameParty party){
+		this.currentGameParty=party;
+	}
+	
+	public GameParty getCurrentGameParty(){
+		return this.currentGameParty;
 	}
 
 }
