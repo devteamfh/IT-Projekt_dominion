@@ -14,7 +14,7 @@ public class UpdateLobby extends GameObject {
 	// Generator for a unique message ID
 	private static long messageID = 0;
 	private ArrayList <GameParty> listOfOpenGames = new ArrayList <GameParty>();
-	
+		
 	private static long nextMessageID() {		
 		return messageID++;
 	}
@@ -41,5 +41,6 @@ public class UpdateLobby extends GameObject {
 	public ArrayList <GameParty> getListOfOpenGames(){
 		return this.listOfOpenGames;
 	}
+	
 
 }
