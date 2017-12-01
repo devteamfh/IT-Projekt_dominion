@@ -36,6 +36,9 @@ import javafx.stage.StageStyle;
  */
 
 public class Client_View_start extends View<Client_Model> {
+	
+			ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
+    
 			customButton btn_connect;
 			customButton btn_register;
 			customButton btn_login;
@@ -45,9 +48,10 @@ public class Client_View_start extends View<Client_Model> {
 			TextField tf_ip;
 			TextField tf_userName;
 			TextField tf_password;
-			
+						
 			static Label connectionResult = new Label();
-		    
+		  
+			
 			Scene scene;
 		
 			public Client_View_start(Stage stage, Client_Model model) {
@@ -58,7 +62,7 @@ public class Client_View_start extends View<Client_Model> {
 
 	@Override
 	protected Scene create_GUI() { 
-	    
+	    			
 			Label lbl_IPAdress = new Label ("Server-IP:  ");
 		    Label lbl_port     = new Label ("Port:       ");
 		    Label lbl_userName = new Label ("Ihr Name:   ");
@@ -86,16 +90,16 @@ public class Client_View_start extends View<Client_Model> {
 			btn_register.getStyleClass().addAll("btn","btn_view");
 			btn_login.getStyleClass().addAll("btn","btn_view");
 			
-			//Primï¿½re Panes initialisieren
+			//Primäre Panes initialisieren
 		    VBox vb_wrapperContent = new VBox();		    
 		    GridPane gp_wrapper = new GridPane();
 		    
-		    //Vbox fï¿½r Abstand zwischen tf IP-Adresse und tf Port
+		    //Vbox für Abstand zwischen tf IP-Adresse und tf Port
 		    VBox vb_spacer = new VBox();			
 			vb_spacer.getChildren().add(tf_ip);
 			vb_spacer.setPadding(new Insets(0,0,7,0));
 			
-			//Wrapper mit lbls und tf befï¿½llen
+			//Wrapper mit lbls und tf befüllen
 			gp_wrapper.add(lbl_IPAdress, 0, 0); 
 			gp_wrapper.add(lbl_port,     0, 1);
 			gp_wrapper.add(lbl_userName, 2, 1);
@@ -143,7 +147,7 @@ public class Client_View_start extends View<Client_Model> {
 		   	
 		    HBox spacer =  new HBox();
 		   	HBox.setHgrow(spacer, Priority.ALWAYS);
-		   	
+
 		   	hb_custom_menue.getChildren().addAll(spacer, btn_close);
 		   	hb_custom_menue.setPadding(new Insets(20,15,0,0));		   	
 		   	

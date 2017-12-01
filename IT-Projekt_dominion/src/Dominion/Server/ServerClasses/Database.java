@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Dominion.ServiceLocator;
-import Dominion.Client.ClientClasses.checkFields;
 
 
    /**

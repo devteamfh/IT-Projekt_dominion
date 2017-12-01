@@ -57,7 +57,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         /**
          * @author Joel Henz:
          * connecting a client to the server by getting the IP address and the port number from the TextFields and then creating the playing Stage
-         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Prï¿½fmechanismen auf tf_ eingebaut
+         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Prüfmechanismen auf tf_ eingebaut
          */    
         
         	//connect button MouseHandler
@@ -80,10 +80,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {  
           
-            	//prï¿½ft ob Felder IP und Port ausgefï¿½llt
+            	//prüft ob Felder IP und Port ausgefüllt
             	checkFields.getInstance().checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
             	
-            	//wenn IP und Port ausgefï¿½llt, versuche mit Server zu verbinden
+            	//wenn IP und Port ausgefüllt, versuche mit Server zu verbinden
             	if (checkFields.getInstance().getRdyToConnect())
             	
             	   	try { 
@@ -112,7 +112,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
     				}     		        
             }
         });  
-      		     		
+      		     	
+        
     	//register button MouseHandler     		
  		view.btn_register.addEventHandler(MouseEvent.MOUSE_ENTERED, 
       		    new EventHandler<MouseEvent>() {
@@ -140,9 +141,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
 	            	checkFields.getInstance().checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
 
-
-
-	            	//wenn registiert, mache button grÃ¼n und deaktiviere inputfelder
+	            	//wenn registiert, färbe button grün und deaktiviere inputfelder
 	            	if (checkFields.getInstance().getUserRegistred()) {
 						view.btn_register.getStyleClass().removeAll("btn_view","btn_view_hover");
 						view.btn_register.getStyleClass().addAll("btn_view_green");
@@ -152,9 +151,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 						view.tf_password.setDisable(true);
 						view.tf_userName.setStyle("-fx-opacity: 0.65;");
 						view.tf_password.setStyle("-fx-opacity: 0.65;");
-				}
-
-
+	            	}
+	            	
             	}
             	
             }
@@ -190,8 +188,22 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	}
 
             	checkFields.getInstance().checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
-
-          
+            	
+            	//Wenn PW falsch Felder zurücksetzen
+            	if(model.connected && !checkFields.getInstance().getUserPwOk()){
+            		view.tf_password.clear();
+            		view.tf_userName.clear();
+            		view.tf_password.setDisable(false);
+            		view.tf_userName.setDisable(false);
+            		checkFields.getInstance().setUserRegistred(false);
+            		view.tf_userName.setStyle("-fx-opacity: 1;");
+            		view.tf_password.setStyle("-fx-opacity: 1;");
+            		view.btn_register.setBtnText("Registrieren");
+            		view.btn_register.getStyleClass().remove("btn_view_green");
+            		
+            	}
+            	
+            	//weiter zur lobby, sofern connected, user registiert und pw ok
             	if (model.connected && checkFields.getInstance().getUserPwOk()) {
 
 	            	view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");

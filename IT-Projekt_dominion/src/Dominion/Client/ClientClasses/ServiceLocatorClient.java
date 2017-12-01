@@ -11,6 +11,7 @@ import Dominion.appClasses.StartInformation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -50,14 +51,13 @@ public class ServiceLocatorClient {
     
     private Client_View_playingStage view_playingStage;
     private Client_View_createGame view_createGame;
-
-    private ListView <StartInformation> lv_StartInformation;
-    
+ 
     private GameParty currentGameParty;
 
     private TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
     private ArrayList<StartInformation> al_Statistics = new ArrayList <StartInformation>();
-
+    
+    
     /**
      * Factory method for returning the singleton
      * @param mainClass The main class of this program
@@ -215,5 +215,8 @@ public class ServiceLocatorClient {
 	public GameParty getCurrentGameParty(){
 		return this.currentGameParty;
 	}
+
+
+
 
 }
