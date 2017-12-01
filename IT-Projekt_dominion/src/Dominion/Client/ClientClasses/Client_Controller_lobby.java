@@ -28,10 +28,10 @@ import javafx.stage.WindowEvent;
  * @author Brad Richards (MVC), Joel Henz (Events)
  */
 public class Client_Controller_lobby extends Controller<Client_Model, Client_View_lobby> {
-    ServiceLocatorClient sl;
-    Client_View_lobby view;
-    Client_View_createGame view2;
-    GameParty joinGame;
+	private ServiceLocatorClient sl;
+	private Client_View_lobby view;
+	private Client_View_createGame view2;
+	private GameParty joinGame;
        
     public Client_Controller_lobby(Client_Model model, Client_View_lobby view) {
         super(model, view);
@@ -216,12 +216,11 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
             public void handle(ActionEvent event) {
             	Stage createNewGame = new Stage();
             	createNewGame.initModality(Modality.APPLICATION_MODAL);
-            	
-                
-		        	view2 = new Client_View_createGame(createNewGame, model);
+            	                
+		        view2 = new Client_View_createGame(createNewGame, model);
                 new Client_Controller_createGame(model, view2);
-
-                view2.start();
+                sl.setView_createGame(view2);
+                sl.getCreateGameView().start();
             }
         });
         

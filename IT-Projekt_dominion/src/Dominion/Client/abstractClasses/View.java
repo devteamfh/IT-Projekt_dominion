@@ -1,5 +1,6 @@
 package Dominion.Client.abstractClasses;
 
+import Dominion.appClasses.GameParty;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -18,6 +19,7 @@ public abstract class View<M extends Model> {
     protected M model;
     protected String name;
     protected boolean isHost;
+    protected GameParty party;
     
     /**
      * Set any options for the stage in the subclass constructor
@@ -35,10 +37,11 @@ public abstract class View<M extends Model> {
     }
     
     //only needed for Client_View_playingStage
-    protected View(Stage stage, M model, boolean isHost) {
+    protected View(Stage stage, M model, boolean isHost, GameParty party) {
         this.stage = stage;
         this.model = model;
         this.isHost=isHost;
+        this.party=party;
         
         scene = create_GUI(); // Create all controls within "root"
         stage.setScene(scene);

@@ -22,14 +22,14 @@ import Dominion.appClasses.Player;
 public class Client_Model extends Model {	
     ServiceLocatorClient sl;
     Socket client;
-    ObjectInputStream in;
+    private ObjectInputStream in;
     ObjectOutputStream out;    
     Thread t1;    
     String playerName;    
-    InetAddress addr;
-    int port;    
+    private InetAddress addr;
+    private int port;    
     boolean connected = false;
-    Player player;
+    private Player player;
   
     /**
      * @author Joel Henz

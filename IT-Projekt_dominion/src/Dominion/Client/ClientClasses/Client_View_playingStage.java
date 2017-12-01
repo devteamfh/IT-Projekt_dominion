@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.View;
+import Dominion.appClasses.GameParty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -33,9 +34,10 @@ import javafx.stage.Stage;
 public class Client_View_playingStage extends View<Client_Model> {
 	ServiceLocatorClient sl;
 	Button endGameHost;
+	Label [] labelArray;
 
-	public Client_View_playingStage(Stage stage, Client_Model model, boolean isHost) {
-		super(stage, model,isHost);
+	public Client_View_playingStage(Stage stage, Client_Model model, boolean isHost, GameParty party) {
+		super(stage, model,isHost,party);
         stage.setTitle("Dominion - Spielplattform");
     }
 	
@@ -50,17 +52,18 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		VBox vb_player = new VBox();
 		
-		Label player1 = new Label("Spieler1");
-		Label player2 = new Label("Spieler2");
-		Label player3 = new Label("Spieler2");
-		Label player4 = new Label("Spieler2");
+		labelArray = new Label[super.party.getMaxNumberOfPlayers()];
+		
+		for(int i=0;i<labelArray.length;i++){
+			labelArray[i] = new Label();
+			vb_player.getChildren().add(labelArray[i]);
+		}
 		
 		//if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
 		//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
 		//will be evaluated as a loss.
 		this.endGameHost = new Button ("Spiel abbrechen (Host)");
-		
-		vb_player.getChildren().addAll(player1,player2);
+
 		root.setTop(vb_player);
 		vb_player.setAlignment(Pos.TOP_RIGHT);
 		vb_player.setPrefHeight(60.0);

@@ -36,10 +36,10 @@ import javafx.stage.WindowEvent;
  * @author Brad Richards (MVC), Joel Henz (events)
  */
 public class Client_Controller_createGame extends Controller<Client_Model, Client_View_createGame> {
-    ServiceLocatorClient sl;
-    Client_View_createGame view_createGame;
-    String selectedGameMode;
-    int numberOfPlayers;
+    private ServiceLocatorClient sl;
+    private Client_View_createGame view_createGame;
+    private String selectedGameMode;
+    private int numberOfPlayers;
        
     /**
      * @author Joel Henz
@@ -260,15 +260,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-
-            	Stage playingStage = new Stage();			
-            	playingStage.initModality(Modality.APPLICATION_MODAL);
-		        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model,true);
-		        sl.setView_playingStage(view_playingStage);
-		        new Client_Controller_playingStage(model, sl.getPlayingStage(), newParty); 
-		        sl.getPlayingStage().start();
-		        view_createGame.stop();        			
+				}     			
             }
         });
         

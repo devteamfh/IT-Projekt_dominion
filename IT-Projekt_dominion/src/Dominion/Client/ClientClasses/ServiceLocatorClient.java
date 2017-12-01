@@ -41,9 +41,6 @@ public class ServiceLocatorClient {
     private ToggleGroup endOfGameGroup;
     private ToggleGroup numberOfPlayersGroup;
     private TextField inputNumberOfRounds;
-
-    private String selectedMode = new String();
-    private int numberOfPlayers;
     
     private TextArea ta_lobby = new TextArea();
     
@@ -52,10 +49,13 @@ public class ServiceLocatorClient {
     private ListView <GameParty> gameList;
     
     private Client_View_playingStage view_playingStage;
+    private Client_View_createGame view_createGame;
     
 
     private ObservableList<StartInformation> ol_StartInformation = FXCollections.observableArrayList();
     private ListView <StartInformation> lv_StartInformation;
+    
+    private GameParty currentGameParty;
     
     /**
      * Factory method for returning the singleton
@@ -153,17 +153,23 @@ public class ServiceLocatorClient {
 				}
 				break;
 			}
-
-		}
-		
+		}		
 	} 
 	
 	public void setView_playingStage (Client_View_playingStage view){
 		this.view_playingStage=view;
 	}
 	
+	public void setView_createGame (Client_View_createGame view){
+		this.view_createGame=view;
+	}
+	
 	public Client_View_playingStage getPlayingStage(){
 		return this.view_playingStage;
+	}
+	
+	public Client_View_createGame getCreateGameView(){
+		return this.view_createGame;
 	}
 	
 	public void setListView_StartInformation(){
@@ -172,6 +178,14 @@ public class ServiceLocatorClient {
 	
 	public ListView <StartInformation> getListView_StartInformation(){
 		return this.lv_StartInformation;
+	}
+	
+	public void setCurrentGameParty(GameParty party){
+		this.currentGameParty=party;
+	}
+	
+	public GameParty getCurrentGameParty(){
+		return this.currentGameParty;
 	}
 
 }

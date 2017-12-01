@@ -21,15 +21,15 @@ import javafx.scene.input.TouchPoint;
 /**
  * @author Joel Henz: 
  * the ClientHandler is a server-side Runnable.
- * Each connected client gets an ClientHandler thread. Each ClientHandler reads messages from his client and will send them to ALL clients by iterating through the ObjectOutputStream ArrayList.
+ * Each connected client gets an ClientHandler thread. Each ClientHandler reads messages from his client and can send them to all clients by iterating through the ObjectOutputStream ArrayList.
  */
 public class ClientHandler implements Runnable {
-	Socket s; 
-	ArrayList <ObjectOutputStream> list;
-	ObjectOutputStream out;
-	ObjectInputStream in;
+	private Socket s; 
+	private ArrayList <ObjectOutputStream> list;
+	private ObjectOutputStream out;
+	private ObjectInputStream in;
 
-	ServiceLocatorServer sl;
+	private ServiceLocatorServer sl;
 	
 	public ClientHandler(Socket s, ArrayList <ObjectOutputStream> list, ObjectOutputStream out){ 
 		this.s = s;
@@ -111,10 +111,6 @@ public class ClientHandler implements Runnable {
 			 Player newPlayerJoining = new Player (gameToJoin.getUsername(), this.out);
 			 //first we will add the joining player to the correct GamePartyOnServer
 			 
-			 Iterator <GamePartyOnServer> iterGameParty = sl.getGameListFromServer().iterator();
-			 
-			 GamePartyOnServer currentGame=null;
-			 
 			 for (int i=0; i<sl.getGameListFromServer().size();i++){
 				 if(id == sl.getGameListFromServer().get(i).getGameParty().getID()){
 					 sl.getGameListFromServer().get(i).addPlayer(newPlayerJoining);
@@ -129,26 +125,6 @@ public class ClientHandler implements Runnable {
 				 current.writeObject(gameToJoin);
 				 current.flush();
 			 }
-			 
-			 
-			 /**
-			 
-			 //now we have to update the number of connected players to this GameParty (update on the ListView of each client which is already in the lobby)
-			 UpdateGameParty newUpdate = new UpdateGameParty (currentGame.getGameParty());
-			 newUpdate.setID();
-			 
-			 while(iterOut.hasNext()){			 
-				 ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
-				 //current.reset();
-				 current.writeObject(newUpdate);
-				 current.flush();
-			 }*/
-			 
-			 //finally we have to send a JoinGameParty object only to the joining client for creating his playing stage
-			 //this.out.reset();
-			 /**this.out.writeObject(gameToJoin);
-			 this.out.flush();*/
-			 
 
 			 break;
 			 

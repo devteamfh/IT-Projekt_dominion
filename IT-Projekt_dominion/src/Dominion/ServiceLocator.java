@@ -24,12 +24,7 @@ public class ServiceLocator {
 
     // Resources
     private Logger logger = Logger.getLogger("");
-    
-    private int NumOfLogged_players = 0;
 
-    private TextArea ta;
-    
-    private int playedGames = 0;
 
     /**
      * Factory method for returning the singleton
@@ -62,30 +57,6 @@ public class ServiceLocator {
 
     public void setLogger(Logger logger) {
         this.logger = logger;
-    }
-     
-    public int getNumOfLoggedPlayer(){
-    	return this.NumOfLogged_players;
-    }
-    
-    public void increaseLoggedPlayer(){
-    	this.NumOfLogged_players++;
-    }
-    
-    public TextArea getTextArea(){
-    	return this.ta;
-    }
-    
-    public void setTextArea(){
-    	this.ta = new TextArea();
-    }
-    
-    public void increasePlayedGamesCounter(){
-    	this.playedGames++;
-    }
-    
-    public int getPlayedGamesCounter(){
-    	return this.playedGames;
     }
   
 }

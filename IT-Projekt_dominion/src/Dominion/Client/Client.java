@@ -3,7 +3,6 @@ package Dominion.Client;
 import Dominion.Client.ClientClasses.Client_Controller_start;
 import Dominion.Client.ClientClasses.Client_Model;
 import Dominion.Client.ClientClasses.Client_View_start;
-import Dominion.Client.ClientClasses.ServiceLocatorClient;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

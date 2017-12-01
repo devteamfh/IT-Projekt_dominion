@@ -20,8 +20,8 @@ import javafx.stage.WindowEvent;
  * @author Brad Richards (MVC), Joel Henz (events)
  */
 public class Client_Controller_playingStage extends Controller<Client_Model, Client_View_playingStage> {
-    ServiceLocatorClient sl;
-    Client_View_playingStage view_playingStage;
+	private ServiceLocatorClient sl;
+	private Client_View_playingStage view_playingStage;
        
     /**
      * @author Joel Henz

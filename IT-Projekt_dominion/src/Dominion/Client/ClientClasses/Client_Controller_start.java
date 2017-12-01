@@ -37,8 +37,8 @@ import javafx.util.Duration;
  */
 public class Client_Controller_start extends Controller<Client_Model, Client_View_start> {
     
-    Client_View_start view;
-    InetAddress addr;
+	private Client_View_start view;
+	private InetAddress addr;
     private String str_Dot = ".";
 
 

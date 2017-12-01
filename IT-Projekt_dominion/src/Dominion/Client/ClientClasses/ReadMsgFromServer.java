@@ -58,6 +58,20 @@ public class ReadMsgFromServer implements Runnable {
 				           @Override 
 				           public void run() {
 				            sl.addNewGame(newGame);
+				            
+				            if(newGame.getHost().equals(model.getName())){
+				            	sl.setCurrentGameParty(newGame);
+				            	Stage playingStage = new Stage();			
+				            	playingStage.initModality(Modality.APPLICATION_MODAL);
+						        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model,true,newGame);
+						        sl.setView_playingStage(view_playingStage);
+						        new Client_Controller_playingStage(model, sl.getPlayingStage(), newGame); 
+						        sl.getPlayingStage().start();
+						        sl.getCreateGameView().stop();
+						        for(int i=0; i<newGame.getArrayOfPlayers().length;i++){
+						        	sl.getPlayingStage().labelArray[i].setText(newGame.getArrayOfPlayers()[i]);
+						        }
+							}
 				           }
 				       });
 					break;
@@ -92,14 +106,22 @@ public class ReadMsgFromServer implements Runnable {
 							
 							//determine the joining player and create his playing stage
 							if(join.getUsername().equals(model.getName())){
-								GameParty gamePartyToJoin = join.getSelectedGameParty();
+								sl.setCurrentGameParty(join.getSelectedGameParty());
 								Stage playingStage = new Stage();			
 					        	playingStage.initModality(Modality.APPLICATION_MODAL);
-					        	Client_View_playingStage view = new Client_View_playingStage (playingStage, model,false);
+					        	Client_View_playingStage view = new Client_View_playingStage (playingStage, model,false,join.getSelectedGameParty());
 					        	sl.setView_playingStage(view);
-					        	new Client_Controller_playingStage(model, sl.getPlayingStage(),gamePartyToJoin); 
+					        	new Client_Controller_playingStage(model, sl.getPlayingStage(),join.getSelectedGameParty()); 
 					        	sl.getPlayingStage().start();
 							}
+							
+							//determine the players who have already joined the game. On their playing stage we have to update the player list of the game
+							if(join.getSelectedGameParty().getID() == sl.getCurrentGameParty().getID()){
+								for(int i =0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){
+									
+								}
+							}
+							
 						}
 				       });
 									

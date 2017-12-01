@@ -19,9 +19,9 @@ import javafx.stage.WindowEvent;
  * @author Brad Richards (MVC), Joel Henz (resources/events)
  */
 public class Server_Controller extends Controller<Server_Model, Server_View> {
-    ServiceLocator sl;
-    Server_View view;
-    InetAddress addr;
+	private ServiceLocator sl;
+	private Server_View view;
+	private InetAddress addr;
 
     public Server_Controller(Server_Model model, Server_View view) {
         super(model, view);
