@@ -16,7 +16,7 @@ public class checkUserData {
 	private String tf2;
 	private String btnStr;
 	
-	ServiceLocator sl = ServiceLocator.getServiceLocator();
+	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
 	protected checkUserData(){
 		//verhindert Instanzierung
@@ -206,6 +206,8 @@ public class checkUserData {
             sl.getLogger().info("userFile konnte nicht durchsucht werden");
         }
 		sl.getLogger().info("Passwort nicht korrekt. Eintritt verwehrt");
+		
+		
 	return false;
 	}
 

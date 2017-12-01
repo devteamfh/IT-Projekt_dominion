@@ -53,9 +53,7 @@ public class ServiceLocatorClient {
     
     private Client_View_playingStage view_playingStage;
     private Client_View_createGame view_createGame;
-
-    private ListView <StartInformation> lv_StartInformation;
-    
+ 
     private GameParty currentGameParty;
     
     Label numberOfActionsAndBuys = new Label();
@@ -265,5 +263,8 @@ public class ServiceLocatorClient {
 	public Button getButtonEndGameHost(){
 		return this.endGameHost;
 	}
+
+
+
 
 }
