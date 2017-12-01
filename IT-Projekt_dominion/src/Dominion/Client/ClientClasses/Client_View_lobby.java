@@ -88,7 +88,7 @@ public class Client_View_lobby extends View<Client_Model> {
 		btn_enterGame.setDisable(true);
 		
 		//CHAT
-		chatWindow = sl.getTextAreaLobby();
+		chatWindow = sl.getTextAreaChatLobby();
 		chatWindow.setEditable(false);
 		chatWindow.setPrefSize(820, 150);
 		chatWindow.setStyle("-fx-opacity: 0.80;");
@@ -110,7 +110,7 @@ public class Client_View_lobby extends View<Client_Model> {
 		
 		tf_message.setText("Ihre Nachricht");
 		
-		//Primäre Nodes initialisieren		
+		//Primï¿½re Nodes initialisieren		
 				
 		BorderPane root = new BorderPane();
 	    /*______________________________________________________________________________________________*/				    
@@ -187,7 +187,7 @@ public class Client_View_lobby extends View<Client_Model> {
 					tbl_playerStats.setStyle("-fx-opacity: 0.80;");
 					
 
-					/*Upperhalf zusammenführen*/
+					/*Upperhalf zusammenfï¿½hren*/
 					hb_wrapper_upperhalf.getChildren().addAll(tbl_playerStats);
 				    /*______________________________________________________________________________________________*/				    
 				    /************************************************************************************************/				    
@@ -253,14 +253,14 @@ public class Client_View_lobby extends View<Client_Model> {
 					
 					
 					
-					/*Lowerhalf zusammenführen*/
+					/*Lowerhalf zusammenfï¿½hren*/
 					hb_wrapper_lowerhalf.getChildren().addAll(vb_wrapper_gameList, vb_wrapper_chat);
 				    /*______________________________________________________________________________________________*/				    
 				    /************************************************************************************************/				    
 
 
 					
-					/*Upper und Lowerhalf zusammenführen*/
+					/*Upper und Lowerhalf zusammenfï¿½hren*/
 					vb_wrapperContent.getChildren().addAll(hb_wrapper_upperhalf,hb_wrapper_lowerhalf);
 					vb_wrapperContent.setPadding(new Insets(10,75,10,75));
 				    /*______________________________________________________________________________________________*/				    

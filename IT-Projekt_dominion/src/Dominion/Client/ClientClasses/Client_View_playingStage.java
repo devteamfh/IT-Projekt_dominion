@@ -29,15 +29,34 @@ import javafx.stage.Stage;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards (MVC Pattern), Joel Henz (GUI)
+ * @author Brad Richards (MVC Pattern)
+ */
+
+/**
+ * @author: Initial: Joel (GUI without styling)
+ * @author: Styling und Anordnung: kab
+ *                                        
  */
 public class Client_View_playingStage extends View<Client_Model> {
 	ServiceLocatorClient sl;
-	Button endGameHost;
 	Label [] labelArray;
+	Label stack;
+	Label yourHand;
+	
+	Button provisorischCard1;
+	Button provisorischCard2;
+	Button provisorischCard3;
+	
+	Button endAction;
+	Button endBuy;
+	
+	TextField tf_messagePlayingStage;
+    TextArea chatWindowPlayingStage;
+    TextArea windowGameHistory;
+    customButton btn_sendChatMsgPlayingStage;
 
-	public Client_View_playingStage(Stage stage, Client_Model model, boolean isHost, GameParty party) {
-		super(stage, model,isHost,party);
+	public Client_View_playingStage(Stage stage, Client_Model model, GameParty party) {
+		super(stage, model,party);
         stage.setTitle("Dominion - Spielplattform");
     }
 	
@@ -48,6 +67,49 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 	    sl = ServiceLocatorClient.getServiceLocator();  
 	    
+	    chatWindowPlayingStage = sl.getTextAreaChatPlayingStage();
+		chatWindowPlayingStage.setEditable(false);
+		chatWindowPlayingStage.setPrefSize(820, 150);
+		chatWindowPlayingStage.setStyle("-fx-opacity: 0.80;");
+		
+		windowGameHistory = sl.getTextAreaGameHistory();
+		windowGameHistory.setEditable(false);
+		windowGameHistory.setPrefSize(820, 150);
+		windowGameHistory.setStyle("-fx-opacity: 0.80;");
+		
+		tf_messagePlayingStage = new TextField();
+		tf_messagePlayingStage.setPrefSize(450,40);
+		tf_messagePlayingStage.setStyle("-fx-opacity: 0.80;");
+		
+		btn_sendChatMsgPlayingStage = new customButton("senden");
+		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn","btn_sendChatMsg");
+		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
+		btn_sendChatMsgPlayingStage.setPrefSize(202, 40);
+		
+		Label label_gameHistory = new Label("Spielverlauf");
+		Label label_chat = new Label("Chat");
+		this.stack = new Label("hier kommt der Hauptstapel");
+		this.yourHand = new Label("deine Hand");
+		
+		this.provisorischCard1 = new Button ("Karte prov");
+		this.provisorischCard2 = new Button ("Karte prov");
+		this.provisorischCard3 = new Button ("Karte prov");
+		
+		this.endAction = new Button("Aktion beenden");
+		this.endBuy = new Button("Kauf beenden");
+		
+		VBox vb_right = new VBox();
+		
+		vb_right.setPrefHeight(350);
+		vb_right.setPrefWidth(400);
+		
+		HBox hb_chatButtonAndTextField = new HBox();
+		hb_chatButtonAndTextField.setPrefSize(200, 100);
+		
+		hb_chatButtonAndTextField.getChildren().addAll(tf_messagePlayingStage,btn_sendChatMsgPlayingStage);
+		
+		vb_right.getChildren().addAll(label_gameHistory,windowGameHistory,label_chat,hb_chatButtonAndTextField,chatWindowPlayingStage);
+		
 		BorderPane root = new BorderPane();
 		
 		VBox vb_player = new VBox();
@@ -63,7 +125,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		//if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
 		//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
 		//will be evaluated as a loss.
-		this.endGameHost = new Button ("Spiel abbrechen (Host)");
+		sl.getButtonEndGameHost().setDisable(true);
 
 		root.setTop(vb_player);
 		vb_player.setAlignment(Pos.TOP_RIGHT);
@@ -132,13 +194,37 @@ public class Client_View_playingStage extends View<Client_Model> {
 		playedCards_hbox.getChildren().addAll(playedCard1,playedCard2,playedCard3);
 		vb_center.getChildren().add(playedCards_hbox);
 		
+		VBox vb_bottom = new VBox();
+		vb_bottom.setPrefSize(1000, 60);
+		sl.getLabelNumberOfActionsAndBuys().setText("hier sind anzahl actions und buys (code in der view");
+		HBox hb_stack_hand_endAction_endBuy = new HBox();
+		hb_stack_hand_endAction_endBuy.setPrefSize(750, 120);
+		
+		HBox hb_hand = new HBox();
+		hb_hand.getChildren().addAll(provisorischCard1,provisorischCard2,provisorischCard3);
+		
+		VBox vb_stack_endGameHost = new VBox();
+		vb_stack_endGameHost.getChildren().addAll(stack,sl.getButtonEndGameHost());
+		HBox.setMargin(vb_stack_endGameHost, new Insets(0, 100, 0, 0));
+		HBox.setMargin(yourHand, new Insets(0, 20, 0, 0));
+		HBox.setMargin(hb_hand, new Insets(0, 20, 0, 0));
+		
+		hb_stack_hand_endAction_endBuy.getChildren().addAll(vb_stack_endGameHost,yourHand,hb_hand,endAction,endBuy);
+		hb_stack_hand_endAction_endBuy.setAlignment(Pos.TOP_CENTER);
+		
+		vb_bottom.getChildren().addAll(sl.getLabelNumberOfActionsAndBuys(),hb_stack_hand_endAction_endBuy);
+		
+		vb_bottom.setAlignment(Pos.TOP_CENTER);
+		
 		root.setLeft(gp_left);
 		BorderPane.setMargin(gp_left, new Insets(0, 20, 0, 0));
 		root.setCenter(vb_center);
+		root.setRight(vb_right);
+		root.setBottom(vb_bottom);
 		
 		//Only the will get the button for ending the game until the game isn't full (example 3 of 4 players -> host can end the game)
-		if(super.isHost){
-			root.setBottom(endGameHost);
+		if(sl.getIsHost()){
+			sl.getButtonEndGameHost().setDisable(false);
 		}
 		
 		this.scene = new Scene (root, 800,800);

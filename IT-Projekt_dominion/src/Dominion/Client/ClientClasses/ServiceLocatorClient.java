@@ -11,6 +11,8 @@ import Dominion.appClasses.StartInformation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -27,7 +29,7 @@ import javafx.scene.layout.VBox;
  * used by the program. It also defines application-global constants, such as
  * the application name.
  * 
- * @author Brad Richards, resources/methods by Joel Henz
+ * @author Brad Richards, resources/methods by Joel Henz (if not mentioned other author)
  * 
  */
 public class ServiceLocatorClient {
@@ -36,14 +38,15 @@ public class ServiceLocatorClient {
     // Application-global constants
     final private String APP_NAME = "Dominion";
 
-    // Resources
     private Logger logger = Logger.getLogger("");
     
     private ToggleGroup endOfGameGroup;
     private ToggleGroup numberOfPlayersGroup;
     private TextField inputNumberOfRounds;
     
-    private TextArea ta_lobby = new TextArea();
+    private TextArea ta_ChatLobby = new TextArea();
+    private TextArea ta_ChatPlayingStage = new TextArea();
+    private TextArea ta_gameHistory = new TextArea();
     
     private ObservableList<GameParty> obsList = FXCollections.observableArrayList();
     private ListView <GameParty> gameList;
@@ -54,11 +57,27 @@ public class ServiceLocatorClient {
     private ListView <StartInformation> lv_StartInformation;
     
     private GameParty currentGameParty;
-
+    
+    Label numberOfActionsAndBuys = new Label();
+    
+    private boolean isHost=false;
+    
+    /**
+     * @author kab
+     */
     private TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
+    /**
+     * @author kab
+     */
     private ArrayList<StartInformation> al_Statistics = new ArrayList <StartInformation>();
+    
+    //if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
+  	//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
+  	//will be evaluated as a loss.
+    private Button endGameHost = new Button ("Spiel beenden (Host)");
 
     /**
+     * @author Brad Richards
      * Factory method for returning the singleton
      * @param mainClass The main class of this program
      * @return The singleton resource locator
@@ -70,6 +89,7 @@ public class ServiceLocatorClient {
     }
 
     /**
+     * @author Brad Richards
      * Private constructor, because this class is a singleton
      * @param appName Name of the main class of this program
      */
@@ -78,7 +98,6 @@ public class ServiceLocatorClient {
         // because the default constructor is public
     }
 
-    
     public String getAPP_NAME() {
         return APP_NAME;
     }
@@ -115,8 +134,16 @@ public class ServiceLocatorClient {
     	this.inputNumberOfRounds = new TextField();
     }
     
-    public TextArea getTextAreaLobby(){
-    	return this.ta_lobby;
+    public TextArea getTextAreaChatLobby(){
+    	return this.ta_ChatLobby;
+    }
+    
+    public TextArea getTextAreaChatPlayingStage(){
+    	return this.ta_ChatPlayingStage;
+    }
+    
+    public TextArea getTextAreaGameHistory(){
+    	return this.ta_gameHistory;
     }
 
 	public ListView <GameParty> getListView() {
@@ -153,6 +180,7 @@ public class ServiceLocatorClient {
 				this.obsList.set(i, gamePartyToJoin);
 				if(this.obsList.get(i).isFull()){
 					this.obsList.remove(i);
+					this.endGameHost.setDisable(true);
 					break;
 				}
 				break;
@@ -177,43 +205,65 @@ public class ServiceLocatorClient {
 	}
 	
 	/**
-	 * @author kab: List information for Player Statistics Table
-	 * 
-	 * 
-	 * 
-	 */
-		public TableView <StartInformation> getTbl_playerStats() {
+	* @author kab: List information for Player Statistics Table
+	*/
+	public TableView <StartInformation> getTbl_playerStats() {
 		return tbl_playerStats;
 	}
 
+	/**
+	* @author kab: List information for Player Statistics Table
+	*/
 	public void setTbl_playerStats(TableView <StartInformation> tbl_playerStats) {
 		this.tbl_playerStats = tbl_playerStats;
 	}
-
+	
+	/**
+	* @author kab: List information for Player Statistics Table
+	*/
 	public ArrayList<StartInformation> getAl_Statistics() {
 		return al_Statistics;
 	}
 
+	/**
+	* @author kab: List information for Player Statistics Table
+	*/
 	public void setAl_Statistics(ArrayList<StartInformation> al_Statistics) {
 		this.al_Statistics = al_Statistics;
 	}
 
+	/**
+	* @author kab: List information for Player Statistics Table
+	*/
 	public void add_AL_Statistics(ArrayList<StartInformation> statistics){
 		for(int i = 0;i<statistics.size();i++){
 			this.al_Statistics.add(statistics.get(i));
 		}
 		
 	}
-	
-	/**
-	 * @author: Joel Henz getter and setter
-	 */
+
 	public void setCurrentGameParty(GameParty party){
 		this.currentGameParty=party;
 	}
 	
 	public GameParty getCurrentGameParty(){
 		return this.currentGameParty;
+	}
+	
+	public Label getLabelNumberOfActionsAndBuys(){
+		return this.numberOfActionsAndBuys;
+	}
+	
+	public boolean getIsHost(){
+		return this.isHost;
+	}
+	
+	public void setIsHost(boolean isHost){
+		this.isHost=isHost;
+	}
+	
+	public Button getButtonEndGameHost(){
+		return this.endGameHost;
 	}
 
 }

@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
+import Dominion.appClasses.ChatMessagePlayingStage;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
@@ -65,6 +66,8 @@ public class ClientHandler implements Runnable {
 		
 		//iterator for the OutPutStreams of all connected players in the lobby
 		Iterator<ObjectOutputStream> iterOut = this.list.iterator();
+
+		Iterator<GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
 		
 		switch (obj.getType()) {
 		 case ChatMessageLobby:	
@@ -135,7 +138,7 @@ public class ClientHandler implements Runnable {
 			 //(message was sent from client-side from class Client_View_lobby)
 			 if(!sl.getGameListFromServer().isEmpty()){
 				 ArrayList <GameParty> gamePartyListClient = new ArrayList <GameParty>();
-				 Iterator <GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
+				 //Iterator <GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
 				 
 				 while (iterGamePartyOnServer.hasNext()){
 					 GamePartyOnServer currentGamePartyOnServer = iterGamePartyOnServer.next();
@@ -200,21 +203,8 @@ public class ClientHandler implements Runnable {
 			 CancelGame cancel = (CancelGame) obj;
 			 GameParty gamePartyToCancel = cancel.getGameParty();
 			 
-			 
-			 
 			 //searching the correspondent GamePartyOnServer to write to the players of this GameParty
 			 long id2 = gamePartyToCancel.getID();
-			 Iterator <GamePartyOnServer> iterGameParty2 = sl.getGameListFromServer().iterator();
-			 
-			 GamePartyOnServer currentGame2=null;
-			 
-			 while(iterGameParty2.hasNext()){				 
-				 
-				 currentGame2 = iterGameParty2.next();
-				 if(currentGame2.getGameParty().getID()== id2){
-					 break;
-				 }
-			 }
 			 
 			 //sending the CancelGame object to all clients so the game will be removed from their ListViews
 			 while (iterOut.hasNext()){
@@ -223,7 +213,34 @@ public class ClientHandler implements Runnable {
 					current.flush();			
 			 } 
 			 
+			 //remove also the GamePartyOnServer
+			 for (int i=0; i<sl.getGameListFromServer().size();i++){
+				 if(id2 == sl.getGameListFromServer().get(i).getGameParty().getID()){
+					 sl.getGameListFromServer().remove(i);
+					 break;
+				 }
+			 }
+			 
+			 
 		 break;
+		 
+		 case ChatMessagePlayingStage:			 
+			//sending the chat messages to the players of the corresponding GameParty	
+			ChatMessagePlayingStage msg_obj = (ChatMessagePlayingStage) obj;
+			
+			while(iterGamePartyOnServer.hasNext()){
+				GamePartyOnServer current = iterGamePartyOnServer.next();
+				
+				if(current.getGameParty().getID() == msg_obj.getGameParty().getID()){
+					for(int i=0; i<current.getPlayerList().size();i++){
+						current.getPlayerList().get(i).getOut().writeObject(msg_obj);
+						current.getPlayerList().get(i).getOut().flush();
+					}
+					break;
+				}
+			}
+			break;
+		 
 		 default:
 		 }
 	

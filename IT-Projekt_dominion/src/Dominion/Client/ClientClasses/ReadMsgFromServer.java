@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
+import Dominion.Server.ServerClasses.GamePartyOnServer;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
+import Dominion.appClasses.ChatMessagePlayingStage;
 import Dominion.appClasses.DeleteGameFromListView;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
@@ -43,10 +47,10 @@ public class ReadMsgFromServer implements Runnable {
 				
 				case ChatMessageLobby:
 					ChatMessageLobby msg = (ChatMessageLobby) obj;					 
-					String name = msg.getName();
-					String text = msg.getMsg();
-					sl.getTextAreaLobby().appendText(name+": "+text+"\n");
-					sl.getTextAreaLobby().selectPositionCaret(sl.getTextAreaLobby().getText().length());	
+					String nameLobby = msg.getName();
+					String textLobby = msg.getMsg();
+					sl.getTextAreaChatLobby().appendText(nameLobby+": "+textLobby+"\n");
+					sl.getTextAreaChatLobby().selectPositionCaret(sl.getTextAreaChatLobby().getText().length());	
 					break;
 				 
 				case InformationObject:
@@ -83,7 +87,8 @@ public class ReadMsgFromServer implements Runnable {
 				            	sl.setCurrentGameParty(newGame);
 				            	Stage playingStage = new Stage();			
 				            	playingStage.initModality(Modality.APPLICATION_MODAL);
-						        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model,true,newGame);
+				            	sl.setIsHost(true);
+						        Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model,newGame);
 						        sl.setView_playingStage(view_playingStage);
 						        new Client_Controller_playingStage(model, sl.getPlayingStage(), newGame); 
 						        sl.getPlayingStage().start();
@@ -144,7 +149,8 @@ public class ReadMsgFromServer implements Runnable {
 							if(join.getUsername().equals(model.getName())){
 								Stage playingStage = new Stage();			
 					        	playingStage.initModality(Modality.APPLICATION_MODAL);
-					        	Client_View_playingStage view = new Client_View_playingStage (playingStage, model,false,join.getSelectedGameParty());
+					        	sl.setIsHost(false);
+					        	Client_View_playingStage view = new Client_View_playingStage (playingStage, model,join.getSelectedGameParty());
 					        	sl.setView_playingStage(view);
 					        	new Client_Controller_playingStage(model, sl.getPlayingStage(),join.getSelectedGameParty()); 
 					        	sl.getPlayingStage().start();
@@ -174,18 +180,39 @@ public class ReadMsgFromServer implements Runnable {
 				           public void run() {
 							
 							try{
-								//stop the playing stage ONLY for the players who 
+								//stop the playing stage ONLY for the players who have joined this GameParty
 								if(gamePartyToCancel.getID() == sl.getCurrentGameParty().getID()){
 									sl.getPlayingStage().stop();
+									sl.setCurrentGameParty(null);
 								}
 							}catch (NullPointerException e){
 								//NullPointerException caught
 							}
 							
+							//remove the canceled game from the ListView of ALL clients
 							sl.removeGame(gamePartyToCancel);
+							
+							Stage hostEndedGame = new Stage();	
+							hostEndedGame.setResizable(false);
+							hostEndedGame.initModality(Modality.APPLICATION_MODAL);
+				        	Client_View_hostEndedGame view = new Client_View_hostEndedGame (hostEndedGame, model);
+				        	new Client_Controller_hostEndedGame(model, view); 
+				        	view.start();
+							
 				           }
-				      });	
-				break;
+				      });
+					
+					break;
+				
+				case ChatMessagePlayingStage:			 	
+					ChatMessagePlayingStage msg_obj = (ChatMessagePlayingStage) obj;
+					
+					String namePlayingStage = msg_obj.getName();
+					String textPlayingStage = msg_obj.getMsg();
+					sl.getTextAreaChatPlayingStage().appendText(namePlayingStage+": "+textPlayingStage+"\n");
+					sl.getTextAreaChatPlayingStage().selectPositionCaret(sl.getTextAreaChatPlayingStage().getText().length());
+					
+					break;
 								
 				default:
 				}

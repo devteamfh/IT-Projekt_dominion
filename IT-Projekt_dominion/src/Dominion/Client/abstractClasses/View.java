@@ -18,7 +18,6 @@ public abstract class View<M extends Model> {
     protected Scene scene;
     protected M model;
     protected String name;
-    protected boolean isHost;
     protected GameParty party;
     
     /**
@@ -40,10 +39,9 @@ public abstract class View<M extends Model> {
      * @author Joel Henz: 
      * only needed for Client_View_playingStage
      */
-    protected View(Stage stage, M model, boolean isHost, GameParty party) {
+    protected View(Stage stage, M model, GameParty party) {
         this.stage = stage;
         this.model = model;
-        this.isHost=isHost;
         this.party=party;
         
         scene = create_GUI(); // Create all controls within "root"

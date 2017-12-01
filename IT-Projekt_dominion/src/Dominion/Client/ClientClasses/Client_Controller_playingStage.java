@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.CancelGame;
+import Dominion.appClasses.ChatMessageLobby;
+import Dominion.appClasses.ChatMessagePlayingStage;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import javafx.application.Platform;
@@ -31,7 +33,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         this.view_playingStage = view;
         sl = ServiceLocatorClient.getServiceLocator(); 
         
-        view.endGameHost.setOnAction(new EventHandler<ActionEvent>() {
+        sl.getButtonEndGameHost().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	//first we have to get the current GameParty object
@@ -51,7 +53,32 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	
             }
         });
+        
+        view.btn_sendChatMsgPlayingStage.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	sendMessageToServer();    	
+            }
+        });
+        
     }
+    
+    protected void sendMessageToServer() {
+		String name = model.getName();
+		String msg = view.tf_messagePlayingStage.getText();
+		ChatMessagePlayingStage cmsg = new ChatMessagePlayingStage(name, msg,sl.getCurrentGameParty());
+		
+		try {
+			model.out.writeObject(cmsg);
+			model.out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		view.tf_messagePlayingStage.clear();
+		view.tf_messagePlayingStage.requestFocus();	
+	}
 
 	
 }
