@@ -49,10 +49,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         super(model, view);
         this.view_createGame = view;
         sl = ServiceLocatorClient.getServiceLocator();
-        
-       
-        
-        
+    
      // Button Close Style Hover und Action press
     	view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
       		    new EventHandler<MouseEvent>() {
@@ -73,23 +70,11 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
             @Override
             public void handle(ActionEvent event) {
-            
-            	model.t1.interrupt();
-                
-                try {
-					model.client.close();				
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-              
-                Platform.exit();
+            	view.stop();
+            	
             }
-            });
+        });
         
-        
-        
-       
         //ToggleGroup Change listener
         
         sl.getToggleForNumberOfPlayers().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){

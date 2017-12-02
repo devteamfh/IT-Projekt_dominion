@@ -29,7 +29,6 @@ public class Client_Model extends Model {
     private InetAddress addr;
     private int port;    
     boolean connected = false;
-    private Player player;
   
     /**
      * @author Joel Henz
@@ -89,14 +88,6 @@ public class Client_Model extends Model {
 	
 	public Socket getSocket (){
 		return this.client;
-	}
-	
-	public Player getPlayer(){
-		return this.player;
-	}
-	
-	public void setPlayer(Player player){
-		this.player = player;
 	}
 	
 }

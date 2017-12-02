@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
+import Dominion.appClasses.Player;
 import Dominion.appClasses.StartInformation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,6 +41,8 @@ public class ServiceLocatorClient {
 
     private Logger logger = Logger.getLogger("");
     
+    private Player player;
+    
     private ToggleGroup endOfGameGroup;
     private ToggleGroup numberOfPlayersGroup;
     private TextField inputNumberOfRounds;
@@ -56,7 +59,12 @@ public class ServiceLocatorClient {
  
     private GameParty currentGameParty;
     
-    Label numberOfActionsAndBuys = new Label();
+    private Label numberOfActionsAndBuys = new Label();
+    private Button provisorischCard1;
+    private Button provisorischCard2;
+    private Button provisorischCard3;	
+    private Button endAction;
+    private Button endBuy;
     
     private boolean isHost=false;
     
@@ -106,6 +114,14 @@ public class ServiceLocatorClient {
 
     public void setLogger(Logger logger) {
         this.logger = logger;
+    }
+    
+    public void setPlayer(Player player){
+    	this.player=player;
+    }
+    
+    public Player getPlayer(){
+    	return this.player;
     }
     
     public ToggleGroup getToggleForEndOfGame(){
@@ -177,14 +193,30 @@ public class ServiceLocatorClient {
 			if(id == this.obsList.get(i).getID()){
 				this.obsList.set(i, gamePartyToJoin);
 				if(this.obsList.get(i).isFull()){
+					GameParty toPrepare = this.obsList.get(i);
 					this.obsList.remove(i);
-					this.endGameHost.setDisable(true);
+					prepareGame(toPrepare);
 					break;
 				}
 				break;
 			}
 		}		
 	} 
+	
+	//prepare the playing stage of the host so he can start the game
+	public void prepareGame(GameParty party){
+		if(party.getHost().equals(this.player.getUsername())){
+			this.endAction.setDisable(false);
+			this.endGameHost.setDisable(true);
+		}
+		
+		//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
+		for(int i=0; i<party.getArrayOfPlayers().length;i++){
+			if(party.getArrayOfPlayers()[i].equals(this.player.getUsername())){
+				this.numberOfActionsAndBuys.setText(party.getHost()+" ist an der Reihe: 1 Aktionen, 1 Käufe");
+			}
+		}
+	}
 	
 	public void setView_playingStage (Client_View_playingStage view){
 		this.view_playingStage=view;
@@ -263,8 +295,22 @@ public class ServiceLocatorClient {
 	public Button getButtonEndGameHost(){
 		return this.endGameHost;
 	}
-
-
-
-
+	
+	//getter and setter for some playing stage buttons
+	public Button getButtonEndActions(){
+		return this.endAction;
+	}
+	
+	public void setButtonEndActions(String text){
+		this.endAction = new Button (text);
+	}
+	
+	public Button getButtonEndBuy(){
+		return this.endBuy;
+	}
+	
+	public void setButtonEndBuy(String text){
+		this.endBuy = new Button (text);
+	}
+	
 }

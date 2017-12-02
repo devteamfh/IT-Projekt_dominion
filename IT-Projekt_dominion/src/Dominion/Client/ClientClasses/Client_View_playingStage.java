@@ -47,9 +47,6 @@ public class Client_View_playingStage extends View<Client_Model> {
 	Button provisorischCard2;
 	Button provisorischCard3;
 	
-	Button endAction;
-	Button endBuy;
-	
 	TextField tf_messagePlayingStage;
     TextArea chatWindowPlayingStage;
     TextArea windowGameHistory;
@@ -92,11 +89,17 @@ public class Client_View_playingStage extends View<Client_Model> {
 		this.yourHand = new Label("deine Hand");
 		
 		this.provisorischCard1 = new Button ("Karte prov");
+		this.provisorischCard1.setDisable(true);
 		this.provisorischCard2 = new Button ("Karte prov");
+		this.provisorischCard2.setDisable(true);
 		this.provisorischCard3 = new Button ("Karte prov");
+		this.provisorischCard3.setDisable(true);
 		
-		this.endAction = new Button("Aktion beenden");
-		this.endBuy = new Button("Kauf beenden");
+		sl.setButtonEndActions("Aktion beenden");
+		sl.getButtonEndActions().setDisable(true);
+		
+		sl.setButtonEndBuy("Kauf beenden");
+		sl.getButtonEndBuy().setDisable(true);
 		
 		VBox vb_right = new VBox();
 		
@@ -196,7 +199,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		VBox vb_bottom = new VBox();
 		vb_bottom.setPrefSize(1000, 60);
-		sl.getLabelNumberOfActionsAndBuys().setText("hier sind anzahl actions und buys (code in der view");
+		sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
 		HBox hb_stack_hand_endAction_endBuy = new HBox();
 		hb_stack_hand_endAction_endBuy.setPrefSize(750, 120);
 		
@@ -209,7 +212,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		HBox.setMargin(yourHand, new Insets(0, 20, 0, 0));
 		HBox.setMargin(hb_hand, new Insets(0, 20, 0, 0));
 		
-		hb_stack_hand_endAction_endBuy.getChildren().addAll(vb_stack_endGameHost,yourHand,hb_hand,endAction,endBuy);
+		hb_stack_hand_endAction_endBuy.getChildren().addAll(vb_stack_endGameHost,yourHand,hb_hand,sl.getButtonEndActions(),sl.getButtonEndBuy());
 		hb_stack_hand_endAction_endBuy.setAlignment(Pos.TOP_CENTER);
 		
 		vb_bottom.getChildren().addAll(sl.getLabelNumberOfActionsAndBuys(),hb_stack_hand_endAction_endBuy);
