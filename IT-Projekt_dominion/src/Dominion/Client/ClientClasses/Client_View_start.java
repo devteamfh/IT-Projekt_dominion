@@ -36,9 +36,6 @@ import javafx.stage.StageStyle;
  */
 
 public class Client_View_start extends View<Client_Model> {
-	
-			ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
-    
 			customButton btn_connect;
 			customButton btn_register;
 			customButton btn_login;
@@ -50,7 +47,7 @@ public class Client_View_start extends View<Client_Model> {
 			TextField tf_password;
 						
 			static Label connectionResult = new Label();
-		  
+			static Label lbl_errMsg = new Label();	
 			
 			Scene scene;
 		
@@ -62,7 +59,9 @@ public class Client_View_start extends View<Client_Model> {
 
 	@Override
 	protected Scene create_GUI() { 
-	    			
+
+			Client_View_start.lbl_errMsg.getStyleClass().addAll("lbl","lbl_errMsg");
+			
 			Label lbl_IPAdress = new Label ("Server-IP:  ");
 		    Label lbl_port     = new Label ("Port:       ");
 		    Label lbl_userName = new Label ("Ihr Name:   ");
@@ -93,6 +92,12 @@ public class Client_View_start extends View<Client_Model> {
 			//Primäre Panes initialisieren
 		    VBox vb_wrapperContent = new VBox();		    
 		    GridPane gp_wrapper = new GridPane();
+		    
+		    //vb_errMsg
+		    VBox vb_wrapper_errMsg = new VBox();
+		    vb_wrapper_errMsg.getChildren().add(lbl_errMsg);
+		    vb_wrapper_errMsg.setPadding(new Insets(0,0,0,30));
+		    vb_wrapper_errMsg.setMinSize(400, 200);
 		    
 		    //Vbox für Abstand zwischen tf IP-Adresse und tf Port
 		    VBox vb_spacer = new VBox();			
@@ -135,7 +140,6 @@ public class Client_View_start extends View<Client_Model> {
 			gp_wrapper.add(hb_BtnRegister, 3, 2);
 			gp_wrapper.add(hb_BtnLogin, 5, 2);
 			
-			
 
 		    //Close_Button top right, wrapper hb_custom menue
 		    HBox hb_custom_menue = new HBox();
@@ -160,8 +164,13 @@ public class Client_View_start extends View<Client_Model> {
 			root.setPrefHeight(600);
 			
 			root.setCenter(vb_wrapperContent);
- 	
-
+			
+		    
+		   	//Alle Nodes Gruppieren
+		    vb_wrapperContent.getChildren().addAll(hb_custom_menue,vb_wrapper_errMsg, gp_wrapper); 
+			gp_wrapper.setPadding(new Insets(50,50,0,150));
+		    
+			
 			 /**
 			  * @author kab: Fenster via Drag und Drop verschieben
 			  */
@@ -185,12 +194,7 @@ public class Client_View_start extends View<Client_Model> {
 		        stage.setY(mouseEvent.getScreenY() + dragDelta.y);
 		      }
 		    });
-
 		    
-		    
-		   	//Alle Nodes Gruppieren
-		    vb_wrapperContent.getChildren().addAll(hb_custom_menue, gp_wrapper); 
-			gp_wrapper.setPadding(new Insets(280,50,0,150));
 		    
 		  
 			//Scene erstellen und root, css und stagestyle zuordnen
@@ -202,7 +206,7 @@ public class Client_View_start extends View<Client_Model> {
 
 	}
 	
-	// Fï¿½r Drag und Drop verschiebung: relative x und y Position herausfinden
+	// Fürr Drag und Drop verschiebung: relative x und y Position herausfinden
 	class Delta { double x, y; }
 
 		}

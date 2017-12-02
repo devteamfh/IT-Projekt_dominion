@@ -44,7 +44,7 @@ public class checkUserData {
 				sl.getLogger().info("User File wurde erstellt");
 				return true;
 			} else {
-				sl.getLogger().info("USer File existiert schon");
+				sl.getLogger().info("User File existiert schon");
 				return true;
 			}
 			
@@ -71,11 +71,13 @@ public class checkUserData {
 					
 			fw.write(this.tf1+";"+this.tf2+System.getProperty("line.separator"));
 			fw.close();
-			sl.getLogger().info("User erfolgreich registriert");
+			sl.getLogger().info("Spieler erfolgreich registriert");
+			Client_View_start.lbl_errMsg.setText("Spieler erfolgreich registriert");
 			return true;
 			
 		} catch (IOException e) {
-			sl.getLogger().info("Konnte User nicht registireren");
+			sl.getLogger().info("Spieler konnte nicht registriert werden");
+			Client_View_start.lbl_errMsg.setText("Spieler konnte nicht registriert werden");
 			return false;
 		}
 	}
@@ -143,7 +145,8 @@ public class checkUserData {
 
 				for (int i = 0; i < strArr.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
 					if (this.tf1.equals(strArr[i].toString())) {
-						sl.getLogger().info("User existiert bereits");
+						sl.getLogger().info("Spieler existiert bereits");
+						Client_View_start.lbl_errMsg.setText("Spieler existiert bereits");
 						bReader.close();
 						return true;
 					}
@@ -155,8 +158,10 @@ public class checkUserData {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			sl.getLogger().info("userFile konnte nicht durchsucht werden");
+			Client_View_start.lbl_errMsg.setText("Fehler beim Zugriff auf lokale Dateien");
 		}
-		sl.getLogger().info("User existiert noch nicht");
+		sl.getLogger().info("Der Spieler wurde noch nicht registriert");
+		Client_View_start.lbl_errMsg.setText("Der Spieler wurde noch nicht registriert");
 		return false;
 	}
 
@@ -204,8 +209,10 @@ public class checkUserData {
             // TODO Auto-generated catch block
             e.printStackTrace();
             sl.getLogger().info("userFile konnte nicht durchsucht werden");
+    		Client_View_start.lbl_errMsg.setText("Probleme beim Zugriff auf lokale Dateien");
         }
-		sl.getLogger().info("Passwort nicht korrekt. Eintritt verwehrt");
+		sl.getLogger().info("Passwort nicht korrekt. Eintritt verwehrt.");
+		Client_View_start.lbl_errMsg.setText("Passwort nicht korrekt. Der Eintritt wird verwehrt.");
 		
 		
 	return false;
@@ -244,6 +251,7 @@ public class checkUserData {
             // TODO Auto-generated catch block
             e.printStackTrace();
             sl.getLogger().info("UserFile konnte nicht gefunden werden");
+    		Client_View_start.lbl_errMsg.setText("Fehler beim Zugriff auf lokale Dateien");
         }
 
 	    return iLines;

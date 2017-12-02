@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
 import Dominion.appClasses.StartInformation;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -60,14 +61,10 @@ public class ServiceLocatorClient {
     
     private boolean isHost=false;
     
-    /**
-     * @author kab
-     */
     private TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
-    /**
-     * @author kab
-     */
     private ArrayList<StartInformation> al_Statistics = new ArrayList <StartInformation>();
+       
+    private Label lbl_errMsgView = new Label("");
     
     //if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
   	//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
@@ -99,7 +96,7 @@ public class ServiceLocatorClient {
     public String getAPP_NAME() {
         return APP_NAME;
     }
-
+    
     public Logger getLogger() {
         return logger;
     }
@@ -262,6 +259,24 @@ public class ServiceLocatorClient {
 	
 	public Button getButtonEndGameHost(){
 		return this.endGameHost;
+	}
+
+	
+	
+/*	public SimpleStringProperty getSsp_loggerInfo() {
+		return ssp_loggerInfo;
+	}
+
+	public void setSsp_loggerInfo(SimpleStringProperty ssp_loggerInfo) {
+		this.ssp_loggerInfo = ssp_loggerInfo;
+	}*/
+
+	public Label getLbl_errMsgView() {
+		return lbl_errMsgView;
+	}
+
+	public void setLbl_errMsgView(String str) {
+		this.lbl_errMsgView.setText(str);
 	}
 
 
