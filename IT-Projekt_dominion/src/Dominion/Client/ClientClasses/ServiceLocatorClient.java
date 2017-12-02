@@ -263,14 +263,6 @@ public class ServiceLocatorClient {
 
 	
 	
-/*	public SimpleStringProperty getSsp_loggerInfo() {
-		return ssp_loggerInfo;
-	}
-
-	public void setSsp_loggerInfo(SimpleStringProperty ssp_loggerInfo) {
-		this.ssp_loggerInfo = ssp_loggerInfo;
-	}*/
-
 	public Label getLbl_errMsgView() {
 		return lbl_errMsgView;
 	}
