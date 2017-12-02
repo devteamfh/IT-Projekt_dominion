@@ -9,11 +9,11 @@ public class Player {
 
 	
 	private int points = 3;
-	private int numberOfActions; //David
-	private int numberOfBuys; // David
-	private int numberOfTreasures; // David
+	private int numberOfActions =1; //David
+	private int numberOfBuys=1; // David
+	private int numberOfTreasures =0; // David
 	private String username;
-	private transient ObjectOutputStream out;
+	private ObjectOutputStream out;
 	
 	public Player(String username, ObjectOutputStream out){
 		this.username = username;
@@ -32,7 +32,37 @@ public class Player {
 		return this.numberOfActions;
 	}
 	
+	public void increaseNumberOfActions(int i){
+		this.numberOfActions = this.numberOfActions+i;
+	}
 	
+	public void decreaseNumberOfActions(){
+		this.numberOfActions--;
+	}
+	
+	public int getNumberOfBuys(){
+		return this.numberOfBuys;
+	}
+	
+	public void increaseNumberOfBuys(int i){
+		this.numberOfBuys = this.numberOfBuys+i;
+	}
+	
+	public void decreaseNumberOfBuys(){
+		this.numberOfBuys--;
+	}
+	
+	public int getNumberOfTreasures(){
+		return this.numberOfTreasures;
+	}
+	
+	public void increaseNumberOfTreasures(int i){
+		this.numberOfTreasures = this.numberOfTreasures+i;
+	}
+	
+	public void decreaseNumberOfTreasures(int i){
+		this.numberOfTreasures = numberOfTreasures-i;
+	}
 	
 
 }

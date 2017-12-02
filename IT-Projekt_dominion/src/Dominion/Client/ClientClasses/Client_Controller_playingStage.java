@@ -61,6 +61,15 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             }
         });
         
+        sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	sl.getButtonEndActions().setDisable(true);
+            	sl.getButtonEndBuy().setDisable(false);
+            	
+            }
+        });
+        
     }
     
     protected void sendMessageToServer() {

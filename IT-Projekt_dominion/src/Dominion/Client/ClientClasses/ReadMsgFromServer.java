@@ -10,7 +10,6 @@ import Dominion.Server.ServerClasses.GamePartyOnServer;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.ChatMessagePlayingStage;
-import Dominion.appClasses.DeleteGameFromListView;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
@@ -141,9 +140,7 @@ public class ReadMsgFromServer implements Runnable {
 					Platform.runLater(new Runnable() {
 
 						@Override 
-				           public void run() {
-							//this method will update the number of joined players of this game on the ListView (Lobby) of EACH client. If the game is full, it will be removed from the ListView of every client
-							sl.updateGameParty(join);	
+				           public void run() {	
 							
 							//determine the joining player and create his playing stage
 							if(join.getUsername().equals(model.getName())){
@@ -157,11 +154,20 @@ public class ReadMsgFromServer implements Runnable {
 							}
 							
 							//determine the players who have already joined the game. On their playing stages we have to add the username of the new player
-							if(join.getSelectedGameParty().getID() == sl.getCurrentGameParty().getID()){
-								for(int i =0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){
-									sl.getPlayingStage().labelArray[i].setText(sl.getCurrentGameParty().getArrayOfPlayers()[i]);
-								}	
+							try{
+								if(join.getSelectedGameParty().getID() == sl.getCurrentGameParty().getID()){
+									for(int i =0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){
+										sl.getPlayingStage().labelArray[i].setText(sl.getCurrentGameParty().getArrayOfPlayers()[i]);
+									}	
+								}
+							}catch (NullPointerException e){
+								//NullPointerException caught for sl.getCurrentGameParty().getID()
 							}
+							
+							//this method will update the number of joined players of this game on the ListView (Lobby) of EACH client. If the game is full, it will be removed from the ListView of every client
+							sl.updateGameParty(join);
+							
+							
 							
 						}
 				       });
@@ -184,6 +190,12 @@ public class ReadMsgFromServer implements Runnable {
 								if(gamePartyToCancel.getID() == sl.getCurrentGameParty().getID()){
 									sl.getPlayingStage().stop();
 									sl.setCurrentGameParty(null);
+									Stage hostEndedGame = new Stage();	
+									hostEndedGame.setResizable(false);
+									hostEndedGame.initModality(Modality.APPLICATION_MODAL);
+						        	Client_View_hostEndedGame view = new Client_View_hostEndedGame (hostEndedGame, model);
+						        	new Client_Controller_hostEndedGame(model, view); 
+						        	view.start();
 								}
 							}catch (NullPointerException e){
 								//NullPointerException caught
@@ -191,13 +203,6 @@ public class ReadMsgFromServer implements Runnable {
 							
 							//remove the canceled game from the ListView of ALL clients
 							sl.removeGame(gamePartyToCancel);
-							
-							Stage hostEndedGame = new Stage();	
-							hostEndedGame.setResizable(false);
-							hostEndedGame.initModality(Modality.APPLICATION_MODAL);
-				        	Client_View_hostEndedGame view = new Client_View_hostEndedGame (hostEndedGame, model);
-				        	new Client_Controller_hostEndedGame(model, view); 
-				        	view.start();
 							
 				           }
 				      });

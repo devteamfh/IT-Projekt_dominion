@@ -40,6 +40,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 	private Client_View_start view;
 	private InetAddress addr;
     private String str_Dot = ".";
+    private ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 
 
     public Client_Controller_start(Client_Model model, Client_View_start view) {
@@ -57,7 +58,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         /**
          * @author Joel Henz:
          * connecting a client to the server by getting the IP address and the port number from the TextFields and then creating the playing Stage
-         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Prüfmechanismen auf tf_ eingebaut
+         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Prï¿½fmechanismen auf tf_ eingebaut
          */    
         
         	//connect button MouseHandler
@@ -80,10 +81,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {  
           
-            	//prüft ob Felder IP und Port ausgefüllt
+            	//prï¿½ft ob Felder IP und Port ausgefï¿½llt
             	checkFields.getInstance().checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
             	
-            	//wenn IP und Port ausgefüllt, versuche mit Server zu verbinden
+            	//wenn IP und Port ausgefï¿½llt, versuche mit Server zu verbinden
             	if (checkFields.getInstance().getRdyToConnect())
             	
             	   	try { 
@@ -143,7 +144,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
 	            	checkFields.getInstance().checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
 
-	            	//wenn registiert, färbe button grün und deaktiviere inputfelder
+	            	//wenn registiert, fï¿½rbe button grï¿½n und deaktiviere inputfelder
 	            	if (checkFields.getInstance().getUserRegistred()) {
 						view.btn_register.getStyleClass().removeAll("btn_view","btn_view_hover");
 						view.btn_register.getStyleClass().addAll("btn_view_green");
@@ -192,7 +193,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
             	checkFields.getInstance().checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
             	
-            	//Wenn PW falsch Felder zurücksetzen
+            	//Wenn PW falsch Felder zurï¿½cksetzen
             	if(model.connected && !checkFields.getInstance().getUserPwOk()){
             		view.tf_password.clear();
             		view.tf_userName.clear();
@@ -218,7 +219,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             		String name = view.tf_userName.getText();
                 	model.setName(name);
                 	Player player = new Player (name,model.getOutput());
-                	model.setPlayer(player);
+                	sl.setPlayer(player);
                 	
                 	//the StartInformation object is needed on server-side so the server can store the username of all connected players
                 	StartInformation current = new StartInformation(model.getName());
