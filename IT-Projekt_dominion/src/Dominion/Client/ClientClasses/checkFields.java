@@ -23,7 +23,12 @@ public class checkFields {
 	
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
-	protected checkFields(){
+	public checkFields(){
+	}
+	
+	checkUserData checkUserData = new checkUserData();
+	
+	/*protected checkFields(){
 		//verhindert Instanzierung
 	}	
 	
@@ -32,8 +37,10 @@ public class checkFields {
 			instance = new checkFields();
 		}
 		return instance;
-		}
+		}*/
 	
+
+
 	/**
 	 * @author kab: überprüft für Verbinden, ob Eingaben in Textfelder gemacht worden sind.
 	 * 				überprüft für Registrieren und Einloggen, ob sich der User Registrieren und Einloggen kann,
@@ -70,7 +77,7 @@ public class checkFields {
 			case "Registrieren":
 				
 				if (checkTfUserAndPw(this.tf1, this.tf2)){
-					if (checkUserData.getInstance().checkRegistration(this.btnStr, this.tf1, this.tf2)) {
+					if (checkUserData.checkRegistration(this.btnStr, this.tf1, this.tf2)) {
 					setUserRegistred(true);	
 					}
 				}
@@ -81,11 +88,11 @@ public class checkFields {
 				
 				if (checkTfUserAndPw(this.tf1, this.tf2)) {
 				
-					if (checkUserData.getInstance().checkRegistration(this.btnStr, this.tf1, this.tf2)) {
+					if (checkUserData.checkRegistration(this.btnStr, this.tf1, this.tf2)) {
 						setUserRegistred(true);
 					}
 
-					if(getUserRegistred() && checkUserData.getInstance().pwCorrect(this.tf1,this.tf2)){
+					if(getUserRegistred() && checkUserData.pwCorrect(this.tf1,this.tf2)){
 						setUserPwOk(true);	
 					}
 				}
@@ -153,9 +160,7 @@ public class checkFields {
 		return true;	
 		
 	}
-	
-	
-	
+
 
 	
 	

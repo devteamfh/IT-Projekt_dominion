@@ -16,6 +16,9 @@ public class StartInformation extends GameObject {
 	//Liste von STartInformationobjekten vom Server
 	private ArrayList<StartInformation> listOfStatrtInformation = new ArrayList <StartInformation>();
 	
+	//kab:True wenn ein User mit dem gleichen Namen bereits auf dem Server connected ist
+	private boolean bol_nameTaken;
+	
 	private String 	username;
 	private String 	PW;
 	private int 	gamesPlayed;
@@ -140,6 +143,15 @@ public class StartInformation extends GameObject {
 	
 	public ArrayList <StartInformation> getListOfStartInformationObjects(){
 		return this.listOfStatrtInformation;
+	}
+
+	
+	public boolean isBol_nameTaken() {
+		return bol_nameTaken;
+	}
+
+	public void setBol_nameTaken(boolean bol_nameTaken) {
+		this.bol_nameTaken = bol_nameTaken;
 	}
 	
 

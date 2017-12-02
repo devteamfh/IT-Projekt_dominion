@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
+import Dominion.Client.Client;
 import Dominion.Server.ServerClasses.GamePartyOnServer;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
@@ -16,6 +17,7 @@ import Dominion.appClasses.JoinGameParty;
 import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -62,7 +64,48 @@ public class ReadMsgFromServer implements Runnable {
 					
 					StartInformation playerStatistics = (StartInformation) obj;
 					
+					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gewährt
+					if(playerStatistics.isBol_nameTaken()){
+						
+						Platform.runLater(new Runnable() {
+							@Override 
+					           public void run() {
+								try{
+				        	
+				        	//verhindert das starten der lobby
+			 				sl.getView_lobby().stop();
+			 				
+			 				//Restartet die lgoin view
+			 				Stage stge_start = new Stage();
+			 				Client_View_start view_start = new Client_View_start (stge_start, model);
+			 				new Client_Controller_start(model, view_start);
+			 				view_start.start();
+			 				
+			 				//gibt Meldung aus, dass die Username-Dieberei stattgefunden hat
+							sl.setLbl_popUpMessage(new Label("Ein Spieler mit dem gleichen Benutzernamen ist bereits angemeldet"));		
+							Stage popUp = new Stage();	
+							popUp.setResizable(false);
+							popUp.initModality(Modality.APPLICATION_MODAL);
+				        	Client_View_popUp view = new Client_View_popUp (popUp, model);
+				        	new Client_Controller_popUp(model, view); 
+				        	view.start();
+			 				
+				        	//löscht das p
+				        	
+				        	
+								}catch (NullPointerException e){
+								}
+								
+							}
+					      });
+					
+						playerStatistics = null;
+						System.gc();
+						model.client.close();
+					}
+							
 				
+					
 					sl.getAl_Statistics().clear();
 					sl.getTbl_playerStats().getItems().clear();
 		
@@ -188,13 +231,14 @@ public class ReadMsgFromServer implements Runnable {
 							try{
 								//stop the playing stage ONLY for the players who have joined this GameParty
 								if(gamePartyToCancel.getID() == sl.getCurrentGameParty().getID()){
+									sl.setLbl_popUpMessage(new Label("Der Host hat das Spiel beendet."));
 									sl.getPlayingStage().stop();
 									sl.setCurrentGameParty(null);
-									Stage hostEndedGame = new Stage();	
-									hostEndedGame.setResizable(false);
-									hostEndedGame.initModality(Modality.APPLICATION_MODAL);
-						        	Client_View_hostEndedGame view = new Client_View_hostEndedGame (hostEndedGame, model);
-						        	new Client_Controller_hostEndedGame(model, view); 
+									Stage popUp = new Stage();	
+									popUp.setResizable(false);
+									popUp.initModality(Modality.APPLICATION_MODAL);
+						        	Client_View_popUp view = new Client_View_popUp (popUp, model);
+						        	new Client_Controller_popUp(model, view); 
 						        	view.start();
 								}
 							}catch (NullPointerException e){

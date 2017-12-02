@@ -41,8 +41,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 	private InetAddress addr;
     private String str_Dot = ".";
     private ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
-
-
+    private checkUserData checkUserData; 
+    private checkFields checkFields; 
+   
+    
     public Client_Controller_start(Client_Model model, Client_View_start view) {
         super(model, view);
         this.view = view;
@@ -55,11 +57,15 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             }
         });
              
+        
         /**
          * @author Joel Henz:
          * connecting a client to the server by getting the IP address and the port number from the TextFields and then creating the playing Stage
-         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Prï¿½fmechanismen auf tf_ eingebaut
+         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Prüfmechanismen auf tf_ eingebaut
          */    
+        
+        checkUserData = new checkUserData(); 
+        checkFields = new checkFields(); 
         
         	//connect button MouseHandler
 		view.btn_connect.addEventHandler(MouseEvent.MOUSE_ENTERED, 
@@ -81,11 +87,11 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {  
           
-            	//prï¿½ft ob Felder IP und Port ausgefï¿½llt
-            	checkFields.getInstance().checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
+            	//prüft ob Felder IP und Port ausgefï¿½llt
+            	checkFields.checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
             	
-            	//wenn IP und Port ausgefï¿½llt, versuche mit Server zu verbinden
-            	if (checkFields.getInstance().getRdyToConnect())
+            	//wenn IP und Port ausgefüllt, versuche mit Server zu verbinden
+            	if (checkFields.getRdyToConnect())
             	
             	   	try { 
                 		addr = InetAddress.getByName(view.tf_ip.getText());
@@ -142,10 +148,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
             	}         	else {
 
-	            	checkFields.getInstance().checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
+	            	checkFields.checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
 
 	            	//wenn registiert, fï¿½rbe button grï¿½n und deaktiviere inputfelder
-	            	if (checkFields.getInstance().getUserRegistred()) {
+	            	if (checkFields.getUserRegistred()) {
 						view.btn_register.getStyleClass().removeAll("btn_view","btn_view_hover");
 						view.btn_register.getStyleClass().addAll("btn_view_green");
 
@@ -191,15 +197,15 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	return;
             	}
 
-            	checkFields.getInstance().checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
+            	checkFields.checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
             	
             	//Wenn PW falsch Felder zurï¿½cksetzen
-            	if(model.connected && !checkFields.getInstance().getUserPwOk()){
+            	if(model.connected && !checkFields.getUserPwOk()){
             		view.tf_password.clear();
             		view.tf_userName.clear();
             		view.tf_password.setDisable(false);
             		view.tf_userName.setDisable(false);
-            		checkFields.getInstance().setUserRegistred(false);
+            		checkFields.setUserRegistred(false);
             		view.tf_userName.setStyle("-fx-opacity: 1;");
             		view.tf_password.setStyle("-fx-opacity: 1;");
             		view.btn_register.setBtnText("Registrieren");
@@ -208,7 +214,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	}
             	
             	//weiter zur lobby, sofern connected, user registiert und pw ok
-            	if (model.connected && checkFields.getInstance().getUserPwOk()) {
+            	if (model.connected && checkFields.getUserPwOk()) {
 
 	            	view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");
 					view.btn_login.getStyleClass().addAll("btn_view_green");	
@@ -233,10 +239,11 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 					}
                 	
 			    	Stage lobby_stage = new Stage();				
-			        Client_View_lobby view2 = new Client_View_lobby(lobby_stage, model);
+			        Client_View_lobby view2 = new Client_View_lobby(lobby_stage, model); 
+			        sl.setView_lobby(view2);
 			        new Client_Controller_lobby(model, view2); 
-			       view2.start();
-			       view.stop();
+			        view2.start();  
+			        view.stop();
 	            	}                                             	
     			
             }

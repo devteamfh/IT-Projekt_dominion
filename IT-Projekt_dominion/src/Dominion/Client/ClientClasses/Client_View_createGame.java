@@ -81,7 +81,7 @@ public class Client_View_createGame extends View<Client_Model> {
 	    sl = ServiceLocatorClient.getServiceLocator();  
 	    sl.setToggleForNumberOfPlayers();
 	    sl.setToggleForEndOfGame();
-	    	sl.setTextFieldForRounds();
+	    sl.setTextFieldForRounds();
 
 
 	    		
