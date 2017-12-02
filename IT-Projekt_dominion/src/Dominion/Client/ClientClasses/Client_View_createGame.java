@@ -146,12 +146,12 @@ public class Client_View_createGame extends View<Client_Model> {
 			    btnRdo_mode2.getStyleClass().addAll("btn","btnRdo");
 				btnRdo_mode2.getStyleClass().remove("radio-button");
 			    btnRdo_mode2.setPrefSize(31, 30);
-			    	btn_iRundenPLUS = new Button("+");
-			    	btn_iRundenPLUS.getStyleClass().addAll("btn","btn_PlusMinus","btn_Plus");
+			    	btn_iRundenPLUS = new Button("");
+			    	btn_iRundenPLUS.getStyleClass().addAll("btn","btn_PlusMinus","btn_Plus_clicked");
 			    	btn_iRundenPLUS.setPrefSize(34,34);
 				    
-				    btn_iRundenMINUS = new Button("-");
-			    	btn_iRundenMINUS.getStyleClass().addAll("btn","btn_PlusMinus","btn_Minus");
+				    btn_iRundenMINUS = new Button("");
+			    	btn_iRundenMINUS.getStyleClass().addAll("btn","btn_PlusMinus","btn_Minus_clicked");
 			    	btn_iRundenMINUS.setPrefSize(34,34);
 
 			    //ToggleGroup
@@ -222,7 +222,7 @@ public class Client_View_createGame extends View<Client_Model> {
 			    	
 			    	VBox vb_wrapper_btn_finish = new VBox();
 			    	vb_wrapper_btn_finish.getChildren().add(btn_finish);
-			    	vb_wrapper_btn_finish.setPadding(new Insets(15,0,0,0));
+			    	vb_wrapper_btn_finish.setPadding(new Insets(25,0,0,0));
 			    	
 			    		//Boxes 
 			    		VBox vb_wrapper_btns_iRunden = new VBox();
@@ -252,7 +252,7 @@ public class Client_View_createGame extends View<Client_Model> {
 		root.setCenter(hb_wrapper_Content);
 		root.getStyleClass().add("bg_createGame");
 		
-		this.scene = new Scene (root, 750, 450);
+		this.scene = new Scene (root, 750, 410);
 		scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());
 	    stage.initStyle(StageStyle.TRANSPARENT);     
         return scene;
