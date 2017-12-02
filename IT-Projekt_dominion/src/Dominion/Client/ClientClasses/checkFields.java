@@ -21,7 +21,7 @@ public class checkFields {
 	private boolean userRegistred;
 	private boolean userPwOk;
 	
-	ServiceLocator sl = ServiceLocator.getServiceLocator();
+	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
 	protected checkFields(){
 		//verhindert Instanzierung
@@ -57,7 +57,8 @@ public class checkFields {
 				this.errMsg = errMsg+"Port-Nr. fehlt";
 				
 				if (!this.errMsg.equals("")) {
-					sl.getLogger().info(errMsg);     
+					sl.getLogger().info(errMsg);   
+					Client_View_start.lbl_errMsg.setText(errMsg);
 				this.errMsg = "";
 					break;
 				} else { 		
@@ -140,9 +141,12 @@ public class checkFields {
 			this.errMsg = errMsg+System.getProperty("line.separator");
 		if (this.tf2.equals(""))
 		this.errMsg = errMsg+"Passwort fehlt";
+			sl.setLbl_errMsgView(errMsg);
+			
 		
 		if (!this.errMsg.equals("")) {
 			sl.getLogger().info(errMsg);  
+			Client_View_start.lbl_errMsg.setText(errMsg);
 			this.errMsg = "";
 			return false;
 		} 	

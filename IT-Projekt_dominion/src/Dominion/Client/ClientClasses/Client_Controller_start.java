@@ -110,6 +110,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
     					// TODO Auto-generated catch block
     					e.printStackTrace();
     					model.sl.getLogger().info("Verbindung mit Server nicht erfolgreich");
+    					Client_View_start.lbl_errMsg.setText("Verbindung mit Server nicht erfolgreich");
     				}     		        
             }
         });  
@@ -138,6 +139,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	
             	if (!model.connected) {
             	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
+            	Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
             	}         	else {
 
 	            	checkFields.getInstance().checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
@@ -185,6 +187,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
             	if (!model.connected) {
             	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
+            	Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
             	return;
             	}
 
