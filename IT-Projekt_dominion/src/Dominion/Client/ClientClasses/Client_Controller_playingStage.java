@@ -3,9 +3,11 @@ package Dominion.Client.ClientClasses;
 import java.io.IOException;
 
 import Dominion.Client.abstractClasses.Controller;
+import Dominion.appClasses.ActivateGUI;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.ChatMessagePlayingStage;
+import Dominion.appClasses.GameHistory;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import javafx.application.Platform;
@@ -66,7 +68,35 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             public void handle(ActionEvent event) {
             	sl.getButtonEndActions().setDisable(true);
             	sl.getButtonEndBuy().setDisable(false);
+            	String text = sl.getPlayer().getUsername()+" beendet Aktionsphase\n";
+            	GameHistory history = new GameHistory(text,sl.getCurrentGameParty(),sl.getPlayer().getUsername());
+            	history.setSwitchPlayer(false);
             	
+            	try {
+        			model.out.writeObject(history);
+        			model.out.flush();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+            }
+        });
+        
+        sl.getButtonEndBuy().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	sl.getButtonEndBuy().setDisable(true);
+            	String text = sl.getPlayer().getUsername()+" beendet Kaufphase\n";
+            	GameHistory history = new GameHistory(text,sl.getCurrentGameParty(),sl.getPlayer().getUsername());
+            	history.setSwitchPlayer(true);
+            	            	
+            	try {
+        			model.out.writeObject(history);
+        			model.out.flush();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
             }
         });
         

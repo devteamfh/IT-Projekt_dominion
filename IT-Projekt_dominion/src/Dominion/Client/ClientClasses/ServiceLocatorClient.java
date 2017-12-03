@@ -214,6 +214,9 @@ public class ServiceLocatorClient {
 		for(int i=0; i<party.getArrayOfPlayers().length;i++){
 			if(party.getArrayOfPlayers()[i].equals(this.player.getUsername())){
 				this.numberOfActionsAndBuys.setText(party.getHost()+" ist an der Reihe: 1 Aktionen, 1 Käufe");
+				this.ta_gameHistory.appendText("Spiel beginnt\n");
+				this.ta_gameHistory.appendText(party.getHost()+" ist an der Reihe\n");
+				this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
 			}
 		}
 	}
