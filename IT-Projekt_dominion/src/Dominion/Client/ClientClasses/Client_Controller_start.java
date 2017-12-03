@@ -20,8 +20,10 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
@@ -65,8 +67,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
          * edited @author kab: Neue Buttons btn_register und btn_login und diverse Pr�fmechanismen auf tf_ eingebaut
          */    
         
-        checkUserData = new checkUserData(); 
-        checkFields = new checkFields(); 
+        checkUserData = new checkUserData(this.model); 
+        checkFields = new checkFields(this.model); 
         
         	//connect button MouseHandler
 		view.btn_connect.addEventHandler(MouseEvent.MOUSE_ENTERED, 
@@ -88,6 +90,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {  
           
+            	//pr�ft ob Felder IP und Port ausgef�llt
             	//pr�ft ob Felder IP und Port ausgef�llt
             	checkFields.checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
             	
@@ -146,7 +149,24 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	
             	if (!model.connected) {
             	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
-            	Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
+            	//Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
+            	sl.setLbl_popUpMessage(new Label("Sie sind mit keinem Server verbunden"));
+            	
+            	Platform.runLater(new Runnable() {
+
+        			@Override 
+        	           public void run() {
+        				
+        				Stage popUp = new Stage();	
+        				popUp.setResizable(false);
+        				popUp.initModality(Modality.APPLICATION_MODAL);
+        				Client_View_popUp view = new Client_View_popUp (popUp, model);
+        				new Client_Controller_popUp(model, view); 
+        				view.start();
+        			}	
+        			
+        		});
+            	
             	}         	else {
 
 	            	checkFields.checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
@@ -194,16 +214,35 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
             	if (!model.connected) {
             	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
-            	Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
+            	//Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
+            	sl.setLbl_popUpMessage(new Label("Sie sind mit keinem Server verbunden"));
+            	
+            	Platform.runLater(new Runnable() {
+
+        			@Override 
+        	           public void run() {
+        				
+        				Stage popUp = new Stage();	
+        				popUp.setResizable(false);
+        				popUp.initModality(Modality.APPLICATION_MODAL);
+        				Client_View_popUp view = new Client_View_popUp (popUp, model);
+        				new Client_Controller_popUp(model, view); 
+        				view.start();
+        			}	
+        			
+        		});
+            	
             	return;
             	}
-
+            	
             	checkFields.checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
+            	
+            	
             	
             	//Wenn PW falsch Felder zur�cksetzen
             	if(model.connected && !checkFields.getUserPwOk()){
             		view.tf_password.clear();
-            		view.tf_userName.clear();
+            		//view.tf_userName.clear();
             		view.tf_password.setDisable(false);
             		view.tf_userName.setDisable(false);
             		checkFields.setUserRegistred(false);

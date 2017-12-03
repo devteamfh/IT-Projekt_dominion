@@ -4,18 +4,18 @@ package Dominion.appClasses;
  * @author Adrian Widmer
  */
 
-public class ActionCard extends Button 		// TODO Button importieren? TODO Refactoring? --> Abstrakte Klasse?
+public class ActionCard //extends Button 		// TODO Button importieren? TODO Refactoring? --> Abstrakte Klasse?
 {
 	private String title;					
 	private String description;				
 											// TODO Image als Variable?
 	private int costs;						
-	private int counter;					// TODO Was wird gezählt? --> löschen
+	private int counter;					// TODO Was wird gezï¿½hlt? --> lï¿½schen
 	private int sizeOfStack;				// TODO Was wenn karte auf der Hand und nicht auf Deck? =0?
-	private String typeOfAction;			// TODO für was ist diese variable?
+	private String typeOfAction;			// TODO fï¿½r was ist diese variable?
 	public enum actionCardType				
 	{
-		Kapelle, Keller, Burggraben, Dorf, Holzfäller, Werkstatt, Geldverleiher, Miliz, Schmiede, Umbau, Mine, Markt, Laboratorium, Jahrmarkt, Hexe;
+		Kapelle, Keller, Burggraben, Dorf, HolzfÃ¤ller, Werkstatt, Geldverleiher, Miliz, Schmiede, Umbau, Mine, Markt, Laboratorium, Jahrmarkt, Hexe;
 	}
 	
 	public String getTypeOfAction() {
@@ -63,7 +63,7 @@ public class ActionCard extends Button 		// TODO Button importieren? TODO Refact
 	 * 1. costs der ActionCard <= numberOfTreasures 
 	 * 2. Abgleichen mit treasure Karten auf der Hand
 	 * 3. Treasurekarten auf der hand abziehen
-	 * 4. Actioncard auf gekaufte karten ergänzen --> Objekt erzeugen
+	 * 4. Actioncard auf gekaufte karten ergï¿½nzen --> Objekt erzeugen
 	 */
 	{
 		

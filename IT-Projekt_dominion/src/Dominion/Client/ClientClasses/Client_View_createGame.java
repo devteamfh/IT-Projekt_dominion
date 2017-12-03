@@ -36,7 +36,7 @@ import javafx.stage.StageStyle;
 public class Client_View_createGame extends View<Client_Model> {
 	ServiceLocatorClient sl;
     Label chooseTypeOfGame;
-    Label numberOfRounds; //->Wert kann man nur eingeben, wenn Modus gew�hlt worden ist
+    Label numberOfRounds; 
     Label numberOfPlayers;
     
     Label lbl_AnzahlSpieler;
