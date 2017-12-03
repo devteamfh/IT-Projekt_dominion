@@ -16,7 +16,8 @@ public class GameObject implements Serializable {
 	public enum ObjectType {
 		 ChatMessageLobby, InformationObject,
 		 GameParty, UpdateLobby, StartInformation,
-		 JoinGameParty, CancelGame, ChatMessagePlayingStage
+		 JoinGameParty, CancelGame, ChatMessagePlayingStage,
+		 GameHistory
 		 };
 		 
 	public GameObject(ObjectType type){

@@ -2,6 +2,8 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
@@ -10,6 +12,7 @@ import Dominion.Server.ServerClasses.GamePartyOnServer;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.ChatMessagePlayingStage;
+import Dominion.appClasses.GameHistory;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
@@ -218,6 +221,11 @@ public class ReadMsgFromServer implements Runnable {
 					sl.getTextAreaChatPlayingStage().selectPositionCaret(sl.getTextAreaChatPlayingStage().getText().length());
 					
 					break;
+					
+				case GameHistory:
+					GameHistory history = (GameHistory) obj;
+					sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+					sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 								
 				default:
 				}

@@ -11,6 +11,7 @@ import java.util.Iterator;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.ChatMessagePlayingStage;
+import Dominion.appClasses.GameHistory;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
@@ -116,6 +117,7 @@ public class ClientHandler implements Runnable {
 			 for (int i=0; i<sl.getGameListFromServer().size();i++){
 				 if(id == sl.getGameListFromServer().get(i).getGameParty().getID()){
 					 sl.getGameListFromServer().get(i).addPlayer(newPlayerJoining);
+					 //the updated JoinGameParty object will be sent to all clients
 					 gameToJoin.setUpdatedGameParty(sl.getGameListFromServer().get(i).getGameParty());
 				 }
 			 }
@@ -240,10 +242,31 @@ public class ClientHandler implements Runnable {
 				}
 			}
 			break;
+			
+		 case GameHistory:
+			 GameHistory history = (GameHistory) obj;
+			 
+			 while(iterGamePartyOnServer.hasNext()){
+					GamePartyOnServer current = iterGamePartyOnServer.next();
+					
+					if(current.getGameParty().getID() == history.getGameParty().getID()){
+						for(int i=0; i<current.getPlayerList().size();i++){
+							if(history.getSwitchPlayer() == false){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}else{
+								
+							}
+						}
+						break;
+					}
+				}
 		 
 		 default:
 		 }
 	
 	}
+	
+	
 	
 }
