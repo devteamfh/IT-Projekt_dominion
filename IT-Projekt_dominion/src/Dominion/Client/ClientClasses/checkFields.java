@@ -52,14 +52,14 @@ public class checkFields {
 			case "Verbinden": 	
 									
 				if (this.tf1.equals(""))
-					this.errMsg =  "IP-Adresse. fehlt";
-				if (this.equals("") && this.tf2.equals(""))
-					this.errMsg = errMsg +" "+System.getProperty("line.separator");
+					this.errMsg =  "Die IP-Adresse fehlt";
+				if (this.tf1.equals("") && this.tf2.equals(""))
+					this.errMsg = errMsg.substring(0,14) +" sowie die ";
 				if (this.tf2.equals(""))
 				this.errMsg = errMsg+"Port-Nr. fehlt";
 				
 				if (!this.errMsg.equals("")) {
-					sl.getLogger().info(errMsg);   
+					sl.getLogger().info(this.errMsg);   
 					//Client_View_start.lbl_errMsg.setText(errMsg);
 					sl.setLbl_popUpMessage(new Label(errMsg.toString()));
 					
@@ -186,9 +186,9 @@ public class checkFields {
 		this.tf2 = tf2;
 		
 		if (this.tf1.equals(""))
-			this.errMsg =  "User fehlt";
+			this.errMsg =  "Der Spielername fehlt";
 		if (this.tf1.equals("") && this.tf2.equals(""))
-			this.errMsg = errMsg +" "+System.getProperty("line.separator");
+			this.errMsg = errMsg.substring(0,15) +" sowie ein ";
 		if (this.tf2.equals(""))
 		this.errMsg = errMsg+"Passwort fehlt";
 			//sl.setLbl_errMsgView(errMsg);	

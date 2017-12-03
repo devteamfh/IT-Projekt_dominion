@@ -189,7 +189,7 @@ public class ClientHandler implements Runnable {
 					 out.flush();
 					 break; 
 					 }
-			 } if (start.isBol_nameTaken()) break;
+			 } if (start.isBol_nameTaken())  break;
 			 
 			 
 			 

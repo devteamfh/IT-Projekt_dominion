@@ -85,7 +85,7 @@ public class ReadMsgFromServer implements Runnable {
 			 				view_start.start();
 			 				
 			 				//gibt Meldung aus, dass die Username-Dieberei stattgefunden hat
-							sl.setLbl_popUpMessage(new Label("Ein Spieler mit dem gleichen Benutzernamen ist bereits angemeldet"));		
+							sl.setLbl_popUpMessage(new Label("Der Spielername ist zur Zeit vergeben."));		
 							Stage popUp = new Stage();	
 							popUp.setResizable(false);
 							popUp.initModality(Modality.APPLICATION_MODAL);

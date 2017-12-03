@@ -13,9 +13,14 @@
 }
 
 .bg_createGame {
-		-fx-background-image: url('img/bg_createGame.png');
+	-fx-background-image: url('img/bg_createGame.png');
 	-fx-background-repeat: stretch;
 	
+}
+
+.bg_popUp {
+	-fx-background-image: url('img/bg_popUp.png');
+	-fx-background-repeat: stretch;
 }
 
 /*
@@ -37,6 +42,14 @@
 	-fx-font-size: 22px;
 	-fx-text-fill: #e56120;
 	-fx-effect: dropshadow( one-pass-box, black , 2, 0.1 , 1 , 1) /*blur, dicke, offsetx, offxety */
+}
+	
+.lbl_popUpMessage {
+		-fx-font-family: "Kokila";
+	-fx-font-size: 28px;
+	-fx-font-weight: bold;
+	-fx-text-fill: #666666;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3) /*blur, dicke, offsetx, offxety */
 }
 	
 .lbl_tfDescription {
