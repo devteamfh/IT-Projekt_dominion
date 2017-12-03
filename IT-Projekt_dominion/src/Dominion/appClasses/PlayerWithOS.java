@@ -4,8 +4,9 @@ import java.io.ObjectOutputStream;
 
 /**
  * @author Joel Henz, David Steuri
+ * this player class saves the ObjectOutputStreams(OS)
  */
-public class Player {
+public class PlayerWithOS {
 
 	
 	private int points = 3;
@@ -15,7 +16,7 @@ public class Player {
 	private String username;
 	private ObjectOutputStream out;
 	
-	public Player(String username, ObjectOutputStream out){
+	public PlayerWithOS(String username, ObjectOutputStream out){
 		this.username = username;
 		this.out = out;
 	}

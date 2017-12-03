@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import Dominion.ServiceLocator;
 import Dominion.Server.abstractClasses.Model;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
 
 
 

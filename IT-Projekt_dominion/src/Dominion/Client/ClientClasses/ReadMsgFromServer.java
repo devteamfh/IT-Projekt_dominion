@@ -17,6 +17,7 @@ import Dominion.appClasses.GameHistory;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
+import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
@@ -67,7 +68,7 @@ public class ReadMsgFromServer implements Runnable {
 					
 					StartInformation playerStatistics = (StartInformation) obj;
 					
-					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gewährt
+					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gewï¿½hrt
 					if(playerStatistics.isBol_nameTaken()){
 						
 						Platform.runLater(new Runnable() {
@@ -93,7 +94,7 @@ public class ReadMsgFromServer implements Runnable {
 				        	new Client_Controller_popUp(model, view); 
 				        	view.start();
 			 				
-				        	//löscht das p
+				        	//lï¿½scht das p
 				        	
 				        	
 								}catch (NullPointerException e){
@@ -128,7 +129,7 @@ public class ReadMsgFromServer implements Runnable {
 				           public void run() {
 				            sl.addNewGame(newGame);
 				            
-				            if(newGame.getHost().equals(model.getName())){
+				            if(newGame.getHost().getUsername().equals(model.getName())){
 				            	sl.setCurrentGameParty(newGame);
 				            	Stage playingStage = new Stage();			
 				            	playingStage.initModality(Modality.APPLICATION_MODAL);
@@ -140,8 +141,9 @@ public class ReadMsgFromServer implements Runnable {
 						        sl.getCreateGameView().stop();
 						        
 						        //adding the name of the host on the playing Stage and add the current GameParty to the ServiceLocatorCLient of the host
-						        for(int i=0; i<newGame.getArrayOfPlayers().length;i++){
-						        	sl.getPlayingStage().labelArray[i].setText(newGame.getArrayOfPlayers()[i]);
+						        for(int i=0; i<newGame.getArrayListOfPlayers().size();i++){
+						        	Label label = new Label(sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getUsername());
+									sl.getPlayingStage().vb_player.getChildren().add(label);
 						        }
 							}
 				           }
@@ -164,17 +166,17 @@ public class ReadMsgFromServer implements Runnable {
 					           }
 
 					       });	
-						
-
 					break;
 			
 				case JoinGameParty:
 					JoinGameParty join=(JoinGameParty) obj;
 					
+					
+					
 					//updating the current GameParty object in the ServiceLocator for all players who have already joined this GameParty
-					for (int i=0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){						
+					for (int i=0; i<join.getSelectedGameParty().getArrayListOfPlayers().size();i++){						
 						try{
-							if(join.getSelectedGameParty().getArrayOfPlayers()[i].equals(model.getName())){
+							if(join.getSelectedGameParty().getArrayListOfPlayers().get(i).getUsername().equals(model.getName())){
 								sl.setCurrentGameParty(join.getSelectedGameParty());
 							}							
 						}catch (NullPointerException e){
@@ -202,8 +204,10 @@ public class ReadMsgFromServer implements Runnable {
 							//determine the players who have already joined the game. On their playing stages we have to add the username of the new player
 							try{
 								if(join.getSelectedGameParty().getID() == sl.getCurrentGameParty().getID()){
-									for(int i =0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){
-										sl.getPlayingStage().labelArray[i].setText(sl.getCurrentGameParty().getArrayOfPlayers()[i]);
+									sl.getPlayingStage().vb_player.getChildren().clear();
+									for(int i =0; i<join.getSelectedGameParty().getArrayListOfPlayers().size();i++){
+										Label label = new Label(join.getSelectedGameParty().getArrayListOfPlayers().get(i).getUsername());
+										sl.getPlayingStage().vb_player.getChildren().add(label);
 									}	
 								}
 							}catch (NullPointerException e){
@@ -268,8 +272,48 @@ public class ReadMsgFromServer implements Runnable {
 					
 				case GameHistory:
 					GameHistory history = (GameHistory) obj;
-					sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
-					sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+					PlayerWithoutOS currentPlayer = history.getCurrentPlayer();
+					
+					switch(history.getHistoryType()){
+					case EndAction:
+						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" KÃ¤ufe");
+								
+					           }
+					      });
+						
+						
+						break;
+						
+					case EndBuy:
+						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+							sl.getButtonEndActions().setDisable(false);
+						}
+						PlayerWithoutOS playerForGUIActivation= history.getPlayerForGUIActivation();
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								sl.getLabelNumberOfActionsAndBuys().setText(playerForGUIActivation.getUsername()+" ist an der Reihe: "+playerForGUIActivation.getNumberOfActions()+" Aktionen, "+playerForGUIActivation.getNumberOfBuys()+" KÃ¤ufe");
+								
+					           }
+					      });
+						
+						
+					
+					}
+					
+					
 								
 				default:
 				}

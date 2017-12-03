@@ -9,7 +9,7 @@ import java.net.Socket;
 
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Model;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
 
 /**
  * MVC Pattern:

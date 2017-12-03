@@ -15,7 +15,8 @@ import Dominion.appClasses.GameHistory;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
+import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
 import javafx.scene.input.TouchPoint;
@@ -71,7 +72,7 @@ public class ClientHandler implements Runnable {
 
 		Iterator<GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
 		
-		Iterator<Player> iter_connectedPlayers = sl.getConnectedPlayers().iterator();
+		Iterator<PlayerWithOS> iter_connectedPlayers = sl.getConnectedPlayers().iterator();
 		
 		switch (obj.getType()) {
 		 case ChatMessageLobby:	
@@ -90,7 +91,7 @@ public class ClientHandler implements Runnable {
 			 
 			//on server-side we must store the ObjectOutpuStream within the Player object
 			 GamePartyOnServer newGameOnServer = new GamePartyOnServer (game);
-			 Player current_player = new Player (game.getHost(), this.out);
+			 PlayerWithOS current_player = new PlayerWithOS (game.getHost().getUsername(), this.out);
 			 newGameOnServer.addPlayer(current_player);
 			 
 			 sl.addNewGame(newGameOnServer);
@@ -114,8 +115,8 @@ public class ClientHandler implements Runnable {
 			 long id = selectedGame.getID();
 			 
 			 
-			 Player newPlayerJoining = new Player (gameToJoin.getUsername(), this.out);
-			 
+			 PlayerWithOS newPlayerJoining = new PlayerWithOS (gameToJoin.getUsername(), this.out);
+
 			 //first we will add the joining player to the correct GamePartyOnServer			 
 			 for (int i=0; i<sl.getGameListFromServer().size();i++){
 				 if(id == sl.getGameListFromServer().get(i).getGameParty().getID()){
@@ -143,7 +144,6 @@ public class ClientHandler implements Runnable {
 			 //(message was sent from client-side from class Client_View_lobby)
 			 if(!sl.getGameListFromServer().isEmpty()){
 				 ArrayList <GameParty> gamePartyListClient = new ArrayList <GameParty>();
-				 //Iterator <GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
 				 
 				 while (iterGamePartyOnServer.hasNext()){
 					 GamePartyOnServer currentGamePartyOnServer = iterGamePartyOnServer.next();
@@ -178,9 +178,9 @@ public class ClientHandler implements Runnable {
 			 String att9 	 = start.getAtt9();
 			 
 			 
-			 //prüfe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurück
+			 //prï¿½fe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurï¿½ck
 			 while (iter_connectedPlayers.hasNext()){ 
-				 Player current = iter_connectedPlayers.next();
+				 PlayerWithOS current = iter_connectedPlayers.next();
 					 if(current.getUsername().equals(username)){
 					 start.setBol_nameTaken(true);
 					
@@ -193,7 +193,7 @@ public class ClientHandler implements Runnable {
 			 
 			 
 			 
-			 Player newPlayer = new Player (username, this.out);
+			 PlayerWithOS newPlayer = new PlayerWithOS (username, this.out);
 			 
 			 sl.addConnectedPlayer(newPlayer);
 			 
@@ -268,22 +268,82 @@ public class ClientHandler implements Runnable {
 			 while(iterGamePartyOnServer.hasNext()){
 					GamePartyOnServer current = iterGamePartyOnServer.next();
 					
+					//determine the corresponding GamePartyOnServer
 					if(current.getGameParty().getID() == history.getGameParty().getID()){
-						for(int i=0; i<current.getPlayerList().size();i++){
-							if(history.getSwitchPlayer() == false){
+						
+						switch (history.getHistoryType()){
+						
+						case EndAction:
+							//writing to all clients
+							for (int i =0; i<current.getPlayerList().size();i++){
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
-							}else{
-								
 							}
+							//break case EndAction
+							break;
+						
+						//if we are in this case this means that we have to switch to the next player in the play sequence. Every player finishes his move when he has made his last buy (or clicked on "Kauf abschliessen")	
+						case EndBuy:
+							//determine the index of the current player
+							int indexOfCurrentPlayer = determineIndexOfCurrentPlayer(history);
+							int indexOfNextPlayer = determineIndexOfNextPlayer(indexOfCurrentPlayer,history);
+							//we will save the name of the next player within the GameHistory object. On client side for each client it will be checked if this name corresponds to the name of the client. If yes we will
+							//activate his GUI (and only his!)
+							PlayerWithoutOS nextPlayer = history.getGameParty().getArrayListOfPlayers().get(indexOfNextPlayer);
+							history.setPlayerForGUIActivation(nextPlayer);
+							
+							if(indexOfNextPlayer ==0){
+								String update = "Runde abgeschlossen\n_________________\nSpieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
+								history.updateText(update);
+								
+							}else{
+								String update = "Spieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
+								history.updateText(update);
+							}
+							
+							//writing to all clients
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							//break case EndBuy
+							break;
+						
 						}
+
+						//break while loop because corresponding GamePartyOnServer was found
 						break;
 					}
 				}
+			 //break case GameHistory
+			 break;
 		 
 		 default:
 		 }
 	
+	}
+	
+	private int determineIndexOfCurrentPlayer(GameHistory history){
+		String sender = history.getSender();
+		int indexOfCurrentPlayer = -1;
+		for (int i=0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
+			//check if the String of the current index i corresponds to the String sender. If it corresponds, we have found the index of the current player.
+			if(sender.equals(history.getGameParty().getArrayListOfPlayers().get(i).getUsername())){
+				indexOfCurrentPlayer = i;
+			}
+		}
+		return indexOfCurrentPlayer;
+	}
+
+	
+	private int determineIndexOfNextPlayer (int indexOfCurrentPlayer,GameHistory history){
+		if(indexOfCurrentPlayer == ( (history.getGameParty().getArrayListOfPlayers().size()) -1 )){
+			//first player in the sequence will start again (begin of a new round)
+			return 0;
+		}else{
+			return indexOfCurrentPlayer+1;
+		}
 	}
 	
 	

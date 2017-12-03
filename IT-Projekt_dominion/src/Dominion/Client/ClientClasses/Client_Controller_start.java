@@ -11,7 +11,8 @@ import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.Client.abstractClasses.Model;
 import Dominion.appClasses.GameObject;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
+import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -61,7 +62,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         /**
          * @author Joel Henz:
          * connecting a client to the server by getting the IP address and the port number from the TextFields and then creating the playing Stage
-         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Prüfmechanismen auf tf_ eingebaut
+         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Prï¿½fmechanismen auf tf_ eingebaut
          */    
         
         checkUserData = new checkUserData(); 
@@ -87,10 +88,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {  
           
-            	//prüft ob Felder IP und Port ausgefï¿½llt
+            	//prï¿½ft ob Felder IP und Port ausgefï¿½llt
             	checkFields.checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
             	
-            	//wenn IP und Port ausgefüllt, versuche mit Server zu verbinden
+            	//wenn IP und Port ausgefï¿½llt, versuche mit Server zu verbinden
             	if (checkFields.getRdyToConnect())
             	
             	   	try { 
@@ -224,8 +225,11 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 					view.tf_userName.setDisable(false);
             		String name = view.tf_userName.getText();
                 	model.setName(name);
-                	Player player = new Player (name,model.getOutput());
-                	sl.setPlayer(player);
+                	PlayerWithOS player_OS = new PlayerWithOS (name,model.getOutput());
+                	sl.setPlayer_OS(player_OS);
+                	
+                	PlayerWithoutOS player_noOS = new PlayerWithoutOS (name);
+                	sl.setPlayer_noOS(player_noOS);
                 	
                 	//the StartInformation object is needed on server-side so the server can store the username of all connected players
                 	StartInformation current = new StartInformation(model.getName());

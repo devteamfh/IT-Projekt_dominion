@@ -14,19 +14,26 @@ public class GameHistory extends GameObject{
 	
 	private String text;
 	private GameParty party;
-	private ActivateGUI activateGUI;
 	private String sender;
-	private boolean switchPlayer;
+	private PlayerWithoutOS playerForGUIActivation;
+	private PlayerWithoutOS currentPlayer;
+	private HistoryType type;
+	
+	public enum HistoryType {
+		 EndAction, EndBuy
+		 };
 	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-	public GameHistory(String text, GameParty party,String sender){
+	public GameHistory(String text, GameParty party,PlayerWithoutOS currentPlayer, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
+		this.id=-1;
 		this.text=text;
 		this.party=party;
-		this.sender=sender;
+		this.currentPlayer=currentPlayer;
+		this.type=type;
 	}
 	
 	public void setID(){
@@ -47,24 +54,32 @@ public class GameHistory extends GameObject{
 		return this.text;
 	}
 	
+	public void updateText(String text){
+		this.text = this.text+"\n"+text;
+	}
+	
 	public String getSender(){
 		return this.sender;
 	}
 	
-	public ActivateGUI getActivateGUI(){
-		return this.activateGUI;
+	public HistoryType getHistoryType(){
+		return this.type;
 	}
 	
-	public void setActivateGUI(ActivateGUI activateGUI){
-		this.activateGUI=activateGUI;
+	public void setPlayerForGUIActivation(PlayerWithoutOS user){
+		this.playerForGUIActivation=user;
 	}
 	
-	public boolean getSwitchPlayer(){
-		return this.switchPlayer;
+	public PlayerWithoutOS getPlayerForGUIActivation(){
+		return this.playerForGUIActivation;
 	}
 	
-	public void setSwitchPlayer(boolean switchPlayer){
-		this.switchPlayer=switchPlayer;
+	public void setCurrentPlayer(PlayerWithoutOS user){
+		this.currentPlayer=user;
+	}
+	
+	public PlayerWithoutOS getCurrentPlayer(){
+		return this.currentPlayer;
 	}
 
 }

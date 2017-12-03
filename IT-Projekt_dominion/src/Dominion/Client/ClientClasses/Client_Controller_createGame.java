@@ -12,7 +12,8 @@ import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
+import Dominion.appClasses.PlayerWithoutOS;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -248,7 +249,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         view.btn_finish.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	String creator = model.playerName;
+            	PlayerWithoutOS creator = new PlayerWithoutOS(model.playerName);
             	
             	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers);
             	

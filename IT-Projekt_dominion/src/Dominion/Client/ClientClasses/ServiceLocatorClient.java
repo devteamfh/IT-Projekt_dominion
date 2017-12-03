@@ -7,8 +7,10 @@ import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
+import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,7 +44,8 @@ public class ServiceLocatorClient {
 
     private Logger logger = Logger.getLogger("");
     
-    private Player player;
+    private PlayerWithoutOS player_noOS;
+    private PlayerWithOS player_OS;
     
     private ToggleGroup endOfGameGroup;
     private ToggleGroup numberOfPlayersGroup;
@@ -116,12 +119,22 @@ public class ServiceLocatorClient {
         this.logger = logger;
     }
     
-    public void setPlayer(Player player){
-    	this.player=player;
+    //player without ObjectOutputStream
+    public void setPlayer_noOS(PlayerWithoutOS player){
+    	this.player_noOS=player;
     }
     
-    public Player getPlayer(){
-    	return this.player;
+    public PlayerWithoutOS getPlayer_noOS(){
+    	return this.player_noOS;
+    }
+    
+    //player WITH ObjectOutpuStream
+    public void setPlayer_OS(PlayerWithOS player){
+    	this.player_OS=player;
+    }
+    
+    public PlayerWithOS getPlayer_OS(){
+    	return this.player_OS;
     }
     
     public ToggleGroup getToggleForEndOfGame(){
@@ -205,17 +218,17 @@ public class ServiceLocatorClient {
 	
 	//prepare the playing stage of the host so he can start the game
 	public void prepareGame(GameParty party){
-		if(party.getHost().equals(this.player.getUsername())){
+		if(party.getHost().getUsername().equals(this.player_noOS.getUsername())){
 			this.endAction.setDisable(false);
 			this.endGameHost.setDisable(true);
 		}
 		
 		//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
-		for(int i=0; i<party.getArrayOfPlayers().length;i++){
-			if(party.getArrayOfPlayers()[i].equals(this.player.getUsername())){
-				this.numberOfActionsAndBuys.setText(party.getHost()+" ist an der Reihe: 1 Aktionen, 1 Käufe");
+		for(int i=0; i<party.getArrayListOfPlayers().size();i++){
+			if(party.getArrayListOfPlayers().get(i).getUsername().equals(this.player_noOS.getUsername())){
+				this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe");
 				this.ta_gameHistory.appendText("Spiel beginnt\n");
-				this.ta_gameHistory.appendText(party.getHost()+" ist an der Reihe\n");
+				this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
 				this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
 			}
 		}
