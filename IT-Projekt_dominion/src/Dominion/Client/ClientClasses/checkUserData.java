@@ -15,19 +15,26 @@ public class checkUserData {
 	private String tf1;
 	private String tf2;
 	private String btnStr;
+
 	
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
-	protected checkUserData(){
-		//verhindert Instanzierung
+	public checkUserData() {
 	}
 	
-	public static checkUserData getInstance(){
+	
+	
+	/*
+	    	protected checkUserData(){
+		//verhindert Instanzierung
+		}
+	    
+	    public static checkUserData getInstance(){
 		if(instance == null) {
 			instance = new checkUserData();
 		}
 		return instance;
-		}
+		}*/
 	
 	
 	

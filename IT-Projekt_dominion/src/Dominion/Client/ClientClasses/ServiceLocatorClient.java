@@ -57,6 +57,7 @@ public class ServiceLocatorClient {
     
     private Client_View_playingStage view_playingStage;
     private Client_View_createGame view_createGame;
+    private Client_View_lobby view_lobby;
  
     private GameParty currentGameParty;
     
@@ -73,6 +74,8 @@ public class ServiceLocatorClient {
     private ArrayList<StartInformation> al_Statistics = new ArrayList <StartInformation>();
        
     private Label lbl_errMsgView = new Label("");
+    
+    private Label lbl_popUpMessage = new Label("");
     
     //if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
   	//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
@@ -319,6 +322,22 @@ public class ServiceLocatorClient {
 
 	public void setLbl_errMsgView(String str) {
 		this.lbl_errMsgView.setText(str);
+	}
+
+	public Label getLbl_popUpMessage() {
+		return lbl_popUpMessage;
+	}
+
+	public void setLbl_popUpMessage(Label lbl_popUpMessage) {
+		this.lbl_popUpMessage = lbl_popUpMessage;
+	}
+
+	public Client_View_lobby getView_lobby() {
+		return view_lobby;
+	}
+
+	public void setView_lobby(Client_View_lobby view_lobby) {
+		this.view_lobby = view_lobby;
 	}
 
 }

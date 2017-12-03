@@ -59,6 +59,7 @@ public class ClientHandler implements Runnable {
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("exception");
 		}
 	}
 	
@@ -69,6 +70,8 @@ public class ClientHandler implements Runnable {
 		Iterator<ObjectOutputStream> iterOut = this.list.iterator();
 
 		Iterator<GamePartyOnServer> iterGamePartyOnServer = sl.getGameListFromServer().iterator();
+		
+		Iterator<Player> iter_connectedPlayers = sl.getConnectedPlayers().iterator();
 		
 		switch (obj.getType()) {
 		 case ChatMessageLobby:	
@@ -158,7 +161,7 @@ public class ClientHandler implements Runnable {
 			 }
 			 break;
 		 
-		 //the server reads the username of each connected player and stores them
+		 //kab: the server reads the username of each connected player and stores them
 		 case StartInformation:
 			 StartInformation start = (StartInformation) obj;
 			 start.setID();
@@ -173,6 +176,22 @@ public class ClientHandler implements Runnable {
 			 String att7	 = start.getAtt7();
 			 String att8	 = start.getAtt8();
 			 String att9 	 = start.getAtt9();
+			 
+			 
+			 //prüfe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurück
+			 while (iter_connectedPlayers.hasNext()){ 
+				 Player current = iter_connectedPlayers.next();
+					 if(current.getUsername().equals(username)){
+					 start.setBol_nameTaken(true);
+					
+					 this.out.reset();
+					 out.writeObject(start);
+					 out.flush();
+					 break; 
+					 }
+			 } if (start.isBol_nameTaken()) break;
+			 
+			 
 			 
 			 Player newPlayer = new Player (username, this.out);
 			 

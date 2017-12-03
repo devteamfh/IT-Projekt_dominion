@@ -37,8 +37,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
         super(model, view);
         this.view = view;
         sl = ServiceLocatorClient.getServiceLocator();
-             
-        
+      
         
         
         /* kab ausgeblendet da eigener close btn gemacht
