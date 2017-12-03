@@ -322,9 +322,25 @@ public class ReadMsgFromServer implements Runnable {
 				}
 		
 			}
-		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+		}  catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
+			
+			try {
+				model.getInput().close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				model.getOutput().close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				model.client.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
 		}
 
 	}
