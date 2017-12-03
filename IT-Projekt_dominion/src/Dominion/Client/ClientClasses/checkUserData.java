@@ -7,37 +7,30 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import Dominion.ServiceLocator;
+import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class checkUserData {
-	private static checkUserData instance = null;
-	
+
+	private Client_Model model;
 	private File userFile;
 	private String tf1;
 	private String tf2;
 	private String btnStr;
+	
 
 	
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
-	public checkUserData() {
+	public checkUserData(Client_Model m) {
+		this.model = m;
 	}
 	
-	
-	
-	/*
-	    	protected checkUserData(){
-		//verhindert Instanzierung
-		}
-	    
-	    public static checkUserData getInstance(){
-		if(instance == null) {
-			instance = new checkUserData();
-		}
-		return instance;
-		}*/
-	
-	
-	
+	public checkUserData() {
+	}
+		
 	/**
 	 * @author kab: überprüft, ob ein File mit Benutzerdaten existiert und erstellt, sofern nütig, eines
 	 * 
@@ -79,7 +72,7 @@ public class checkUserData {
 			fw.write(this.tf1+";"+this.tf2+System.getProperty("line.separator"));
 			fw.close();
 			sl.getLogger().info("Spieler erfolgreich registriert");
-			Client_View_start.lbl_errMsg.setText("Spieler erfolgreich registriert");
+			//Client_View_start.lbl_errMsg.setText("Spieler erfolgreich registriert");
 			return true;
 			
 		} catch (IOException e) {
@@ -153,7 +146,7 @@ public class checkUserData {
 				for (int i = 0; i < strArr.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
 					if (this.tf1.equals(strArr[i].toString())) {
 						sl.getLogger().info("Spieler existiert bereits");
-						Client_View_start.lbl_errMsg.setText("Spieler existiert bereits");
+						//Client_View_start.lbl_errMsg.setText("Spieler existiert bereits");
 						bReader.close();
 						return true;
 					}
@@ -167,8 +160,9 @@ public class checkUserData {
 			sl.getLogger().info("userFile konnte nicht durchsucht werden");
 			Client_View_start.lbl_errMsg.setText("Fehler beim Zugriff auf lokale Dateien");
 		}
-		sl.getLogger().info("Der Spieler wurde noch nicht registriert");
-		Client_View_start.lbl_errMsg.setText("Der Spieler wurde noch nicht registriert");
+		
+		
+		
 		return false;
 	}
 
@@ -219,7 +213,24 @@ public class checkUserData {
     		Client_View_start.lbl_errMsg.setText("Probleme beim Zugriff auf lokale Dateien");
         }
 		sl.getLogger().info("Passwort nicht korrekt. Eintritt verwehrt.");
-		Client_View_start.lbl_errMsg.setText("Passwort nicht korrekt. Der Eintritt wird verwehrt.");
+		//Client_View_start.lbl_errMsg.setText("Passwort nicht korrekt. Der Eintritt wird verwehrt.");
+		
+		sl.setLbl_popUpMessage(new Label("Passwort nicht korrekt. Der Eintritt wird verwehrt."));
+		
+		Platform.runLater(new Runnable() {
+
+			@Override 
+	           public void run() {
+				
+				Stage popUp = new Stage();	
+				popUp.setResizable(false);
+				popUp.initModality(Modality.APPLICATION_MODAL);
+				Client_View_popUp view = new Client_View_popUp (popUp, model);
+				new Client_Controller_popUp(model, view); 
+				view.start();
+			}	
+			
+		});
 		
 		
 	return false;
