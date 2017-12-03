@@ -19,7 +19,7 @@ public class checkUserData {
 	private String tf1;
 	private String tf2;
 	private String btnStr;
-	
+	private boolean userExists;
 
 	
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
@@ -148,6 +148,7 @@ public class checkUserData {
 						sl.getLogger().info("Spieler existiert bereits");
 						//Client_View_start.lbl_errMsg.setText("Spieler existiert bereits");
 						bReader.close();
+						this.userExists = true;
 						return true;
 					}
 				}
@@ -161,12 +162,11 @@ public class checkUserData {
 			Client_View_start.lbl_errMsg.setText("Fehler beim Zugriff auf lokale Dateien");
 		}
 		
-		
-		
 		return false;
+		
 	}
 
-	
+
 			/**
 			 * @auathor kab: überprüft ob Username und Passwort zu einander passen
 			 * 
@@ -224,7 +224,7 @@ public class checkUserData {
 				
 				Stage popUp = new Stage();	
 				popUp.setResizable(false);
-				popUp.initModality(Modality.APPLICATION_MODAL);
+				//popUp.initModality(Modality.APPLICATION_MODAL);
 				Client_View_popUp view = new Client_View_popUp (popUp, model);
 				new Client_Controller_popUp(model, view); 
 				view.start();

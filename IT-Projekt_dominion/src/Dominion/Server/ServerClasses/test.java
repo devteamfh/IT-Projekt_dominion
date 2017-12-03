@@ -35,7 +35,7 @@ public class test {
             db.createNewDatabase();
             db.createTables();
             
-            db.addPlayer("abc", "123", "att2", "att3", "att4", "att5", "att6", "att7", "att8", "att9");
+          //  db.addPlayer("abc", "123", "att2", "att3", "att4", "att5", "att6", "att7", "att8", "att9");
             
             
         }

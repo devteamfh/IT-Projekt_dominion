@@ -90,7 +90,7 @@ public class ReadMsgFromServer implements Runnable {
 				        	new Client_Controller_popUp(model, view); 
 				        	view.start();
 			 				
-				        	//löscht das p
+				        	
 				        	
 				        	
 								}catch (NullPointerException e){

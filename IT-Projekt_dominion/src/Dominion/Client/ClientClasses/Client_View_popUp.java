@@ -29,7 +29,7 @@ public class Client_View_popUp extends View<Client_Model> {
 
 	public Client_View_popUp(Stage stage, Client_Model model) {
 		super(stage, model);
-        stage.setTitle("Dominion - Host hat Spiel beendet");
+        stage.setTitle("Dominion - Information");
     }
 	
 	

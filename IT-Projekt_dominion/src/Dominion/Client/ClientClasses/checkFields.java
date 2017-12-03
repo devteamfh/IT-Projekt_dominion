@@ -61,7 +61,7 @@ public class checkFields {
 				if (!this.errMsg.equals("")) {
 					sl.getLogger().info(errMsg);   
 					//Client_View_start.lbl_errMsg.setText(errMsg);
-					sl.setLbl_popUpMessage(new Label(errMsg));
+					sl.setLbl_popUpMessage(new Label(errMsg.toString()));
 					
 					Platform.runLater(new Runnable() {
 
@@ -110,6 +110,34 @@ public class checkFields {
 					if(getUserRegistred() && checkUserData.pwCorrect(this.tf1,this.tf2)){
 						setUserPwOk(true);	
 					}
+					
+					
+					if(!getUserRegistred()){
+						
+						sl.getLogger().info("User existiert noch nicht");
+						
+						sl.setLbl_popUpMessage(new Label("User existiert noch nicht"));
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								
+								Stage popUp = new Stage();	
+								popUp.setResizable(false);
+								//popUp.initModality(Modality.APPLICATION_MODAL);
+								Client_View_popUp view = new Client_View_popUp (popUp, model);
+								new Client_Controller_popUp(model, view); 
+								view.start();
+							}	
+							
+						});
+					
+						
+						
+					}
+					
+					
+					
 				}
 				this.errMsg = "";
 				break;
@@ -178,7 +206,7 @@ public class checkFields {
 					
 					Stage popUp = new Stage();	
 					popUp.setResizable(false);
-					popUp.initModality(Modality.APPLICATION_MODAL);
+					//popUp.initModality(Modality.APPLICATION_MODAL);
 					Client_View_popUp view = new Client_View_popUp (popUp, model);
 					new Client_Controller_popUp(model, view); 
 					view.start();

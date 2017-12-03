@@ -89,7 +89,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {  
           
-            	//prüft ob Felder IP und Port ausgefï¿½llt
+            	//prüft ob Felder IP und Port ausgefüllt
             	checkFields.checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
             	
             	//wenn IP und Port ausgefüllt, versuche mit Server zu verbinden
@@ -169,7 +169,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
 	            	checkFields.checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
 
-	            	//wenn registiert, fï¿½rbe button grï¿½n und deaktiviere inputfelder
+	            	//wenn registiert, färbe button grün und deaktiviere inputfelder
 	            	if (checkFields.getUserRegistred()) {
 						view.btn_register.getStyleClass().removeAll("btn_view","btn_view_hover");
 						view.btn_register.getStyleClass().addAll("btn_view_green");
@@ -232,12 +232,14 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	
             	return;
             	}
-
+            	
             	checkFields.checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
+            	
+            	
             	
             	//Wenn PW falsch Felder zurücksetzen
             	if(model.connected && !checkFields.getUserPwOk()){
-            		//view.tf_password.clear();
+            		view.tf_password.clear();
             		//view.tf_userName.clear();
             		view.tf_password.setDisable(false);
             		view.tf_userName.setDisable(false);
