@@ -68,7 +68,7 @@ public class ReadMsgFromServer implements Runnable {
 					
 					StartInformation playerStatistics = (StartInformation) obj;
 					
-					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gewï¿½hrt
+					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gewährt
 					if(playerStatistics.isBol_nameTaken()){
 						
 						Platform.runLater(new Runnable() {
@@ -94,12 +94,6 @@ public class ReadMsgFromServer implements Runnable {
 				        	new Client_Controller_popUp(model, view); 
 				        	view.start();
 			 				
-
-				        	//lï¿½scht das p
-
-				        
-				        	
-				        	
 								}catch (NullPointerException e){
 								}
 								
@@ -107,7 +101,6 @@ public class ReadMsgFromServer implements Runnable {
 					      });
 					
 						playerStatistics = null;
-						System.gc();
 						model.client.close();
 					}
 							
@@ -119,9 +112,7 @@ public class ReadMsgFromServer implements Runnable {
 
 					sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
 					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());
-	
-		
-					
+				
 					break;
 					 
 				case GameParty:
