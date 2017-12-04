@@ -67,22 +67,12 @@ public class ClientHandler implements Runnable {
 			
 			//noch zu implementieren: neue statistik liste an alle versenden
 			
-			try {
-				out.close();
+			try { out.close();
+				  in.close();
+				  s.close();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			try {
-				in.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			try {
-				s.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-
 		}
 	}
 	
@@ -200,7 +190,7 @@ public class ClientHandler implements Runnable {
 			 String att9 	 = start.getAtt9();
 			 
 			 
-			 //prï¿½fe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurï¿½ck
+			 //prüfe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurück
 			 while (iter_connectedPlayers.hasNext()){ 
 				 PlayerWithOS current = iter_connectedPlayers.next();	 
 				 if(current.getUsername().equals(username)){

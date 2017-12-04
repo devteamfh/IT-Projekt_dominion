@@ -2,31 +2,18 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import com.sun.glass.ui.View;
-import com.sun.media.jfxmedia.logging.Logger;
-
-import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Controller;
-import Dominion.Client.abstractClasses.Model;
-import Dominion.appClasses.GameObject;
 import Dominion.appClasses.PlayerWithOS;
 import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Duration;
 
 
 
@@ -44,8 +31,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 	private InetAddress addr;
     private String str_Dot = ".";
     private ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
-    private checkUserData checkUserData; 
-    private checkFields checkFields; 
+    private checkUserData checkUserData;
+    private checkFields checkFields;
    
     
     public Client_Controller_start(Client_Model model, Client_View_start view) {
@@ -64,11 +51,11 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         /**
          * @author Joel Henz:
          * connecting a client to the server by getting the IP address and the port number from the TextFields and then creating the playing Stage
-         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Pr�fmechanismen auf tf_ eingebaut
+         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Pr�fmechanismen auf tf_ eingebaut (Klassen checkUserFields, checkUserData)
          */    
-        
-        checkUserData = new checkUserData(this.model); 
-        checkFields = new checkFields(this.model); 
+
+        checkUserData = new checkUserData();
+        checkFields = new checkFields(this.model,this.checkUserData);
         
         	//connect button MouseHandler
 		view.btn_connect.addEventHandler(MouseEvent.MOUSE_ENTERED, 
@@ -168,9 +155,11 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         		});
             	
             	}         	else {
-
+            			
 	            	checkFields.checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
-
+            		
+            		
+            		
 	            	//wenn registiert, f�rbe button gr�n und deaktiviere inputfelder
 	            	if (checkFields.getUserRegistred()) {
 						view.btn_register.getStyleClass().removeAll("btn_view","btn_view_hover");
@@ -234,11 +223,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	
             	return;
             	}
-            	
+            	            	
             	checkFields.checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
             	
-            	
-            	
+            	            	
             	//Wenn PW falsch Felder zur�cksetzen
             	if(model.connected && !checkFields.getUserPwOk()){
             		view.tf_password.clear();
@@ -270,9 +258,18 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
                 	PlayerWithoutOS player_noOS = new PlayerWithoutOS (name);
                 	sl.setPlayer_noOS(player_noOS);
                 	
-                	//the StartInformation object is needed on server-side so the server can store the username of all connected players
+                	//the StartInformation object is needed on server-side so the server can store the username and statistics of all connected players
                 	StartInformation current = new StartInformation(model.getName());
-        			
+        			current.setPW			 (checkUserData.getAl_currentUserandStats().get(1));
+        			current.setGamesPlayed	 (Integer.parseInt(checkUserData.getAl_currentUserandStats().get(2)));
+        			current.setGamesWon		 (Integer.parseInt(checkUserData.getAl_currentUserandStats().get(3)));
+        			current.setGamesLost     (Integer.parseInt(checkUserData.getAl_currentUserandStats().get(4)));
+        			current.setWinLooseRatio (Integer.parseInt(checkUserData.getAl_currentUserandStats().get(5)));
+        			current.setAtt6          (checkUserData.getAl_currentUserandStats().get(6));
+        			current.setAtt7          (checkUserData.getAl_currentUserandStats().get(7));
+        			current.setAtt8          (checkUserData.getAl_currentUserandStats().get(8));
+        			current.setAtt9          (checkUserData.getAl_currentUserandStats().get(9));
+                	
         			try {
 						model.getOutput().writeObject(current);
 						model.getOutput().flush();
