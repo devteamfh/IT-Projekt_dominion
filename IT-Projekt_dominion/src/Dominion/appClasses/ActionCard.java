@@ -24,7 +24,7 @@ public class ActionCard extends Button
 		Kapelle, Keller, Burggraben, Dorf, Holzfaeller, Werkstatt, Geldverleiher, Miliz, Schmiede, Umbau, Mine, Markt, Laboratorium, Jahrmarkt, Hexe;
 	}
 	
-	//constructor
+	//Konstruktor mit Typ der Aktionskarte
 	public ActionCard(ActionCardType type) {
 		super();
 		this.type = type;
@@ -160,7 +160,7 @@ public class ActionCard extends Button
         } 
 	}
 
-	//getter & setter
+	//Getter & Setter
 	public String getTitle() {
 		return title;
 	}
@@ -233,13 +233,13 @@ public class ActionCard extends Button
 		this.player = player;
 	}
 
-	// Move card to DiscardPile
+	// Karte aus der Hand auf gespielte Karte werfen, ohne Aktion auszuführen
 	public void throwOnDiscardPile()		// TODO
 		{
-		// TODO Karte nach LinkedList discardPile verschieben
+		// TODO Karte nach LinkedList discardPile verschieben --> Warten bis LinkedList in Klasse Player erstellt ist
 		}
 
-	// Buy card
+	// Karte kaufen
 	public void buy(String player)
 		{
 		this.player = player;
@@ -263,13 +263,13 @@ public class ActionCard extends Button
 			}
 		}
 	
-	// Trash Card
+	// Karte wegwerfen (Aus der Hand und dem Deck entfernen)
 	public void trashCard()				// TODO
 		{
 		// TODO Wo soll Karte hin? nur deleten? --> Meiner Meinung nach gehört dies in die Klasse Player (Objekt aus LinkedList entfernen)
 		}
 	
-	// Play card as an action
+	// Aktionskarte spielen
 	public void playCard (ActionCardType type, String player)
 		{
 		this.player = player;
