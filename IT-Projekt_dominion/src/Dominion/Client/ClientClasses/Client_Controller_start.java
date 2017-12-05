@@ -2,28 +2,18 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import com.sun.glass.ui.View;
-import com.sun.media.jfxmedia.logging.Logger;
-
-import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Controller;
-import Dominion.Client.abstractClasses.Model;
-import Dominion.appClasses.GameObject;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
+import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Duration;
 
 
 
@@ -41,8 +31,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 	private InetAddress addr;
     private String str_Dot = ".";
     private ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
-
-
+    private checkUserData checkUserData;
+    private checkFields checkFields;
+   
+    
     public Client_Controller_start(Client_Model model, Client_View_start view) {
         super(model, view);
         this.view = view;
@@ -55,11 +47,15 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             }
         });
              
+        
         /**
          * @author Joel Henz:
          * connecting a client to the server by getting the IP address and the port number from the TextFields and then creating the playing Stage
-         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Pr�fmechanismen auf tf_ eingebaut
+         * edited @author kab: Neue Buttons btn_register und btn_login und diverse Pr�fmechanismen auf tf_ eingebaut (Klassen checkUserFields, checkUserData)
          */    
+
+        checkUserData = new checkUserData();
+        checkFields = new checkFields(this.model,this.checkUserData);
         
         	//connect button MouseHandler
 		view.btn_connect.addEventHandler(MouseEvent.MOUSE_ENTERED, 
@@ -82,10 +78,11 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             public void handle(ActionEvent event) {  
           
             	//pr�ft ob Felder IP und Port ausgef�llt
-            	checkFields.getInstance().checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
+            	//pr�ft ob Felder IP und Port ausgef�llt
+            	checkFields.checkfields(view.btn_connect.toString(), view.tf_ip.getText(),view.tf_port.getText());
             	
             	//wenn IP und Port ausgef�llt, versuche mit Server zu verbinden
-            	if (checkFields.getInstance().getRdyToConnect())
+            	if (checkFields.getRdyToConnect())
             	
             	   	try { 
                 		addr = InetAddress.getByName(view.tf_ip.getText());
@@ -139,13 +136,32 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	
             	if (!model.connected) {
             	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
-            	Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
+            	//Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
+            	sl.setLbl_popUpMessage(new Label("Sie sind mit keinem Server verbunden"));
+            	
+            	Platform.runLater(new Runnable() {
+
+        			@Override 
+        	           public void run() {
+        				
+        				Stage popUp = new Stage();	
+        				popUp.setResizable(false);
+        				popUp.initModality(Modality.APPLICATION_MODAL);
+        				Client_View_popUp view = new Client_View_popUp (popUp, model);
+        				new Client_Controller_popUp(model, view); 
+        				view.start();
+        			}	
+        			
+        		});
+            	
             	}         	else {
-
-	            	checkFields.getInstance().checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
-
+            			
+	            	checkFields.checkfields(view.btn_register.toString(), view.tf_userName.getText(),view.tf_password.getText());
+            		
+            		
+            		
 	            	//wenn registiert, f�rbe button gr�n und deaktiviere inputfelder
-	            	if (checkFields.getInstance().getUserRegistred()) {
+	            	if (checkFields.getUserRegistred()) {
 						view.btn_register.getStyleClass().removeAll("btn_view","btn_view_hover");
 						view.btn_register.getStyleClass().addAll("btn_view_green");
 
@@ -187,19 +203,37 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 
             	if (!model.connected) {
             	model.sl.getLogger().info("Sie sind mit keinem Server verbunden");
-            	Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
+            	//Client_View_start.lbl_errMsg.setText("Sie sind mit keinem Server verbunden");
+            	sl.setLbl_popUpMessage(new Label("Sie sind mit keinem Server verbunden"));
+            	
+            	Platform.runLater(new Runnable() {
+
+        			@Override 
+        	           public void run() {
+        				
+        				Stage popUp = new Stage();	
+        				popUp.setResizable(false);
+        				popUp.initModality(Modality.APPLICATION_MODAL);
+        				Client_View_popUp view = new Client_View_popUp (popUp, model);
+        				new Client_Controller_popUp(model, view); 
+        				view.start();
+        			}	
+        			
+        		});
+            	
             	return;
             	}
-
-            	checkFields.getInstance().checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
+            	            	
+            	checkFields.checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
             	
+            	            	
             	//Wenn PW falsch Felder zur�cksetzen
-            	if(model.connected && !checkFields.getInstance().getUserPwOk()){
+            	if(model.connected && !checkFields.getUserPwOk()){
             		view.tf_password.clear();
-            		view.tf_userName.clear();
+            		//view.tf_userName.clear();
             		view.tf_password.setDisable(false);
             		view.tf_userName.setDisable(false);
-            		checkFields.getInstance().setUserRegistred(false);
+            		checkFields.setUserRegistred(false);
             		view.tf_userName.setStyle("-fx-opacity: 1;");
             		view.tf_password.setStyle("-fx-opacity: 1;");
             		view.btn_register.setBtnText("Registrieren");
@@ -208,7 +242,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	}
             	
             	//weiter zur lobby, sofern connected, user registiert und pw ok
-            	if (model.connected && checkFields.getInstance().getUserPwOk()) {
+            	if (model.connected && checkFields.getUserPwOk()) {
 
 	            	view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");
 					view.btn_login.getStyleClass().addAll("btn_view_green");	
@@ -218,12 +252,24 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 					view.tf_userName.setDisable(false);
             		String name = view.tf_userName.getText();
                 	model.setName(name);
-                	Player player = new Player (name,model.getOutput());
-                	sl.setPlayer(player);
+                	PlayerWithOS player_OS = new PlayerWithOS (name,model.getOutput());
+                	sl.setPlayer_OS(player_OS);
                 	
-                	//the StartInformation object is needed on server-side so the server can store the username of all connected players
+                	PlayerWithoutOS player_noOS = new PlayerWithoutOS (name);
+                	sl.setPlayer_noOS(player_noOS);
+                	
+                	//the StartInformation object is needed on server-side so the server can store the username and statistics of all connected players
                 	StartInformation current = new StartInformation(model.getName());
-        			
+        			current.setPW			 (checkUserData.getAl_currentUserandStats().get(1));
+        			current.setGamesPlayed	 (Integer.parseInt(checkUserData.getAl_currentUserandStats().get(2)));
+        			current.setGamesWon		 (Integer.parseInt(checkUserData.getAl_currentUserandStats().get(3)));
+        			current.setGamesLost     (Integer.parseInt(checkUserData.getAl_currentUserandStats().get(4)));
+        			current.setWinLooseRatio (Integer.parseInt(checkUserData.getAl_currentUserandStats().get(5)));
+        			current.setAtt6          (checkUserData.getAl_currentUserandStats().get(6));
+        			current.setAtt7          (checkUserData.getAl_currentUserandStats().get(7));
+        			current.setAtt8          (checkUserData.getAl_currentUserandStats().get(8));
+        			current.setAtt9          (checkUserData.getAl_currentUserandStats().get(9));
+                	
         			try {
 						model.getOutput().writeObject(current);
 						model.getOutput().flush();
@@ -233,10 +279,11 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 					}
                 	
 			    	Stage lobby_stage = new Stage();				
-			        Client_View_lobby view2 = new Client_View_lobby(lobby_stage, model);
+			        Client_View_lobby view2 = new Client_View_lobby(lobby_stage, model); 
+			        sl.setView_lobby(view2);
 			        new Client_Controller_lobby(model, view2); 
-			       view2.start();
-			       view.stop();
+			        view2.start();  
+			        view.stop();
 	            	}                                             	
     			
             }

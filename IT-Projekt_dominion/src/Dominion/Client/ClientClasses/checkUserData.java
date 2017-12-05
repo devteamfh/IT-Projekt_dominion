@@ -5,32 +5,33 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import Dominion.ServiceLocator;
+import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class checkUserData {
-	private static checkUserData instance = null;
-	
+
+	private Client_Model model;
 	private File userFile;
 	private String tf1;
 	private String tf2;
 	private String btnStr;
+	private boolean userExists;
+	private ArrayList<String> al_currentUserandStats = new ArrayList<String>(10);
 	
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
-	protected checkUserData(){
-		//verhindert Instanzierung
+	
+	public checkUserData() {
 	}
 	
-	public static checkUserData getInstance(){
-		if(instance == null) {
-			instance = new checkUserData();
-		}
-		return instance;
-		}
-	
-	
-	
+
+		
 	/**
 	 * @author kab: überprüft, ob ein File mit Benutzerdaten existiert und erstellt, sofern nütig, eines
 	 * 
@@ -61,18 +62,26 @@ public class checkUserData {
 	
 	
 	/**
-	 * @author kab: Benutzer wird registriert
+	 * @author kab: Benutzer wird Registriert (Daten des Benutzers werden in ein File geschrieben. 
+	 * 				Initialer Wert für Attribute 3-10 = 0
 	 */
 	public boolean enterUserData(String tf1, String tf2){
 		this.tf1 = tf1;
 		this.tf2 = tf2;
+		String str_initialStats = ";0;0;0;0;0;0;0;0";   //initiale Statsitik Werte	
 		try {
 			FileWriter fw = new FileWriter(this.userFile, true);
-					
-			fw.write(this.tf1+";"+this.tf2+System.getProperty("line.separator"));
+			fw.write(this.tf1+";"+this.tf2+str_initialStats+System.getProperty("line.separator"));
 			fw.close();
+			
+			getAl_currentUserandStats().add(tf1);getAl_currentUserandStats().add(tf2);
+			getAl_currentUserandStats().add("2");getAl_currentUserandStats().add("3");
+			getAl_currentUserandStats().add("4");getAl_currentUserandStats().add("5");
+			getAl_currentUserandStats().add("6");getAl_currentUserandStats().add("7");
+			getAl_currentUserandStats().add("8");getAl_currentUserandStats().add("9");
+
 			sl.getLogger().info("Spieler erfolgreich registriert");
-			Client_View_start.lbl_errMsg.setText("Spieler erfolgreich registriert");
+			//Client_View_start.lbl_errMsg.setText("Spieler erfolgreich registriert");
 			return true;
 			
 		} catch (IOException e) {
@@ -119,14 +128,15 @@ public class checkUserData {
 	
 	/**
 	 * @author kab: prüft ob Benutzer existiert
+	 * 				
 	 */
 	public boolean userExists(String tf1){
 		this.tf1 = tf1;
 		FileReader reader = null;
 		String line;
 		Integer iLines = 0;
-
-		String[] strArr = null;
+		
+		String[] userAndStats = null;
 		Integer strArr_Capacity = null;
 		Integer MAX_NO_OF_ATTRIBUTES_PER_LINE = 10;
 
@@ -134,20 +144,26 @@ public class checkUserData {
 
 		iLines = countLines();
 		strArr_Capacity = iLines * MAX_NO_OF_ATTRIBUTES_PER_LINE;
-		strArr = new String[strArr_Capacity];
+		userAndStats = new String[strArr_Capacity];
 
 		try {
 			reader = new FileReader(this.userFile);
 			bReader = new BufferedReader(reader);
 
 			while ((line = bReader.readLine()) != null) {
-				strArr = line.split(";");
+				userAndStats = line.split(";");
 
-				for (int i = 0; i < strArr.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
-					if (this.tf1.equals(strArr[i].toString())) {
+				for (int i = 0; i < userAndStats.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
+					if (this.tf1.equals(userAndStats[i].toString())) {
 						sl.getLogger().info("Spieler existiert bereits");
-						Client_View_start.lbl_errMsg.setText("Spieler existiert bereits");
+						
+							for(int j = 0; j < MAX_NO_OF_ATTRIBUTES_PER_LINE ; j++ ) {
+								this.al_currentUserandStats.add(userAndStats[j].toString());
+							}
+
+						
 						bReader.close();
+						this.userExists = true;
 						return true;
 					}
 				}
@@ -160,12 +176,12 @@ public class checkUserData {
 			sl.getLogger().info("userFile konnte nicht durchsucht werden");
 			Client_View_start.lbl_errMsg.setText("Fehler beim Zugriff auf lokale Dateien");
 		}
-		sl.getLogger().info("Der Spieler wurde noch nicht registriert");
-		Client_View_start.lbl_errMsg.setText("Der Spieler wurde noch nicht registriert");
+		
 		return false;
+		
 	}
 
-	
+
 			/**
 			 * @auathor kab: überprüft ob Username und Passwort zu einander passen
 			 * 
@@ -177,7 +193,7 @@ public class checkUserData {
 		String line;
         Integer iLines = 0;
 
-        String[] strArr = null;
+        String[] strArr_userStats = null;
 		Integer strArr_Capacity = null;
 		Integer MAX_NO_OF_ATTRIBUTES_PER_LINE = 10;
 		
@@ -185,18 +201,18 @@ public class checkUserData {
 
 		iLines = countLines();
         strArr_Capacity = iLines * MAX_NO_OF_ATTRIBUTES_PER_LINE;
-        strArr = new String[strArr_Capacity];
+        strArr_userStats = new String[strArr_Capacity];
 
 		try {
             reader = new FileReader(this.userFile);
             bReader = new BufferedReader(reader);
 
 			while ((line = bReader.readLine()) != null) {
-                strArr = line.split(";");
+                strArr_userStats = line.split(";");
 
 
-                for (int i = 0; i < strArr.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
-                    if ((this.tf1.equals(strArr[i].toString()) == true) && (this.tf2.equals(strArr[i + 1].toString()) == true)) {
+                for (int i = 0; i < strArr_userStats.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
+                    if ((this.tf1.equals(strArr_userStats[i].toString()) == true) && (this.tf2.equals(strArr_userStats[i + 1].toString()) == true)) {
                         bReader.close();
                         sl.getLogger().info("Passwort korrekt. Eintritt gewührt.");
                     	return true;
@@ -212,7 +228,24 @@ public class checkUserData {
     		Client_View_start.lbl_errMsg.setText("Probleme beim Zugriff auf lokale Dateien");
         }
 		sl.getLogger().info("Passwort nicht korrekt. Eintritt verwehrt.");
-		Client_View_start.lbl_errMsg.setText("Passwort nicht korrekt. Der Eintritt wird verwehrt.");
+		//Client_View_start.lbl_errMsg.setText("Passwort nicht korrekt. Der Eintritt wird verwehrt.");
+		
+		sl.setLbl_popUpMessage(new Label("Passwort nicht korrekt. Der Eintritt wird verwehrt."));
+		
+		Platform.runLater(new Runnable() {
+
+			@Override 
+	           public void run() {
+				
+				Stage popUp = new Stage();	
+				popUp.setResizable(false);
+				//popUp.initModality(Modality.APPLICATION_MODAL);
+				Client_View_popUp view = new Client_View_popUp (popUp, model);
+				new Client_Controller_popUp(model, view); 
+				view.start();
+			}	
+			
+		});
 		
 		
 	return false;
@@ -258,6 +291,20 @@ public class checkUserData {
     }
 
 	
+	
+	public ArrayList<String> getAl_currentUserandStats() {
+		return al_currentUserandStats;
+	}
+
+	public void setAl_currentUserandStats(ArrayList<String> al_currentUserandStats) {
+		this.al_currentUserandStats = al_currentUserandStats;
+	}
+
+
+
+	
+	
+
 	
 
 }

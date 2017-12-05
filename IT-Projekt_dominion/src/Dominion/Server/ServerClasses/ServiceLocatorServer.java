@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 import Dominion.Server.ServerClasses.Database;
 import Dominion.appClasses.GameParty;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
 import Dominion.appClasses.StartInformation;
 import javafx.scene.control.TextArea;
 
@@ -30,7 +30,7 @@ public class ServiceLocatorServer {
     // Resources
     private Logger logger = Logger.getLogger("");
     private ArrayList <GamePartyOnServer> listOfOpenGamePartiesOnServer = new ArrayList <GamePartyOnServer>();
-    private ArrayList<Player> connectedPlayers = new ArrayList<Player>();
+    private ArrayList<PlayerWithOS> connectedPlayers = new ArrayList<PlayerWithOS>();
     private Database database = new Database();
     private ArrayList<StartInformation> al_startInfoStatistics = new ArrayList <StartInformation>();
     
@@ -80,11 +80,11 @@ public class ServiceLocatorServer {
     	return this.listOfOpenGamePartiesOnServer;    	
     }
     
-    public void addConnectedPlayer(Player player){
+    public void addConnectedPlayer(PlayerWithOS player){
     	this.connectedPlayers.add(player);
     }
     
-    public ArrayList <Player> getConnectedPlayers(){
+    public ArrayList <PlayerWithOS> getConnectedPlayers(){
     	return this.connectedPlayers;
     }
     
@@ -110,7 +110,7 @@ public class ServiceLocatorServer {
      * Methoden Datenbank mit Statistik
      */
     
-    //Player hinzufügen
+    //Player hinzufï¿½gen
     public void db_addPlayer(String user, String pw, int att2, int att3, int att4, int att5, String att6, String att7, String att8, String att9){
     	this.database.addPlayer(user, pw, att2, att3, att4, att5, att6, att7, att8, att9);
     }

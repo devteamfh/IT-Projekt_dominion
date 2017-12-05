@@ -39,9 +39,10 @@ import javafx.stage.Stage;
  */
 public class Client_View_playingStage extends View<Client_Model> {
 	ServiceLocatorClient sl;
-	Label [] labelArray;
 	Label stack;
 	Label yourHand;
+	
+	VBox vb_player;
 	
 	Button provisorischCard1;
 	Button provisorischCard2;
@@ -95,10 +96,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 		this.provisorischCard3 = new Button ("Karte prov");
 		this.provisorischCard3.setDisable(true);
 		
-		sl.setButtonEndActions("Aktion beenden");
+		sl.setButtonEndActions("Aktion spielen");
 		sl.getButtonEndActions().setDisable(true);
 		
-		sl.setButtonEndBuy("Kauf beenden");
+		sl.setButtonEndBuy("Kauf spielen");
 		sl.getButtonEndBuy().setDisable(true);
 		
 		VBox vb_right = new VBox();
@@ -115,15 +116,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		BorderPane root = new BorderPane();
 		
-		VBox vb_player = new VBox();
-		
-		labelArray = new Label[super.party.getMaxNumberOfPlayers()];
-		
-		//setting the labels of the players. Text (the usernames) will be set in the class ReadMsgFromServer, switch cases GameParty and JoinGameParty
-		for(int i=0;i<labelArray.length;i++){
-			labelArray[i] = new Label();
-			vb_player.getChildren().add(labelArray[i]);
-		}
+		vb_player = new VBox();
 		
 		//if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
 		//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score

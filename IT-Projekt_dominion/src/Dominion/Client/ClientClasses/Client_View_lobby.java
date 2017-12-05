@@ -110,7 +110,7 @@ public class Client_View_lobby extends View<Client_Model> {
 		
 		tf_message.setText("Ihre Nachricht");
 		
-		//Primï¿½re Nodes initialisieren		
+		//Primärre Nodes initialisieren		
 				
 		BorderPane root = new BorderPane();
 	    /*______________________________________________________________________________________________*/				    
@@ -187,7 +187,7 @@ public class Client_View_lobby extends View<Client_Model> {
 					tbl_playerStats.setStyle("-fx-opacity: 0.80;");
 					
 
-					/*Upperhalf zusammenfï¿½hren*/
+					/*Upperhalf zusammenführen*/
 					hb_wrapper_upperhalf.getChildren().addAll(tbl_playerStats);
 				    /*______________________________________________________________________________________________*/				    
 				    /************************************************************************************************/				    

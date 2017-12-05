@@ -7,8 +7,10 @@ import java.util.logging.Logger;
 
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
+import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,7 +44,8 @@ public class ServiceLocatorClient {
 
     private Logger logger = Logger.getLogger("");
     
-    private Player player;
+    private PlayerWithoutOS player_noOS;
+    private PlayerWithOS player_OS;
     
     private ToggleGroup endOfGameGroup;
     private ToggleGroup numberOfPlayersGroup;
@@ -57,6 +60,7 @@ public class ServiceLocatorClient {
     
     private Client_View_playingStage view_playingStage;
     private Client_View_createGame view_createGame;
+    private Client_View_lobby view_lobby;
  
     private GameParty currentGameParty;
     
@@ -69,16 +73,18 @@ public class ServiceLocatorClient {
     
     private boolean isHost=false;
     
-    private TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
     private ArrayList<StartInformation> al_Statistics = new ArrayList <StartInformation>();
-       
-    private Label lbl_errMsgView = new Label("");
-    
+    private TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
+
+    private Label lbl_errMsgView = new Label("");   
+    private Label lbl_popUpMessage = new Label("");
+   
     //if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
   	//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
   	//will be evaluated as a loss.
     private Button endGameHost = new Button ("Spiel beenden (Host)");
 
+    
     /**
      * @author Brad Richards
      * Factory method for returning the singleton
@@ -113,12 +119,22 @@ public class ServiceLocatorClient {
         this.logger = logger;
     }
     
-    public void setPlayer(Player player){
-    	this.player=player;
+    //player without ObjectOutputStream
+    public void setPlayer_noOS(PlayerWithoutOS player){
+    	this.player_noOS=player;
     }
     
-    public Player getPlayer(){
-    	return this.player;
+    public PlayerWithoutOS getPlayer_noOS(){
+    	return this.player_noOS;
+    }
+    
+    //player WITH ObjectOutpuStream
+    public void setPlayer_OS(PlayerWithOS player){
+    	this.player_OS=player;
+    }
+    
+    public PlayerWithOS getPlayer_OS(){
+    	return this.player_OS;
     }
     
     public ToggleGroup getToggleForEndOfGame(){
@@ -202,15 +218,18 @@ public class ServiceLocatorClient {
 	
 	//prepare the playing stage of the host so he can start the game
 	public void prepareGame(GameParty party){
-		if(party.getHost().equals(this.player.getUsername())){
+		if(party.getHost().getUsername().equals(this.player_noOS.getUsername())){
 			this.endAction.setDisable(false);
 			this.endGameHost.setDisable(true);
 		}
 		
 		//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
-		for(int i=0; i<party.getArrayOfPlayers().length;i++){
-			if(party.getArrayOfPlayers()[i].equals(this.player.getUsername())){
-				this.numberOfActionsAndBuys.setText(party.getHost()+" ist an der Reihe: 1 Aktionen, 1 Käufe");
+		for(int i=0; i<party.getArrayListOfPlayers().size();i++){
+			if(party.getArrayListOfPlayers().get(i).getUsername().equals(this.player_noOS.getUsername())){
+				this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe");
+				this.ta_gameHistory.appendText("Spiel beginnt\n");
+				this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
+				this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
 			}
 		}
 	}
@@ -317,5 +336,31 @@ public class ServiceLocatorClient {
 	public void setLbl_errMsgView(String str) {
 		this.lbl_errMsgView.setText(str);
 	}
+
+	public Label getLbl_popUpMessage() {
+		return lbl_popUpMessage;
+	}
+
+	public void setLbl_popUpMessage(Label lbl_popUpMessage) {
+		this.lbl_popUpMessage = lbl_popUpMessage;
+	}
+
+	public Client_View_lobby getView_lobby() {
+		return view_lobby;
+	}
+
+	public void setView_lobby(Client_View_lobby view_lobby) {
+		this.view_lobby = view_lobby;
+	}
+
+
+
+
+
+
+	
+	
+	
+	
 
 }

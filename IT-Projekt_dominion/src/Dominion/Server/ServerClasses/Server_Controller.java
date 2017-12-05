@@ -1,5 +1,6 @@
 package Dominion.Server.ServerClasses;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -32,8 +33,8 @@ public class Server_Controller extends Controller<Server_Model, Server_View> {
         view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-            	Platform.exit();
-          
+            	
+            	Platform.exit();       
             }
         });
         
@@ -51,12 +52,12 @@ public class Server_Controller extends Controller<Server_Model, Server_View> {
 				if(model.runServer(addr, portNr)){
                 	model.listenToClient();
                 }
-				
+			
             }
 
         });
         
-        
+    
     }
 
   

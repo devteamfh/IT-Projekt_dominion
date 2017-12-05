@@ -37,8 +37,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
         super(model, view);
         this.view = view;
         sl = ServiceLocatorClient.getServiceLocator();
-             
-        
+      
         
         
         /* kab ausgeblendet da eigener close btn gemacht
@@ -172,7 +171,6 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 		       Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model);
 		       new Client_Controller_playingStage(model, view_playingStage); 
 		       view_playingStage.start();*/
-        	   
 		       
         	   view.btn_enterGame.setDisable(true);
         	   JoinGameParty gameToJoin = new JoinGameParty(joinGame,model.getName());

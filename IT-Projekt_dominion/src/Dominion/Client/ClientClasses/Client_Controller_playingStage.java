@@ -4,15 +4,15 @@ import java.io.IOException;
 
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.CancelGame;
-import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.ChatMessagePlayingStage;
-import Dominion.appClasses.GameObject;
+import Dominion.appClasses.GameHistory;
 import Dominion.appClasses.GameParty;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -64,11 +64,46 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	sl.getButtonEndActions().setDisable(true);
-            	sl.getButtonEndBuy().setDisable(false);
+            	if(sl.getPlayer_noOS().getNumberOfActions()==0){
+            		sl.getButtonEndActions().setDisable(true);
+                	sl.getButtonEndBuy().setDisable(false);
+            	}
+            	sl.getPlayer_noOS().decreaseNumberOfActions();
+            	//sl.getNumberOfActionsProperty().set(sl.getPlayer_noOS().getNumberOfActions());
+            	String text = sl.getPlayer_noOS().getUsername()+" macht eine Aktion\n";
+            	GameHistory history = new GameHistory(text,sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndAction);
             	
+            	try {
+        			model.out.writeObject(history);
+        			model.out.flush();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
             }
         });
+        
+        sl.getButtonEndBuy().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	if(sl.getPlayer_noOS().getNumberOfBuys()==0){
+            		sl.getButtonEndBuy().setDisable(true);
+            	}
+            	sl.getButtonEndBuy().setDisable(true);
+            	String text = sl.getPlayer_noOS().getUsername()+" macht einen Kauf\n";
+            	GameHistory history = new GameHistory(text,sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
+            	            	
+            	try {
+        			model.out.writeObject(history);
+        			model.out.flush();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+            }
+        });
+        
+        
         
     }
     

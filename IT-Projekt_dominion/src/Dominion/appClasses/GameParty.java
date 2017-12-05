@@ -1,5 +1,7 @@
 package Dominion.appClasses;
 
+import java.util.ArrayList;
+
 /**
  * @author Joel Henz
  * instances of this class are sent/read by client and server. The equivalent class of GameParty is GamePartyOnServer. Objects of this class are only used on server side (to store Player objects and ObjectOutputStream-objects) and will not be sent
@@ -14,22 +16,21 @@ public class GameParty extends GameObject{
 	private static long messageID = 0;
 	
 	private String selectedMode;
-	private String host;
+	private PlayerWithoutOS host;
 	private int numberOfMaxPlayers;
 	private int numberOfLoggedInPlayers = 0;
-	private String [] playersOfThisGameParty;
+	private ArrayList <PlayerWithoutOS> playersOfThisGameParty = new ArrayList <PlayerWithoutOS>();
 	private int rounds;
 	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-	public GameParty(String selectedMode, String host, int number){
+	public GameParty(String selectedMode, PlayerWithoutOS host, int number){
 		super(GameObject.ObjectType.GameParty);
 		this.selectedMode=selectedMode;
 		this.host=host;
 		this.numberOfMaxPlayers=number;
-		this.playersOfThisGameParty = new String [this.numberOfMaxPlayers];
 		this. id = -1;	
 	}
 	
@@ -45,21 +46,20 @@ public class GameParty extends GameObject{
 	
 	public String toString(){
 		if(this.withRounds()){
-			return "Host: "+this.host+", "+this.selectedMode+": "+this.rounds+", "+this.numberOfLoggedInPlayers+" Spieler von "+this.numberOfMaxPlayers+" eingeloggt";
+			return "Host: "+this.host.getUsername()+", "+this.selectedMode+": "+this.rounds+", "+this.numberOfLoggedInPlayers+" Spieler von "+this.numberOfMaxPlayers+" eingeloggt";
 		}else{
-			return "Host: "+this.host+", "+this.selectedMode+", "+this.numberOfLoggedInPlayers+" Spieler von "+this.numberOfMaxPlayers+" eingeloggt";
+			return "Host: "+this.host.getUsername()+", "+this.selectedMode+", "+this.numberOfLoggedInPlayers+" Spieler von "+this.numberOfMaxPlayers+" eingeloggt";
 		}
 	}
 	
-	public String getHost(){
+	public PlayerWithoutOS getHost(){
 		return this.host;
 	}
 	
 	//adding the player who is entering an existing GameParty (choosing from the ListView in the lobby)
-	public void addNewPlayer(String player){
-		this.playersOfThisGameParty[numberOfLoggedInPlayers] = player;
+	public void addNewPlayer(PlayerWithoutOS player){
+		this.playersOfThisGameParty.add(player);
 		this.numberOfLoggedInPlayers++;
-		//this.propertyOfnumberOfLoggedInPlayers.set(numberOfLoggedInPlayers);
 	}
 	
 	public int getMaxNumberOfPlayers(){
@@ -70,7 +70,7 @@ public class GameParty extends GameObject{
 		return this.numberOfLoggedInPlayers;
 	}
 	
-	public String[] getArrayOfPlayers(){
+	public ArrayList <PlayerWithoutOS> getArrayListOfPlayers(){
 		return this.playersOfThisGameParty;
 	}
 	

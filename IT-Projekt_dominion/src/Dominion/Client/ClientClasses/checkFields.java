@@ -1,7 +1,12 @@
 package Dominion.Client.ClientClasses;
 
 import Dominion.ServiceLocator;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * 
@@ -11,7 +16,6 @@ import javafx.scene.control.Button;
  */
 
 public class checkFields {
-	private static checkFields instance = null;
 	private String btnStr;
 	private String tf1;
 	private String tf2;
@@ -21,19 +25,22 @@ public class checkFields {
 	private boolean userRegistred;
 	private boolean userPwOk;
 	
+	checkUserData checkUserData;
+	
+	private Client_Model model;
+	
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
-	protected checkFields(){
-		//verhindert Instanzierung
-	}	
+	public checkFields(Client_Model m, checkUserData checkUserData){
+		this.model = m;
+		this.checkUserData = checkUserData;
+	}
 	
-	public static checkFields getInstance(){
-		if(instance == null) {
-			instance = new checkFields();
-		}
-		return instance;
-		}
-	
+	public checkFields(){
+
+	}
+
+
 	/**
 	 * @author kab: überprüft für Verbinden, ob Eingaben in Textfelder gemacht worden sind.
 	 * 				überprüft für Registrieren und Einloggen, ob sich der User Registrieren und Einloggen kann,
@@ -50,15 +57,35 @@ public class checkFields {
 			case "Verbinden": 	
 									
 				if (this.tf1.equals(""))
-					this.errMsg =  "IP-Nr. fehlt";
-				if (this.equals("") && this.tf2.equals(""))
-					this.errMsg = errMsg +" "+System.getProperty("line.separator");
+					this.errMsg =  "Die IP-Adresse fehlt";
+				if (this.tf1.equals("") && this.tf2.equals(""))
+					this.errMsg = errMsg.substring(0,14) +" sowie die ";
 				if (this.tf2.equals(""))
 				this.errMsg = errMsg+"Port-Nr. fehlt";
 				
 				if (!this.errMsg.equals("")) {
-					sl.getLogger().info(errMsg);   
-					Client_View_start.lbl_errMsg.setText(errMsg);
+					sl.getLogger().info(this.errMsg);   
+					//Client_View_start.lbl_errMsg.setText(errMsg);
+					sl.setLbl_popUpMessage(new Label(errMsg.toString()));
+					
+					Platform.runLater(new Runnable() {
+
+						@Override 
+				           public void run() {
+							
+							Stage popUp = new Stage();	
+							popUp.setResizable(false);
+							popUp.initModality(Modality.APPLICATION_MODAL);
+							Client_View_popUp view = new Client_View_popUp (popUp, model);
+							new Client_Controller_popUp(model, view); 
+							view.start();
+						}	
+						
+					});
+					
+					
+					
+					
 				this.errMsg = "";
 					break;
 				} else { 		
@@ -70,7 +97,7 @@ public class checkFields {
 			case "Registrieren":
 				
 				if (checkTfUserAndPw(this.tf1, this.tf2)){
-					if (checkUserData.getInstance().checkRegistration(this.btnStr, this.tf1, this.tf2)) {
+					if (checkUserData.checkRegistration(this.btnStr, this.tf1, this.tf2)) {
 					setUserRegistred(true);	
 					}
 				}
@@ -81,13 +108,41 @@ public class checkFields {
 				
 				if (checkTfUserAndPw(this.tf1, this.tf2)) {
 				
-					if (checkUserData.getInstance().checkRegistration(this.btnStr, this.tf1, this.tf2)) {
+					if (checkUserData.checkRegistration(this.btnStr, this.tf1, this.tf2)) {
 						setUserRegistred(true);
 					}
 
-					if(getUserRegistred() && checkUserData.getInstance().pwCorrect(this.tf1,this.tf2)){
+					if(getUserRegistred() && checkUserData.pwCorrect(this.tf1,this.tf2)){
 						setUserPwOk(true);	
 					}
+					
+					
+					if(!getUserRegistred()){
+						
+						sl.getLogger().info("User existiert noch nicht");
+						
+						sl.setLbl_popUpMessage(new Label("User existiert noch nicht"));
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								
+								Stage popUp = new Stage();	
+								popUp.setResizable(false);
+								//popUp.initModality(Modality.APPLICATION_MODAL);
+								Client_View_popUp view = new Client_View_popUp (popUp, model);
+								new Client_Controller_popUp(model, view); 
+								view.start();
+							}	
+							
+						});
+					
+						
+						
+					}
+					
+					
+					
 				}
 				this.errMsg = "";
 				break;
@@ -136,27 +191,45 @@ public class checkFields {
 		this.tf2 = tf2;
 		
 		if (this.tf1.equals(""))
-			this.errMsg =  "User fehlt";
+			this.errMsg =  "Der Spielername fehlt";
 		if (this.tf1.equals("") && this.tf2.equals(""))
-			this.errMsg = errMsg+System.getProperty("line.separator");
+			this.errMsg = errMsg.substring(0,15) +" sowie ein ";
 		if (this.tf2.equals(""))
 		this.errMsg = errMsg+"Passwort fehlt";
-			sl.setLbl_errMsgView(errMsg);
-			
+			//sl.setLbl_errMsgView(errMsg);	
 		
 		if (!this.errMsg.equals("")) {
 			sl.getLogger().info(errMsg);  
-			Client_View_start.lbl_errMsg.setText(errMsg);
+			//Client_View_start.lbl_errMsg.setText(errMsg);
+			
+			sl.setLbl_popUpMessage(new Label(errMsg));
+			
+			Platform.runLater(new Runnable() {
+
+				@Override 
+		           public void run() {
+					
+					Stage popUp = new Stage();	
+					popUp.setResizable(false);
+					//popUp.initModality(Modality.APPLICATION_MODAL);
+					Client_View_popUp view = new Client_View_popUp (popUp, model);
+					new Client_Controller_popUp(model, view); 
+					view.start();
+				}	
+				
+			});
+			
 			this.errMsg = "";
 			return false;
 		} 	
-		return true;	
-		
+		return true;			
 	}
 	
+	public checkUserData getCheckUserData(){
+		return this.checkUserData;
 	
+	}
 	
-
 	
 	
 }

@@ -3,7 +3,8 @@ package Dominion.Server.ServerClasses;
 import java.util.ArrayList;
 
 import Dominion.appClasses.GameParty;
-import Dominion.appClasses.Player;
+import Dominion.appClasses.PlayerWithOS;
+import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
 
 /**
@@ -13,7 +14,7 @@ import Dominion.appClasses.StartInformation;
  */
 public class GamePartyOnServer {
 	
-	private ArrayList <Player> playerList = new ArrayList <Player>();
+	private ArrayList <PlayerWithOS> playerList = new ArrayList <PlayerWithOS>();
 	private GameParty party;
 
 	
@@ -21,16 +22,19 @@ public class GamePartyOnServer {
 		this.party=party;
 	}
 	
-	public void addPlayer(Player player){
-		this.playerList.add(player);
-		this.party.addNewPlayer(player.getUsername());
+	public void addPlayer(PlayerWithOS player_OS){
+		PlayerWithoutOS player_noOS = new PlayerWithoutOS(player_OS.getUsername());
+		//add the player on server side
+		this.playerList.add(player_OS);
+		//add player to the GameParty (for client side)
+		this.party.addNewPlayer(player_noOS);
 	}
 	
 	public GameParty getGameParty(){
 		return this.party;
 	}
 	
-	public ArrayList <Player> getPlayerList(){
+	public ArrayList <PlayerWithOS> getPlayerList(){
 		return this.playerList;
 	}
 	

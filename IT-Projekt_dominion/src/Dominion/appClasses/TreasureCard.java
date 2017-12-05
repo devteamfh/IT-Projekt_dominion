@@ -4,14 +4,14 @@ package Dominion.appClasses;					// TODO mit Testklasse (Klon von Client_View_pl
  * @author Adrian Widmer
  */
 
-public class TreasureCard extends Button 		// TODO Button importieren?
+public class TreasureCard //extends Button 		// TODO Button importieren?
 {
 	
 	private String title;					
 	private String description;				
 											// TODO Image als Variable?
 	private int costs;						
-	private int counter;					// TODO Was wird gezählt? Anzahl auf der Hand?
+	private int counter;					// TODO Was wird gezï¿½hlt? Anzahl auf der Hand?
 	private int trasureValue;				
 	private int sizeOfStack;				// Was wenn karte auf der Hand und nicht auf Deck? =0?
 	
@@ -69,7 +69,7 @@ public class TreasureCard extends Button 		// TODO Button importieren?
 	 * 1. Abfragen costs der Deckkarte 
 	 * 2. Abgleichen mit treasure Karten auf der Hand
 	 * 3. Treasurekarten auf der hand abziehen
-	 * 4. Actioncard auf gekaufte karten ergänzen
+	 * 4. Actioncard auf gekaufte karten ergï¿½nzen
 	 */
 	{
 		

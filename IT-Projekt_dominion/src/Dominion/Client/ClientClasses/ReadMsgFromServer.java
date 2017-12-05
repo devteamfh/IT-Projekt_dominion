@@ -2,20 +2,26 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
+import Dominion.Client.Client;
 import Dominion.Server.ServerClasses.GamePartyOnServer;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.ChatMessagePlayingStage;
+import Dominion.appClasses.GameHistory;
 import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
+import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -62,16 +68,51 @@ public class ReadMsgFromServer implements Runnable {
 					
 					StartInformation playerStatistics = (StartInformation) obj;
 					
+					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gew�hrt
+					if(playerStatistics.isBol_nameTaken()){
+						
+						Platform.runLater(new Runnable() {
+							@Override 
+					           public void run() {
+								try{
+				        	
+				        	//verhindert das starten der lobby
+			 				sl.getView_lobby().stop();
+			 				
+			 				//Restartet die lgoin view
+			 				Stage stge_start = new Stage();
+			 				Client_View_start view_start = new Client_View_start (stge_start, model);
+			 				new Client_Controller_start(model, view_start);
+			 				view_start.start();
+			 				
+			 				//gibt Meldung aus, dass die Username-Dieberei stattgefunden hat
+							sl.setLbl_popUpMessage(new Label("Der Spielername ist zur Zeit vergeben."));		
+							Stage popUp = new Stage();	
+							popUp.setResizable(false);
+							popUp.initModality(Modality.APPLICATION_MODAL);
+				        	Client_View_popUp view = new Client_View_popUp (popUp, model);
+				        	new Client_Controller_popUp(model, view); 
+				        	view.start();
+			 				
+								}catch (NullPointerException e){
+								}
+								
+							}
+					      });
+					
+						playerStatistics = null;
+						model.client.close();
+					}
+							
 				
+					
 					sl.getAl_Statistics().clear();
 					sl.getTbl_playerStats().getItems().clear();
 		
 
 					sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
 					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());
-	
-		
-					
+				
 					break;
 					 
 				case GameParty:
@@ -82,7 +123,7 @@ public class ReadMsgFromServer implements Runnable {
 				           public void run() {
 				            sl.addNewGame(newGame);
 				            
-				            if(newGame.getHost().equals(model.getName())){
+				            if(newGame.getHost().getUsername().equals(model.getName())){
 				            	sl.setCurrentGameParty(newGame);
 				            	Stage playingStage = new Stage();			
 				            	playingStage.initModality(Modality.APPLICATION_MODAL);
@@ -94,8 +135,9 @@ public class ReadMsgFromServer implements Runnable {
 						        sl.getCreateGameView().stop();
 						        
 						        //adding the name of the host on the playing Stage and add the current GameParty to the ServiceLocatorCLient of the host
-						        for(int i=0; i<newGame.getArrayOfPlayers().length;i++){
-						        	sl.getPlayingStage().labelArray[i].setText(newGame.getArrayOfPlayers()[i]);
+						        for(int i=0; i<newGame.getArrayListOfPlayers().size();i++){
+						        	Label label = new Label(sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getUsername());
+									sl.getPlayingStage().vb_player.getChildren().add(label);
 						        }
 							}
 				           }
@@ -118,17 +160,17 @@ public class ReadMsgFromServer implements Runnable {
 					           }
 
 					       });	
-						
-
 					break;
 			
 				case JoinGameParty:
 					JoinGameParty join=(JoinGameParty) obj;
 					
+					
+					
 					//updating the current GameParty object in the ServiceLocator for all players who have already joined this GameParty
-					for (int i=0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){						
+					for (int i=0; i<join.getSelectedGameParty().getArrayListOfPlayers().size();i++){						
 						try{
-							if(join.getSelectedGameParty().getArrayOfPlayers()[i].equals(model.getName())){
+							if(join.getSelectedGameParty().getArrayListOfPlayers().get(i).getUsername().equals(model.getName())){
 								sl.setCurrentGameParty(join.getSelectedGameParty());
 							}							
 						}catch (NullPointerException e){
@@ -156,8 +198,10 @@ public class ReadMsgFromServer implements Runnable {
 							//determine the players who have already joined the game. On their playing stages we have to add the username of the new player
 							try{
 								if(join.getSelectedGameParty().getID() == sl.getCurrentGameParty().getID()){
-									for(int i =0; i<join.getSelectedGameParty().getArrayOfPlayers().length;i++){
-										sl.getPlayingStage().labelArray[i].setText(sl.getCurrentGameParty().getArrayOfPlayers()[i]);
+									sl.getPlayingStage().vb_player.getChildren().clear();
+									for(int i =0; i<join.getSelectedGameParty().getArrayListOfPlayers().size();i++){
+										Label label = new Label(join.getSelectedGameParty().getArrayListOfPlayers().get(i).getUsername());
+										sl.getPlayingStage().vb_player.getChildren().add(label);
 									}	
 								}
 							}catch (NullPointerException e){
@@ -188,13 +232,14 @@ public class ReadMsgFromServer implements Runnable {
 							try{
 								//stop the playing stage ONLY for the players who have joined this GameParty
 								if(gamePartyToCancel.getID() == sl.getCurrentGameParty().getID()){
+									sl.setLbl_popUpMessage(new Label("Der Host hat das Spiel beendet."));
 									sl.getPlayingStage().stop();
 									sl.setCurrentGameParty(null);
-									Stage hostEndedGame = new Stage();	
-									hostEndedGame.setResizable(false);
-									hostEndedGame.initModality(Modality.APPLICATION_MODAL);
-						        	Client_View_hostEndedGame view = new Client_View_hostEndedGame (hostEndedGame, model);
-						        	new Client_Controller_hostEndedGame(model, view); 
+									Stage popUp = new Stage();	
+									popUp.setResizable(false);
+									popUp.initModality(Modality.APPLICATION_MODAL);
+						        	Client_View_popUp view = new Client_View_popUp (popUp, model);
+						        	new Client_Controller_popUp(model, view); 
 						        	view.start();
 								}
 							}catch (NullPointerException e){
@@ -218,14 +263,75 @@ public class ReadMsgFromServer implements Runnable {
 					sl.getTextAreaChatPlayingStage().selectPositionCaret(sl.getTextAreaChatPlayingStage().getText().length());
 					
 					break;
+					
+				case GameHistory:
+					GameHistory history = (GameHistory) obj;
+					PlayerWithoutOS currentPlayer = history.getCurrentPlayer();
+					
+					switch(history.getHistoryType()){
+					case EndAction:
+						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+								
+					           }
+					      });
+						
+						
+						break;
+						
+					case EndBuy:
+						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+							sl.getButtonEndActions().setDisable(false);
+						}
+						PlayerWithoutOS playerForGUIActivation= history.getPlayerForGUIActivation();
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								sl.getLabelNumberOfActionsAndBuys().setText(playerForGUIActivation.getUsername()+" ist an der Reihe: "+playerForGUIActivation.getNumberOfActions()+" Aktionen, "+playerForGUIActivation.getNumberOfBuys()+" Käufe");
+								
+					           }
+					      });
+						
+						
+					
+					}
+					
+					
 								
 				default:
 				}
 		
 			}
-		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+		}  catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
+			
+			try {
+				model.getInput().close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				model.getOutput().close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				model.client.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
 		}
 
 	}
