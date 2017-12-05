@@ -233,7 +233,7 @@ public class ActionCard extends Button
 		this.player = player;
 	}
 
-	// Karte aus der Hand auf gespielte Karte werfen, ohne Aktion auszuführen
+	// Karte aus der Hand auf gespielte Karte werfen, ohne Aktion auszufuehren
 	public void throwOnDiscardPile()		// TODO
 		{
 		// TODO Karte nach LinkedList discardPile verschieben --> Warten bis LinkedList in Klasse Player erstellt ist

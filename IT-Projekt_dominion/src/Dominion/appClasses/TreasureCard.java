@@ -112,7 +112,7 @@ public class TreasureCard extends Button
 		this.type = type;
 	}
 
-	// Move card to DiscardPile
+	// Karte aus der Hand auf gespielte Karte werfen, ohne Aktion auszufuehren
 	public void throwOnDiscardPile()
 		{
 		// TODO Karte nach LinkedList discardPile verschieben
@@ -131,7 +131,7 @@ public class TreasureCard extends Button
 	}
 	
 	//Play card
-	public void playXy ()		
+	public void playCard()		
 	{
 		// TODO --> TreasureKarten sind nicht klickbar, sondern werden nur im Total angezeigt (numberOfTreasures) --> Vereinfacht Buy-Methode bei ActionCard
 	}
