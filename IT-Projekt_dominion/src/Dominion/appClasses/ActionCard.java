@@ -7,11 +7,7 @@ import java.awt.Image;					// https://docs.oracle.com/javase/8/docs/api/
  * @author Adrian Widmer
  */
 
-<<<<<<< HEAD
 public class ActionCard extends Button
-=======
-public class ActionCard //extends Button 		// TODO Button importieren? TODO Refactoring? --> Abstrakte Klasse?
->>>>>>> master
 {
 	private String title;					
 	private String description;				
@@ -22,13 +18,10 @@ public class ActionCard //extends Button 		// TODO Button importieren? TODO Refa
 	private String typeOfAction;			// TODO f�r was ist diese variable?
 	public enum actionCardType				
 	{
-<<<<<<< HEAD
 		Kapelle, Keller, Burggraben, Dorf, Holzfaeller, Werkstatt, Geldverleiher, Miliz, Schmiede, Umbau, Mine, Markt, Laboratorium, Jahrmarkt, Hexe;
-=======
-		Kapelle, Keller, Burggraben, Dorf, Holzfäller, Werkstatt, Geldverleiher, Miliz, Schmiede, Umbau, Mine, Markt, Laboratorium, Jahrmarkt, Hexe;
->>>>>>> master
 	}
 	
+	// Alle getter & setter
 	public String getTypeOfAction() {
 		return typeOfAction;
 	}
@@ -66,6 +59,7 @@ public class ActionCard //extends Button 		// TODO Button importieren? TODO Refa
 		this.sizeOfStack = sizeOfStack;
 	}
 	
+	//Konstruktor
 	public ActionCard()						// TODO Verschiedene Konstruktoren notwendig? Hand oder Deck?
 	{
 	
