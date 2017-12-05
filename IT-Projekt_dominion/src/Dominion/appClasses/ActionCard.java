@@ -1,21 +1,24 @@
 package Dominion.appClasses;
 
+import java.awt.Button;					// https://docs.oracle.com/javase/8/docs/api/
+import java.awt.Image;					// https://docs.oracle.com/javase/8/docs/api/
+
 /**
  * @author Adrian Widmer
  */
 
-public class ActionCard extends Button 		// TODO Button importieren? TODO Refactoring? --> Abstrakte Klasse?
+public class ActionCard extends Button
 {
 	private String title;					
 	private String description;				
-											// TODO Image als Variable?
+	private Image img;						
 	private int costs;						
 	private int counter;					// TODO Was wird gezählt? --> löschen
 	private int sizeOfStack;				// TODO Was wenn karte auf der Hand und nicht auf Deck? =0?
 	private String typeOfAction;			// TODO für was ist diese variable?
 	public enum actionCardType				
 	{
-		Kapelle, Keller, Burggraben, Dorf, Holzfäller, Werkstatt, Geldverleiher, Miliz, Schmiede, Umbau, Mine, Markt, Laboratorium, Jahrmarkt, Hexe;
+		Kapelle, Keller, Burggraben, Dorf, Holzfaeller, Werkstatt, Geldverleiher, Miliz, Schmiede, Umbau, Mine, Markt, Laboratorium, Jahrmarkt, Hexe;
 	}
 	
 	public String getTypeOfAction() {
@@ -33,6 +36,15 @@ public class ActionCard extends Button 		// TODO Button importieren? TODO Refact
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public Image getImg() {
+		return img;
+	}
+
+	public void setImg(Image img) {
+		this.img = img;
+	}
+
 
 	public void setCosts(int costs) {
 		this.costs = costs;
@@ -53,6 +65,7 @@ public class ActionCard extends Button 		// TODO Button importieren? TODO Refact
 	
 	public void throwOnDiscardPile()		// TODO
 	{
+	
 	/* 1. Karte zu eingesetzte Karten verschieben --> LinkedList discardPile
 	 * 2. weitere aktion?
 	 */
