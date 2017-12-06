@@ -1,8 +1,6 @@
 package Dominion.appClasses.Cards;
 
 import java.awt.Button;
-
-import Dominion.appClasses.PlayerWithoutOS;
 import javafx.scene.image.Image;
 
 /**
@@ -275,7 +273,7 @@ public class ActionCard extends Button
 	public void playCard (ActionCardType type, String player)
 		{
 		this.player = player;
-		// PlayerWithoutOS playerWOS = new PlayerWithoutOS(player)
+		// Abfangen wie viele Aktionen offen sind
 		if (player.getNumberOfActions()>= 1) {
 			switch(type){
 			case Kapelle:

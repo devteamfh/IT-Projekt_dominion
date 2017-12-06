@@ -1,8 +1,6 @@
 package Dominion.appClasses;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.Random;
 
 
 /**
@@ -17,37 +15,20 @@ public class PlayerWithoutOS implements Serializable {
 	// Generator for a unique message ID
 	private static long messageID = 0;
 	
-	private int points;
-	private int numberOfActions;
-	private int numberOfBuys;
-	private int numberOfTreasures;
+	private int points = 3;
+	private int numberOfActions =1; //David
+	private int numberOfBuys=1; // David
+	private int numberOfTreasures =0; // David
 	private String username;
-	// private Object<ActionCard> card; Wie kann ich die Objekte (ActionCard usw. zur LinkedList hinzufügen?
-	public LinkedList<Object> discardPile = new LinkedList<Object>();
-	public LinkedList<Object> playedCards = new LinkedList<Object>();
-	public LinkedList<Object> cardsToPlay = new LinkedList<Object>();
-	
-	Random rand = new Random();
-	
-	//Konstruktor Player
-	public PlayerWithoutOS(long id, String username, int points, int numberOfActions, int numberOfBuys, int numberOfTreasure, LinkedList<Object> discardPile, LinkedList<Object> playedCards, LinkedList<Object> cardsToPlay){
-		this.id=-1;
-		this.username = username;
-		this.points = 3;
-		this.numberOfActions = 1;
-		this.numberOfBuys = 1;
-		this.numberOfTreasures = 0;
-		this.discardPile = discardPile.addAll(new VictoryCard("Estate")), new VictoryCard("Estate"), new VictoryCard("Estate")),
-			new TreasureCard("Kupfer"),new TreasureCard("Kupfer"),new TreasureCard("Kupfer"),new TreasureCard("Kupfer"),new TreasureCard("Kupfer"),new TreasureCard("Kupfer"),new TreasureCard("Kupfer"); //Import ActionCard?
-		this.playedCards = null;
-		this.cardsToPlay = null;
-	}
 	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-
+	public PlayerWithoutOS(String username){
+		this.id=-1;
+		this.username = username;
+	}
 	
 	public void setID(){
 		if (this. id == -1){
@@ -99,48 +80,5 @@ public class PlayerWithoutOS implements Serializable {
 		this.numberOfTreasures = numberOfTreasures-i;
 	}
 	
-	public void setPoints(int points){
-		this.points = points;
-		
-	}
-	
-	public int getPoints(){
-		return points;
-	}
-	
-	// Nachziehen vom Ablagestapel auf den Spielstapel
-	public void setCardsToPlay(LinkedList<Object> cardsToPlay){
-		this.cardsToPlay = cardsToPlay;
-		if (cardsToPlay.size() < 5){
-			int pull = 5-(int)cardsToPlay.size();
-			while (pull == 5) {
-				Object c = discardPile.removeFirst();
-				cardsToPlay.add(c);
-				pull++;
-			}
-		}
-		else{
-			System.out.println("Sie können spielen");
-		}
-	}
-	
-	// Spielkarten anzeigen
-	public Object getCardsToPlay(){
-		for (Object element : cardsToPlay){
-			//System.out.println(element);
-			// korrekt wäre evtl? Oder Objekt direkt?
-			if (element.equals(ActionCard)){
-				getActionCardImg();				
-			}
-			else {
-				if (element.equals(TreasureCard))
-					getTreasureCardImg();
-				else  {
-				return img = getVictoryCardImg();
-				}
-			}
-		}
-
-	}
 
 }
