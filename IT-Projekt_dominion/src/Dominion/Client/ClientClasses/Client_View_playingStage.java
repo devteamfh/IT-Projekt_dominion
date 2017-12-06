@@ -7,7 +7,6 @@ import javax.swing.ImageIcon;
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.View;
 import Dominion.appClasses.GameParty;
-import Dominion.appClasses.VictoryCard;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -55,7 +54,6 @@ public class Client_View_playingStage extends View<Client_Model> {
     TextArea chatWindowPlayingStage;
     TextArea windowGameHistory;
     customButton btn_sendChatMsgPlayingStage;
-    VictoryCard btn_estate; // David
 
     
 	public Client_View_playingStage(Stage stage, Client_Model model, GameParty party) {
@@ -88,12 +86,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn","btn_sendChatMsg");
 		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
 		btn_sendChatMsgPlayingStage.setPrefSize(202, 40);
-		
-		btn_estate = new VictoryCard("estate");
-		btn_estate.getStyleClass().addAll("vlbl");
-		btn_estate.setBtnVictoryCard(btn_estate);
-		btn_estate.setPrefSize(450,450);
-		
+	
 		Label label_gameHistory = new Label("Spielverlauf");
 		Label label_chat = new Label("Chat");
 		this.stack = new Label("hier kommt der Hauptstapel");
@@ -141,26 +134,25 @@ public class Client_View_playingStage extends View<Client_Model> {
 		GridPane gp_left = new GridPane();
 		
 		
-	/*	Button province = new Button("Estate");
-		Button duchy = new VictoryCard ("Herzogtum");
-		Button estate = new Button ("Estate");
+		Button province = new Button("Provinz");
+		Button duchy = new Button ("Herzogtum");
+		Button estate = new Button ("Anwesen");
 		Button curse = new Button ("Curse");
-		*/
+	
 		Button gold = new Button ("Gold");
 		Button silver = new Button ("Silver");
 		Button copper = new Button ("Copper");
 		
-		/*GridPane.setConstraints(province, 0, 0);
+		GridPane.setConstraints(province, 0, 0);
 		GridPane.setConstraints(duchy, 0, 1);
 		GridPane.setConstraints(estate, 0, 2);
 		GridPane.setConstraints(curse, 0, 3);
-		*/
+	
 		GridPane.setConstraints(gold, 1, 0);
 		GridPane.setConstraints(silver, 1, 1);
 		GridPane.setConstraints(copper, 1, 2);
-		GridPane.setConstraints(btn_estate, 0, 1);
 		
-		gp_left.getChildren().addAll(btn_estate, gold,silver,copper);
+		gp_left.getChildren().addAll(province,duchy,estate,curse,gold,silver,copper);
 		
 		VBox vb_center = new VBox();
 		GridPane gp_actionCards = new GridPane();
