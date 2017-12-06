@@ -13,12 +13,13 @@ public class StartInformation extends GameObject {
 	// Generator for a unique message ID
 	private static long messageID = 0;
 	
-	//Liste von STartInformationobjekten vom Server
+	//Liste von StartInformationsobjekten vom Server
 	private ArrayList<StartInformation> listOfStatrtInformation = new ArrayList <StartInformation>();
 	
 	//kab:True wenn ein User mit dem gleichen Namen bereits auf dem Server connected ist
 	private boolean bol_nameTaken;
 	
+	//Username und PW der Spieler, sowie Attribute für Statistik
 	private String 	username;
 	private String 	PW;
 	private int 	gamesPlayed;
@@ -62,9 +63,11 @@ public class StartInformation extends GameObject {
 	public String getPW(){
 		return this.PW;
 	}
+	public void setPW(String pw){
+		this.PW = pw;
+	}
 	
 	
-
 	public int getLoggedInPlayers() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -107,7 +110,7 @@ public class StartInformation extends GameObject {
 		return att6;
 	}
 
-	public void setAtt5(String att6) {
+	public void setAtt6(String att6) {
 		this.att6 = att6;
 	}
 

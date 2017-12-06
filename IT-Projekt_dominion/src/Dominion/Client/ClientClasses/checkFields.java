@@ -25,15 +25,20 @@ public class checkFields {
 	private boolean userRegistred;
 	private boolean userPwOk;
 	
+	checkUserData checkUserData;
+	
 	private Client_Model model;
 	
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
-	public checkFields(Client_Model m){
+	public checkFields(Client_Model m, checkUserData checkUserData){
 		this.model = m;
+		this.checkUserData = checkUserData;
 	}
 	
-	checkUserData checkUserData = new checkUserData();
+	public checkFields(){
+
+	}
 
 
 	/**
@@ -217,11 +222,14 @@ public class checkFields {
 			this.errMsg = "";
 			return false;
 		} 	
-		return true;	
-		
+		return true;			
 	}
-
-
+	
+	public checkUserData getCheckUserData(){
+		return this.checkUserData;
+	
+	}
+	
 	
 	
 }
