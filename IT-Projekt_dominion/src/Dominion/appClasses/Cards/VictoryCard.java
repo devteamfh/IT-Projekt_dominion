@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 
 /**
  * @author David Steuri
- *
+ ***
  */
 
 //Switch Statement für verschiedene Karten
