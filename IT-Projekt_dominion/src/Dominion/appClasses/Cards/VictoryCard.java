@@ -1,4 +1,4 @@
-package Dominion.appClasses;
+package Dominion.appClasses.Cards;
 
 import javafx.scene.image.Image;
 
