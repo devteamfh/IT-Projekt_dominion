@@ -1,4 +1,4 @@
-package Dominion.appClasses.Cards;
+package Dominion.Client.ClientClasses.gameplay.cards;
 
 import javafx.scene.image.Image;
 
@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
  *
  */
 
-public class VictoryCard {
+public class _VictoryCard {
 	private int victoryPoints;
 	private int costs;
 	private int sizeOfStack;
@@ -16,7 +16,7 @@ public class VictoryCard {
 
 		
 // Konstruktor für VictoryCard?
-public VictoryCard(int VictoryPoints, int costs, int sizeOfStack, String title, Image victoryImg){
+public _VictoryCard(int VictoryPoints, int costs, int sizeOfStack, String title, Image victoryImg){
 	this.victoryPoints = VictoryPoints;
 	this.costs = costs;
 	this.sizeOfStack = 10; // Muss auf dem Tisch 10 sein. Was passiert wenn gekauft?
@@ -72,13 +72,13 @@ public Image victoryImg(){
 }
 
 // Auf Ablagestapel legen
-public void throwOnDisCardPile(VictoryCard v){
+public void throwOnDisCardPile(_VictoryCard v){
 	//Wohin?
 	
 }
 
-public void trash(VictoryCard v){
-	VictoryCard v1 = null;
+public void trash(_VictoryCard v){
+	_VictoryCard v1 = null;
 	// Nicht klar wie...
 }
 

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 import Dominion.Client.Client;
+import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Server.ServerClasses.GamePartyOnServer;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
@@ -32,6 +33,7 @@ import javafx.stage.Stage;
 public class ReadMsgFromServer implements Runnable {
 	ObjectInputStream in;
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
+	Croupier croupier = Croupier.getCroupier();
 	ChatMessageLobby msg;
 	Client_Model model;
 	
@@ -278,7 +280,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
-								
+
 					           }
 					      });
 						
@@ -303,7 +305,7 @@ public class ReadMsgFromServer implements Runnable {
 					           }
 					      });
 						
-						
+
 					
 					}
 					

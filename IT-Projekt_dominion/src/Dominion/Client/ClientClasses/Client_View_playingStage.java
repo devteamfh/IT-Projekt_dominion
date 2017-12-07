@@ -1,27 +1,28 @@
 package Dominion.Client.ClientClasses;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
-import Dominion.ServiceLocator;
+import Dominion.Client.ClientClasses.gameplay.Croupier;
+import Dominion.Client.ClientClasses.gameplay.cards.ActionCard;
+import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
+import Dominion.Client.ClientClasses.gameplay.cards.MoneyCard;
+import Dominion.Client.ClientClasses.gameplay.cards.ProvinceCard;
 import Dominion.Client.abstractClasses.View;
 import Dominion.appClasses.GameParty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sun.misc.GC;
 
 
 /**
@@ -39,14 +40,30 @@ import javafx.stage.Stage;
  */
 public class Client_View_playingStage extends View<Client_Model> {
 	ServiceLocatorClient sl;
-	Label stack;
-	Label yourHand;
+	Croupier croupier;
+
+	ProvinceCard estate, duchy, province;
+	MoneyCard copper, silver, gold;
+	ArrayList<GameCard> al_communityCards_left;
 	
-	VBox vb_player;
+	ActionCard market;
+	
+	
+	
+	ArrayList<GameCard> al_communityCards_center;
+	
 	
 	Button provisorischCard1;
 	Button provisorischCard2;
 	Button provisorischCard3;
+
+	
+	Button action2;
+	
+	Label stack;
+	Label yourHand;
+	
+	VBox vb_player;
 	
 	TextField tf_messagePlayingStage;
     TextArea chatWindowPlayingStage;
@@ -59,10 +76,46 @@ public class Client_View_playingStage extends View<Client_Model> {
     }
 	
 	/**
-     * @author Joel Henz
+     * @author Joel Henz, kab
      */
 	protected Scene create_GUI() {
+		croupier = Croupier.getCroupier();
+		
+		//Leafs 
+		
+		//____Community Cards links -> Ländereien und Geld_____________________________________________//
+		estate   = new ProvinceCard(new Label("estate"),croupier.getCostsEstate());
+		duchy    = new ProvinceCard(new Label("duchy"),croupier.getCostsDuchy());
+		province = new ProvinceCard(new Label("province"),croupier.getCostsPovince());
+		
+		copper = new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper());
+		silver = new MoneyCard(new Label("silver"),croupier.getBuyPowerSilver(),croupier.getCostsSilver());
+		gold   = new MoneyCard(new Label("gold"),croupier.getBuyPowerGold(),croupier.getCostsGold());
+		
+		al_communityCards_left = new ArrayList<GameCard>();
+		al_communityCards_left.add(estate);
+		al_communityCards_left.add(duchy);
+		al_communityCards_left.add(province);
+		al_communityCards_left.add(copper);
+		al_communityCards_left.add(silver);
+		al_communityCards_left.add(gold);
+		
+		//add Observer, setSize
+		GameCard gc;
+		for (int i = 0; i < al_communityCards_left.size(); i++) {
+			gc = al_communityCards_left.get(i);
+			croupier.addObserver(gc);
+			gc.setMinSize(110, 120);
+		//	gc.assignPicture();
+		}
+		//--------------------------------------------------------------------------------------------//
+		
+		
+		market = new ActionCard(new Label("market"),5,1,2,3);
+		Croupier.getCroupier().addObserver(market);
+		market.setMinSize(110, 120);
 
+		
 	    sl = ServiceLocatorClient.getServiceLocator();  
 	    
 	    chatWindowPlayingStage = sl.getTextAreaChatPlayingStage();
@@ -130,31 +183,30 @@ public class Client_View_playingStage extends View<Client_Model> {
 		//setting the treasure and point cards to buy
 		GridPane gp_left = new GridPane();
 		
-		Button province = new Button ("Province");
-		Button duchy = new Button ("Duchy");
-		Button estate = new Button ("Estate");
-		Button curse = new Button ("Curse");
+
+		//Button curse = new Button ("Curse");
 		
-		Button gold = new Button ("Gold");
-		Button silver = new Button ("Silver");
-		Button copper = new Button ("Copper");
+		gold.addClickListener();
+		//Button silver = new Button ("Silver");
+		//Button copper = new Button ("Copper");
 		
 		GridPane.setConstraints(province, 0, 0);
 		GridPane.setConstraints(duchy, 0, 1);
 		GridPane.setConstraints(estate, 0, 2);
-		GridPane.setConstraints(curse, 0, 3);
+		//GridPane.setConstraints(curse, 0, 3);
 		
 		GridPane.setConstraints(gold, 1, 0);
 		GridPane.setConstraints(silver, 1, 1);
 		GridPane.setConstraints(copper, 1, 2);
 		
-		gp_left.getChildren().addAll(province,duchy,estate,curse,gold,silver,copper);
+		gp_left.getChildren().addAll(province,duchy,estate,gold,silver,copper);
 		
 		VBox vb_center = new VBox();
 		GridPane gp_actionCards = new GridPane();
 		
-		Button action1 = new Button ("action1");
-		Button action2 = new Button ("action1");
+		//GameCard gc1 = new GameCard ();
+		//Croupier.getCroupier().addObserver(gc1);
+		action2 = new Button("action2");
 		Button action3 = new Button ("action1");
 		Button action4 = new Button ("action1");
 		Button action5 = new Button ("action1");
@@ -164,7 +216,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		Button action9 = new Button ("action1");
 		Button action10 = new Button ("action1");
 		
-		GridPane.setConstraints(action1, 0, 0);
+		GridPane.setConstraints(market, 0, 0);
 		GridPane.setConstraints(action2, 1, 0);
 		GridPane.setConstraints(action3, 2, 0);
 		GridPane.setConstraints(action4, 3, 0);
@@ -175,7 +227,9 @@ public class Client_View_playingStage extends View<Client_Model> {
 		GridPane.setConstraints(action9, 3, 1);
 		GridPane.setConstraints(action10, 4, 1);
 		
-		gp_actionCards.getChildren().addAll(action1,action2,action3,action4,action5,action6,action7,action8,action9,action10);
+		gp_actionCards.getChildren().addAll(market, action2,action3,action4,action5,action6,action7,action8,action9,action10);
+		
+		//gc1.setMinSize(100,200);
 		
 		vb_center.getChildren().add(gp_actionCards);
 		
@@ -223,7 +277,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 			sl.getButtonEndGameHost().setDisable(false);
 		}
 		
-		this.scene = new Scene (root, 800,800);
+		this.scene = new Scene (root,1000,800);
+		scene.getStylesheets().add(getClass().getResource("gameplay/style_playStage.css").toExternalForm());
 
         return scene;
 	}
