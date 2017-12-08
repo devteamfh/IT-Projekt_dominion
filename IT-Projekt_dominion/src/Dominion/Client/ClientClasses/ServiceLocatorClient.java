@@ -46,6 +46,8 @@ public class ServiceLocatorClient {
     
     private PlayerWithoutOS player_noOS;
     private PlayerWithOS player_OS;
+    //we need this to save because we need to know which player is currently playing when we leave the game
+    private PlayerWithoutOS currentPlayerOfPlayingStage;
     
     private ToggleGroup endOfGameGroup;
     private ToggleGroup numberOfPlayersGroup;
@@ -68,6 +70,8 @@ public class ServiceLocatorClient {
     private Button provisorischCard1;
     private Button provisorischCard2;
     private Button provisorischCard3;	
+    private Button playAction;
+    private Button playBuy;
     private Button endAction;
     private Button endBuy;
     
@@ -84,6 +88,11 @@ public class ServiceLocatorClient {
   	//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
   	//will be evaluated as a loss.
     private Button endGameHost = new Button ("Spiel beenden (Host)");
+    
+    //button for leaving the game. If a party starts, each player gets a defeat if he clicks this button
+    //while waiting for full game, this button is deactivated for the host because he can end the game via "Spiel beenden (Host)" --> see button implemented above. For all other players while waiting
+    //for full game: via button endGamePlayer they can leave the game without getting a defeat
+    private Button endGamePlayer = new Button ("Spiel verlassen");
 
     /**
      * @author Brad Richards
@@ -126,6 +135,14 @@ public class ServiceLocatorClient {
     
     public PlayerWithoutOS getPlayer_noOS(){
     	return this.player_noOS;
+    }
+    
+    public void setCurrentPlayer_noOS_ofPlayingStage(PlayerWithoutOS player){
+    	this.currentPlayerOfPlayingStage=player;
+    }
+    
+    public PlayerWithoutOS getCurrentPlayer_noOS_ofPlayingStage(){
+    	return this.currentPlayerOfPlayingStage;
     }
     
     //player WITH ObjectOutpuStream
@@ -188,7 +205,6 @@ public class ServiceLocatorClient {
 	
 	public void removeGame(GameParty game){	
 		long id = game.getID();
-		//this.obsList.remove(game);
 		for (int i=0; i<this.obsList.size();i++){
 			if(id == this.obsList.get(i).getID()){
 				this.obsList.remove(i);				
@@ -204,8 +220,11 @@ public class ServiceLocatorClient {
 		
 		for (int i=0; i<this.obsList.size();i++){
 			if(id == this.obsList.get(i).getID()){
+				//replace the old GameParty with the updated GameParty
 				this.obsList.set(i, gamePartyToJoin);
 				if(this.obsList.get(i).isFull()){
+					//the game can begin, so set gameHasStarted on true
+					this.getCurrentGameParty().setGameHasStarted(true);
 					GameParty toPrepare = this.obsList.get(i);
 					this.obsList.remove(i);
 					prepareGame(toPrepare);
@@ -219,17 +238,39 @@ public class ServiceLocatorClient {
 	//prepare the playing stage of the host so he can start the game
 	public void prepareGame(GameParty party){
 		if(party.getHost().getUsername().equals(this.player_noOS.getUsername())){
+			this.playAction.setDisable(false);
 			this.endAction.setDisable(false);
 			this.endGameHost.setDisable(true);
+			//activate the button for leaving games also for the host
+			this.endGamePlayer.setDisable(false);
 		}
 		
 		//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
 		for(int i=0; i<party.getArrayListOfPlayers().size();i++){
 			if(party.getArrayListOfPlayers().get(i).getUsername().equals(this.player_noOS.getUsername())){
-				this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe");
-				this.ta_gameHistory.appendText("Spiel beginnt\n");
-				this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
-				this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
+				
+				if(party.getArrayListOfPlayers().get(i).getUsername().equals(party.getHost().getUsername())){
+					this.numberOfActionsAndBuys.setText("Du bist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe");
+					
+				}else{
+					this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe");
+					this.ta_gameHistory.appendText("Spiel beginnt\n");
+					this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
+					this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
+				}				
+			}
+		}
+	}
+	
+	public void updateGamePartyAfterLeave(GameParty party){
+		long id = party.getID();
+		
+		for (int i=0; i<this.obsList.size();i++){
+			if(id == this.obsList.get(i).getID()){
+				//replace the old GameParty with the updated GameParty
+				this.obsList.set(i, party);
+				
+				break;
 			}
 		}
 	}
@@ -292,6 +333,10 @@ public class ServiceLocatorClient {
 		this.currentGameParty=party;
 	}
 	
+	public void removeCurrentGameParty(){
+		this.currentGameParty=null;
+	}
+	
 	public GameParty getCurrentGameParty(){
 		return this.currentGameParty;
 	}
@@ -312,7 +357,27 @@ public class ServiceLocatorClient {
 		return this.endGameHost;
 	}
 	
+	public Button getButtonEndGamePlayer(){
+		return this.endGamePlayer;
+	}
+	
 	//getter and setter for some playing stage buttons
+	public Button getButtonPlayActions(){
+		return this.playAction;
+	}
+	
+	public void setButtonPlayActions(String text){
+		this.playAction = new Button (text);
+	}
+	
+	public Button getButtonPlayBuy(){
+		return this.playBuy;
+	}
+	
+	public void setButtonPlayBuy(String text){
+		this.playBuy = new Button (text);
+	}
+	
 	public Button getButtonEndActions(){
 		return this.endAction;
 	}
@@ -321,13 +386,14 @@ public class ServiceLocatorClient {
 		this.endAction = new Button (text);
 	}
 	
-	public Button getButtonEndBuy(){
+	public Button getButtonEndBuys(){
 		return this.endBuy;
 	}
 	
-	public void setButtonEndBuy(String text){
+	public void setButtonEndBuys(String text){
 		this.endBuy = new Button (text);
 	}
+	
 
 	public Label getLbl_errMsgView() {
 		return lbl_errMsgView;

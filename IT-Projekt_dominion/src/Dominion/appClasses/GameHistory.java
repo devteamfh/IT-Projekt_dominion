@@ -14,13 +14,14 @@ public class GameHistory extends GameObject{
 	
 	private String text;
 	private GameParty party;
-	private String sender;
 	private PlayerWithoutOS playerForGUIActivation;
 	private PlayerWithoutOS currentPlayer;
+	private PlayerWithoutOS leavingPlayer;
 	private HistoryType type;
 	
 	public enum HistoryType {
-		 EndAction, EndBuy
+		 PlayAction, PlayBuy, EndAction,
+		 EndBuy, LeaveGame
 		 };
 	
 	private static long nextMessageID() {		
@@ -58,10 +59,6 @@ public class GameHistory extends GameObject{
 		this.text = this.text+"\n"+text;
 	}
 	
-	public String getSender(){
-		return this.sender;
-	}
-	
 	public HistoryType getHistoryType(){
 		return this.type;
 	}
@@ -80,6 +77,14 @@ public class GameHistory extends GameObject{
 	
 	public PlayerWithoutOS getCurrentPlayer(){
 		return this.currentPlayer;
+	}
+	
+	public PlayerWithoutOS getLeavingPlayer(){
+		return this.leavingPlayer;
+	}
+	
+	public void setLeavingPlayer(PlayerWithoutOS player){
+		this.leavingPlayer=player;
 	}
 
 }

@@ -21,6 +21,7 @@ public class GameParty extends GameObject{
 	private int numberOfLoggedInPlayers = 0;
 	private ArrayList <PlayerWithoutOS> playersOfThisGameParty = new ArrayList <PlayerWithoutOS>();
 	private int rounds;
+	private boolean gameHasStarted;
 	
 	private static long nextMessageID() {		
 		return messageID++;
@@ -62,6 +63,19 @@ public class GameParty extends GameObject{
 		this.numberOfLoggedInPlayers++;
 	}
 	
+	public void removePlayer(PlayerWithoutOS player){
+		
+		//searching the player to remove and remove him
+		for(int i=0; i<this.playersOfThisGameParty.size();i++){
+			if(this.playersOfThisGameParty.get(i).getUsername().equals(player.getUsername())){
+				this.playersOfThisGameParty.remove(i);
+				}
+		}
+		
+		this.numberOfLoggedInPlayers--;
+		
+	}
+	
 	public int getMaxNumberOfPlayers(){
 		return this.numberOfMaxPlayers;
 	}
@@ -84,6 +98,14 @@ public class GameParty extends GameObject{
 	
 	public void setRounds (int rounds){
 		this.rounds=rounds;
+	}
+	
+	public void setGameHasStarted(boolean gameHasStarted){
+		this.gameHasStarted=gameHasStarted;
+	}
+	
+	public boolean getGameHasStarted(){
+		return this.gameHasStarted;
 	}
 	
 

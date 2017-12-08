@@ -96,11 +96,17 @@ public class Client_View_playingStage extends View<Client_Model> {
 		this.provisorischCard3 = new Button ("Karte prov");
 		this.provisorischCard3.setDisable(true);
 		
-		sl.setButtonEndActions("Aktion spielen");
+		sl.setButtonPlayActions("Aktion spielen");
+		sl.getButtonPlayActions().setDisable(true);
+		
+		sl.setButtonPlayBuy("Kauf spielen");
+		sl.getButtonPlayBuy().setDisable(true);
+		
+		sl.setButtonEndActions("Aktionsphase beenden");
 		sl.getButtonEndActions().setDisable(true);
 		
-		sl.setButtonEndBuy("Kauf spielen");
-		sl.getButtonEndBuy().setDisable(true);
+		sl.setButtonEndBuys("Kaufphase beenden");
+		sl.getButtonEndBuys().setDisable(true);
 		
 		VBox vb_right = new VBox();
 		
@@ -122,6 +128,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 		//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
 		//will be evaluated as a loss.
 		sl.getButtonEndGameHost().setDisable(true);
+		//by default this button is also deactivated
+		sl.getButtonEndGamePlayer().setDisable(true);
 
 		root.setTop(vb_player);
 		vb_player.setAlignment(Pos.TOP_RIGHT);
@@ -200,12 +208,15 @@ public class Client_View_playingStage extends View<Client_Model> {
 		hb_hand.getChildren().addAll(provisorischCard1,provisorischCard2,provisorischCard3);
 		
 		VBox vb_stack_endGameHost = new VBox();
-		vb_stack_endGameHost.getChildren().addAll(stack,sl.getButtonEndGameHost());
+		HBox hb_endGameHost_endGamePlayer = new HBox();
+		hb_endGameHost_endGamePlayer.getChildren().addAll(sl.getButtonEndGameHost(),sl.getButtonEndGamePlayer());
+		vb_stack_endGameHost.getChildren().addAll(stack,hb_endGameHost_endGamePlayer);
+		
 		HBox.setMargin(vb_stack_endGameHost, new Insets(0, 100, 0, 0));
 		HBox.setMargin(yourHand, new Insets(0, 20, 0, 0));
 		HBox.setMargin(hb_hand, new Insets(0, 20, 0, 0));
 		
-		hb_stack_hand_endAction_endBuy.getChildren().addAll(vb_stack_endGameHost,yourHand,hb_hand,sl.getButtonEndActions(),sl.getButtonEndBuy());
+		hb_stack_hand_endAction_endBuy.getChildren().addAll(vb_stack_endGameHost,yourHand,hb_hand,sl.getButtonPlayActions(),sl.getButtonPlayBuy(),sl.getButtonEndActions(),sl.getButtonEndBuys());
 		hb_stack_hand_endAction_endBuy.setAlignment(Pos.TOP_CENTER);
 		
 		vb_bottom.getChildren().addAll(sl.getLabelNumberOfActionsAndBuys(),hb_stack_hand_endAction_endBuy);
@@ -221,6 +232,9 @@ public class Client_View_playingStage extends View<Client_Model> {
 		//Only the will get the button for ending the game until the game isn't full (example 3 of 4 players -> host can end the game)
 		if(sl.getIsHost()){
 			sl.getButtonEndGameHost().setDisable(false);
+		}else{
+			//button activation if the the client isn't the host
+			sl.getButtonEndGamePlayer().setDisable(false);
 		}
 		
 		this.scene = new Scene (root, 800,800);

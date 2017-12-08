@@ -146,7 +146,8 @@ public class ReadMsgFromServer implements Runnable {
 						        //adding the name of the host on the playing Stage and add the current GameParty to the ServiceLocatorCLient of the host
 						        for(int i=0; i<newGame.getArrayListOfPlayers().size();i++){
 						        	Label label = new Label(sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getUsername());
-									sl.getPlayingStage().vb_player.getChildren().add(label);
+						        	Label allPlayer = new Label("Spieler dieser Partie:");
+									sl.getPlayingStage().vb_player.getChildren().addAll(allPlayer, label);
 						        }
 							}
 				           }
@@ -195,6 +196,11 @@ public class ReadMsgFromServer implements Runnable {
 							
 							//determine the joining player and create his playing stage
 							if(join.getUsername().equals(model.getName())){
+								
+								//setting the host as current player of the playing stage. We need this to save in case we will leave the party (new instance of a GameHistory object
+								//where we will pass on the current player as parameter)
+								sl.setCurrentPlayer_noOS_ofPlayingStage(sl.getCurrentGameParty().getHost());
+								
 								Stage playingStage = new Stage();			
 					        	playingStage.initModality(Modality.APPLICATION_MODAL);
 					        	sl.setIsHost(false);
@@ -207,7 +213,10 @@ public class ReadMsgFromServer implements Runnable {
 							//determine the players who have already joined the game. On their playing stages we have to add the username of the new player
 							try{
 								if(join.getSelectedGameParty().getID() == sl.getCurrentGameParty().getID()){
-									sl.getPlayingStage().vb_player.getChildren().clear();
+									sl.getPlayingStage().vb_player.getChildren().clear();	
+									Label allPlayer = new Label("Spieler dieser Partie:");
+									sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+									
 									for(int i =0; i<join.getSelectedGameParty().getArrayListOfPlayers().size();i++){
 										Label label = new Label(join.getSelectedGameParty().getArrayListOfPlayers().get(i).getUsername());
 										sl.getPlayingStage().vb_player.getChildren().add(label);
@@ -278,6 +287,45 @@ public class ReadMsgFromServer implements Runnable {
 					PlayerWithoutOS currentPlayer = history.getCurrentPlayer();
 					
 					switch(history.getHistoryType()){
+					case PlayAction:
+						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+								}else{
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+								}							
+					           }
+					      });
+						
+						
+						break;
+						
+					case PlayBuy:
+	
+						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+								}else{
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+								}									
+					           }
+					      });
+						
+						break;
+						
 					case EndAction:
 						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
@@ -286,12 +334,14 @@ public class ReadMsgFromServer implements Runnable {
 
 							@Override 
 					           public void run() {
-								sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+								}else{
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+								}	
 								
 					           }
 					      });
-						
-						
 						break;
 						
 					case EndBuy:
@@ -299,21 +349,105 @@ public class ReadMsgFromServer implements Runnable {
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 						
 						if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+							sl.getButtonPlayActions().setDisable(false);
 							sl.getButtonEndActions().setDisable(false);
 						}
 						PlayerWithoutOS playerForGUIActivation= history.getPlayerForGUIActivation();
-						
 						Platform.runLater(new Runnable() {
 
 							@Override 
 					           public void run() {
-								sl.getLabelNumberOfActionsAndBuys().setText(playerForGUIActivation.getUsername()+" ist an der Reihe: "+playerForGUIActivation.getNumberOfActions()+" Aktionen, "+playerForGUIActivation.getNumberOfBuys()+" Käufe");
+								
+								if(playerForGUIActivation.getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+playerForGUIActivation.getNumberOfActions()+" Aktionen, "+playerForGUIActivation.getNumberOfBuys()+" Käufe");
+								}else{
+									sl.getLabelNumberOfActionsAndBuys().setText(playerForGUIActivation.getUsername()+" ist an der Reihe: "+playerForGUIActivation.getNumberOfActions()+" Aktionen, "+playerForGUIActivation.getNumberOfBuys()+" Käufe");
+								}
 								
 					           }
 					      });
 						
+						break;
 						
-					
+					case LeaveGame:
+						System.out.println("test game is full "+history.getGameParty().isFull());
+						System.out.println("test game has started "+history.getGameParty().getGameHasStarted());
+						System.out.println("test anzahl spieler "+history.getGameParty().getNumberOfLoggedInPlayers());
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								
+								if(history.getLeavingPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.setCurrentGameParty(null);
+									
+									//check if the game has started. We have to make +1player on number of logged in players because we have already removed the player on client side
+									if(history.getGameParty().getGameHasStarted()){
+										sl.getPlayingStage().stop();
+										
+										//game party is full when player is leaving: he gets a defeat
+										Label popUpMsg = new Label ("Du hast das Spiel verlassen und bekommst eine Niederlage");
+										sl.setLbl_popUpMessage(popUpMsg);
+										
+										Stage popUp = new Stage();	
+										popUp.setResizable(true);
+										Client_View_popUp view = new Client_View_popUp (popUp, model);
+										new Client_Controller_popUp(model, view); 
+										view.start();
+									}else{
+										//leaving player won't get a defeat
+										sl.getPlayingStage().stop();
+										
+										//leaving player won't get a defeat
+										Label popUpMsg = new Label ("Du hast das Spiel verlassen");
+										sl.setLbl_popUpMessage(popUpMsg);
+										
+										Stage popUp = new Stage();	
+										popUp.setResizable(true);
+										Client_View_popUp view = new Client_View_popUp (popUp, model);
+										new Client_Controller_popUp(model, view); 
+										view.start();
+									}
+									
+								//else-clause is for all other players which are still ingame	
+								}else{
+									//first we check if there is only one player left. If yes: he will win the party
+									if(history.getGameParty().getNumberOfLoggedInPlayers() == 1 && history.getGameParty().getGameHasStarted()){
+										sl.getPlayingStage().stop();
+										sl.setCurrentGameParty(null);
+										Label popUpMsg = new Label ("Glückwunsch, du hast gewonnen!");
+										sl.setLbl_popUpMessage(popUpMsg);
+										Stage popUp = new Stage();	
+										popUp.setResizable(true);
+										Client_View_popUp view = new Client_View_popUp (popUp, model);
+										new Client_Controller_popUp(model, view); 
+										view.start();
+									}else{
+										//update the saved GameParty because one player has left the game
+										sl.setCurrentGameParty(history.getGameParty());
+										
+										//clear first the player list and then set it updated
+										sl.getPlayingStage().vb_player.getChildren().clear();
+										for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
+											Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername());
+											sl.getPlayingStage().vb_player.getChildren().add(label);
+										}
+									}
+	
+								}
+								
+								//last but not least: update the LisView of each client if the game hasn't started yet
+								if (!history.getGameParty().getGameHasStarted()){
+									sl.updateGamePartyAfterLeave(history.getGameParty());
+								}
+								
+					           }
+					      });
+						
+						break;
+						
+						
+						
 					}
 					
 					
