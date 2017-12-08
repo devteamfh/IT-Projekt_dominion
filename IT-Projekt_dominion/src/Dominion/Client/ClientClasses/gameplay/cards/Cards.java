@@ -2,6 +2,7 @@ package Dominion.Client.ClientClasses.gameplay.cards;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 import javafx.scene.control.Label;
 /**
@@ -12,7 +13,13 @@ public class Cards {
 	
 	ArrayList<GameCard> al_allCards = new ArrayList<GameCard>();
 	ArrayList<GameCard> al_communityActionCards = new ArrayList<GameCard>();
-								
+	ArrayList<GameCard> cardSet1 = new ArrayList<GameCard>();
+	ArrayList<GameCard> cardSet2 = new ArrayList<GameCard>();
+	ArrayList<GameCard> cardSet3 = new ArrayList<GameCard>();
+	ArrayList<GameCard> cardSet4 = new ArrayList<GameCard>();
+	
+	int numberOfCardSet;
+	
 								//ActionCard Attributes
 								//int costs, int adtnlActions, int adtnlBuys, int adtnlMoneyToSpend) 
 	
@@ -50,25 +57,34 @@ public class Cards {
 	
 	public Cards() {         
 		wrapCards();
+		setCardSet(1);
+		setCardSet(2);
+		setCardSet(3);
+		setCardSet(4);
 		}
 
 
 		public void wrapCards(){
-			al_allCards.add(basement);
-			al_allCards.add(chapel);
-			al_allCards.add(forge);
-			al_allCards.add(funfair);
-			al_allCards.add(laboratory);
-			al_allCards.add(lumberjack);
-			al_allCards.add(market);
-			al_allCards.add(militia);
-			al_allCards.add(mine);
-			al_allCards.add(moat);
-			al_allCards.add(moneylender);
-			al_allCards.add(rebuilding);
-			al_allCards.add(village);
-			al_allCards.add(witch);
-			al_allCards.add(workshop);
+			al_allCards.add(basement); //keller 2; +1 aktion und beliebig viele karten von der hand austauschen (discard)
+			al_allCards.add(chapel); //kapelle 2; bis zu 4 karten auf den müll werfen --> button "wegwerfen" noch machen
+			al_allCards.add(moat);//burggraben 2 (reaktion auf angriff); +2 karten und angriff abwehren sobald ein angriff erfolgt -->client liest vom sever z.b. dass ein gegenspieler hexe gespielt hat...nun wird burggraben aktiv falls auf der hand
+			
+			al_allCards.add(lumberjack);//holzfäller 3; +1kauf und +2 treasure
+			al_allCards.add(village); //dorf 3; +1 karte und +2 aktionen
+			al_allCards.add(workshop);//werkstatt 3; eine karte nehmen, die BIS ZU 4 kostet --> alle karten werden aktiviert in der aktionsphase
+			
+			
+			al_allCards.add(forge); //schmiede 4; +3 karten
+			al_allCards.add(rebuilding);//umbau 4; beliebige karte aus der hand auf den müll werfen. man kann dann eine karten erwerben, die BIS ZU 2 treasure mehr kostet als die weggeworfene karte
+			al_allCards.add(moneylender);//geldverleiher 4; kupfer entsorgen, man kriegt +3 treasure
+			al_allCards.add(militia);//miliz 4 (angriff); +2 treasure und jeder spieler muss solange karten ablegen (auf stapel gespielte karten) bis er nur noch 3 hand-karten hat
+						
+			al_allCards.add(funfair); //jahrmarkt 5; +2 aktionen und +1kauf und +2 treasure
+			al_allCards.add(laboratory); //labor 5; +2 karten und +1aktion		
+			al_allCards.add(market);//markt 5; +1aktion und +1kauf und +1karte und +1treasure		
+			al_allCards.add(mine); //mine 5; geldkarte entsorgen: nimm eine geldkarte, die BIS ZU 3 treasure mehr kostet als die trashed geldkarte. man kann die geldkarte sofort in die hand nehmen
+			al_allCards.add(witch);//hexe 5 (angriff); +2 karten und jeder gegenspieler muss eine fluchkarte nehmen
+			
 		}
 		
 		public ArrayList<GameCard> getAl_allCards(){
@@ -77,13 +93,152 @@ public class Cards {
 		
 
 		//hier sind die 10 community ActioncArdsd drin, welche random generiert werden sollen
-		public ArrayList<GameCard> getCommunityActionCards(){
+		/**public ArrayList<GameCard> getCommunityActionCards(){
 		for (int i = 0; i<10; i++){
 		this.al_communityActionCards.add(al_allCards.get(i));
 		}
 		
 		return al_communityActionCards;
 				
+			
+		}*/
+		
+		/**
+		 * @author Joel Henz:
+		 * create several Card Sets. Each GameParty reveives one of those Card Sets, chosen randomly
+		 * 
+		 */
+		public void setCardSet (int cardSetNumber){
+			switch(cardSetNumber){
+			case 1://ohne angriff und abwehr
+				cardSet1.add(basement);//
+				cardSet1.add(chapel);
+				
+				cardSet1.add(lumberjack);
+				
+				cardSet1.add(forge);
+				cardSet1.add(rebuilding);
+				cardSet1.add(moneylender);
+				
+				cardSet1.add(funfair);
+				cardSet1.add(laboratory);
+				cardSet1.add(market);
+				cardSet1.add(mine);
+				
+				break;
+				
+			case 2:
+				cardSet2.add(chapel);
+				cardSet2.add(moat);
+				
+				cardSet2.add(village);
+				cardSet2.add(workshop);
+				
+				cardSet2.add(rebuilding);
+				cardSet2.add(moneylender);
+				cardSet2.add(militia);
+				
+				cardSet2.add(funfair);
+				cardSet2.add(laboratory);
+				cardSet2.add(witch);
+				
+				break;
+				
+			case 3:
+				cardSet3.add(basement);
+				cardSet3.add(moat);
+				
+				cardSet3.add(lumberjack);
+				cardSet3.add(village);
+				cardSet3.add(workshop);
+				
+				cardSet3.add(forge);
+				cardSet3.add(militia);
+				
+				cardSet3.add(market);
+				cardSet3.add(mine);
+				cardSet3.add(witch);
+				
+				break;
+				
+			case 4:
+				cardSet4.add(chapel);
+				cardSet4.add(basement);
+				
+				cardSet4.add(lumberjack);
+				cardSet4.add(village);
+				cardSet4.add(workshop);
+				
+				cardSet4.add(forge);
+				cardSet4.add(rebuilding);
+				cardSet4.add(militia);
+				
+				cardSet4.add(market);
+				cardSet4.add(witch);
+				
+			}
+		}
+		
+		/**
+		 * @author Joel Henz:
+		 * the host will get a card set when creating a new game party
+		 * 
+		 */
+		public ArrayList <GameCard> getRandomCardSet(){
+			Random rand = new Random();
+			int cardSet = rand.nextInt(4)+1;
+			
+			switch(cardSet){
+			case 1:
+				this.numberOfCardSet =1;
+				return cardSet1;
+				
+			case 2:
+				this.numberOfCardSet =2;
+				return cardSet2;
+				
+			case 3:
+				this.numberOfCardSet =3;
+				return cardSet3;
+				
+			case 4:
+				this.numberOfCardSet =4;
+				return cardSet4;
+				
+			default:
+				return null;
+			}
+			
+			
+		}
+		
+		/**
+		 * @author Joel Henz:
+		 * the number of the card set of a game party
+		 */
+		public int getNumberOfCardSet(){
+			return this.numberOfCardSet;
+		}
+		
+		public ArrayList <GameCard> getCardSetOfGameParty(int numberOfCardSet){
+			
+			switch(numberOfCardSet){
+			case 1:
+				return cardSet1;
+				
+			case 2:
+				return cardSet2;
+				
+			case 3:
+				return cardSet3;
+				
+			case 4:
+				return cardSet4;
+				
+			default:
+				return null;
+			}
+			
 			
 		}
 		

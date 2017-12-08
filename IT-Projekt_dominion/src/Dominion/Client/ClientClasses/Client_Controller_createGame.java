@@ -42,7 +42,6 @@ import javafx.stage.WindowEvent;
  */
 public class Client_Controller_createGame extends Controller<Client_Model, Client_View_createGame> {
     private ServiceLocatorClient sl;
-    private Croupier croupier;
     private Client_View_createGame view_createGame;
     private String selectedGameMode;
     private int numberOfPlayers;
@@ -55,7 +54,6 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         super(model, view);
         this.view_createGame = view;
         sl = ServiceLocatorClient.getServiceLocator();
-        croupier = Croupier.getCroupier();
     
      // Button Close Style Hover und Action press
     	view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
@@ -256,12 +254,14 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	PlayerWithoutOS creator = new PlayerWithoutOS(model.playerName);
             	
             	Cards cards = new Cards();
-            	croupier.setAl_communityActionCards(cards.getCommunityActionCards());
-            	//liste zum mitsenden croupier.getAl_communityActionCards()
-            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers);
+            	Croupier croupier = Croupier.getCroupier();
             	
-            	
-            	//kreiert alle karten und gibt 10 davon dem croupier ab. Die Stage verlangt die 10 karten vom croupier
+            	//get a card set (chosen randomly among 4 sets)
+            	croupier.setAl_communityActionCards(cards.getRandomCardSet());
+            	sl.setCroupier(croupier);
+            	int numberOfCardSet = cards.getNumberOfCardSet();
+   	
+            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers,numberOfCardSet);
 
             	if(newParty.withRounds()){
             		int rounds = Integer.parseInt(view.lbl_iRunden.getText());

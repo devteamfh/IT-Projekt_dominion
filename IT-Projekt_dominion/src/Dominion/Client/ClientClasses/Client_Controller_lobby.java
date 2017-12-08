@@ -172,7 +172,6 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
         	   JoinGameParty gameToJoin = new JoinGameParty(joinGame,model.getName());
         	   
         	   try {
-        		//model.out.reset();
 				model.out.writeObject(gameToJoin);
 				model.out.flush();
 				

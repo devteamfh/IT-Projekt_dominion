@@ -24,20 +24,21 @@ public class GameParty extends GameObject{
 	private ArrayList <PlayerWithoutOS> playersOfThisGameParty = new ArrayList <PlayerWithoutOS>();
 	private int rounds;
 	private boolean gameHasStarted;
-	//private ArrayList<GameCard> communityActionCards;
+	private int numberOfCardSet;
 	
 
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-	public GameParty(String selectedMode, PlayerWithoutOS host, int number){
+	public GameParty(String selectedMode, PlayerWithoutOS host, int numberOfMaxPlayers, int numberOfCardSet){
 		super(GameObject.ObjectType.GameParty);
 		this.selectedMode=selectedMode;
 		this.host=host;
-		this.numberOfMaxPlayers=number;
+		this.numberOfMaxPlayers=numberOfMaxPlayers;
+		this.numberOfCardSet=numberOfCardSet;
 		this. id = -1;	
-		//this.communityActionCards = al_communityActionCards;
+
 	}
 	
 	public void setID(){
@@ -113,8 +114,8 @@ public class GameParty extends GameObject{
 		return this.gameHasStarted;
 	}
 	
-	/*public ArrayList<GameCard> getCommunityActionCards() {
-		return communityActionCards;
-	}*/
+	public int getNumberOfCardSet(){
+		return this.numberOfCardSet;
+	}
 
 }

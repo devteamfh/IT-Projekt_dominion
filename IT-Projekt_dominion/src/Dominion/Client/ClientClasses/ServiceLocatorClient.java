@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
@@ -93,6 +94,8 @@ public class ServiceLocatorClient {
     //while waiting for full game, this button is deactivated for the host because he can end the game via "Spiel beenden (Host)" --> see button implemented above. For all other players while waiting
     //for full game: via button endGamePlayer they can leave the game without getting a defeat
     private Button endGamePlayer = new Button ("Spiel verlassen");
+    
+    private Croupier croupier;
 
     
     
@@ -419,6 +422,14 @@ public class ServiceLocatorClient {
 
 	public void setView_lobby(Client_View_lobby view_lobby) {
 		this.view_lobby = view_lobby;
+	}
+	
+	public void setCroupier(Croupier croupier){
+		this.croupier= croupier;
+	}
+	
+	public Croupier getCroupier(){
+		return this.croupier;
 	}
 	
 

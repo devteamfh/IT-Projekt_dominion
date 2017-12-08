@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import Dominion.Client.Client;
 import Dominion.Client.ClientClasses.gameplay.Croupier;
+import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Server.ServerClasses.GamePartyOnServer;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
@@ -119,6 +120,7 @@ public class ReadMsgFromServer implements Runnable {
 					 
 				case GameParty:
 					GameParty newGame = (GameParty) obj;
+					System.out.println(newGame.getNumberOfCardSet());
 					 
 					Platform.runLater(new Runnable() {
 				           @Override 
@@ -189,6 +191,16 @@ public class ReadMsgFromServer implements Runnable {
 							
 							//determine the joining player and create his playing stage
 							if(join.getUsername().equals(model.getName())){
+								
+								//initila
+								
+								Cards cards = new Cards();
+				            	Croupier croupier = Croupier.getCroupier();
+				            	
+				            	//get the card set of this game party
+				            	int numberOfCardSet = join.getSelectedGameParty().getNumberOfCardSet();
+				            	croupier.setAl_communityActionCards(cards.getCardSetOfGameParty(numberOfCardSet));
+				            	sl.setCroupier(croupier);
 								
 								//setting the host as current player of the playing stage. We need this to save in case we will leave the party (new instance of a GameHistory object
 								//where we will pass on the current player as parameter)
