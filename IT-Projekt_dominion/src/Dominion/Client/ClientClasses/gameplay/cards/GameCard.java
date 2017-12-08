@@ -16,7 +16,7 @@ public class GameCard extends Button implements Observer {
 	boolean holeCard  = false;
 
 	
-	int  costs = 5;
+	int  costs;
 
 	
 	public GameCard(Label cardName) {

@@ -48,9 +48,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 	
 	ActionCard market;
 	
-	
-	
-	ArrayList<GameCard> al_communityCards_center;
+
+	//ArrayList<GameCard> al_communityCards_center;
 	
 	
 	Button provisorischCard1;
@@ -223,23 +222,23 @@ public class Client_View_playingStage extends View<Client_Model> {
 		Button action8 = new Button ("action1");
 		Button action9 = new Button ("action1");
 		Button action10 = new Button ("action1");
+	
 		
-		GridPane.setConstraints(market, 0, 0);
-		GridPane.setConstraints(action2, 1, 0);
-		GridPane.setConstraints(action3, 2, 0);
-		GridPane.setConstraints(action4, 3, 0);
-		GridPane.setConstraints(action5, 4, 0);
-		GridPane.setConstraints(action6, 0, 1);
-		GridPane.setConstraints(action7, 1, 1);
-		GridPane.setConstraints(action8, 2, 1);
-		GridPane.setConstraints(action9, 3, 1);
-		GridPane.setConstraints(action10, 4, 1);
+		HBox hb_wrp_communityActionCardsBackRow = new HBox();
+		HBox hb_wrp_communityActionCardsFrontRow = new HBox();
 		
-		gp_actionCards.getChildren().addAll(market, action2,action3,action4,action5,action6,action7,action8,action9,action10);
+		hb_wrp_communityActionCardsBackRow.getChildren().addAll(croupier.getAl_communityActionCards().get(0),croupier.getAl_communityActionCards().get(1),croupier.getAl_communityActionCards().get(2),croupier.getAl_communityActionCards().get(3),croupier.getAl_communityActionCards().get(4));
+		hb_wrp_communityActionCardsFrontRow.getChildren().addAll(croupier.getAl_communityActionCards().get(5),croupier.getAl_communityActionCards().get(6),croupier.getAl_communityActionCards().get(7),croupier.getAl_communityActionCards().get(8),croupier.getAl_communityActionCards().get(9));
+		
+	
+		for (int i = 0;i<10;i++){
+			croupier.getAl_communityActionCards().get(i).setPrefSize(300,200);
+			}
+		
 		
 		//gc1.setMinSize(100,200);
 		
-		vb_center.getChildren().add(gp_actionCards);
+		vb_center.getChildren().addAll(hb_wrp_communityActionCardsBackRow,hb_wrp_communityActionCardsFrontRow);
 		
 		Label playedCards_label = new Label ("gespielte Karten");
 		vb_center.getChildren().add(playedCards_label);

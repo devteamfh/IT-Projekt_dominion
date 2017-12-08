@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
 import Dominion.appClasses.PlayerWithOS;
@@ -93,6 +94,7 @@ public class ServiceLocatorClient {
     //for full game: via button endGamePlayer they can leave the game without getting a defeat
     private Button endGamePlayer = new Button ("Spiel verlassen");
 
+    
     
     /**
      * @author Brad Richards
@@ -419,7 +421,9 @@ public class ServiceLocatorClient {
 		this.view_lobby = view_lobby;
 	}
 
-
+    public Cards getCards() {
+		return cards;
+	}
 
 
 

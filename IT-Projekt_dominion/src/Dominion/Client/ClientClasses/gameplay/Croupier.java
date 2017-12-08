@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import Dominion.Client.ClientClasses.ServiceLocatorClient;
+import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Server.ServerClasses.ServiceLocatorServer;
 
 public class Croupier extends Observable {
+	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
     //Felder
 	private static Croupier croupier;
 	
@@ -29,10 +32,12 @@ public class Croupier extends Observable {
 	int stackSizeGold     = 50; int costsGold    = 6; int buyPowerGold   = 3;
 
 	
-	
-	ArrayList<GameCard> al_gameCards = new ArrayList<GameCard>();	
-	
-    //Konstruktoren
+
+	ArrayList<GameCard> al_communityActionCards = new ArrayList<GameCard>();
+
+
+
+	//Konstruktoren
     public static Croupier getCroupier() {
         if (croupier == null)
             croupier = new Croupier();
@@ -259,9 +264,14 @@ public class Croupier extends Observable {
 		this.buys = buys;
 	}
 
-
-
 	
+    public ArrayList<GameCard> getAl_communityActionCards() {
+		return al_communityActionCards;
+	}
+
+	public void setAl_communityActionCards(ArrayList<GameCard> al_communityActionCards) {
+		this.al_communityActionCards = al_communityActionCards;
+	}
 	
 
 	

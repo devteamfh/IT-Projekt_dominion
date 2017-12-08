@@ -8,6 +8,8 @@ import java.util.Iterator;
 import com.sun.glass.ui.View;
 
 import Dominion.ServiceLocator;
+import Dominion.Client.ClientClasses.gameplay.Croupier;
+import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
@@ -252,6 +254,11 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	PlayerWithoutOS creator = new PlayerWithoutOS(model.playerName);
             	
             	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers);
+            	
+            	
+            	//kreiert alle karten und gibt 10 davon dem croupier ab. Die Stage verlangt die 10 karten vom croupier
+            	Cards cards = new Cards();
+            	Croupier.getCroupier().setAl_communityActionCards(cards.getCommunityActionCards());
             	
             	if(newParty.withRounds()){
             		int rounds = Integer.parseInt(view.lbl_iRunden.getText());
