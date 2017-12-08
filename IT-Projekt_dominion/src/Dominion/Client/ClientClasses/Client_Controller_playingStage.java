@@ -24,6 +24,7 @@ import javafx.event.EventHandler;
  */
 public class Client_Controller_playingStage extends Controller<Client_Model, Client_View_playingStage> {
 	private ServiceLocatorClient sl;
+	private Croupier croupier;
 	private Client_View_playingStage view_playingStage;
 	private StringBuilder strBuilder = new StringBuilder();
        
@@ -34,6 +35,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         super(model, view);
         this.view_playingStage = view;
         sl = ServiceLocatorClient.getServiceLocator(); 
+        croupier = Croupier.getCroupier();
         
         sl.getButtonEndGameHost().setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -73,8 +75,11 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         });
         
         
+        
+        
+        
         sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
-
+        	
             @Override
             public void handle(ActionEvent event) {
             	
@@ -82,8 +87,12 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             		strBuilder.delete(0, strBuilder.length());
             	}
 
+            	
+            	
             	GameHistory history;
             	sl.getPlayer_noOS().decreaseNumberOfActions();
+            	
+            	
             	
             	if(sl.getPlayer_noOS().getNumberOfActions()==0){
             		sl.getButtonPlayActions().setDisable(true);
@@ -117,7 +126,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	if(strBuilder != null){
             		strBuilder.delete(0, strBuilder.length());
             	}
-            	
+           
             	GameHistory history;
             	sl.getPlayer_noOS().decreaseNumberOfBuys();
             	

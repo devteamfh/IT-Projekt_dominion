@@ -8,6 +8,8 @@ import java.util.Iterator;
 import com.sun.glass.ui.View;
 
 import Dominion.ServiceLocator;
+import Dominion.Client.ClientClasses.gameplay.Croupier;
+import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
@@ -40,6 +42,7 @@ import javafx.stage.WindowEvent;
  */
 public class Client_Controller_createGame extends Controller<Client_Model, Client_View_createGame> {
     private ServiceLocatorClient sl;
+    private Croupier croupier;
     private Client_View_createGame view_createGame;
     private String selectedGameMode;
     private int numberOfPlayers;
@@ -52,6 +55,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         super(model, view);
         this.view_createGame = view;
         sl = ServiceLocatorClient.getServiceLocator();
+        croupier = Croupier.getCroupier();
     
      // Button Close Style Hover und Action press
     	view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
@@ -251,8 +255,14 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             public void handle(ActionEvent event) {
             	PlayerWithoutOS creator = new PlayerWithoutOS(model.playerName);
             	
-            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers);
+            	Cards cards = new Cards();
+            	croupier.setAl_communityActionCards(cards.getCommunityActionCards());
             	
+            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers, croupier.getAl_communityActionCards());
+            	
+            	
+            	//kreiert alle karten und gibt 10 davon dem croupier ab. Die Stage verlangt die 10 karten vom croupier
+
             	if(newParty.withRounds()){
             		int rounds = Integer.parseInt(view.lbl_iRunden.getText());
             		newParty.setRounds(rounds);

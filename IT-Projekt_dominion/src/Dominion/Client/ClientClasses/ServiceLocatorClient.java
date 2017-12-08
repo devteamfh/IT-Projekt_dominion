@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
 import Dominion.appClasses.PlayerWithOS;
@@ -70,10 +71,10 @@ public class ServiceLocatorClient {
     private Button provisorischCard1;
     private Button provisorischCard2;
     private Button provisorischCard3;	
-    private Button playAction;
-    private Button playBuy;
-    private Button endAction;
-    private Button endBuy;
+    private Button playAction; //nur provisorisch
+    private Button playBuy;    // nur provisorisch
+    private Button endAction;   //bleiben  
+    private Button endBuy;      //bleiben
     
     private boolean isHost=false;
     
@@ -93,6 +94,7 @@ public class ServiceLocatorClient {
     //for full game: via button endGamePlayer they can leave the game without getting a defeat
     private Button endGamePlayer = new Button ("Spiel verlassen");
 
+    
     
     /**
      * @author Brad Richards

@@ -2,6 +2,8 @@ package Dominion.appClasses;
 
 import java.util.ArrayList;
 
+import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
+
 /**
  * @author Joel Henz
  * instances of this class are sent/read by client and server. The equivalent class of GameParty is GamePartyOnServer. Objects of this class are only used on server side (to store Player objects and ObjectOutputStream-objects) and will not be sent
@@ -22,17 +24,20 @@ public class GameParty extends GameObject{
 	private ArrayList <PlayerWithoutOS> playersOfThisGameParty = new ArrayList <PlayerWithoutOS>();
 	private int rounds;
 	private boolean gameHasStarted;
+	private ArrayList<GameCard> communityActionCards;
 	
+
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-	public GameParty(String selectedMode, PlayerWithoutOS host, int number){
+	public GameParty(String selectedMode, PlayerWithoutOS host, int number, ArrayList<GameCard> al_communityActionCards){
 		super(GameObject.ObjectType.GameParty);
 		this.selectedMode=selectedMode;
 		this.host=host;
 		this.numberOfMaxPlayers=number;
 		this. id = -1;	
+		this.communityActionCards = al_communityActionCards;
 	}
 	
 	public void setID(){
@@ -108,5 +113,8 @@ public class GameParty extends GameObject{
 		return this.gameHasStarted;
 	}
 	
+	public ArrayList<GameCard> getCommunityActionCards() {
+		return communityActionCards;
+	}
 
 }
