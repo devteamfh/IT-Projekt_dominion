@@ -2,6 +2,7 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 
+import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessagePlayingStage;
@@ -61,8 +62,19 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	sendMessageToServer();    	
             }
         });
+
+        view.action2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            	Croupier.getCroupier().setBuyMode(true);
+            	Croupier.getCroupier().setBuyPowerCopper(10);
+            }
+        });
         
-        sl.getButtonPlayActions().setOnAction(new EventHandler<ActionEvent>() {
+        
+        sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
+
             @Override
             public void handle(ActionEvent event) {
             	
@@ -213,11 +225,15 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         		}
             	
             }
-        });
-        
-        
+        });  
         
     }
+    
+    
+    
+    
+    
+    
     
     protected void sendMessageToServer() {
 		String name = model.getName();

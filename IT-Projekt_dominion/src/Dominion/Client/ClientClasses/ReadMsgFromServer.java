@@ -9,6 +9,7 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 import Dominion.Client.Client;
+import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Server.ServerClasses.GamePartyOnServer;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
@@ -32,6 +33,7 @@ import javafx.stage.Stage;
 public class ReadMsgFromServer implements Runnable {
 	ObjectInputStream in;
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
+	Croupier croupier = Croupier.getCroupier();
 	ChatMessageLobby msg;
 	Client_Model model;
 	
@@ -94,12 +96,6 @@ public class ReadMsgFromServer implements Runnable {
 				        	new Client_Controller_popUp(model, view); 
 				        	view.start();
 			 				
-
-				        	//l�scht das p
-
-				        
-				        	
-				        	
 								}catch (NullPointerException e){
 								}
 								
@@ -107,7 +103,6 @@ public class ReadMsgFromServer implements Runnable {
 					      });
 					
 						playerStatistics = null;
-						System.gc();
 						model.client.close();
 					}
 							
@@ -119,9 +114,7 @@ public class ReadMsgFromServer implements Runnable {
 
 					sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
 					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());
-	
-		
-					
+				
 					break;
 					 
 				case GameParty:
@@ -321,6 +314,9 @@ public class ReadMsgFromServer implements Runnable {
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
 								}									
+
+								sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+
 					           }
 					      });
 						
@@ -445,9 +441,7 @@ public class ReadMsgFromServer implements Runnable {
 					      });
 						
 						break;
-						
-						
-						
+
 					}
 					
 					
@@ -456,9 +450,25 @@ public class ReadMsgFromServer implements Runnable {
 				}
 		
 			}
-		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+		}  catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
+			
+			try {
+				model.getInput().close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				model.getOutput().close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				model.client.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
 		}
 
 	}

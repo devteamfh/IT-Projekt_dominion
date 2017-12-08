@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.event.ListSelectionEvent;
+
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.ChatMessagePlayingStage;
@@ -32,6 +34,7 @@ public class ClientHandler implements Runnable {
 	private ArrayList <ObjectOutputStream> list;
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
+	private PlayerWithOS PWOS_thisPlayer;
 
 	private ServiceLocatorServer sl;
 	
@@ -59,9 +62,18 @@ public class ClientHandler implements Runnable {
 				sendToAllClients (obj);			
 			}
 		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("exception");
+			list.remove(this.out);
+			sl.getConnectedPlayers().remove(PWOS_thisPlayer);
+			
+			//noch zu implementieren: neue statistik liste an alle versenden
+			
+			try { out.close();
+				  in.close();
+				  s.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	
@@ -185,12 +197,13 @@ public class ClientHandler implements Runnable {
 			 String att9 	 = start.getAtt9();
 			 
 			 
-			 //prï¿½fe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurï¿½ck
+			 //prüfe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurück
 			 while (iter_connectedPlayers.hasNext()){ 
-				 PlayerWithOS current = iter_connectedPlayers.next();
-					 if(current.getUsername().equals(username)){
+				 PlayerWithOS current = iter_connectedPlayers.next();	 
+				 if(current.getUsername().equals(username)){
 					 start.setBol_nameTaken(true);
-					
+					 sl.getConnectedPlayers().remove(current);
+					 
 					 this.out.reset();
 					 out.writeObject(start);
 					 out.flush();
@@ -198,12 +211,11 @@ public class ClientHandler implements Runnable {
 					 }
 			 } if (start.isBol_nameTaken())  break;
 			 
-			 
-			 
 			 PlayerWithOS newPlayer = new PlayerWithOS (username, this.out);
+			 this.PWOS_thisPlayer = newPlayer;
 			 
 			 sl.addConnectedPlayer(newPlayer);
-			 
+		
 			 sl.db_addPlayer(username, PW, gamesPlayed, gamesWon, gamesLost, winLooseRto, att6,att7,att8,att9); 
 			 
 			 //hier werden alle Start Ifno STatistics, die der Server mal erhalten hat in eine StartInfoSTatistics Array List hineingelegt

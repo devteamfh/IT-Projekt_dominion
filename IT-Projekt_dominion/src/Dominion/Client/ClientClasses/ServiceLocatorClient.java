@@ -77,13 +77,12 @@ public class ServiceLocatorClient {
     
     private boolean isHost=false;
     
-    private TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
     private ArrayList<StartInformation> al_Statistics = new ArrayList <StartInformation>();
-       
-    private Label lbl_errMsgView = new Label("");
-    
+    private TableView <StartInformation> tbl_playerStats = new TableView<StartInformation>();
+
+    private Label lbl_errMsgView = new Label("");   
     private Label lbl_popUpMessage = new Label("");
-    
+   
     //if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
   	//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
   	//will be evaluated as a loss.
@@ -94,6 +93,7 @@ public class ServiceLocatorClient {
     //for full game: via button endGamePlayer they can leave the game without getting a defeat
     private Button endGamePlayer = new Button ("Spiel verlassen");
 
+    
     /**
      * @author Brad Richards
      * Factory method for returning the singleton
@@ -418,5 +418,15 @@ public class ServiceLocatorClient {
 	public void setView_lobby(Client_View_lobby view_lobby) {
 		this.view_lobby = view_lobby;
 	}
+
+
+
+
+
+
+	
+	
+	
+	
 
 }
