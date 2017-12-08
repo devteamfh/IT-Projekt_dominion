@@ -121,21 +121,20 @@ public class ClientHandler implements Runnable {
 		 
 		 //handle a client entering an existing game
 		 case JoinGameParty:
+			 
 			 JoinGameParty gameToJoin = (JoinGameParty) obj;
 			 gameToJoin.setID();
 			 
 			 GameParty selectedGame = gameToJoin.getSelectedGameParty();
 			 long id = selectedGame.getID();
-			 
-			 
+			 		 
 			 PlayerWithOS newPlayerJoining = new PlayerWithOS (gameToJoin.getUsername(), this.out);
-
+			 
 			 //first we will add the joining player to the correct GamePartyOnServer			 
 			 for (int i=0; i<sl.getGameListFromServer().size();i++){
 				 if(id == sl.getGameListFromServer().get(i).getGameParty().getID()){
 					 sl.getGameListFromServer().get(i).addPlayer(newPlayerJoining);
 					 if(sl.getGameListFromServer().get(i).getGameParty().isFull()){
-						 System.out.println("test clienthandler game is full true");
 						 //game can begin 
 						 sl.getGameListFromServer().get(i).getGameParty().setGameHasStarted(true);
 					 }
@@ -143,6 +142,7 @@ public class ClientHandler implements Runnable {
 					 gameToJoin.setUpdatedGameParty(sl.getGameListFromServer().get(i).getGameParty());
 					 
 					 //break the for-loop because we have found the right GameParty
+					 break;
 				 }
 			 }
 			 
@@ -156,6 +156,7 @@ public class ClientHandler implements Runnable {
 
 			 break;
 			 
+		 //used for new logged in players to create the ListView with the open GameParties	 
 		 case UpdateLobby:
 			 UpdateLobby toUpdate = (UpdateLobby) obj;
 			 toUpdate.setID();
@@ -174,11 +175,12 @@ public class ClientHandler implements Runnable {
 				 }
 			 
 				 toUpdate.setListOfOpenGames(gamePartyListClient);
-				
+
 				 this.out.writeObject(toUpdate);
 				 this.out.flush();				 
 			 }
 			 break;
+			 
 		 
 		 //kab: the server reads the username of each connected player and stores them
 		 case StartInformation:
@@ -197,7 +199,7 @@ public class ClientHandler implements Runnable {
 			 String att9 	 = start.getAtt9();
 			 
 			 
-			 //prüfe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurück
+			 //prï¿½fe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurï¿½ck
 			 while (iter_connectedPlayers.hasNext()){ 
 				 PlayerWithOS current = iter_connectedPlayers.next();	 
 				 if(current.getUsername().equals(username)){
@@ -354,13 +356,32 @@ public class ClientHandler implements Runnable {
 							
 						case LeaveGame:
 							
-							history.getGameParty().removePlayer(history.getCurrentPlayer());
-							System.out.println(history.getGameParty().getNumberOfLoggedInPlayers());
-							
+							//first write to all players of the corresponding GameParty
 							for (int i =0; i<current.getPlayerList().size();i++){
-								current.getPlayerList().get(i).getOut().reset();
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							//remove leaving player in the corresponding GamePartyOnServer
+							long id3 = history.getGameParty().getID();
+							for (int i=0; i<sl.getGameListFromServer().size();i++){
+								 if(id3 == sl.getGameListFromServer().get(i).getGameParty().getID()){
+									 sl.getGameListFromServer().get(i).removePlayer(history.getCurrentPlayer());
+
+									 //break the for-loop because we have found the right GameParty
+									 break;
+								 }
+							 }							
+
+							//break case LeaveGame
+							break;
+							
+						case UpdateLobbyAfterLeave:
+							//send the msg to all logged in players so their lobby will be updated
+							for (int i =0; i<sl.getConnectedPlayers().size();i++){
+								//sl.getConnectedPlayers().get(i).getOut().reset();
+								sl.getConnectedPlayers().get(i).getOut().writeObject(history);
+								sl.getConnectedPlayers().get(i).getOut().flush();
 							}
 						
 						}

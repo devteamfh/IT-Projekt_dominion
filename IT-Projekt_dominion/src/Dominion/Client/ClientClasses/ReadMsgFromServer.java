@@ -246,6 +246,9 @@ public class ReadMsgFromServer implements Runnable {
 									sl.setLbl_popUpMessage(new Label("Der Host hat das Spiel beendet."));
 									sl.getPlayingStage().stop();
 									sl.setCurrentGameParty(null);
+									sl.getTextAreaChatPlayingStage().clear();
+									sl.getTextAreaGameHistory().clear();
+
 									Stage popUp = new Stage();	
 									popUp.setResizable(false);
 									popUp.initModality(Modality.APPLICATION_MODAL);
@@ -366,9 +369,6 @@ public class ReadMsgFromServer implements Runnable {
 						break;
 						
 					case LeaveGame:
-						System.out.println("test game is full "+history.getGameParty().isFull());
-						System.out.println("test game has started "+history.getGameParty().getGameHasStarted());
-						System.out.println("test anzahl spieler "+history.getGameParty().getNumberOfLoggedInPlayers());
 						Platform.runLater(new Runnable() {
 
 							@Override 
@@ -380,6 +380,8 @@ public class ReadMsgFromServer implements Runnable {
 									//check if the game has started. We have to make +1player on number of logged in players because we have already removed the player on client side
 									if(history.getGameParty().getGameHasStarted()){
 										sl.getPlayingStage().stop();
+										sl.getTextAreaChatPlayingStage().clear();
+										sl.getTextAreaGameHistory().clear();
 										
 										//game party is full when player is leaving: he gets a defeat
 										Label popUpMsg = new Label ("Du hast das Spiel verlassen und bekommst eine Niederlage");
@@ -391,8 +393,22 @@ public class ReadMsgFromServer implements Runnable {
 										new Client_Controller_popUp(model, view); 
 										view.start();
 									}else{
-										//leaving player won't get a defeat
+										
+										//we have to update the ListView of each client if the game hasn't started yet. Remove also the leaving player
+										history.getGameParty().removePlayer(history.getLeavingPlayer());
+										history.setNewType(GameHistory.HistoryType.UpdateLobbyAfterLeave);
+										
+										try {
+											sl.getPlayer_OS().getOut().writeObject(history);
+											sl.getPlayer_OS().getOut().flush();
+										} catch (IOException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+
 										sl.getPlayingStage().stop();
+										sl.getTextAreaChatPlayingStage().clear();
+										sl.getTextAreaGameHistory().clear();
 										
 										//leaving player won't get a defeat
 										Label popUpMsg = new Label ("Du hast das Spiel verlassen");
@@ -407,10 +423,16 @@ public class ReadMsgFromServer implements Runnable {
 									
 								//else-clause is for all other players which are still ingame	
 								}else{
-									//first we check if there is only one player left. If yes: he will win the party
+									//remove first the leaving player
+									history.getGameParty().removePlayer(history.getLeavingPlayer());
+
+									//we check if there is only one player left. If yes: he will win the party
 									if(history.getGameParty().getNumberOfLoggedInPlayers() == 1 && history.getGameParty().getGameHasStarted()){
 										sl.getPlayingStage().stop();
 										sl.setCurrentGameParty(null);
+										sl.getTextAreaChatPlayingStage().clear();
+										sl.getTextAreaGameHistory().clear();
+										
 										Label popUpMsg = new Label ("Glückwunsch, du hast gewonnen!");
 										sl.setLbl_popUpMessage(popUpMsg);
 										Stage popUp = new Stage();	
@@ -419,6 +441,10 @@ public class ReadMsgFromServer implements Runnable {
 										new Client_Controller_popUp(model, view); 
 										view.start();
 									}else{
+										//read the GameHistory message
+										sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+										sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+										
 										//update the saved GameParty because one player has left the game
 										sl.setCurrentGameParty(history.getGameParty());
 										
@@ -431,18 +457,27 @@ public class ReadMsgFromServer implements Runnable {
 									}
 	
 								}
-								
-								//last but not least: update the LisView of each client if the game hasn't started yet
-								if (!history.getGameParty().getGameHasStarted()){
-									sl.updateGamePartyAfterLeave(history.getGameParty());
-								}
+
+					           }
+					      });
+						
+						//break case LeaveGame
+						break;
+						
+					case UpdateLobbyAfterLeave:
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								sl.updateGamePartyAfterLeave(history.getGameParty());
 								
 					           }
 					      });
 						
-						break;
-
 					}
+					
+					//break case GameHistory
+					break;
 					
 					
 								

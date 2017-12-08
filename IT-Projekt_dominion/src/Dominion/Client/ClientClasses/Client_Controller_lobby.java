@@ -157,7 +157,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 			@Override
 			public void handle(MouseEvent event) {
 				if(!sl.getListView().getSelectionModel().isEmpty()){
-					view.btn_enterGame.setDisable(false);					
+					view.btn_enterGame.setDisable(false);	
 					joinGame = sl.getListView().getSelectionModel().getSelectedItem();
 				}
 				
@@ -167,15 +167,12 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
        view.btn_enterGame.setOnAction(new EventHandler<ActionEvent>() {
            @Override
            public void handle(ActionEvent event) {
-        	   /**Stage playingStage = new Stage();				
-		       Client_View_playingStage view_playingStage = new Client_View_playingStage (playingStage, model);
-		       new Client_Controller_playingStage(model, view_playingStage); 
-		       view_playingStage.start();*/
-		       
+
         	   view.btn_enterGame.setDisable(true);
         	   JoinGameParty gameToJoin = new JoinGameParty(joinGame,model.getName());
         	   
         	   try {
+        		//model.out.reset();
 				model.out.writeObject(gameToJoin);
 				model.out.flush();
 				

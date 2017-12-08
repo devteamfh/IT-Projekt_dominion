@@ -211,12 +211,11 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	}
             	
             	sl.getButtonEndGamePlayer().setDisable(true);
-            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" verlässt das Spiel");
+            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" verlässt das Spiel\n");
             	GameHistory history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),GameHistory.HistoryType.LeaveGame);
             	history.setLeavingPlayer(sl.getPlayer_noOS());
             	
             	try {
-            		model.out.reset();
         			model.out.writeObject(history);
         			model.out.flush();
         		} catch (IOException e) {

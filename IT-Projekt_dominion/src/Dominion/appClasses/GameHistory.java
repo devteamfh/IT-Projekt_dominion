@@ -21,7 +21,7 @@ public class GameHistory extends GameObject{
 	
 	public enum HistoryType {
 		 PlayAction, PlayBuy, EndAction,
-		 EndBuy, LeaveGame
+		 EndBuy, LeaveGame, UpdateLobbyAfterLeave
 		 };
 	
 	private static long nextMessageID() {		
@@ -85,6 +85,10 @@ public class GameHistory extends GameObject{
 	
 	public void setLeavingPlayer(PlayerWithoutOS player){
 		this.leavingPlayer=player;
+	}
+	
+	public void setNewType(HistoryType type){
+		this.type=type;
 	}
 
 }

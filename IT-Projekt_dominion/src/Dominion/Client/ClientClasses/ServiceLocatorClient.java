@@ -418,15 +418,8 @@ public class ServiceLocatorClient {
 	public void setView_lobby(Client_View_lobby view_lobby) {
 		this.view_lobby = view_lobby;
 	}
-
-
-
-
-
-
 	
-	
-	
-	
+
+
 
 }
