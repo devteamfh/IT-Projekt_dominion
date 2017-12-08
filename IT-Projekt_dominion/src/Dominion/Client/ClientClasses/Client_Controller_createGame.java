@@ -257,8 +257,8 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	
             	Cards cards = new Cards();
             	croupier.setAl_communityActionCards(cards.getCommunityActionCards());
-            	
-            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers, croupier.getAl_communityActionCards());
+            	//liste zum mitsenden croupier.getAl_communityActionCards()
+            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers);
             	
             	
             	//kreiert alle karten und gibt 10 davon dem croupier ab. Die Stage verlangt die 10 karten vom croupier

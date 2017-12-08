@@ -124,7 +124,7 @@ public class ReadMsgFromServer implements Runnable {
 				           @Override 
 				           public void run() {
 				            sl.addNewGame(newGame);
-				            croupier.setAl_communityActionCards(newGame.getCommunityActionCards());
+				            //croupier.setAl_communityActionCards(newGame.getCommunityActionCards());
 				            if(newGame.getHost().getUsername().equals(model.getName())){
 				            	sl.setCurrentGameParty(newGame);
 				            	Stage playingStage = new Stage();			

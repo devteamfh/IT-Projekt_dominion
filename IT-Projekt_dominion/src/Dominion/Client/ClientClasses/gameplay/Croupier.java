@@ -31,11 +31,7 @@ public class Croupier extends Observable {
 	int stackSizeSilver   = 50; int costsSilver  = 3; int buyPowerSilver = 2;
 	int stackSizeGold     = 50; int costsGold    = 6; int buyPowerGold   = 3;
 
-	
-
 	ArrayList<GameCard> al_communityActionCards = new ArrayList<GameCard>();
-
-
 
 	//Konstruktoren
     public static Croupier getCroupier() {
