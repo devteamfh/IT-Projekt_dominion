@@ -1,15 +1,18 @@
 package Dominion.Client.ClientClasses.gameplay.cards;
 
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
 
 import Dominion.Client.ClientClasses.gameplay.Croupier;
+import Dominion.appClasses.GameObject.ObjectType;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
 public class GameCard extends Button implements Observer {
+	
 	Croupier croupier;
 	
 	Label   lbl_cardName;
@@ -25,6 +28,8 @@ public class GameCard extends Button implements Observer {
 		croupier = Croupier.getCroupier();
 		this.assignPicture();
 	}
+	
+
 	
 	
 	@Override

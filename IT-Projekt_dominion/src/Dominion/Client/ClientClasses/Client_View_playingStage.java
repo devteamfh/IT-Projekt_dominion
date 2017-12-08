@@ -10,6 +10,7 @@ import Dominion.Client.ClientClasses.gameplay.cards.MoneyCard;
 import Dominion.Client.ClientClasses.gameplay.cards.ProvinceCard;
 import Dominion.Client.abstractClasses.View;
 import Dominion.appClasses.GameParty;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -247,6 +249,17 @@ public class Client_View_playingStage extends View<Client_Model> {
 		Button playedCard1 = new Button ("playedCard");
 		Button playedCard2 = new Button ("playedCard");
 		Button playedCard3 = new Button ("playedCard");
+		
+		
+		
+
+
+
+
+		
+		
+		
+		
 		
 		playedCards_hbox.getChildren().addAll(playedCard1,playedCard2,playedCard3);
 		vb_center.getChildren().add(playedCards_hbox);

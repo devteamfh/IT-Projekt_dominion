@@ -71,10 +71,10 @@ public class ServiceLocatorClient {
     private Button provisorischCard1;
     private Button provisorischCard2;
     private Button provisorischCard3;	
-    private Button playAction;
-    private Button playBuy;
-    private Button endAction;
-    private Button endBuy;
+    private Button playAction; //nur provisorisch
+    private Button playBuy;    // nur provisorisch
+    private Button endAction;   //bleiben  
+    private Button endBuy;      //bleiben
     
     private boolean isHost=false;
     
@@ -421,9 +421,7 @@ public class ServiceLocatorClient {
 		this.view_lobby = view_lobby;
 	}
 
-    public Cards getCards() {
-		return cards;
-	}
+
 
 
 
