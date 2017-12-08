@@ -4,23 +4,19 @@
 /*author: Beda Kaufmann */
 .bg_login {
 	-fx-background-image: url('img/bg_login.png');
-	-fx-background-repeat: stretch;
 }
 
 .bg_lobby {
 	-fx-background-image: url('img/bg_lobby_big2.png');
-	-fx-background-repeat: stretch;
 }
 
 .bg_createGame {
 	-fx-background-image: url('img/bg_createGame.png');
-	-fx-background-repeat: stretch;
 	
 }
 
 .bg_popUp {
 	-fx-background-image: url('img/bg_popUp.png');
-	-fx-background-repeat: stretch;
 }
 
 /*

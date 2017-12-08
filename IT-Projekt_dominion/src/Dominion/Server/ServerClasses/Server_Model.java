@@ -79,7 +79,8 @@ public class Server_Model extends Model { //creates the connection to the server
 				
 				ObjectOutputStream os = new ObjectOutputStream (client.getOutputStream()); 
 				list_clients_output.add(os); 
-							
+				
+				//passing on the accepted socket to a new ClientHandler instance so the CLientHandler thread can read the messages from this client/socket (via InputStream)
 				clientThread = new Thread (new ClientHandler(client, list_clients_output,os)); 
 				clientThread.start();
 

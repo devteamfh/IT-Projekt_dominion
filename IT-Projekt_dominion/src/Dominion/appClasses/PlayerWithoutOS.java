@@ -16,8 +16,8 @@ public class PlayerWithoutOS implements Serializable {
 	private static long messageID = 0;
 	
 	private int points = 3;
-	private int numberOfActions =1; //David
-	private int numberOfBuys=1; // David
+	private int numberOfActions =3; //David
+	private int numberOfBuys=3; // David
 	private int numberOfTreasures =0; // David
 	private String username;
 	
@@ -78,6 +78,19 @@ public class PlayerWithoutOS implements Serializable {
 	
 	public void decreaseNumberOfTreasures(int i){
 		this.numberOfTreasures = numberOfTreasures-i;
+	}
+	
+	public void setInitialActionsAndBuys(){
+		this.numberOfActions = 3;
+		this.numberOfBuys=3;
+	}
+	
+	public void actionEnded(){
+		this.numberOfActions =0;
+	}
+
+	public void buyEnded(){
+		this.numberOfBuys=0;
 	}
 	
 

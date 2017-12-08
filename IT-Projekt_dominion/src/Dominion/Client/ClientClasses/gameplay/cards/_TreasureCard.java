@@ -1,4 +1,4 @@
-package Dominion.appClasses.Cards;
+package Dominion.Client.ClientClasses.gameplay.cards;
 
 import java.awt.Button;
 import javafx.scene.image.Image;
@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
  * @author Adrian Widmer
  */
 
-public class TreasureCard extends Button 		
+public class _TreasureCard extends Button 		
 {
 	private String title;					
 	private Image treasureImg;
@@ -23,7 +23,7 @@ public class TreasureCard extends Button
 	}
 	
 	//constructor
-	public TreasureCard(TreasureCardType type) {
+	public _TreasureCard(TreasureCardType type) {
 		super();
 		this.type = type;
 		switch(type){
