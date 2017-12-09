@@ -1,6 +1,7 @@
 package Dominion.Client.ClientClasses;
 
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.Observer;
 
 import Dominion.Client.ClientClasses.gameplay.Croupier;
@@ -40,24 +41,24 @@ import sun.misc.GC;
  * @author: Styling und Anordnung: kab
  *                                        
  */
-public class Client_View_playingStage extends View<Client_Model> {
+public class Client_View_playingStage extends View<Client_Model> implements Observer {
 	ServiceLocatorClient sl;
 	Croupier croupier;
 
 	ProvinceCard estate, duchy, province;
 	MoneyCard copper, silver, gold;
+	
+	
 	ArrayList<GameCard> al_communityCards_left;
 	
-	ActionCard market;
-	
-
-	//ArrayList<GameCard> al_communityCards_center;
-	
+	Label labeltest;
 	
 	Button provisorischCard1;
 	Button provisorischCard2;
 	Button provisorischCard3;
-
+	
+	Button provisorisch4;
+	GameCard ac1;
 	
 	Button action2;
 	
@@ -70,6 +71,10 @@ public class Client_View_playingStage extends View<Client_Model> {
     TextArea chatWindowPlayingStage;
     TextArea windowGameHistory;
     customButton btn_sendChatMsgPlayingStage;
+    
+	HBox hb_wrp_communityActionCardsBackRow;
+	HBox hb_wrp_communityActionCardsFrontRow;
+    
 
 	public Client_View_playingStage(Stage stage, Client_Model model, GameParty party) {
 		super(stage, model,party);
@@ -81,6 +86,16 @@ public class Client_View_playingStage extends View<Client_Model> {
      */
 	protected Scene create_GUI() {
 		croupier = Croupier.getCroupier();
+		
+		for (GameCard ac : croupier.getAl_communityActionCards()){
+		croupier.addObserver(ac);	
+		}
+		
+		croupier.addObserver(this);
+		
+		croupier.prepareAL_stackSizeCommunityActionCards();
+		
+		ac1 = croupier.getAl_communityActionCards().get(1);
 		
 		//Leafs 
 		
@@ -94,6 +109,9 @@ public class Client_View_playingStage extends View<Client_Model> {
 		gold   = new MoneyCard(new Label("gold"),croupier.getBuyPowerGold(),croupier.getCostsGold());
 		
 		al_communityCards_left = new ArrayList<GameCard>();
+		
+
+		
 		al_communityCards_left.add(estate);
 		al_communityCards_left.add(duchy);
 		al_communityCards_left.add(province);
@@ -112,9 +130,11 @@ public class Client_View_playingStage extends View<Client_Model> {
 		//--------------------------------------------------------------------------------------------//
 		
 		
-		market = new ActionCard(new Label("market"),5,1,2,3);
-		Croupier.getCroupier().addObserver(market);
-		market.setMinSize(110, 120);
+		
+		
+		//market = new ActionCard(new Label("market"),5,1,2,3);
+		//Croupier.getCroupier().addObserver(market);
+		//market.setMinSize(110, 120);
 
 		
 	    sl = ServiceLocatorClient.getServiceLocator();  
@@ -144,12 +164,14 @@ public class Client_View_playingStage extends View<Client_Model> {
 		this.yourHand = new Label("deine Hand");
 		
 		this.provisorischCard1 = new Button ("Karte prov");
-		this.provisorischCard1.setDisable(true);
+		this.provisorischCard1.setDisable(false);
 		this.provisorischCard2 = new Button ("Karte prov");
-		this.provisorischCard2.setDisable(true);
+		this.provisorischCard2.setDisable(false);
 		this.provisorischCard3 = new Button ("Karte prov");
-		this.provisorischCard3.setDisable(true);
+		this.provisorischCard3.setDisable(false);
 		
+		this.provisorisch4 = new Button("kjkjk");
+
 		sl.setButtonPlayActions("Aktion spielen");
 		sl.getButtonPlayActions().setDisable(true);
 		
@@ -213,21 +235,15 @@ public class Client_View_playingStage extends View<Client_Model> {
 		VBox vb_center = new VBox();
 		GridPane gp_actionCards = new GridPane();
 		
-		//GameCard gc1 = new GameCard ();
-		//Croupier.getCroupier().addObserver(gc1);
-		action2 = new Button("action2");
-		Button action3 = new Button ("action1");
-		Button action4 = new Button ("action1");
-		Button action5 = new Button ("action1");
-		Button action6 = new Button ("action1");
-		Button action7 = new Button ("action1");
-		Button action8 = new Button ("action1");
-		Button action9 = new Button ("action1");
-		Button action10 = new Button ("action1");
-	
 		
-		HBox hb_wrp_communityActionCardsBackRow = new HBox();
-		HBox hb_wrp_communityActionCardsFrontRow = new HBox();
+
+		//Croupier.getCroupier().addObserver(gc1);
+		
+		
+		
+		 hb_wrp_communityActionCardsBackRow = new HBox();
+		 hb_wrp_communityActionCardsFrontRow = new HBox();
+		
 		
 		hb_wrp_communityActionCardsBackRow.getChildren().addAll(croupier.getAl_communityActionCards().get(0),croupier.getAl_communityActionCards().get(1),croupier.getAl_communityActionCards().get(2),croupier.getAl_communityActionCards().get(3),croupier.getAl_communityActionCards().get(4));
 		hb_wrp_communityActionCardsFrontRow.getChildren().addAll(croupier.getAl_communityActionCards().get(5),croupier.getAl_communityActionCards().get(6),croupier.getAl_communityActionCards().get(7),croupier.getAl_communityActionCards().get(8),croupier.getAl_communityActionCards().get(9));
@@ -240,10 +256,11 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		//gc1.setMinSize(100,200);
 		
-		vb_center.getChildren().addAll(hb_wrp_communityActionCardsBackRow,hb_wrp_communityActionCardsFrontRow);
+		labeltest = new Label("kj");
+		vb_center.getChildren().addAll(hb_wrp_communityActionCardsBackRow,hb_wrp_communityActionCardsFrontRow,labeltest);
 		
 		Label playedCards_label = new Label ("gespielte Karten");
-		vb_center.getChildren().add(playedCards_label);
+		vb_center.getChildren().addAll(playedCards_label);
 		
 		HBox playedCards_hbox = new HBox();
 		Button playedCard1 = new Button ("playedCard");
@@ -269,9 +286,9 @@ public class Client_View_playingStage extends View<Client_Model> {
 		sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
 		HBox hb_stack_hand_endAction_endBuy = new HBox();
 		hb_stack_hand_endAction_endBuy.setPrefSize(750, 120);
-		
+	
 		HBox hb_hand = new HBox();
-		hb_hand.getChildren().addAll(provisorischCard1,provisorischCard2,provisorischCard3);
+		hb_hand.getChildren().addAll(provisorischCard1, provisorischCard2,provisorischCard3);
 		
 		VBox vb_stack_endGameHost = new VBox();
 		HBox hb_endGameHost_endGamePlayer = new HBox();
@@ -308,5 +325,18 @@ public class Client_View_playingStage extends View<Client_Model> {
 
         return scene;
 	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		this.labeltest.setText("jaja"); 
+		System.out.println("obseverd");
+		//hb_wrp_communityActionCardsBackRow.getChildren().addAll(provisorisch4,ac1);
+		//hb_wrp_communityActionCardsFrontRow.getChildren().addAll(croupier.getAl_communityActionCards().get(5),croupier.getAl_communityActionCards().get(6),croupier.getAl_communityActionCards().get(7),croupier.getAl_communityActionCards().get(8),croupier.getAl_communityActionCards().get(9));
+		//stage.show();
+
+		
+	}
+
+
 
 }

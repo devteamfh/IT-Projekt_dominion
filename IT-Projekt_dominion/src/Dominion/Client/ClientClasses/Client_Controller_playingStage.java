@@ -2,6 +2,8 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 
+
+
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.CancelGame;
@@ -12,6 +14,9 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -65,23 +70,58 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             }
         });
 
-        view.action2.setOnAction(new EventHandler<ActionEvent>() {
+        view.provisorischCard1.setOnAction(new EventHandler<ActionEvent>() {
+        	
+        	
+        	
+        	
+        	
+        	
             @Override
             public void handle(ActionEvent event) {
 
-            	Croupier.getCroupier().setBuyMode(true);
-            	Croupier.getCroupier().setBuyPowerCopper(10);
+            	croupier.setBuyMode(true);
+            	croupier.setBuyPower();
+            	System.out.println(croupier.getBuyPower());
+            	
+
+            }
+            
+          
+            
+            
+            
+            
+            
+        });
+        view.provisorischCard2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            	croupier.setBuyMode(true);
+            	croupier.setBuyPower(0);
+            	System.out.println(croupier.getBuyPower());
             }
         });
-        
-        
-        
+       
+        view.provisorischCard3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            
+            }
+        });
+     
+
         
         
         sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
         	
             @Override
             public void handle(ActionEvent event) {
+            	
+            	croupier.setActionMode(false);
+            	croupier.setBuyMode(true);
             	
             	if(strBuilder != null){
             		strBuilder.delete(0, strBuilder.length());
@@ -123,6 +163,8 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             @Override
             public void handle(ActionEvent event) {
             	
+
+            	
             	if(strBuilder != null){
             		strBuilder.delete(0, strBuilder.length());
             	}
@@ -158,6 +200,9 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	
+            	croupier.setActionMode(false);
+            	croupier.setBuyMode(true);
             	
             	if(strBuilder != null){
             		strBuilder.delete(0, strBuilder.length());

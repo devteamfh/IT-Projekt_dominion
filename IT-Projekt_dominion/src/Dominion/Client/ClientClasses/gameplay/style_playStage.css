@@ -6,6 +6,9 @@
 		-fx-background-color: transparent;
 }
 
+.highlight {
+	-fx-effect: dropshadow( gaussian , yellow , 7 , 0.7 , 0 , 0 );	
+}
 
 
 

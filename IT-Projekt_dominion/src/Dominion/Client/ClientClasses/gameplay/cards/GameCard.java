@@ -1,17 +1,18 @@
 package Dominion.Client.ClientClasses.gameplay.cards;
 
-import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
 
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.appClasses.GameObject.ObjectType;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
-public class GameCard extends Button implements Observer {
+public class GameCard extends Button implements Observer  {
 	
 	Croupier croupier;
 	
@@ -19,7 +20,7 @@ public class GameCard extends Button implements Observer {
 	boolean holeCard  = false;
 
 	
-	int  costs;
+	int costs;
 
 	
 	public GameCard(Label cardName) {
@@ -34,20 +35,70 @@ public class GameCard extends Button implements Observer {
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {
+	
+
+					
+		getStyleClass().remove("highlight");
+		
+		/*
+		 * 
+		 * 
+		 * 	  Platform.runLater(new Runnable(){
+	         
+
+				@Override
+	              public void run() {
+					getStyleClass().remove("highlight");
+	              }
+	          });
+	          */
+		
+	
+
+
+		/* final Task task;
+	        task = new Task<Void>() {
+	            @Override
+	            protected Void call() throws Exception {
+	   
+	            		
+	            		System.out.println("jaja");
+	                return null;
+	            }
+	        };
+		
+		new Thread(task).start();
+		*/
+		
+		
+		
 		
 		//Aktiviert Karten für den Kaufmodus. (in hole und auf deck, werden mehr geldkarten (moneytoSpend) geklickt, wird es möglich, andere Geldkarten zu kaufen
 		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && this instanceof ActionCard){
-			this.setDisable(false);
+			//this.setDisable(false);
+			System.out.println("buy mode true, buypower > costs and is actioncard");
+			
+			this.getStyleClass().add("highlight");
+			
+	
+			
+		} else {
+		
+		
+			
 		}
+		
+
+		
 		
 		
 		//Aktiviert holeCards für Aktionsmodus
 		if (croupier.isActionMode() == true && this.isHoleCard() && this instanceof ActionCard){
-			this.setDisable(false);
-		}
+
+		}else 
 		
 		if (croupier.getStackSize(this) == 0) {
-		this.setDisable(true);
+
 		}
 		
 		
@@ -58,6 +109,8 @@ public class GameCard extends Button implements Observer {
 			
 			System.out.println("croupier changed to action mode and the costs is lower than the coins Spent");
 		}*/
+		
+		
 	
 	}
 	

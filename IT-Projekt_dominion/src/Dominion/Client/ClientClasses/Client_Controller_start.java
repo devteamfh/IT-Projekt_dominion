@@ -2,6 +2,9 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Observable;
+import java.util.Observer;
+
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.PlayerWithOS;
 import Dominion.appClasses.PlayerWithoutOS;
@@ -319,5 +322,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             }
         });	                
     }
+
+
+
     
 }
