@@ -35,6 +35,7 @@ public class ClientHandler implements Runnable {
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private PlayerWithOS PWOS_thisPlayer;
+	StringBuilder strBuilder = new StringBuilder();
 
 	private ServiceLocatorServer sl;
 	
@@ -106,6 +107,8 @@ public class ClientHandler implements Runnable {
 			 GamePartyOnServer newGameOnServer = new GamePartyOnServer (game);
 			 PlayerWithOS current_player = new PlayerWithOS (game.getHost().getUsername(), this.out);
 			 newGameOnServer.addPlayer(current_player);
+			 
+			 newGameOnServer.getGameParty().getArrayListOfPlayers().get(0).increasePoints();//to do: wieder löschen, ist nur zum testen
 			 
 			 sl.addNewGame(newGameOnServer);
 			 
@@ -337,12 +340,50 @@ public class ClientHandler implements Runnable {
 							history.setPlayerForGUIActivation(nextPlayer);
 							
 							if(indexOfNextPlayer ==0){
-								String update = "Runde abgeschlossen\n_________________\nSpieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
-								history.updateText(update);
+								
+								//only checked if we play with number of rounds. The game will end if true
+								if(history.getGameParty().withRounds() && history.getGameParty().getRoundCounter() == history.getGameParty().getRounds()){
+									history.getGameParty().setGameHasEnded(true);
+									history.clearText();
+									
+									PlayerWithoutOS winner = determineWinner(history.getGameParty());
+									
+									if(winner !=null){
+										strBuilder.append("Gewinner ist: "+winner.getUsername()+"\n");
+										
+										ArrayList<PlayerWithoutOS> loser = determineLoser(winner,history.getGameParty());
+										strBuilder.append("Verloren haben: ");
+										for(int i=0; i<loser.size();i++){
+											strBuilder.append(loser.get(i).getUsername()+",");
+										}
+
+									}else{
+										strBuilder.append("Unentschieden!");
+
+									}
+									history.setNewType(GameHistory.HistoryType.EndGame);
+									history.setWinner(winner); //is null when all players have the same number of points
+									history.updateText(strBuilder.toString());
+									strBuilder.delete(0, strBuilder.length());
+									
+									
+								}else{
+									strBuilder.append(history.getText());
+									String update = "Runde "+(history.getGameParty().getRoundCounter())+" abgeschlossen\n_________________\nSpieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
+									strBuilder.append(update);
+									history.getGameParty().increasePlayedRounds();
+									history.updateText(strBuilder.toString());
+									strBuilder.delete(0, strBuilder.length());
+									
+								}
+
 								
 							}else{
+								strBuilder.append(history.getText());
 								String update = "Spieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
-								history.updateText(update);
+								strBuilder.append(update);
+								history.updateText(strBuilder.toString());
+								strBuilder.delete(0, strBuilder.length());
 							}
 							
 							//writing to all clients
@@ -350,6 +391,16 @@ public class ClientHandler implements Runnable {
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
 							}
+							
+							//last but not least: delete the GameParty on server-side if the game has ended (defined number of rounds in GameMode "nach Runden" reached)
+							if(history.getGameParty().getGameHasEnded()){
+								for(int i=0; i<sl.getGameListFromServer().size();i++){
+									if(history.getGameParty().getID() == sl.getGameListFromServer().get(i).getGameParty().getID()){
+										sl.getGameListFromServer().remove(i);
+									}
+								}
+							}
+							
 							
 							//break case EndBuy
 							break;
@@ -367,6 +418,10 @@ public class ClientHandler implements Runnable {
 							for (int i=0; i<sl.getGameListFromServer().size();i++){
 								 if(id3 == sl.getGameListFromServer().get(i).getGameParty().getID()){
 									 sl.getGameListFromServer().get(i).removePlayer(history.getCurrentPlayer());
+									 //the game ends automatically if there is only one player left (and the other players have left the game) -->remove GameParty on server-side
+									 if(sl.getGameListFromServer().get(i).getPlayerList().size() == 1){
+										 sl.getGameListFromServer().remove(i);
+									 }
 
 									 //break the for-loop because we have found the right GameParty
 									 break;
@@ -419,6 +474,46 @@ public class ClientHandler implements Runnable {
 			return indexOfCurrentPlayer+1;
 		}
 	}
+	
+	private PlayerWithoutOS determineWinner(GameParty party){
+		PlayerWithoutOS winner =null;
+		PlayerWithoutOS current = null;
+		
+		for(int i=0; i<party.getArrayListOfPlayers().size();i++){
+			current =party.getArrayListOfPlayers().get(i);
+			for(int i2=0; i2<party.getArrayListOfPlayers().size();i2++){
+				if(party.getArrayListOfPlayers().get(i2).getPoints()>current.getPoints()){
+					winner=party.getArrayListOfPlayers().get(i2);
+				}
+			}
+		}
+		
+		return winner;
+	}
+	
+	private ArrayList <PlayerWithoutOS> determineLoser(PlayerWithoutOS winner, GameParty party){
+		ArrayList <PlayerWithoutOS> loserList = cloneList(party.getArrayListOfPlayers());
+		
+		for(int i=0; i<loserList.size();i++){
+			if(winner.getUsername().equals(loserList.get(i).getUsername())){
+				loserList.remove(i);
+				break;
+			}
+		}
+		return loserList;
+	}
+	
+	public ArrayList<PlayerWithoutOS> cloneList(ArrayList<PlayerWithoutOS> list) {
+	    ArrayList<PlayerWithoutOS> clone = new ArrayList<PlayerWithoutOS>(list.size());
+	    for(int i=0; i<list.size();i++){
+	    	clone.add(new PlayerWithoutOS(list.get(i)));
+	    }
+	    
+	    for(int i=0; i<clone.size();i++){
+	    }
+	    return clone;
+	}
+	
 	
 	
 	

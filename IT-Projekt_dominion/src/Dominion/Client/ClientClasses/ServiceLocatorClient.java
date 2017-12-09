@@ -227,14 +227,13 @@ public class ServiceLocatorClient {
 			if(id == this.obsList.get(i).getID()){
 				//replace the old GameParty with the updated GameParty
 				this.obsList.set(i, gamePartyToJoin);
-				if(this.obsList.get(i).isFull()){
-					//the game can begin, so set gameHasStarted on true
-					this.getCurrentGameParty().setGameHasStarted(true);
+				if(this.obsList.get(i).isFull()){					
 					GameParty toPrepare = this.obsList.get(i);
 					this.obsList.remove(i);
-					prepareGame(toPrepare);
-					break;
+					prepareGame(toPrepare);					
 				}
+				
+				//corresponding obs List element found (1. for-loop)
 				break;
 			}
 		}		
@@ -257,8 +256,12 @@ public class ServiceLocatorClient {
 				if(party.getArrayListOfPlayers().get(i).getUsername().equals(party.getHost().getUsername())){
 					this.numberOfActionsAndBuys.setText("Du bist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe");
 					
+					this.ta_gameHistory.appendText("Spiel beginnt\n");
+					this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
+					this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
 				}else{
 					this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe");
+					
 					this.ta_gameHistory.appendText("Spiel beginnt\n");
 					this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
 					this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
@@ -362,7 +365,7 @@ public class ServiceLocatorClient {
 		return this.endGameHost;
 	}
 	
-	public Button getButtonEndGamePlayer(){
+	public Button getButtonLeaveGamePlayer(){
 		return this.endGamePlayer;
 	}
 	
