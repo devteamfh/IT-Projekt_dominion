@@ -8,6 +8,8 @@ import java.util.Iterator;
 import com.sun.glass.ui.View;
 
 import Dominion.ServiceLocator;
+import Dominion.Client.ClientClasses.gameplay.Croupier;
+import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.GameObject;
@@ -251,8 +253,16 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             public void handle(ActionEvent event) {
             	PlayerWithoutOS creator = new PlayerWithoutOS(model.playerName);
             	
-            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers);
+            	Cards cards = new Cards();
+            	Croupier croupier = Croupier.getCroupier();
             	
+            	//get a card set (chosen randomly among 4 sets)
+            	croupier.setAl_communityActionCards(cards.getRandomCardSet());
+            	sl.setCroupier(croupier);
+            	int numberOfCardSet = cards.getNumberOfCardSet();
+   	
+            	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers,numberOfCardSet);
+
             	if(newParty.withRounds()){
             		int rounds = Integer.parseInt(view.lbl_iRunden.getText());
             		newParty.setRounds(rounds);

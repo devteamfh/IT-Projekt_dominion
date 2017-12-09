@@ -1,4 +1,4 @@
-package Dominion.appClasses;
+package Dominion.Client.ClientClasses.gameplay.cards;
 
 import java.awt.Button;
 import javafx.scene.image.Image;
@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 /**
  * @author Adrian Widmer
  */
-
+/*
 public class ActionCard extends Button
 {
 	private String title;					
@@ -40,7 +40,7 @@ public class ActionCard extends Button
             break;
         case Keller:
         	this.title = "Keller";
-        	this.description = "+1 Aktion & Lege eine beliebig Anzahl Karten aus deiner Hand ab. Ziehe für jede abgelegte Karte eine Karte nach.";
+        	this.description = "+1 Aktion & Lege eine beliebig Anzahl Karten aus deiner Hand ab. Ziehe fï¿½r jede abgelegte Karte eine Karte nach.";
     		//this.actionImg = ;					// TODO Pfad der Datei?
     		this.costs = 2;
     		//this.counter = 0;						// TODO Siehe Frage oben
@@ -244,7 +244,7 @@ public class ActionCard extends Button
 		{
 		this.player = player;
 		// TODO Vorbedingung: Kaufbare Karten sind aktiviert, nicht kaufbare Karten sind deaktiviert --> Stage?
-		// Abfangen wie viele Käufe offen sind
+		// Abfangen wie viele Kï¿½ufe offen sind
 			if (player.getNumberOfBuys()>= 1) {
 				// Abfangen, dass Preis der Karte kleiner oder gleich dem Geld auf Hand ist
 				if (player.getNumberOfTreasures()<=this.costs) {
@@ -259,14 +259,14 @@ public class ActionCard extends Button
 					System.out.println("Zu wenig Geld auf der Hand umd diese Karte zu kaufen");
 					}
 		} else {
-			System.out.println("Zu wenig offene Käufe um einen Kauf auszuführen");
+			System.out.println("Zu wenig offene Kï¿½ufe um einen Kauf auszufï¿½hren");
 			}
 		}
 	
 	// Karte wegwerfen (Aus der Hand und dem Deck entfernen)
 	public void trashCard()				// TODO
 		{
-		// TODO Wo soll Karte hin? nur deleten? --> Meiner Meinung nach gehört dies in die Klasse Player (Objekt aus LinkedList entfernen)
+		// TODO Wo soll Karte hin? nur deleten? --> Meiner Meinung nach gehï¿½rt dies in die Klasse Player (Objekt aus LinkedList entfernen)
 		}
 	
 	// Aktionskarte spielen
@@ -282,7 +282,7 @@ public class ActionCard extends Button
 			case Keller:
 				// +1 Aktion
 				player.increaseNumberOfActions(1);
-				// TODO Lege eine beliebige Anzahl Karten aus deiner Hand ab. Ziehe für jede abgelegte Karte eine Karte nach.
+				// TODO Lege eine beliebige Anzahl Karten aus deiner Hand ab. Ziehe fï¿½r jede abgelegte Karte eine Karte nach.
 				break;
 			case Burggraben:
 				// TODO +2 Karten
@@ -350,7 +350,8 @@ public class ActionCard extends Button
 			player.decreaseNumberOfActions();
 			}
 		} else {
-			System.out.println("Zu wenig offene Aktionen um eine Aktion auszuführen");
+			System.out.println("Zu wenig offene Aktionen um eine Aktion auszufï¿½hren");
 		}
 	}
 }
+*/

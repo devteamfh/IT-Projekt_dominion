@@ -30,6 +30,22 @@ public class GamePartyOnServer {
 		this.party.addNewPlayer(player_noOS);
 	}
 	
+	public void removePlayer(PlayerWithoutOS player){
+		//remove the player from the GamePartyOnServer object
+		for(int i=0; i<this.playerList.size();i++){
+			if(this.playerList.get(i).getUsername().equals(player.getUsername())){
+				this.playerList.remove(i);
+			}
+		}
+		
+		//remove the player from the GameParty object
+		this.party.removePlayer(player);
+		
+		for(int i=0; i<this.playerList.size();i++){
+		}
+				
+	}
+	
 	public GameParty getGameParty(){
 		return this.party;
 	}

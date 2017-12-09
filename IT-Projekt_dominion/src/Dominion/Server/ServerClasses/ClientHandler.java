@@ -26,7 +26,8 @@ import javafx.scene.input.TouchPoint;
 /**
  * @author Joel Henz: 
  * the ClientHandler is a server-side Runnable.
- * Each connected client gets an ClientHandler thread. Each ClientHandler reads messages from his client and can send them to all clients by iterating through the ObjectOutputStream ArrayList.
+ * Each connected client gets an ClientHandler thread. Each ClientHandler reads messages from his client (via InputStream of the socket which was accepted by the ServerSocket in class
+ * "Server_Model" and was passed on as parameter to the CLientHandler instance) and can send them to all clients by iterating through the ObjectOutputStream ArrayList.
  */
 public class ClientHandler implements Runnable {
 	private Socket s; 
@@ -120,21 +121,28 @@ public class ClientHandler implements Runnable {
 		 
 		 //handle a client entering an existing game
 		 case JoinGameParty:
+			 
 			 JoinGameParty gameToJoin = (JoinGameParty) obj;
 			 gameToJoin.setID();
 			 
 			 GameParty selectedGame = gameToJoin.getSelectedGameParty();
 			 long id = selectedGame.getID();
-			 
-			 
+			 		 
 			 PlayerWithOS newPlayerJoining = new PlayerWithOS (gameToJoin.getUsername(), this.out);
-
+			 
 			 //first we will add the joining player to the correct GamePartyOnServer			 
 			 for (int i=0; i<sl.getGameListFromServer().size();i++){
 				 if(id == sl.getGameListFromServer().get(i).getGameParty().getID()){
 					 sl.getGameListFromServer().get(i).addPlayer(newPlayerJoining);
+					 if(sl.getGameListFromServer().get(i).getGameParty().isFull()){
+						 //game can begin 
+						 sl.getGameListFromServer().get(i).getGameParty().setGameHasStarted(true);
+					 }
 					 //the updated JoinGameParty object will be sent to all clients
 					 gameToJoin.setUpdatedGameParty(sl.getGameListFromServer().get(i).getGameParty());
+					 
+					 //break the for-loop because we have found the right GameParty
+					 break;
 				 }
 			 }
 			 
@@ -148,6 +156,7 @@ public class ClientHandler implements Runnable {
 
 			 break;
 			 
+		 //used for new logged in players to create the ListView with the open GameParties	 
 		 case UpdateLobby:
 			 UpdateLobby toUpdate = (UpdateLobby) obj;
 			 toUpdate.setID();
@@ -166,12 +175,12 @@ public class ClientHandler implements Runnable {
 				 }
 			 
 				 toUpdate.setListOfOpenGames(gamePartyListClient);
-				 
-				 //this.out.reset();
+
 				 this.out.writeObject(toUpdate);
 				 this.out.flush();				 
 			 }
 			 break;
+			 
 		 
 		 //kab: the server reads the username of each connected player and stores them
 		 case StartInformation:
@@ -190,7 +199,7 @@ public class ClientHandler implements Runnable {
 			 String att9 	 = start.getAtt9();
 			 
 			 
-			 //prüfe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurück
+			 //prï¿½fe ob bereits ein User mit dem Namen auf dem Server vorhanden ist. Falls ja, sende disconnect Aufforderung zurï¿½ck
 			 while (iter_connectedPlayers.hasNext()){ 
 				 PlayerWithOS current = iter_connectedPlayers.next();	 
 				 if(current.getUsername().equals(username)){
@@ -285,17 +294,40 @@ public class ClientHandler implements Runnable {
 						
 						switch (history.getHistoryType()){
 						
-						case EndAction:
+						case PlayAction:
 							//writing to all clients
 							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().reset();
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							//break case PlayAction
+							break;
+						
+						//if we are in this case this means that we have to switch to the next player in the play sequence. Every player finishes his move when he has made his last buy (or clicked on "Kauf abschliessen")	
+						case PlayBuy:
+							
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							//break case PlayBuy
+							break;
+							
+						case EndAction:
+							
+							//writing to all clients
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().reset();
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
 							}
 							//break case EndAction
 							break;
-						
-						//if we are in this case this means that we have to switch to the next player in the play sequence. Every player finishes his move when he has made his last buy (or clicked on "Kauf abschliessen")	
+							
 						case EndBuy:
+							
 							//determine the index of the current player
 							int indexOfCurrentPlayer = determineIndexOfCurrentPlayer(history);
 							int indexOfNextPlayer = determineIndexOfNextPlayer(indexOfCurrentPlayer,history);
@@ -321,6 +353,36 @@ public class ClientHandler implements Runnable {
 							
 							//break case EndBuy
 							break;
+							
+						case LeaveGame:
+							
+							//first write to all players of the corresponding GameParty
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							//remove leaving player in the corresponding GamePartyOnServer
+							long id3 = history.getGameParty().getID();
+							for (int i=0; i<sl.getGameListFromServer().size();i++){
+								 if(id3 == sl.getGameListFromServer().get(i).getGameParty().getID()){
+									 sl.getGameListFromServer().get(i).removePlayer(history.getCurrentPlayer());
+
+									 //break the for-loop because we have found the right GameParty
+									 break;
+								 }
+							 }							
+
+							//break case LeaveGame
+							break;
+							
+						case UpdateLobbyAfterLeave:
+							//send the msg to all logged in players so their lobby will be updated
+							for (int i =0; i<sl.getConnectedPlayers().size();i++){
+								//sl.getConnectedPlayers().get(i).getOut().reset();
+								sl.getConnectedPlayers().get(i).getOut().writeObject(history);
+								sl.getConnectedPlayers().get(i).getOut().flush();
+							}
 						
 						}
 
@@ -337,11 +399,11 @@ public class ClientHandler implements Runnable {
 	}
 	
 	private int determineIndexOfCurrentPlayer(GameHistory history){
-		String sender = history.getSender();
+		PlayerWithoutOS currentPlayer = history.getCurrentPlayer();
 		int indexOfCurrentPlayer = -1;
 		for (int i=0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
 			//check if the String of the current index i corresponds to the String sender. If it corresponds, we have found the index of the current player.
-			if(sender.equals(history.getGameParty().getArrayListOfPlayers().get(i).getUsername())){
+			if(currentPlayer.getUsername().equals(history.getGameParty().getArrayListOfPlayers().get(i).getUsername())){
 				indexOfCurrentPlayer = i;
 			}
 		}

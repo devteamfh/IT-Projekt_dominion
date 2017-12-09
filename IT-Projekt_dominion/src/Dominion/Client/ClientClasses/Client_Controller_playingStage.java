@@ -2,6 +2,7 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 
+import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessagePlayingStage;
@@ -23,7 +24,9 @@ import javafx.event.EventHandler;
  */
 public class Client_Controller_playingStage extends Controller<Client_Model, Client_View_playingStage> {
 	private ServiceLocatorClient sl;
+	private Croupier croupier;
 	private Client_View_playingStage view_playingStage;
+	private StringBuilder strBuilder = new StringBuilder();
        
     /**
      * @author Joel Henz
@@ -32,6 +35,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         super(model, view);
         this.view_playingStage = view;
         sl = ServiceLocatorClient.getServiceLocator(); 
+        croupier = Croupier.getCroupier();
         
         sl.getButtonEndGameHost().setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -60,18 +64,165 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	sendMessageToServer();    	
             }
         });
+
+        view.action2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            	Croupier.getCroupier().setBuyMode(true);
+            	Croupier.getCroupier().setBuyPowerCopper(10);
+            }
+        });
+        
+        
+        
+        
+        
+        sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
+        	
+            @Override
+            public void handle(ActionEvent event) {
+            	
+            	if(strBuilder != null){
+            		strBuilder.delete(0, strBuilder.length());
+            	}
+
+            	
+            	
+            	GameHistory history;
+            	sl.getPlayer_noOS().decreaseNumberOfActions();
+            	
+            	
+            	
+            	if(sl.getPlayer_noOS().getNumberOfActions()==0){
+            		sl.getButtonPlayActions().setDisable(true);
+            		sl.getButtonEndActions().setDisable(true);
+                	sl.getButtonPlayBuy().setDisable(false);
+                	sl.getButtonEndBuys().setDisable(false);
+                	strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht eine Aktion\n");
+                	strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+                	history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndAction);
+            	}else{
+            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht eine Aktion\n");
+            		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.PlayAction);
+            	}
+            
+                     	
+            	try {
+            		model.out.reset();
+        			model.out.writeObject(history); //reset necessary for correct number of actions
+        			model.out.flush();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+            }
+        });
+        
+        sl.getButtonPlayBuy().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	
+            	if(strBuilder != null){
+            		strBuilder.delete(0, strBuilder.length());
+            	}
+           
+            	GameHistory history;
+            	sl.getPlayer_noOS().decreaseNumberOfBuys();
+            	
+            	if(sl.getPlayer_noOS().getNumberOfBuys()==0){
+            		sl.getButtonPlayBuy().setDisable(true);
+            		sl.getButtonEndBuys().setDisable(true);
+            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht einen Kauf\n");
+            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n");
+            		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
+            		
+            		//setting the initial numbers of actions and buys so the player will start with 1 action and 1 buy when his turn will start again in the next round
+            		sl.getPlayer_noOS().setInitialActionsAndBuys();
+            	}else{
+            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht einen Kauf\n");
+            		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.PlayBuy);
+            	}
+
+            	try {
+            		model.out.reset();
+        			model.out.writeObject(history);
+        			model.out.flush();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+            }
+        });
         
         sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	if(sl.getPlayer_noOS().getNumberOfActions()==0){
-            		sl.getButtonEndActions().setDisable(true);
-                	sl.getButtonEndBuy().setDisable(false);
+            	
+            	if(strBuilder != null){
+            		strBuilder.delete(0, strBuilder.length());
             	}
-            	sl.getPlayer_noOS().decreaseNumberOfActions();
-            	//sl.getNumberOfActionsProperty().set(sl.getPlayer_noOS().getNumberOfActions());
-            	String text = sl.getPlayer_noOS().getUsername()+" macht eine Aktion\n";
-            	GameHistory history = new GameHistory(text,sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndAction);
+            	
+            	GameHistory history;
+            	sl.getPlayer_noOS().actionEnded();
+            	sl.getButtonPlayActions().setDisable(true);
+            	sl.getButtonEndActions().setDisable(true);
+            	sl.getButtonPlayBuy().setDisable(false);
+            	sl.getButtonEndBuys().setDisable(false);
+            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+            	history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndAction);
+
+            	try {
+            		model.out.reset();
+        			model.out.writeObject(history);
+        			model.out.flush();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+            }
+        });
+        
+        sl.getButtonEndBuys().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	
+            	if(strBuilder != null){
+            		strBuilder.delete(0, strBuilder.length());
+            	}
+            	
+            	GameHistory history;
+            	sl.getPlayer_noOS().buyEnded();
+            	sl.getButtonPlayBuy().setDisable(true);
+        		sl.getButtonEndBuys().setDisable(true);
+        		strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n");
+        		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
+
+            	try {
+            		model.out.reset();
+        			model.out.writeObject(history);
+        			model.out.flush();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+            	//setting the initial numbers of actions and buys so the player will start with 1 action and 1 buy when his turn will start again in the next round
+            	sl.getPlayer_noOS().setInitialActionsAndBuys();
+            }
+        });
+        
+        sl.getButtonEndGamePlayer().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	
+            	if(strBuilder != null){
+            		strBuilder.delete(0, strBuilder.length());
+            	}
+            	
+            	sl.getButtonEndGamePlayer().setDisable(true);
+            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" verlässt das Spiel\n");
+            	GameHistory history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),GameHistory.HistoryType.LeaveGame);
+            	history.setLeavingPlayer(sl.getPlayer_noOS());
             	
             	try {
         			model.out.writeObject(history);
@@ -80,32 +231,17 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         			// TODO Auto-generated catch block
         			e.printStackTrace();
         		}
+            	
             }
-        });
-        
-        sl.getButtonEndBuy().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	if(sl.getPlayer_noOS().getNumberOfBuys()==0){
-            		sl.getButtonEndBuy().setDisable(true);
-            	}
-            	sl.getButtonEndBuy().setDisable(true);
-            	String text = sl.getPlayer_noOS().getUsername()+" macht einen Kauf\n";
-            	GameHistory history = new GameHistory(text,sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
-            	            	
-            	try {
-        			model.out.writeObject(history);
-        			model.out.flush();
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-            }
-        });
-        
-        
+        });  
         
     }
+    
+    
+    
+    
+    
+    
     
     protected void sendMessageToServer() {
 		String name = model.getName();

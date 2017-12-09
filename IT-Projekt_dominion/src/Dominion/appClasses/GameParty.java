@@ -2,6 +2,8 @@ package Dominion.appClasses;
 
 import java.util.ArrayList;
 
+import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
+
 /**
  * @author Joel Henz
  * instances of this class are sent/read by client and server. The equivalent class of GameParty is GamePartyOnServer. Objects of this class are only used on server side (to store Player objects and ObjectOutputStream-objects) and will not be sent
@@ -21,17 +23,22 @@ public class GameParty extends GameObject{
 	private int numberOfLoggedInPlayers = 0;
 	private ArrayList <PlayerWithoutOS> playersOfThisGameParty = new ArrayList <PlayerWithoutOS>();
 	private int rounds;
+	private boolean gameHasStarted;
+	private int numberOfCardSet;
 	
+
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-	public GameParty(String selectedMode, PlayerWithoutOS host, int number){
+	public GameParty(String selectedMode, PlayerWithoutOS host, int numberOfMaxPlayers, int numberOfCardSet){
 		super(GameObject.ObjectType.GameParty);
 		this.selectedMode=selectedMode;
 		this.host=host;
-		this.numberOfMaxPlayers=number;
+		this.numberOfMaxPlayers=numberOfMaxPlayers;
+		this.numberOfCardSet=numberOfCardSet;
 		this. id = -1;	
+
 	}
 	
 	public void setID(){
@@ -62,6 +69,19 @@ public class GameParty extends GameObject{
 		this.numberOfLoggedInPlayers++;
 	}
 	
+	public void removePlayer(PlayerWithoutOS player){
+		
+		//searching the player to remove and remove him
+		for(int i=0; i<this.playersOfThisGameParty.size();i++){
+			if(this.playersOfThisGameParty.get(i).getUsername().equals(player.getUsername())){
+				this.playersOfThisGameParty.remove(i);
+				}
+		}
+		
+		this.numberOfLoggedInPlayers--;
+		
+	}
+	
 	public int getMaxNumberOfPlayers(){
 		return this.numberOfMaxPlayers;
 	}
@@ -86,5 +106,16 @@ public class GameParty extends GameObject{
 		this.rounds=rounds;
 	}
 	
+	public void setGameHasStarted(boolean gameHasStarted){
+		this.gameHasStarted=gameHasStarted;
+	}
+	
+	public boolean getGameHasStarted(){
+		return this.gameHasStarted;
+	}
+	
+	public int getNumberOfCardSet(){
+		return this.numberOfCardSet;
+	}
 
 }
