@@ -76,10 +76,12 @@ import javafx.scene.input.MouseEvent;
 						croupier.getHoleCards().remove(mc);
 						croupier.addToAblagestapel(mc);
 						
-						sl.getPlayingStage().updateGUI();
-						//System.out.println("updategui gesendet");						
 
 						}
+						
+						//Gui aktualisieren
+						sl.getPlayingStage().updateGUI();
+						//System.out.println("updategui gesendet");		
 						
 						}
 				});

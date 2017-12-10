@@ -60,8 +60,18 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	
 	VBox vb_player;
 	
-
 	HBox hb_wrapper_holeCards;
+	
+	Label lbl_descrBuyPower;
+	Label lbl_descrBuys;
+	Label lbl_descrActions;
+	
+	HBox hb_wrapper_lblBuyPower;
+	HBox hb_wrapper_lblActions;
+	HBox hb_wrapper_lblBuys;
+	
+	
+	
 	
 	Button provisorischCard1;
 	Button provisorischCard2;
@@ -214,9 +224,11 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 			}
 		
 		//Leafs
-		Label lbl_descrBuyPower = new Label("Mï¿½nzen");
-		Label lbl_descrBuys     = new Label("Kï¿½ufe");
-		Label lbl_descrActions  = new Label("Aktionen");
+
+		lbl_descrBuyPower = new Label("Münzen");
+		lbl_descrBuys     = new Label("Käufe");
+		lbl_descrActions  = new Label("Aktionen");
+
 		
 		
 		
@@ -255,17 +267,17 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 	
 		//buypower label und wert 
-		HBox hb_wrapper_lblBuyPower = new HBox();
+		hb_wrapper_lblBuyPower = new HBox();
 		hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());		
 
 		sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
 		
 		//actions label und Wert
-		HBox hb_wrapper_lblActions = new HBox();
+		hb_wrapper_lblActions = new HBox();
 		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
 		
 		//buys label und Wert
-		HBox hb_wrapper_lblBuys = new HBox();
+		hb_wrapper_lblBuys = new HBox();
 		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
 		
 		
@@ -602,7 +614,14 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		gc1.setMinSize(180, 240);
 		}
 		
+		//Ziechne Game sTatus Informationen neu (münzen, buy, actions)
+		hb_wrapper_lblBuyPower.getChildren().clear();
+		hb_wrapper_lblActions.getChildren().clear();
+		hb_wrapper_lblBuys.getChildren().clear();
 		
+		hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower,croupier.getLbl_buyPower());
+		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
+		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
   
 		
 	};

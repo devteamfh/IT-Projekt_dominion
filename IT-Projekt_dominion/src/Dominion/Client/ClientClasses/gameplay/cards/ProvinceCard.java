@@ -39,6 +39,8 @@ public class ProvinceCard extends GameCard{
 					croupier.setBuys(croupier.getBuys()-1);
 					//decrement stacksize
 					//add copy of object to ablagestapel 
+					
+					
 				}
 			
 				
