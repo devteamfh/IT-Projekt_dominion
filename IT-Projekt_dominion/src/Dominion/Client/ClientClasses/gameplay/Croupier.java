@@ -1,26 +1,62 @@
 package Dominion.Client.ClientClasses.gameplay;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.sun.glass.ui.View;
+
+import Dominion.Client.ClientClasses.Client_View_playingStage;
 import Dominion.Client.ClientClasses.ServiceLocatorClient;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Server.ServerClasses.ServiceLocatorServer;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.scene.control.Label;
 
-public class Croupier extends Observable {
+/**
+ * @author kab: Croupier verwaltet alle Felder welche zum Gameplay n�tig sind
+ * 
+ * 
+ */
+public class Croupier  extends Observable {
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
-    //Felder
+    //Felderi
 	private static Croupier croupier;
+
 	
-	boolean actionMode = false;
+	
+	boolean actionMode = true;
 	boolean buyMode    = false;
 	
-	int buyPower;
+	int buyPower = 0;
 	int actions;
 	int buys;
 	
+	SimpleIntegerProperty sip_buyPower = new SimpleIntegerProperty();
+
+	Label lbltest = new Label();
+	
+	public Label getLbltest() {
+		return lbltest;
+	}
+
+	public SimpleIntegerProperty getSimpleIntegerPropertyBuyPower() {
+		//macht er sip_buyPower.set(123);
+		System.out.println(sip_buyPower.getValue());
+		System.out.println(lbltest.getText());
+		return sip_buyPower;
+	}
+	
+	public void setSimpleIntegerPropertyBuyPower() {
+		lbltest.textProperty().bind(getSimpleIntegerPropertyBuyPower().asString());
+		sip_buyPower.set(buyPower);
+	}
+
 	//# of match cards and cost of match cards;
 	int stackSizeEstate   = 10; int costsEstate  = 1;
 	int stackSizeDuchy    = 10; int costsDuchy   = 3;
@@ -31,8 +67,19 @@ public class Croupier extends Observable {
 	int stackSizeSilver   = 50; int costsSilver  = 3; int buyPowerSilver = 2;
 	int stackSizeGold     = 50; int costsGold    = 6; int buyPowerGold   = 3;
 
+	//# of curse cards and cost
+	int stackSizeCurse    = 10; int costsCurse   = 0; int buyPowerCurse = 0;
+	
+	//# of Community Action Cards on Board
+	ArrayList<Integer> al_stackSizeCommunityActionCards = new ArrayList<Integer>();
+	
+	LinkedList<GameCard> ll_ablagestapel = new LinkedList<GameCard>();
+	LinkedList<GameCard> ll_nachziehstapel = new LinkedList<GameCard>();
+	LinkedList<GameCard> ll_holeCards = new LinkedList<GameCard>();
+	
 	ArrayList<GameCard> al_communityActionCards = new ArrayList<GameCard>();
 
+	
 	//Konstruktoren
     public static Croupier getCroupier() {
         if (croupier == null)
@@ -50,6 +97,20 @@ public class Croupier extends Observable {
 	      this.addObserver(o);
 		}
 
+
+	public void setBuyPower(int buyPower) {
+		this.buyPower = buyPower;
+		
+		setChanged();
+		notifyObservers();	
+	}
+		
+	public void setBuyPower() {
+ 		this.buyPower++;
+ 		System.out.println("setbuypower: "+Thread.currentThread());
+ 		setChanged();
+		notifyObservers();
+		}	
 	
 	public void setStackSize(GameCard gc){
 
@@ -67,6 +128,7 @@ public class Croupier extends Observable {
 			break;
 		case "gold":      setStackSizeGold(getStackSizeGold()-1);
 			break;
+		case "curse": 	  setStackSizeCurse(getStackSizeCurse()-1);
 		}
 	}
 	
@@ -230,11 +292,12 @@ public class Croupier extends Observable {
 
 	public int getBuyPower() {
 		return buyPower;
+
 	}
 
-	public void setBuyPower(int buyPower) {
-		this.buyPower = buyPower;
-	}
+
+	
+
 
 	public int getActions() {
 		return actions;
@@ -261,10 +324,82 @@ public class Croupier extends Observable {
 		this.al_communityActionCards = al_communityActionCards;
 	}
 	
+	//    ----- ABLAGESTAPEL-------
+	public LinkedList<GameCard> getLl_ablageStapel() {
+		return ll_ablagestapel;
+	}
+
+	public void setLl_ablageStapel(LinkedList<GameCard> ll_ablagestapel) {
+		this.ll_ablagestapel = ll_ablagestapel;
+	}
+	
+	public void addToAblagestapel(GameCard gc){
+		gc.setHoleCard(true);
+		this.ll_ablagestapel.add(gc);
+		
+	}
+	
+	
+
+	public LinkedList<GameCard> getLl_nachziehStapel() {
+		return ll_nachziehstapel;
+	}
+
+	public void setLl_nachziehStapel(LinkedList<GameCard> ll_nachziehstapel) {
+		this.ll_nachziehstapel = ll_nachziehstapel;
+	}
+
+	public LinkedList<GameCard> getLl_holeCards() {
+		return ll_holeCards;
+	}
+
+	public void setLl_holeCards(LinkedList<GameCard> ll_holeCards) {
+		this.ll_holeCards = ll_holeCards;
+	}
+	
+	//f�gt eine Karte den hole cards hinzu
+	public void drawHoleCard(GameCard gc){
+		ll_holeCards.add(gc);
+	}
+
+	public ArrayList<Integer> getAl_stackSizeCommunityActionCards() {
+		return al_stackSizeCommunityActionCards;
+	}
+
+	public void setAl_stackSizeCommunityActionCards(ArrayList<Integer> al_stackSizeCommunityActionCards) {
+		this.al_stackSizeCommunityActionCards = al_stackSizeCommunityActionCards;
+	}
+	
+	// Initiale # communityActionCards
+	public void prepareAL_stackSizeCommunityActionCards(){
+		for (int i = 0; i<10; i++){
+			al_stackSizeCommunityActionCards.add(10);	
+			}
+	}
+
+	public int getStackSizeCurse() {
+		return stackSizeCurse;
+	}
+
+	public void setStackSizeCurse(int stackSizeCurse) {
+		this.stackSizeCurse = stackSizeCurse;
+	}
+
+	public int getCostsCurse() {
+		return costsCurse;
+	}
+
+	public void setCostsCurse(int costsCurse) {
+		this.costsCurse = costsCurse;
+	}
+
+	public int getBuyPowerCurse() {
+		return buyPowerCurse;
+	}
+
+	public void setBuyPowerCurse(int buyPowerCurse) {
+		this.buyPowerCurse = buyPowerCurse;
+	}
 
 	
-	
-	
-	
-
 }

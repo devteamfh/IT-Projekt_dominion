@@ -105,7 +105,7 @@ public class Cards {
 		
 		/**
 		 * @author Joel Henz:
-		 * create several Card Sets. Each GameParty reveives one of those Card Sets, chosen randomly
+		 * create several Card Sets. Each GameParty receives one of those Card Sets, chosen randomly
 		 * 
 		 */
 		public void setCardSet (int cardSetNumber){

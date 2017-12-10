@@ -253,7 +253,7 @@ public class Client_View_createGame extends View<Client_Model> {
 		root.getStyleClass().add("bg_createGame");
 		
 		this.scene = new Scene (root, 750, 410);
-		scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_clientStart.css").toExternalForm());
 	    stage.initStyle(StageStyle.TRANSPARENT);     
         return scene;
 		
