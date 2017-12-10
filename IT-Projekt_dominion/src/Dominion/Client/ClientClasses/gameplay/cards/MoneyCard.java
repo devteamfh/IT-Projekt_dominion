@@ -29,15 +29,6 @@ import javafx.scene.input.MouseEvent;
 				this.addClickListener();
 			}
 		
-			public int getBuyPower() {
-				return buyPower;
-			}
-		
-			public void setInt_buyPower(int buyPower) {
-				this.buyPower = buyPower;
-			}
-		
-	
 			
 			MoneyCard mc = this;
 			public void addClickListener(){
@@ -45,14 +36,19 @@ import javafx.scene.input.MouseEvent;
 				addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 					@Override public void handle(MouseEvent e) {
 						
-						if(isHoleCard() == false){
+						System.out.println("moneycard clicked");
+						
+						//Wenn die karte aus den communty cards gekauft wird
+						if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(mc) > 0){
 							croupier.setBuys(croupier.getBuys()-1);
-							croupier.setStackSize(mc);
+							
+							System.out.println("alte STackgrösse: "+croupier.getStackSize(mc));
+							croupier.setStackSize(mc); //stacksize von moneyCards wird um eins reduziert
+							System.out.println("neue STackgrösse: "+croupier.getStackSize(mc));
 							
 							//code ab hier dann in true teil unten
 							//String text = sl.getPlayer_noOS().getUsername()+" spielt "+lbl_cardName.getText();
-							croupier.setBuyPower(croupier.getBuyPower()+buyPower);
-							System.out.println(buyPower); // --> wird komischerweise 2x ausgefÃ¼hrt wenn klick auf gold, also buy power = 6
+							//System.out.println(buyPower); // --> wird komischerweise 2x ausgefÃ¼hrt wenn klick auf gold, also buy power = 6
 							GameHistory history = new GameHistory (sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.lbl_cardName.getText(),croupier.getBuyPower(), GameHistory.HistoryType.PlayMoneyCard);
 							try {
 								sl.getPlayer_OS().getOut().writeObject(history);
@@ -61,14 +57,28 @@ import javafx.scene.input.MouseEvent;
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
-							//add copy of object to ablagestapel 
+
+							
+							//gekaufte karte auf ablagestapel legen
+							System.out.println("alte ablagestapelgrösse: "+croupier.getAblagestapel().size());
+							MoneyCard newCard = new MoneyCard(mc.lbl_cardName,mc.costs,mc.buyPower);
+							croupier.addToAblagestapel(newCard);
+							System.out.println("neue ablagestapelgrösse: "+croupier.getAblagestapel().size());
+							
+							
+							
 						}
 						
-						if(isHoleCard() == true){		
+						//wenn ich die Karte in der Hand spielen darf:
+						if(isHoleCard() == true && croupier.isBuyMode() && croupier.getBuys() > 0 ){		
+						
 						croupier.setBuyPower(croupier.getBuyPower()+buyPower);
+						croupier.getHoleCards().remove(mc);
+						croupier.addToAblagestapel(mc);
 						
-						//remove object form holeCards and send to ablagestapel 
-						
+						sl.getPlayingStage().updateGUI();
+						//System.out.println("updategui gesendet");						
+
 						}
 						
 						}
@@ -76,7 +86,14 @@ import javafx.scene.input.MouseEvent;
 			
 			}
 	
-
+			public int getBuyPower() {
+				return buyPower;
+			}
+		
+			public void setInt_buyPower(int buyPower) {
+				this.buyPower = buyPower;
+			}
+		
 	
 
 }

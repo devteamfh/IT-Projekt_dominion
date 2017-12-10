@@ -74,15 +74,18 @@ public class GameCard extends Button implements Observer  {
 		
 		
 		//Aktiviert Karten für den Kaufmodus. (in hole und auf deck, werden mehr geldkarten (moneytoSpend) geklickt, wird es möglich, andere Geldkarten zu kaufen
-		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && this instanceof ActionCard){
+		//GameCard gc = this;
+		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard()){
 			//this.setDisable(false);
-			System.out.println("buy mode true, buypower > costs and is actioncard");
 			
+
+			
+			System.out.println("GameCardClass: cards highlighted");
 			this.getStyleClass().add("highlight");
 			
 	
 			
-		} else {
+		} //else {
 		
 		
 			
@@ -93,13 +96,13 @@ public class GameCard extends Button implements Observer  {
 		
 		
 		//Aktiviert holeCards für Aktionsmodus
-		if (croupier.isActionMode() == true && this.isHoleCard() && this instanceof ActionCard){
+	//	if (croupier.isActionMode() == true && this.isHoleCard() && this instanceof ActionCard){
 
-		}else 
+//		}else 
 		
-		if (croupier.getStackSize(this) == 0) {
+	//	if (croupier.getStackSize(this) == 0) {
 
-		}
+		//}
 		
 		
 		/*test observable
@@ -112,7 +115,7 @@ public class GameCard extends Button implements Observer  {
 		
 		
 	
-	}
+	//}
 	
 	
 	
