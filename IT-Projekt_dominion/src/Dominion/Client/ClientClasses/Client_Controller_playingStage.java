@@ -326,11 +326,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         });  
         
     }
-    
-   
-    
-    
-    
+
     protected void sendMessageToServer() {
 		String name = model.getName();
 		String msg = view.tf_messagePlayingStage.getText();

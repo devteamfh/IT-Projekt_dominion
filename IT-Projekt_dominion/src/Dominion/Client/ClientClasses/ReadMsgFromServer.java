@@ -375,7 +375,7 @@ public class ReadMsgFromServer implements Runnable {
 						break;
 						
 					case LeaveGame:
-						System.out.println(history.getLeavingPlayer());
+						
 						Platform.runLater(new Runnable() {
 
 							@Override 
@@ -463,6 +463,31 @@ public class ReadMsgFromServer implements Runnable {
 											Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername());
 											sl.getPlayingStage().vb_player.getChildren().add(label);
 										}
+									}
+									
+									//finally: activate the GUI of the next player
+									
+									Platform.runLater(new Runnable() {
+
+										@Override 
+								           public void run() {
+											
+											if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+												sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+history.getPlayerForGUIActivation().getNumberOfActions()+" Aktionen, "+history.getPlayerForGUIActivation().getNumberOfBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+												sl.getButtonPlayActions().setDisable(false);
+												sl.getButtonEndActions().setDisable(false);
+											}else{
+												sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist an der Reihe: "+history.getPlayerForGUIActivation().getNumberOfActions()+" Aktionen, "+history.getPlayerForGUIActivation().getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
+											}
+											
+								           }
+								      });
+									
+									if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+										sl.getButtonPlayActions().setDisable(false);
+										sl.getButtonEndActions().setDisable(false);
+										
+										
 									}
 	
 								}

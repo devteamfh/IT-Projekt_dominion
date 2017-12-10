@@ -417,6 +417,12 @@ public class ClientHandler implements Runnable {
 								}
 								
 							}
+					
+							//write to all players of the corresponding GameParty
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
 							
 							//remove leaving player in the corresponding GamePartyOnServer
 							long id3 = history.getGameParty().getID();
@@ -432,13 +438,6 @@ public class ClientHandler implements Runnable {
 									 break;
 								 }
 							 }
-							
-							
-							//write to all players of the corresponding GameParty
-							for (int i =0; i<current.getPlayerList().size();i++){
-								current.getPlayerList().get(i).getOut().writeObject(history);
-								current.getPlayerList().get(i).getOut().flush();
-							}
 							
 										
 

@@ -210,7 +210,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		//____________CenterPane   communtiycard in der mitte und statusinformationen zum spiel (buypower, action etc)_________________________________________________________________________//
 		
-		//Allen CommunityActionCards einen observer hinzufügen
+		//Allen CommunityActionCards einen observer hinzufï¿½gen
 		for (GameCard ac : croupier.getAl_communityActionCards()){
 		croupier.addObserver(ac);	
 		}
@@ -223,9 +223,11 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 			}
 		
 		//Leafs
+
 		lbl_descrBuyPower = new Label("Münzen");
 		lbl_descrBuys     = new Label("Käufe");
 		lbl_descrActions  = new Label("Aktionen");
+
 		
 		
 		
@@ -282,7 +284,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		this.provisorischCard2 = new Button ("Aktionsmodus Aktivieren");
 		this.provisorischCard3 = new Button ("Geld Nachfüllen");
 		
-		vb_wrapper_gameInformation.getChildren().addAll(hb_wrapper_lblBuyPower,hb_wrapper_lblActions,hb_wrapper_lblBuys, sl.getLabelNumberOfActionsAndBuys(),provisorischCard1,provisorischCard2,provisorischCard3);   //  << löschen: sl.getLabelNumberOfActionsAndBuys
+		vb_wrapper_gameInformation.getChildren().addAll(hb_wrapper_lblBuyPower,hb_wrapper_lblActions,hb_wrapper_lblBuys, sl.getLabelNumberOfActionsAndBuys(),provisorischCard1,provisorischCard2,provisorischCard3);   //  << lï¿½schen: sl.getLabelNumberOfActionsAndBuys
 		
 		hb_wrapper_playedCards_gameInformation.getChildren().addAll(hb_playedCards,vb_wrapper_gameInformation);
 		
@@ -302,6 +304,10 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		windowGameHistory = sl.getTextAreaGameHistory();
 		windowGameHistory.setEditable(false);
 		windowGameHistory.setStyle("-fx-opacity: 0.80;");
+		
+		if(sl.getTextAreaGameHistory() !=null){
+			System.out.println("test null");
+		}
 		
 	    chatWindowPlayingStage = sl.getTextAreaChatPlayingStage();
 		chatWindowPlayingStage.setEditable(false);
@@ -624,7 +630,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	};
 	
 
-	//im moment passiert hier nichts, später ev. löschen
+	//im moment passiert hier nichts, spï¿½ter ev. lï¿½schen
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("obseverd");
