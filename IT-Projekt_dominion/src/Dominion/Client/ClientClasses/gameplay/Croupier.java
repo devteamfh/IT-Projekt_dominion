@@ -33,29 +33,15 @@ public class Croupier  extends Observable {
 	boolean actionMode = true;
 	boolean buyMode    = false;
 	
-	int buyPower = 0;
+	int buyPower = 4;
 	int actions;
 	int buys;
 	
-	SimpleIntegerProperty sip_buyPower = new SimpleIntegerProperty();
 
-	Label lbltest = new Label();
+	Label lbl_buyPower = new Label();
+	Label lbl_actions  = new Label();
+	Label lbl_buys     = new Label();
 	
-	public Label getLbltest() {
-		return lbltest;
-	}
-
-	public SimpleIntegerProperty getSimpleIntegerPropertyBuyPower() {
-		//macht er sip_buyPower.set(123);
-		System.out.println(sip_buyPower.getValue());
-		System.out.println(lbltest.getText());
-		return sip_buyPower;
-	}
-	
-	public void setSimpleIntegerPropertyBuyPower() {
-		lbltest.textProperty().bind(getSimpleIntegerPropertyBuyPower().asString());
-		sip_buyPower.set(buyPower);
-	}
 
 	//# of match cards and cost of match cards;
 	int stackSizeEstate   = 10; int costsEstate  = 1;
@@ -97,11 +83,6 @@ public class Croupier  extends Observable {
 	      this.addObserver(o);
 		}
 
-<<<<<<< HEAD
-	
-
-=======
->>>>>>> 295a4d5bd3558689ce2e3cf5d501b029337b29e5
 
 	public void setBuyPower(int buyPower) {
 		this.buyPower = buyPower;
@@ -406,5 +387,20 @@ public class Croupier  extends Observable {
 		this.buyPowerCurse = buyPowerCurse;
 	}
 
+	public Label getLbl_actions() {
+		lbl_actions.setText(""+Integer.valueOf(actions));
+	return lbl_actions;	
+	}
+	
+	public Label getLbl_buyPower() {
+		lbl_buyPower.setText(""+Integer.valueOf(buyPower)); 
+		return lbl_buyPower;
+	}
+
+	public Label getLbl_buys() {
+		lbl_buys.setText(""+Integer.valueOf(buys));
+		return lbl_buys;
+	}
+	
 	
 }

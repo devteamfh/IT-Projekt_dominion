@@ -200,7 +200,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		
 		
-		//____________Community Action Cards (Mitte)___________________________________________________________________________________________________//
+		//____________CenterPane   communtiycard in der mitte und statusinformationen zum spiel (buypower, action etc)_________________________________________________________________________//
 		
 		//Allen CommunityActionCards einen observer hinzufügen
 		for (GameCard ac : croupier.getAl_communityActionCards()){
@@ -213,6 +213,12 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		for (int i = 0;i<10;i++){
 			croupier.getAl_communityActionCards().get(i).setMinSize(200, 170);
 			}
+		
+		//Leafs
+		Label lbl_descrBuyPower = new Label("Münzen");
+		Label lbl_descrBuys     = new Label("Käufe");
+		Label lbl_descrActions  = new Label("Aktionen");
+		
 		
 		
 		//Branches
@@ -239,8 +245,47 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		hb_wrp_communityActionCardsBackRow.getChildren().addAll(hb_wrapper_comntyACSlot0,hb_wrapper_comntyACSlot1,hb_wrapper_comntyACSlot2,hb_wrapper_comntyACSlot3,hb_wrapper_comntyACSlot4);
 		hb_wrp_communityActionCardsFrontRow.getChildren().addAll(hb_wrapper_comntyACSlot5,hb_wrapper_comntyACSlot6,hb_wrapper_comntyACSlot7,hb_wrapper_comntyACSlot8,hb_wrapper_comntyACSlot9);
 
-		vb_wrapper_center.getChildren().addAll(hb_wrp_communityActionCardsBackRow,hb_wrp_communityActionCardsFrontRow);
+		
+		HBox hb_wrapper_playedCards_gameInformation = new HBox();
+		
+		HBox hb_playedCards = new HBox();
+		
+		VBox vb_wrapper_gameInformation = new VBox();
+		vb_wrapper_gameInformation.setPadding(new Insets(50,0,0,0));
+		vb_wrapper_gameInformation.setAlignment(Pos.CENTER_RIGHT);
+		
+	
+		//buypower label und wert 
+		HBox hb_wrapper_lblBuyPower = new HBox();
+		hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());		
+
+		sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
+		
+		//actions label und Wert
+		HBox hb_wrapper_lblActions = new HBox();
+		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
+		
+		//buys label und Wert
+		HBox hb_wrapper_lblBuys = new HBox();
+		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
+		
+		
+		this.provisorischCard1 = new Button ("Karte prov");
+		this.provisorischCard2 = new Button ("Karte prov");
+		this.provisorischCard3 = new Button ("Karte prov");
+		
+		vb_wrapper_gameInformation.getChildren().addAll(hb_wrapper_lblBuyPower,hb_wrapper_lblActions,hb_wrapper_lblBuys, sl.getLabelNumberOfActionsAndBuys(),provisorischCard1,provisorischCard2,provisorischCard3);   //  << löschen: sl.getLabelNumberOfActionsAndBuys
+		
+		hb_wrapper_playedCards_gameInformation.getChildren().addAll(hb_playedCards,vb_wrapper_gameInformation);
+		
+		
+
+		
+		vb_wrapper_center.getChildren().addAll(hb_wrp_communityActionCardsBackRow,hb_wrp_communityActionCardsFrontRow,hb_wrapper_playedCards_gameInformation);
 		//--------------------------------------------------------------------------------------------------------------------------------------//
+		
+		
+		
 		
 		
 			
@@ -290,8 +335,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		customButton nachziehstapel = new customButton();
 		nachziehstapel.setMinSize(180, 240);
 		
-		this.stack = new Label("hier kommt der Hauptstapel");
-		this.yourHand = new Label("deine Hand");
+		
 		
 		sl.setButtonPlayActions("Aktion spielen");
 		sl.getButtonPlayActions().setDisable(true);
@@ -333,15 +377,9 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 
 		vb_wrapper_controlButtons.getChildren().addAll(sl.getButtonPlayActions(),sl.getButtonPlayBuy(),sl.getButtonEndActions(),sl.getButtonEndBuys());
 		
-		VBox vb_wrapper_gameInformation = new VBox();
 		
-		tryUpdateshit = new HBox();
-		tryUpdateshit.getChildren().add(croupier.getLbltest());		
-		vb_wrapper_gameInformation.getChildren().addAll(tryUpdateshit,stack,sl.getLabelNumberOfActionsAndBuys());
-
 	
-		
-		hb_wrapper_gameController.getChildren().addAll(vb_wrapper_controlButtons,vb_wrapper_gameInformation);
+		hb_wrapper_gameController.getChildren().addAll(vb_wrapper_controlButtons);
 		
 		HBox spacer2 =  new HBox();
 		HBox.setHgrow(spacer2, Priority.ALWAYS);
@@ -382,11 +420,11 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	  
 
 		
-		this.provisorischCard1 = new Button ("Karte prov");
+
 		this.provisorischCard1.setDisable(false);
-		this.provisorischCard2 = new Button ("Karte prov");
+
 		this.provisorischCard2.setDisable(false);
-		this.provisorischCard3 = new Button ("Karte prov");
+
 		this.provisorischCard3.setDisable(false);
 		
 		this.provisorisch4 = new Button("kjkjk");
@@ -456,7 +494,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		//VBox vb_bottom = new VBox();
 		//vb_bottom.setPrefSize(800, 60);
 		
-		sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
+
 		HBox hb_stack_hand_endAction_endBuy = new HBox();
 		//hb_stack_hand_endAction_endBuy.setPrefSize(750, 120);
 	
@@ -496,8 +534,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		   scene.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
 		        @Override
 		        public void handle(MouseEvent mouseEvent) {
-		            System.out.println("mouse click detected! " + mouseEvent.getSource());
-		            croupier.setSimpleIntegerPropertyBuyPower();
+		           // System.out.println("mouse click detected! " + mouseEvent.getSource());
 		            
 		            //redraw community cards left
 		            hb_wrapper_province.getChildren().remove(province);  
@@ -521,8 +558,14 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 
 		            
 		            
-		        	tryUpdateshit.getChildren().clear();
-		        	tryUpdateshit.getChildren().addAll(croupier.getLbltest());
+		    		hb_wrapper_lblBuyPower.getChildren().clear();
+		        	hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());
+		        	
+		    		hb_wrapper_lblActions.getChildren().clear();
+		    		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
+		    		
+		    		hb_wrapper_lblBuys.getChildren().clear();
+		    		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
 		        }
 		    });
 		

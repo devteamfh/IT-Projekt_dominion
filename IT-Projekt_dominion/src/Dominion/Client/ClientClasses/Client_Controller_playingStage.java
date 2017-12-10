@@ -132,6 +132,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 
             	croupier.setBuyMode(true);
             	croupier.setBuyPower(0);
+            	croupier.setActionPoints(3);
             	System.out.println(croupier.getBuyPower());
             }
         });
@@ -140,7 +141,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             @Override
             public void handle(ActionEvent event) {
             	
-            	croupier.setSimpleIntegerPropertyBuyPower();
+            	croupier.setActionPoints(0);
    
             
             }
