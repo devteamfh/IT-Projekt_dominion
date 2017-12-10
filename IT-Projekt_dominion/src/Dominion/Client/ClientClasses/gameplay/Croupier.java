@@ -33,29 +33,15 @@ public class Croupier  extends Observable {
 	boolean actionMode = true;
 	boolean buyMode    = false;
 	
-	int buyPower = 0;
+	int buyPower = 4;
 	int actions;
 	int buys;
 	
-	SimpleIntegerProperty sip_buyPower = new SimpleIntegerProperty();
 
-	Label lbltest = new Label();
+	Label lbl_buyPower = new Label();
+	Label lbl_actions  = new Label();
+	Label lbl_buys     = new Label();
 	
-	public Label getLbltest() {
-		return lbltest;
-	}
-
-	public SimpleIntegerProperty getSimpleIntegerPropertyBuyPower() {
-		//macht er sip_buyPower.set(123);
-		System.out.println(sip_buyPower.getValue());
-		System.out.println(lbltest.getText());
-		return sip_buyPower;
-	}
-	
-	public void setSimpleIntegerPropertyBuyPower() {
-		lbltest.textProperty().bind(getSimpleIntegerPropertyBuyPower().asString());
-		sip_buyPower.set(buyPower);
-	}
 
 	//# of match cards and cost of match cards;
 	int stackSizeEstate   = 10; int costsEstate  = 1;
@@ -324,42 +310,41 @@ public class Croupier  extends Observable {
 	}
 	
 	//    ----- ABLAGESTAPEL-------
-	public LinkedList<GameCard> getLl_ablageStapel() {
+	public LinkedList<GameCard> getAblagestapel() {
 		return ll_ablagestapel;
 	}
-
-	public void setLl_ablageStapel(LinkedList<GameCard> ll_ablagestapel) {
-		this.ll_ablagestapel = ll_ablagestapel;
-	}
-	
+	//hinzuf�gen
 	public void addToAblagestapel(GameCard gc){
 		gc.setHoleCard(true);
-		this.ll_ablagestapel.add(gc);
-		
+		this.ll_ablagestapel.add(gc);	
 	}
 	
 	
-
-	public LinkedList<GameCard> getLl_nachziehStapel() {
+	//    ----- Nachziehstapel-------
+	public LinkedList<GameCard> getNachziehstapel() {
 		return ll_nachziehstapel;
 	}
-
-	public void setLl_nachziehStapel(LinkedList<GameCard> ll_nachziehstapel) {
-		this.ll_nachziehstapel = ll_nachziehstapel;
+	//hinzuf�gen
+	public void addToNachziehstapel(GameCard gc) {
+		gc.setHoleCard(true);
+		this.ll_nachziehstapel.add(gc);
 	}
-
-	public LinkedList<GameCard> getLl_holeCards() {
+	//    ----- Karten in der Hand-------	
+	public LinkedList<GameCard> getHoleCards() {
 		return ll_holeCards;
 	}
-
-	public void setLl_holeCards(LinkedList<GameCard> ll_holeCards) {
-		this.ll_holeCards = ll_holeCards;
+	//hinzuf�gen
+	public void addToHoleCards(GameCard gc) {
+		gc.setHoleCard(true);
+		this.ll_holeCards.add(gc);
 	}
 	
-	//f�gt eine Karte den hole cards hinzu
+	
+	/*//f�gt eine Karte den hole cards hinzu
 	public void drawHoleCard(GameCard gc){
 		ll_holeCards.add(gc);
-	}
+	}*/
+	
 
 	public ArrayList<Integer> getAl_stackSizeCommunityActionCards() {
 		return al_stackSizeCommunityActionCards;
@@ -400,5 +385,20 @@ public class Croupier  extends Observable {
 		this.buyPowerCurse = buyPowerCurse;
 	}
 
+	public Label getLbl_actions() {
+		lbl_actions.setText(""+Integer.valueOf(actions));
+	return lbl_actions;	
+	}
+	
+	public Label getLbl_buyPower() {
+		lbl_buyPower.setText(""+Integer.valueOf(buyPower)); 
+		return lbl_buyPower;
+	}
+
+	public Label getLbl_buys() {
+		lbl_buys.setText(""+Integer.valueOf(buys));
+		return lbl_buys;
+	}
+	
 	
 }
