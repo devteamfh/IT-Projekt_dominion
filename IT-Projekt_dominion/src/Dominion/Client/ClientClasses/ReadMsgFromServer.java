@@ -252,10 +252,7 @@ public class ReadMsgFromServer implements Runnable {
 								//stop the playing stage ONLY for the players who have joined this GameParty
 								if(gamePartyToCancel.getID() == sl.getCurrentGameParty().getID()){
 									sl.setLbl_popUpMessage(new Label("Der Host hat das Spiel beendet."));
-									sl.getPlayingStage().stop();
-									sl.setCurrentGameParty(null);
-									sl.getTextAreaChatPlayingStage().clear();
-									sl.getTextAreaGameHistory().clear();
+									sl.clearCurrentGameParty();
 
 									Stage popUp = new Stage();	
 									popUp.setResizable(false);
@@ -382,13 +379,11 @@ public class ReadMsgFromServer implements Runnable {
 					           public void run() {
 								
 								if(history.getLeavingPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.setCurrentGameParty(null);
+									//clear all resources of the current game party so the client will start next time with a new GUI and new resources
+									sl.clearCurrentGameParty();
 									
 									//check if the game has started. We have to make +1player on number of logged in players because we have already removed the player on client side
 									if(history.getGameParty().getGameHasStarted()){
-										sl.getPlayingStage().stop();
-										sl.getTextAreaChatPlayingStage().clear();
-										sl.getTextAreaGameHistory().clear();
 										
 										//game party is full when player is leaving: he gets a defeat
 										Label popUpMsg = new Label ("Du hast das Spiel verlassen\nund verlierst!");
@@ -435,10 +430,8 @@ public class ReadMsgFromServer implements Runnable {
 
 									//we check if there is only one player left. If yes: he will win the party
 									if(history.getGameParty().getNumberOfLoggedInPlayers() == 1 && history.getGameParty().getGameHasStarted()){
-										sl.getPlayingStage().stop();
-										sl.setCurrentGameParty(null);
-										sl.getTextAreaChatPlayingStage().clear();
-										sl.getTextAreaGameHistory().clear();
+										
+										sl.clearCurrentGameParty();
 										
 										Label popUpMsg = new Label ("Glückwunsch, du hast gewonnen!");
 										sl.setLbl_popUpMessage(popUpMsg);
@@ -506,10 +499,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								//clear the playing stage and stop. Set also the current Game Party null
-								sl.getPlayingStage().stop();
-								sl.setCurrentGameParty(null);
-								sl.getTextAreaChatPlayingStage().clear();
-								sl.getTextAreaGameHistory().clear();
+								sl.clearCurrentGameParty();
 								
 								Label popUpMsg = new Label (history.getText());
 								sl.setLbl_popUpMessage(popUpMsg);

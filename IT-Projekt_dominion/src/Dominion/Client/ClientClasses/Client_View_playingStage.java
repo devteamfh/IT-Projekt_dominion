@@ -81,7 +81,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
     TextArea chatWindowPlayingStage;
     TextArea windowGameHistory;
     customButton btn_sendChatMsgPlayingStage;
-    
+    	
+    BorderPane root;
 
     
 
@@ -100,7 +101,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 	    sl = ServiceLocatorClient.getServiceLocator();  
 		
-		BorderPane root = new BorderPane();
+		root = new BorderPane();
 
 		//_______________X Button top right__________________________//
 		btn_close = new Button();
@@ -270,7 +271,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		this.provisorischCard1 = new Button ("Buy Modus Aktivieren");
 		this.provisorischCard2 = new Button ("Aktionsmodus Aktivieren");
-		this.provisorischCard3 = new Button ("Geld Nachfüllen");
+		this.provisorischCard3 = new Button ("Geld Nachfï¿½llen");
 		
 		vb_wrapper_gameInformation.getChildren().addAll(hb_wrapper_lblBuyPower,hb_wrapper_lblActions,hb_wrapper_lblBuys, sl.getLabelNumberOfActionsAndBuys(),provisorischCard1,provisorischCard2,provisorischCard3);   //  << lï¿½schen: sl.getLabelNumberOfActionsAndBuys
 		
@@ -292,10 +293,6 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		windowGameHistory = sl.getTextAreaGameHistory();
 		windowGameHistory.setEditable(false);
 		windowGameHistory.setStyle("-fx-opacity: 0.80;");
-		
-		if(sl.getTextAreaGameHistory() !=null){
-			System.out.println("test null");
-		}
 		
 	    chatWindowPlayingStage = sl.getTextAreaChatPlayingStage();
 		chatWindowPlayingStage.setEditable(false);

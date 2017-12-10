@@ -401,5 +401,12 @@ public class Croupier  extends Observable {
 		return lbl_buys;
 	}
 	
+	public void clearHoleCards(){
+		this.ll_holeCards.clear();
+		for(int i=0; i<ll_holeCards.size();i++){
+			System.out.println(ll_holeCards.get(i));
+		}
+	}
+	
 	
 }

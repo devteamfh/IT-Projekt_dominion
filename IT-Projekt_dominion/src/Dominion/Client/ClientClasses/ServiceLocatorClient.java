@@ -436,6 +436,15 @@ public class ServiceLocatorClient {
 		return this.croupier;
 	}
 	
+	public void clearCurrentGameParty(){
+		this.currentGameParty = null;
+		this.view_playingStage.stop();
+		this.view_playingStage.root.getChildren().clear();
+		this.croupier.clearHoleCards();
+		this.ta_ChatPlayingStage.clear();
+		this.ta_gameHistory.clear();
+	}
+	
 
 
 
