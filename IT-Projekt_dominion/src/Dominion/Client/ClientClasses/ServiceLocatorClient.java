@@ -230,6 +230,7 @@ public class ServiceLocatorClient {
 				if(this.obsList.get(i).isFull()){					
 					GameParty toPrepare = this.obsList.get(i);
 					this.obsList.remove(i);
+					//the game is full so it can begin
 					prepareGame(toPrepare);					
 				}
 				
@@ -254,13 +255,13 @@ public class ServiceLocatorClient {
 			if(party.getArrayListOfPlayers().get(i).getUsername().equals(this.player_noOS.getUsername())){
 				
 				if(party.getArrayListOfPlayers().get(i).getUsername().equals(party.getHost().getUsername())){
-					this.numberOfActionsAndBuys.setText("Du bist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe");
+					this.numberOfActionsAndBuys.setText("Du bist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 					
 					this.ta_gameHistory.appendText("Spiel beginnt\n");
 					this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
 					this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
 				}else{
-					this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe");
+					this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 					
 					this.ta_gameHistory.appendText("Spiel beginnt\n");
 					this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");

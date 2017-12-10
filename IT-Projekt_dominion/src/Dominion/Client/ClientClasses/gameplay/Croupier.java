@@ -19,7 +19,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 
 /**
- * @author kab: Croupier verwaltet alle Felder welche zum Gameplay nötig sind
+ * @author kab: Croupier verwaltet alle Felder welche zum Gameplay nï¿½tig sind
  * 
  * 
  */
@@ -97,8 +97,11 @@ public class Croupier  extends Observable {
 	      this.addObserver(o);
 		}
 
+<<<<<<< HEAD
 	
 
+=======
+>>>>>>> 295a4d5bd3558689ce2e3cf5d501b029337b29e5
 
 	public void setBuyPower(int buyPower) {
 		this.buyPower = buyPower;
@@ -113,11 +116,6 @@ public class Croupier  extends Observable {
  		setChanged();
 		notifyObservers();
 		}	
-	
-	
-	
-	
-	
 	
 	public void setStackSize(GameCard gc){
 
@@ -364,7 +362,7 @@ public class Croupier  extends Observable {
 		this.ll_holeCards = ll_holeCards;
 	}
 	
-	//fügt eine Karte den hole cards hinzu
+	//fï¿½gt eine Karte den hole cards hinzu
 	public void drawHoleCard(GameCard gc){
 		ll_holeCards.add(gc);
 	}
