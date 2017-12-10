@@ -375,6 +375,7 @@ public class ReadMsgFromServer implements Runnable {
 						break;
 						
 					case LeaveGame:
+						System.out.println(history.getLeavingPlayer());
 						Platform.runLater(new Runnable() {
 
 							@Override 
@@ -454,7 +455,9 @@ public class ReadMsgFromServer implements Runnable {
 										//update the saved GameParty because one player has left the game
 										sl.setCurrentGameParty(history.getGameParty());
 										
-										//clear first the player list and then set it updated
+										//activate the GUI of the next player in the sequence
+										
+										//clear the player list and then set it updated
 										sl.getPlayingStage().vb_player.getChildren().clear();
 										for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
 											Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername());
@@ -470,6 +473,7 @@ public class ReadMsgFromServer implements Runnable {
 						//break case LeaveGame
 						break;
 						
+					//this msg is written only by server (class ClientHandler in case "EndBuy" and if the number of max rounds is reached)
 					case EndGame:
 						
 						Platform.runLater(new Runnable() {

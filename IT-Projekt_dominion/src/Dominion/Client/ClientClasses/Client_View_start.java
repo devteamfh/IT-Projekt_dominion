@@ -89,7 +89,7 @@ public class Client_View_start extends View<Client_Model> {
 			btn_register.getStyleClass().addAll("btn","btn_view");
 			btn_login.getStyleClass().addAll("btn","btn_view");
 			
-			//Primäre Panes initialisieren
+			//Primï¿½re Panes initialisieren
 		    VBox vb_wrapperContent = new VBox();		    
 		    GridPane gp_wrapper = new GridPane();
 		    
@@ -99,12 +99,12 @@ public class Client_View_start extends View<Client_Model> {
 		    vb_wrapper_errMsg.setPadding(new Insets(0,0,0,30));
 		    vb_wrapper_errMsg.setMinSize(400, 200);
 		    
-		    //Vbox für Abstand zwischen tf IP-Adresse und tf Port
+		    //Vbox fï¿½r Abstand zwischen tf IP-Adresse und tf Port
 		    VBox vb_spacer = new VBox();			
 			vb_spacer.getChildren().add(tf_ip);
 			vb_spacer.setPadding(new Insets(0,0,7,0));
 			
-			//Wrapper mit lbls und tf befüllen
+			//Wrapper mit lbls und tf befï¿½llen
 			gp_wrapper.add(lbl_IPAdress, 0, 0); 
 			gp_wrapper.add(lbl_port,     0, 1);
 			gp_wrapper.add(lbl_userName, 2, 1);
@@ -119,7 +119,7 @@ public class Client_View_start extends View<Client_Model> {
 			lbl_password.setPadding(new Insets(0,0,0,20));
 			
 			
-			//Buttons: Abstände festlegen und einfügen    
+			//Buttons: Abstï¿½nde festlegen und einfï¿½gen    
 			btn_connect.setPrefSize(206, 54);
 			btn_register.setPrefSize(206,54);
 			btn_login.setPrefSize(206, 54);
@@ -206,7 +206,7 @@ public class Client_View_start extends View<Client_Model> {
 
 	}
 	
-	// Fürr Drag und Drop verschiebung: relative x und y Position herausfinden
+	// Fï¿½rr Drag und Drop verschiebung: relative x und y Position herausfinden
 	class Delta { double x, y; }
 
 		}

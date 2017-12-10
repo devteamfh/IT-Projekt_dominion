@@ -44,7 +44,7 @@ public class GameHistory extends GameObject{
 		this.type=type;
 	}
 	
-	//we use this constructor when we play a card
+	//we use this constructor when we play a money card
 	public GameHistory(GameParty party,PlayerWithoutOS currentPlayer,String card,int buyPower, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;

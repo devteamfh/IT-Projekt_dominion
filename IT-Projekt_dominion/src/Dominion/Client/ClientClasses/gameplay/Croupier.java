@@ -83,7 +83,6 @@ public class Croupier  extends Observable {
 	      this.addObserver(o);
 		}
 
-
 	public void setBuyPower(int buyPower) {
 		this.buyPower = buyPower;
 		
@@ -314,7 +313,7 @@ public class Croupier  extends Observable {
 	public LinkedList<GameCard> getAblagestapel() {
 		return ll_ablagestapel;
 	}
-	//hinzufügen
+	//hinzufï¿½gen
 	public void addToAblagestapel(GameCard gc){
 		gc.setHoleCard(true);
 		addObserver(gc);
@@ -326,7 +325,7 @@ public class Croupier  extends Observable {
 	public LinkedList<GameCard> getNachziehstapel() {
 		return ll_nachziehstapel;
 	}
-	//hinzufügen
+	//hinzufï¿½gen
 	public void addToNachziehstapel(GameCard gc) {
 		gc.setHoleCard(true);
 		this.ll_nachziehstapel.add(gc);
@@ -335,7 +334,7 @@ public class Croupier  extends Observable {
 	public LinkedList<GameCard> getHoleCards() {
 		return ll_holeCards;
 	}
-	//hinzufügen
+	//hinzufï¿½gen
 	public void addToHoleCards(GameCard gc) {
 		gc.setHoleCard(true);
 		this.ll_holeCards.add(gc);
