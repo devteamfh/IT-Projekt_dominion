@@ -233,7 +233,6 @@ public class ClientHandler implements Runnable {
 			 
 			 while (iterOut.hasNext()){
 					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
-					current.reset();
 					current.writeObject(start);
 					current.flush();
 				 }
@@ -300,7 +299,6 @@ public class ClientHandler implements Runnable {
 						case PlayAction:
 							//writing to all clients
 							for (int i =0; i<current.getPlayerList().size();i++){
-								current.getPlayerList().get(i).getOut().reset();
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
 							}
@@ -322,7 +320,6 @@ public class ClientHandler implements Runnable {
 							
 							//writing to all clients
 							for (int i =0; i<current.getPlayerList().size();i++){
-								current.getPlayerList().get(i).getOut().reset();
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
 							}
@@ -434,10 +431,19 @@ public class ClientHandler implements Runnable {
 						case UpdateLobbyAfterLeave:
 							//send the msg to all logged in players so their lobby will be updated
 							for (int i =0; i<sl.getConnectedPlayers().size();i++){
-								//sl.getConnectedPlayers().get(i).getOut().reset();
 								sl.getConnectedPlayers().get(i).getOut().writeObject(history);
 								sl.getConnectedPlayers().get(i).getOut().flush();
 							}
+							
+							//break case UpdateLobbyAfterLeave
+							break;
+							
+						case PlayMoneyCard:
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							break;
 						
 						}
 
@@ -513,8 +519,5 @@ public class ClientHandler implements Runnable {
 	    }
 	    return clone;
 	}
-	
-	
-	
 	
 }

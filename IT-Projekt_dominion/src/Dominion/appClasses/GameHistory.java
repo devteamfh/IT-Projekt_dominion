@@ -1,8 +1,10 @@
 package Dominion.appClasses;
 
+import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
+
 /**
  * @author Joel Henz:
- * 
+ * GameHistory is used for communication between client and server while playing on playing stage. An instance of this class can save different information which the server and the opponents have to know
  */
 public class GameHistory extends GameObject{
 	
@@ -19,23 +21,37 @@ public class GameHistory extends GameObject{
 	private PlayerWithoutOS leavingPlayer;
 	private PlayerWithoutOS winner;
 	private HistoryType type;
+	private String card;
+	private int buyPower;
 	
 	public enum HistoryType {
 		 PlayAction, PlayBuy, EndAction,
 		 EndBuy, LeaveGame, UpdateLobbyAfterLeave,
-		 EndGame
+		 EndGame, PlayMoneyCard, PlayActionCard
 		 };
 	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
+	//we use this constructor for events like: player leaves a game / host ends the game / a player ends his buy or action phase by clicking on the buttons "Kaufphase beenden" oder "Aktionsphase beenden" / etc
 	public GameHistory(String text, GameParty party,PlayerWithoutOS currentPlayer, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
 		this.text=text;
 		this.party=party;
 		this.currentPlayer=currentPlayer;
+		this.type=type;
+	}
+	
+	//we use this constructor when we play a card
+	public GameHistory(GameParty party,PlayerWithoutOS currentPlayer,String card,int buyPower, HistoryType type){
+		super(GameObject.ObjectType.GameHistory);
+		this.id=-1;
+		this.party=party;
+		this.currentPlayer=currentPlayer;
+		this.card=card;
+		this.buyPower=buyPower;
 		this.type=type;
 	}
 	
@@ -103,6 +119,14 @@ public class GameHistory extends GameObject{
 	
 	public PlayerWithoutOS getWinner(){
 		return this.winner;
+	}
+	
+	public String getPlayedGameCard(){
+		return this.card;
+	}
+	
+	public int getBuyPower(){
+		return this.buyPower;
 	}
 
 }

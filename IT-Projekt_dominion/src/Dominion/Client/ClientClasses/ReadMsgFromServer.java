@@ -310,7 +310,7 @@ public class ReadMsgFromServer implements Runnable {
 						
 						break;
 						
-					case PlayBuy:
+					/**case PlayBuy:
 	
 						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
@@ -326,12 +326,10 @@ public class ReadMsgFromServer implements Runnable {
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
 								}									
 
-								sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
-
 					           }
-					      });
+					      });*/
 						
-						break;
+						//break;
 						
 					case EndAction:
 						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
@@ -504,6 +502,31 @@ public class ReadMsgFromServer implements Runnable {
 								
 					           }
 					      });
+						//break case UpdateLobbyAfterLeave
+						break;
+						
+					case PlayMoneyCard:
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+								}else{
+
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
+								}	
+								
+								sl.getTextAreaGameHistory().appendText(history.getCurrentPlayer().getUsername()+" spielt "+history.getPlayedGameCard()+"\n"); //to do: noch farblich abheben je player
+								sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+
+					           }
+					      });
+						
+						
+						
+						break;
 						
 					}
 					

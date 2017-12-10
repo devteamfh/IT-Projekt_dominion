@@ -49,15 +49,7 @@ public class Croupier extends Observable {
 	public Croupier(Observer o){   
 	      this.addObserver(o);
 		}
-	
 
-		
-	
-		
-
-	
-	
-	
 	
 	public void setStackSize(GameCard gc){
 
