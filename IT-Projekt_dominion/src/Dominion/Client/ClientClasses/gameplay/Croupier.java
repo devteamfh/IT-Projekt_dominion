@@ -98,9 +98,7 @@ public class Croupier  extends Observable {
 		}
 
 	
-	
-	
-	
+
 
 	public void setBuyPower(int buyPower) {
 		this.buyPower = buyPower;

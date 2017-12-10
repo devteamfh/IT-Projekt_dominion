@@ -112,14 +112,34 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	   	btn_close.getStyleClass().addAll("btn","btn_close_normal");
 	   	btn_close.setAlignment(Pos.TOP_RIGHT);
 	   	
+		//if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
+		//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
+		//will be evaluated as a loss.
+		sl.getButtonEndGameHost().setDisable(true);
+		//by default this button is also deactivated
+		sl.getButtonLeaveGamePlayer().setDisable(true);
+	   	
 		//X Button top right, wrapper hb_custom menue
 	    HBox hb_custom_menue = new HBox();
 	      
 			HBox spacer =  new HBox();
 			HBox.setHgrow(spacer, Priority.ALWAYS);
 				   	
-			hb_custom_menue.getChildren().addAll(spacer, btn_close);
+			HBox hb_endGameHost_endGamePlayer = new HBox();
+			
+			hb_endGameHost_endGamePlayer.getChildren().addAll(sl.getButtonEndGameHost(),sl.getButtonLeaveGamePlayer());
+			
+			hb_custom_menue.getChildren().addAll(spacer,hb_endGameHost_endGamePlayer, btn_close);
 		   	hb_custom_menue.setPadding(new Insets(5,5,5,0));	
+		   	
+		  //Only the will get the button for ending the game until the game isn't full (example 3 of 4 players -> host can end the game)
+			if(sl.getIsHost()){
+				sl.getButtonEndGameHost().setDisable(false);
+			}else{
+				//button activation if the the client isn't the host
+				sl.getButtonLeaveGamePlayer().setDisable(false);
+			}
+			
 	   	//----------------------------------------------------------//
 
 		
@@ -198,7 +218,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		//Branches
 		VBox vb_wrapper_center = new VBox();
 		vb_wrapper_center.setMinSize(1200, 600);
-		vb_wrapper_center.setPadding(new Insets(0,50,0,50));
+		vb_wrapper_center.setPadding(new Insets(0,50,0,30));
 		
 		HBox hb_wrp_communityActionCardsBackRow   = new HBox();
 		hb_wrp_communityActionCardsBackRow.setPadding(new Insets(30,0,0,0));
@@ -220,40 +240,132 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		hb_wrp_communityActionCardsFrontRow.getChildren().addAll(hb_wrapper_comntyACSlot5,hb_wrapper_comntyACSlot6,hb_wrapper_comntyACSlot7,hb_wrapper_comntyACSlot8,hb_wrapper_comntyACSlot9);
 
 		vb_wrapper_center.getChildren().addAll(hb_wrp_communityActionCardsBackRow,hb_wrp_communityActionCardsFrontRow);
+		//--------------------------------------------------------------------------------------------------------------------------------------//
 		
 		
+			
+		//____________Chat und Spielverlauf rechte Seite___________________________________________________________________________________________________//
+		
+		windowGameHistory = sl.getTextAreaGameHistory();
+		windowGameHistory.setEditable(false);
+		windowGameHistory.setStyle("-fx-opacity: 0.80;");
+		
+	    chatWindowPlayingStage = sl.getTextAreaChatPlayingStage();
+		chatWindowPlayingStage.setEditable(false);
+		chatWindowPlayingStage.setStyle("-fx-opacity: 0.80;");
+		
+
+		tf_messagePlayingStage = new TextField();
+		tf_messagePlayingStage.setStyle("-fx-opacity: 0.80;");
+		
+		btn_sendChatMsgPlayingStage = new customButton("senden");
+		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn","btn_sendChatMsg");
+		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
+		
+		//Label label_gameHistory = new Label("Spielverlauf");
+		//Label label_chat = new Label("Chat");
+		
+		
+		VBox vb_wrapper_right = new VBox();
+		vb_wrapper_right.setMinWidth(300);
+		vb_wrapper_right.setMaxWidth(300);
+		
+		vb_wrapper_right.setPadding(new Insets(0,20,0,20));
+
+		VBox vb_wrapper_spielverlauf_chat_btns = new VBox();
+				
+		vb_wrapper_spielverlauf_chat_btns.getChildren().addAll(windowGameHistory,chatWindowPlayingStage,tf_messagePlayingStage,btn_sendChatMsgPlayingStage);
+		
+		vb_wrapper_right.getChildren().addAll(vb_wrapper_spielverlauf_chat_btns);
+		
+		//--------------------------------------------------------------------------------------------------------------------------------------//
+				
+		
+		
+		
+		//____________Stacks holecards contorlbuttons___________________________________________________________________________________________________//
+		
+		customButton blank = new customButton();
+		blank.setMinSize(180, 240);
+		customButton nachziehstapel = new customButton();
+		nachziehstapel.setMinSize(180, 240);
+		
+		this.stack = new Label("hier kommt der Hauptstapel");
+		this.yourHand = new Label("deine Hand");
+		
+		sl.setButtonPlayActions("Aktion spielen");
+		sl.getButtonPlayActions().setDisable(true);
 	
+		sl.setButtonPlayBuy("Kauf spielen");
+		sl.getButtonPlayBuy().setDisable(true);
+		
+		sl.setButtonEndActions("Aktionsphase beenden");
+		sl.getButtonEndActions().setDisable(true);
+		
+		sl.setButtonEndBuys("Kaufphase beenden");
+		sl.getButtonEndBuys().setDisable(true);
+		
+
+		
+		HBox hb_wrapper_bottom = new HBox();
+		hb_wrapper_bottom.setPadding(new Insets(0,20,20,20));
+		
+		
+		//Ablage und Nachziehstapel
+		HBox hb_wrapper_stapel = new HBox();
+		hb_wrapper_stapel.setPadding(new Insets(0,50,0,0));
+		HBox hb_wrapper_ablagestapel = new HBox();
+		HBox hb_wrapper_nachziehstapel = new HBox();
+		
+		nachziehstapel.getStyleClass().addAll("card","cardback2");
+		hb_wrapper_stapel.getChildren().addAll(blank,nachziehstapel);
+		
+		//wrapper hole Cards
+		HBox hb_wrapper_holeCards = new HBox();
+	
+		
+		//Bereich nach holecards recht
+		HBox hb_wrapper_gameController = new HBox();
+		
+
+		
+		VBox vb_wrapper_controlButtons = new VBox();
+
+		vb_wrapper_controlButtons.getChildren().addAll(sl.getButtonPlayActions(),sl.getButtonPlayBuy(),sl.getButtonEndActions(),sl.getButtonEndBuys());
+		
+		VBox vb_wrapper_gameInformation = new VBox();
+		
+		tryUpdateshit = new HBox();
+		tryUpdateshit.getChildren().add(croupier.getLbltest());		
+		vb_wrapper_gameInformation.getChildren().addAll(tryUpdateshit,stack,sl.getLabelNumberOfActionsAndBuys());
+
+	
+		
+		hb_wrapper_gameController.getChildren().addAll(vb_wrapper_controlButtons,vb_wrapper_gameInformation);
+		
+		HBox spacer2 =  new HBox();
+		HBox.setHgrow(spacer2, Priority.ALWAYS);
+		hb_wrapper_bottom.getChildren().addAll(hb_wrapper_stapel,hb_wrapper_holeCards,spacer2,hb_wrapper_gameController);
+		
+		
 		//--------------------------------------------------------------------------------------------------------------------------------------//
 		
 		
 		
 		
-		
-		
-		
 		//____________Community Action Cards (Mitte)___________________________________________________________________________________________________//
 				//--------------------------------------------------------------------------------------------------------------------------------------//
 				
 		
-		//____________Community Action Cards (Mitte)___________________________________________________________________________________________________//
-				//--------------------------------------------------------------------------------------------------------------------------------------//
-				
-		//____________Community Action Cards (Mitte)___________________________________________________________________________________________________//
-				//--------------------------------------------------------------------------------------------------------------------------------------//
-				
+		
+		
 		
 		
 		
 		gold.addClickListener();
 
 		
-		
-
-		tryUpdateshit = new HBox();
-		
-		//buyPower = new Label("11");
-		
-		tryUpdateshit.getChildren().add(croupier.getLbltest());		
+	
 	
 		
 
@@ -267,30 +379,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		
 
-	    
-	    chatWindowPlayingStage = sl.getTextAreaChatPlayingStage();
-		chatWindowPlayingStage.setEditable(false);
-		chatWindowPlayingStage.setPrefSize(820, 150);
-		chatWindowPlayingStage.setStyle("-fx-opacity: 0.80;");
-		
-		windowGameHistory = sl.getTextAreaGameHistory();
-		windowGameHistory.setEditable(false);
-		windowGameHistory.setPrefSize(820, 150);
-		windowGameHistory.setStyle("-fx-opacity: 0.80;");
-		
-		tf_messagePlayingStage = new TextField();
-		tf_messagePlayingStage.setPrefSize(450,40);
-		tf_messagePlayingStage.setStyle("-fx-opacity: 0.80;");
-		
-		btn_sendChatMsgPlayingStage = new customButton("senden");
-		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn","btn_sendChatMsg");
-		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
-		btn_sendChatMsgPlayingStage.setPrefSize(202, 40);
-		
-		Label label_gameHistory = new Label("Spielverlauf");
-		Label label_chat = new Label("Chat");
-		this.stack = new Label("hier kommt der Hauptstapel");
-		this.yourHand = new Label("deine Hand");
+	  
+
 		
 		this.provisorischCard1 = new Button ("Karte prov");
 		this.provisorischCard1.setDisable(false);
@@ -302,48 +392,14 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		this.provisorisch4 = new Button("kjkjk");
 
 		
-		
-		sl.setButtonPlayActions("Aktion spielen");
-		sl.getButtonPlayActions().setDisable(true);
-		
-		sl.setButtonPlayBuy("Kauf spielen");
-		sl.getButtonPlayBuy().setDisable(true);
-		
-		sl.setButtonEndActions("Aktionsphase beenden");
-		sl.getButtonEndActions().setDisable(true);
-		
-		sl.setButtonEndBuys("Kaufphase beenden");
-		sl.getButtonEndBuys().setDisable(true);
-		
-		VBox vb_right = new VBox();
-		
-		vb_right.setPrefHeight(350);
-		vb_right.setPrefWidth(400);
-		
-		HBox hb_chatButtonAndTextField = new HBox();
-		hb_chatButtonAndTextField.setPrefSize(200, 100);
-		
-		hb_chatButtonAndTextField.getChildren().addAll(tf_messagePlayingStage,btn_sendChatMsgPlayingStage);
-		
-		
-		
 	
 		
-		
-		
-		
-		vb_right.getChildren().addAll(label_gameHistory,windowGameHistory,label_chat,hb_chatButtonAndTextField,chatWindowPlayingStage);
-		
+	
 
 		
 		vb_player = new VBox();
 		
-		//if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
-		//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
-		//will be evaluated as a loss.
-		sl.getButtonEndGameHost().setDisable(true);
-		//by default this button is also deactivated
-		sl.getButtonLeaveGamePlayer().setDisable(true);
+
 
 		root.setTop(vb_player);
 		vb_player.setAlignment(Pos.TOP_RIGHT);
@@ -380,8 +436,6 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		
 		
-		
-		
 		Label playedCards_label = new Label ("gespielte Karten");
 		vb_center.getChildren().addAll(playedCards_label);
 		
@@ -399,21 +453,19 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		playedCards_hbox.getChildren().addAll(playedCard1,playedCard2,playedCard3);
 		vb_center.getChildren().add(playedCards_hbox);
 		
-		VBox vb_bottom = new VBox();
-		vb_bottom.setPrefSize(1000, 60);
+		//VBox vb_bottom = new VBox();
+		//vb_bottom.setPrefSize(800, 60);
 		
 		sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
 		HBox hb_stack_hand_endAction_endBuy = new HBox();
-		hb_stack_hand_endAction_endBuy.setPrefSize(750, 120);
+		//hb_stack_hand_endAction_endBuy.setPrefSize(750, 120);
 	
-		HBox hb_hand = new HBox();
+		/*HBox hb_hand = new HBox();
 		hb_hand.getChildren().addAll(provisorischCard1, provisorischCard2,provisorischCard3);
 		
 		VBox vb_stack_endGameHost = new VBox();
-		HBox hb_endGameHost_endGamePlayer = new HBox();
 
-		hb_endGameHost_endGamePlayer.getChildren().addAll(sl.getButtonEndGameHost(),sl.getButtonLeaveGamePlayer());
-		vb_stack_endGameHost.getChildren().addAll(tryUpdateshit,stack,hb_endGameHost_endGamePlayer);
+		vb_stack_endGameHost.getChildren().addAll(tryUpdateshit,stack);
 
 
 		
@@ -427,23 +479,15 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		vb_bottom.getChildren().addAll(sl.getLabelNumberOfActionsAndBuys(),hb_stack_hand_endAction_endBuy);
 		
 		vb_bottom.setAlignment(Pos.TOP_CENTER);
-		
+		*/
 		root.setTop(hb_custom_menue);
 		root.setLeft(hb_wrapper_communityCards_Left);
-		//BorderPane.setMargin(gp_left, new Insets(0, 20, 0, 0));
 		root.setCenter(vb_wrapper_center);
-		root.setRight(vb_right);
-		root.setBottom(vb_bottom);
+		root.setRight(vb_wrapper_right);
+		root.setBottom(hb_wrapper_bottom);
 		
-		//Only the will get the button for ending the game until the game isn't full (example 3 of 4 players -> host can end the game)
-		if(sl.getIsHost()){
-			sl.getButtonEndGameHost().setDisable(false);
-		}else{
-			//button activation if the the client isn't the host
-			sl.getButtonLeaveGamePlayer().setDisable(false);
-		}
-		
-		this.scene = new Scene (root,1750,800);
+
+		this.scene = new Scene (root,1850,900);
 		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_playStage.css").toExternalForm());
 	    //stage.initStyle(StageStyle.TRANSPARENT);   
 		

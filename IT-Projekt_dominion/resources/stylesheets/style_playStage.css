@@ -18,7 +18,6 @@
 	
 	
 	
-
 .card {	
 		-fx-background-size: cover;
 		-fx-background-color: transparent;
@@ -28,6 +27,9 @@
 	-fx-effect: dropshadow( gaussian , yellow , 7 , 0.7 , 0 , 0 );	
 }
 
+.cardback2 {
+		-fx-background-image: url('../img/cards/cardback2.jpg');
+}
 
 
 .copper			{-fx-background-image: url('../img/cards/copper.jpg');}	
