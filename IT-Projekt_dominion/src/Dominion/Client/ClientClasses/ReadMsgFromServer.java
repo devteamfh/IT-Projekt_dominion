@@ -28,7 +28,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * @author Joel Henz: 
+ * @author Joel Henz (if not commented by other): 
  * this is the class for receiving chat messages from the server. If a client sends a chat message to server, the server will send that message to all clients
  * */
 public class ReadMsgFromServer implements Runnable {
@@ -120,7 +120,6 @@ public class ReadMsgFromServer implements Runnable {
 					 
 				case GameParty:
 					GameParty newGame = (GameParty) obj;
-					System.out.println(newGame.getNumberOfCardSet());
 					 
 					Platform.runLater(new Runnable() {
 				           @Override 
@@ -129,6 +128,7 @@ public class ReadMsgFromServer implements Runnable {
 				            //croupier.setAl_communityActionCards(newGame.getCommunityActionCards());
 				            if(newGame.getHost().getUsername().equals(model.getName())){
 				            	sl.setCurrentGameParty(newGame);
+				            	
 				            	Stage playingStage = new Stage();			
 				            	playingStage.initModality(Modality.APPLICATION_MODAL);
 				            	sl.setIsHost(true);
@@ -140,7 +140,7 @@ public class ReadMsgFromServer implements Runnable {
 						        
 						        //adding the name of the host on the playing Stage and add the current GameParty to the ServiceLocatorCLient of the host
 						        for(int i=0; i<newGame.getArrayListOfPlayers().size();i++){
-						        	Label label = new Label(sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getUsername());
+						        	Label label = new Label(sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
 						        	Label allPlayer = new Label("Spieler dieser Partie:");
 									sl.getPlayingStage().vb_player.getChildren().addAll(allPlayer, label);
 						        }
@@ -169,9 +169,7 @@ public class ReadMsgFromServer implements Runnable {
 			
 				case JoinGameParty:
 					JoinGameParty join=(JoinGameParty) obj;
-					
-					
-					
+
 					//updating the current GameParty object in the ServiceLocator for all players who have already joined this GameParty
 					for (int i=0; i<join.getSelectedGameParty().getArrayListOfPlayers().size();i++){						
 						try{
@@ -191,8 +189,6 @@ public class ReadMsgFromServer implements Runnable {
 							
 							//determine the joining player and create his playing stage
 							if(join.getUsername().equals(model.getName())){
-								
-								//initila
 								
 								Cards cards = new Cards();
 				            	Croupier croupier = Croupier.getCroupier();
@@ -223,7 +219,7 @@ public class ReadMsgFromServer implements Runnable {
 									sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
 									
 									for(int i =0; i<join.getSelectedGameParty().getArrayListOfPlayers().size();i++){
-										Label label = new Label(join.getSelectedGameParty().getArrayListOfPlayers().get(i).getUsername());
+										Label label = new Label(join.getSelectedGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+join.getSelectedGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
 										sl.getPlayingStage().vb_player.getChildren().add(label);
 									}	
 								}
@@ -396,7 +392,7 @@ public class ReadMsgFromServer implements Runnable {
 										sl.getTextAreaGameHistory().clear();
 										
 										//game party is full when player is leaving: he gets a defeat
-										Label popUpMsg = new Label ("Du hast das Spiel verlassen und bekommst eine Niederlage");
+										Label popUpMsg = new Label ("Du hast das Spiel verlassen\nund verlierst!");
 										sl.setLbl_popUpMessage(popUpMsg);
 										
 										Stage popUp = new Stage();	
@@ -476,6 +472,29 @@ public class ReadMsgFromServer implements Runnable {
 						//break case LeaveGame
 						break;
 						
+					case EndGame:
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								//clear the playing stage and stop. Set also the current Game Party null
+								sl.getPlayingStage().stop();
+								sl.setCurrentGameParty(null);
+								sl.getTextAreaChatPlayingStage().clear();
+								sl.getTextAreaGameHistory().clear();
+								
+								Label popUpMsg = new Label (history.getText());
+								sl.setLbl_popUpMessage(popUpMsg);
+								Stage popUp = new Stage();	
+								popUp.setResizable(true);
+								Client_View_popUp view = new Client_View_popUp (popUp, model);
+								new Client_Controller_popUp(model, view); 
+								view.start();
+
+					           }
+					      });
+	
 					case UpdateLobbyAfterLeave:
 						Platform.runLater(new Runnable() {
 

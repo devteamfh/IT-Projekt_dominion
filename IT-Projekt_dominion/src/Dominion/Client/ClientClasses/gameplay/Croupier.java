@@ -67,6 +67,9 @@ public class Croupier  extends Observable {
 	int stackSizeSilver   = 50; int costsSilver  = 3; int buyPowerSilver = 2;
 	int stackSizeGold     = 50; int costsGold    = 6; int buyPowerGold   = 3;
 
+	//# of curse cards and cost
+	int stackSizeCurse    = 10; int costsCurse   = 0; int buyPowerCurse = 0;
+	
 	//# of Community Action Cards on Board
 	ArrayList<Integer> al_stackSizeCommunityActionCards = new ArrayList<Integer>();
 	
@@ -102,36 +105,13 @@ public class Croupier  extends Observable {
 	public void setBuyPower(int buyPower) {
 		this.buyPower = buyPower;
 		
- 		setChanged();
+		setChanged();
 		notifyObservers();	
 	}
 		
 	public void setBuyPower() {
  		this.buyPower++;
- 		
- 		
- 		
- 		Task dynamicTimeTask = new Task<Void>() {
-			int buypwr = croupier.getBuyPower();
-			@Override
-			protected Void call() throws Exception {
-				
-				
-				//croupier.buyPower = 22; 
-				System.out.println("thread executet");
-				return null;
-			}
-		};
-	
-		Thread t2 = new Thread(dynamicTimeTask);
-		t2.setName("Tesk Time Updater");
-		t2.setDaemon(true);
-		t2.start();
- 		
- 		
- 		
- 		
- 		
+ 		System.out.println("setbuypower: "+Thread.currentThread());
  		setChanged();
 		notifyObservers();
 		}	
@@ -157,6 +137,7 @@ public class Croupier  extends Observable {
 			break;
 		case "gold":      setStackSizeGold(getStackSizeGold()-1);
 			break;
+		case "curse": 	  setStackSizeCurse(getStackSizeCurse()-1);
 		}
 	}
 	
@@ -319,7 +300,6 @@ public class Croupier  extends Observable {
 	}
 
 	public int getBuyPower() {
-
 		return buyPower;
 
 	}
@@ -363,7 +343,9 @@ public class Croupier  extends Observable {
 	}
 	
 	public void addToAblagestapel(GameCard gc){
+		gc.setHoleCard(true);
 		this.ll_ablagestapel.add(gc);
+		
 	}
 	
 	
@@ -397,13 +379,36 @@ public class Croupier  extends Observable {
 		this.al_stackSizeCommunityActionCards = al_stackSizeCommunityActionCards;
 	}
 	
+	// Initiale # communityActionCards
 	public void prepareAL_stackSizeCommunityActionCards(){
 		for (int i = 0; i<10; i++){
 			al_stackSizeCommunityActionCards.add(10);	
 			}
 	}
 
+	public int getStackSizeCurse() {
+		return stackSizeCurse;
+	}
 
+	public void setStackSizeCurse(int stackSizeCurse) {
+		this.stackSizeCurse = stackSizeCurse;
+	}
+
+	public int getCostsCurse() {
+		return costsCurse;
+	}
+
+	public void setCostsCurse(int costsCurse) {
+		this.costsCurse = costsCurse;
+	}
+
+	public int getBuyPowerCurse() {
+		return buyPowerCurse;
+	}
+
+	public void setBuyPowerCurse(int buyPowerCurse) {
+		this.buyPowerCurse = buyPowerCurse;
+	}
 
 	
 }

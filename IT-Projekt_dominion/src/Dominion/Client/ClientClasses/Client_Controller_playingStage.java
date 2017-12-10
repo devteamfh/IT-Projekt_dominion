@@ -19,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -42,10 +43,33 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         sl = ServiceLocatorClient.getServiceLocator(); 
         croupier = Croupier.getCroupier();
         
-        
-        
-        
 
+     // Button Close Style Hover und Action press
+        
+		view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+  		    new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_close.getStyleClass().addAll("btn_close_hover");
+  		        	view.btn_close.getStyleClass().remove("btn_close_normal");
+  		        }
+		});
+		      			
+		view.btn_close.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+		        @Override public void handle(MouseEvent e) {
+		        	view.btn_close.getStyleClass().remove("btn_close_hover");
+		        	view.btn_close.getStyleClass().addAll("btn_close_normal");
+		        }
+		});
+		        
+		view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
+        @Override
+        public void handle(ActionEvent event) {
+        	view.stop();
+        	
+        }
+    });
+    //-----------------------------------------------------------------------------------------------//    
+        
         
         
         
@@ -91,7 +115,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	croupier.setBuyMode(true);
             	croupier.setBuyPower();
             	System.out.println(croupier.getBuyPower());
-            	
+         	
 
             }
             
@@ -117,7 +141,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             public void handle(ActionEvent event) {
             	
             	croupier.setSimpleIntegerPropertyBuyPower();
-            	tryUpdateGUI();
+   
             
             }
         });
@@ -159,8 +183,8 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             
                      	
             	try {
-            		model.out.reset();
-        			model.out.writeObject(history); //reset necessary for correct number of actions
+            		model.out.reset();//reset necessary for correct number of actions
+        			model.out.writeObject(history); 
         			model.out.flush();
         		} catch (IOException e) {
         			// TODO Auto-generated catch block
@@ -197,7 +221,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	}
 
             	try {
-            		model.out.reset();
+            		//model.out.reset();
         			model.out.writeObject(history);
         			model.out.flush();
         		} catch (IOException e) {
@@ -228,7 +252,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndAction);
 
             	try {
-            		model.out.reset();
+            		//model.out.reset();
         			model.out.writeObject(history);
         			model.out.flush();
         		} catch (IOException e) {
@@ -250,11 +274,11 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	sl.getPlayer_noOS().buyEnded();
             	sl.getButtonPlayBuy().setDisable(true);
         		sl.getButtonEndBuys().setDisable(true);
-        		strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n");
+        		strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
         		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
 
             	try {
-            		model.out.reset();
+            		//model.out.reset();
         			model.out.writeObject(history);
         			model.out.flush();
         		} catch (IOException e) {
@@ -266,7 +290,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             }
         });
         
-        sl.getButtonEndGamePlayer().setOnAction(new EventHandler<ActionEvent>() {
+        sl.getButtonLeaveGamePlayer().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	
@@ -274,12 +298,13 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             		strBuilder.delete(0, strBuilder.length());
             	}
             	
-            	sl.getButtonEndGamePlayer().setDisable(true);
+            	sl.getButtonLeaveGamePlayer().setDisable(true);
             	strBuilder.append(sl.getPlayer_noOS().getUsername()+" verlässt das Spiel\n");
             	GameHistory history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),GameHistory.HistoryType.LeaveGame);
             	history.setLeavingPlayer(sl.getPlayer_noOS());
             	
             	try {
+            		//model.out.reset();
         			model.out.writeObject(history);
         			model.out.flush();
         		} catch (IOException e) {
@@ -292,14 +317,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         
     }
     
-    public void tryUpdateGUI(){
-    
-    	//alle lefs rein und clearen und nodes wieder reintun
-    	view.tryUpdateshit.getChildren().clear();
-    	view.tryUpdateshit.getChildren().addAll(croupier.getLbltest());
-    	
-    }
-    
+   
     
     
     

@@ -199,7 +199,7 @@ public class Client_View_start extends View<Client_Model> {
 		  
 			//Scene erstellen und root, css und stagestyle zuordnen
 			this.scene = new Scene (root);
-			scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/stylesheets/style_clientStart.css").toExternalForm());
 		    stage.initStyle(StageStyle.TRANSPARENT); 
 		    
 			return scene;

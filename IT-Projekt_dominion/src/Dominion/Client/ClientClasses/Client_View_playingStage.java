@@ -11,6 +11,8 @@ import Dominion.Client.ClientClasses.gameplay.cards.MoneyCard;
 import Dominion.Client.ClientClasses.gameplay.cards.ProvinceCard;
 import Dominion.Client.abstractClasses.View;
 import Dominion.appClasses.GameParty;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,8 +25,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import sun.misc.GC;
 
 
@@ -45,9 +49,10 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	ServiceLocatorClient sl;
 	Croupier croupier;
 
-	ProvinceCard estate, duchy, province;
-	MoneyCard copper, silver, gold;
+	Button btn_close;
 	
+	ProvinceCard estate, duchy, province;
+	MoneyCard copper, silver, gold, curse;
 	
 	ArrayList<GameCard> al_communityCards_left;
 	
@@ -93,26 +98,28 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	protected Scene create_GUI() {
 		croupier = Croupier.getCroupier();
 		
-		for (GameCard ac : croupier.getAl_communityActionCards()){
-		croupier.addObserver(ac);	
-		System.out.println("observer added");
-		}
 		
-		//croupier.addObserver(croupier.getBuyPower());
-	//croupier.addObserver(croupier.getLbl_buyPower());
-		
+		btn_close = new Button();
+		btn_close.setPrefSize(35, 33);
+	   	btn_close.getStyleClass().addAll("btn","btn_close_normal");
+	   	btn_close.setAlignment(Pos.TOP_RIGHT);
+	   	
+		//X Button top right, wrapper hb_custom menue
+	    HBox hb_custom_menue = new HBox();
+	      
+			HBox spacer =  new HBox();
+			HBox.setHgrow(spacer, Priority.ALWAYS);
+				   	
+			hb_custom_menue.getChildren().addAll(spacer, btn_close);
+		   	hb_custom_menue.setPadding(new Insets(5,5,5,0));	
+	   	//----------------------------------------------------------//
 
 		
 		
 		
 		
-		croupier.prepareAL_stackSizeCommunityActionCards();
-		
-		ac1 = croupier.getAl_communityActionCards().get(1);
-		
-		//Leafs 
-		
-		//____Community Cards links -> Ländereien und Geld_____________________________________________//
+
+		//____Community Cards links -> Lï¿½ndereien und Geld_____________________________________________//
 		estate   = new ProvinceCard(new Label("estate"),croupier.getCostsEstate());
 		duchy    = new ProvinceCard(new Label("duchy"),croupier.getCostsDuchy());
 		province = new ProvinceCard(new Label("province"),croupier.getCostsPovince());
@@ -121,16 +128,17 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		silver = new MoneyCard(new Label("silver"),croupier.getBuyPowerSilver(),croupier.getCostsSilver());
 		gold   = new MoneyCard(new Label("gold"),croupier.getBuyPowerGold(),croupier.getCostsGold());
 		
-		al_communityCards_left = new ArrayList<GameCard>();
+		curse = new MoneyCard(new Label("curse"),croupier.getBuyPowerCurse(),croupier.getCostsCurse());
 		
-
-		
+		//
+		al_communityCards_left = new ArrayList<GameCard>();	
 		al_communityCards_left.add(estate);
 		al_communityCards_left.add(duchy);
 		al_communityCards_left.add(province);
 		al_communityCards_left.add(copper);
 		al_communityCards_left.add(silver);
 		al_communityCards_left.add(gold);
+		al_communityCards_left.add(curse);
 		
 		//add Observer, setSize
 		GameCard gc;
@@ -138,9 +146,18 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 			gc = al_communityCards_left.get(i);
 			croupier.addObserver(gc);
 			gc.setMinSize(110, 120);
-		//	gc.assignPicture();
 		}
 		//--------------------------------------------------------------------------------------------//
+		
+		
+		//Allen CommunityActionCards einen observer hinzufügen
+		for (GameCard ac : croupier.getAl_communityActionCards()){
+		croupier.addObserver(ac);	
+		}
+				
+		//community Action Cards in der Mitte mit  10 karten initialisieren
+		croupier.prepareAL_stackSizeCommunityActionCards();
+		
 		
 
 		tryUpdateshit = new HBox();
@@ -237,7 +254,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		//will be evaluated as a loss.
 		sl.getButtonEndGameHost().setDisable(true);
 		//by default this button is also deactivated
-		sl.getButtonEndGamePlayer().setDisable(true);
+		sl.getButtonLeaveGamePlayer().setDisable(true);
 
 		root.setTop(vb_player);
 		vb_player.setAlignment(Pos.TOP_RIGHT);
@@ -321,8 +338,11 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		VBox vb_stack_endGameHost = new VBox();
 		HBox hb_endGameHost_endGamePlayer = new HBox();
-		hb_endGameHost_endGamePlayer.getChildren().addAll(sl.getButtonEndGameHost(),sl.getButtonEndGamePlayer());
+
+		hb_endGameHost_endGamePlayer.getChildren().addAll(sl.getButtonEndGameHost(),sl.getButtonLeaveGamePlayer());
 		vb_stack_endGameHost.getChildren().addAll(tryUpdateshit,stack,hb_endGameHost_endGamePlayer);
+
+
 		
 		HBox.setMargin(vb_stack_endGameHost, new Insets(0, 100, 0, 0));
 		HBox.setMargin(yourHand, new Insets(0, 20, 0, 0));
@@ -335,6 +355,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		vb_bottom.setAlignment(Pos.TOP_CENTER);
 		
+		root.setTop(hb_custom_menue);
 		root.setLeft(gp_left);
 		BorderPane.setMargin(gp_left, new Insets(0, 20, 0, 0));
 		root.setCenter(vb_center);
@@ -346,13 +367,16 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 			sl.getButtonEndGameHost().setDisable(false);
 		}else{
 			//button activation if the the client isn't the host
-			sl.getButtonEndGamePlayer().setDisable(false);
+			sl.getButtonLeaveGamePlayer().setDisable(false);
 		}
 		
 		this.scene = new Scene (root,1000,800);
-		scene.getStylesheets().add(getClass().getResource("gameplay/style_playStage.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_playStage.css").toExternalForm());
+	    //stage.initStyle(StageStyle.TRANSPARENT);   
+		
+		
 
-		   scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+		   scene.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
 		        @Override
 		        public void handle(MouseEvent mouseEvent) {
 		            System.out.println("mouse click detected! " + mouseEvent.getSource());
@@ -367,14 +391,25 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	}
 
 	
-	
-	
+
+	//im moment passiert hier nichts, später ev. löschen
 	@Override
 	public void update(Observable o, Object arg) {
-		this.labeltest.setText("jaja"); 
 		System.out.println("obseverd");
+		System.out.println("observed: "+Thread.currentThread());
 		
+		  /*  	
+		  	Task task = new Task<Void>() {
+		    	    @Override public Void call() {
+		    	    	
+		            	System.out.println(Thread.currentThread());
+		               	tryUpdateshit.getChildren().clear();
+				    	tryUpdateshit.getChildren().addAll(croupier.getLbltest());
 
+		    	        return null;
+		    	    }
+		    	};*/
+	
 		//hb_wrp_communityActionCardsBackRow.getChildren().addAll(provisorisch4,ac1);
 		
 		//hb_wrp_communityActionCardsFrontRow.getChildren().addAll(croupier.getAl_communityActionCards().get(5),croupier.getAl_communityActionCards().get(6),croupier.getAl_communityActionCards().get(7),croupier.getAl_communityActionCards().get(8),croupier.getAl_communityActionCards().get(9));
