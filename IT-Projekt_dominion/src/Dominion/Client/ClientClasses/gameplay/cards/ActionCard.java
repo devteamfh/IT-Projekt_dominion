@@ -41,6 +41,7 @@ public class ActionCard extends GameCard{
 								croupier.setBuys(croupier.getBuys()-1);
 								System.out.println("bought");
 								
+								//stack reduzieren
 								Integer valueToChange = croupier.getAl_stackSizeCommunityActionCards().get(i);
 								int newValue = Integer.parseInt(valueToChange.toString());
 								newValue--;
@@ -48,7 +49,10 @@ public class ActionCard extends GameCard{
 								System.out.println(valueToChange);
 								System.out.println(newValue);
 							
-								//add copy of object to ablagestapel 
+								//gekaufte karte auf ablagestapel legen
+								croupier.addToAblagestapel(ac);
+								System.out.println(croupier.getLl_ablageStapel().size());
+								
 							}
 						}
 				}

@@ -42,6 +42,14 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         sl = ServiceLocatorClient.getServiceLocator(); 
         croupier = Croupier.getCroupier();
         
+        
+        
+        
+
+        
+        
+        
+        
         sl.getButtonEndGameHost().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -107,7 +115,9 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         view.provisorischCard3.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+            	
+            	croupier.setSimpleIntegerPropertyBuyPower();
+            	tryUpdateGUI();
             
             }
         });
@@ -282,7 +292,13 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         
     }
     
+    public void tryUpdateGUI(){
     
+    	//alle lefs rein und clearen und nodes wieder reintun
+    	view.tryUpdateshit.getChildren().clear();
+    	view.tryUpdateshit.getChildren().addAll(croupier.getLbltest());
+    	
+    }
     
     
     

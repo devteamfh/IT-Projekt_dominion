@@ -12,9 +12,11 @@ import Dominion.Client.ClientClasses.ServiceLocatorClient;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Server.ServerClasses.ServiceLocatorServer;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.control.Label;
 
 /**
  * @author kab: Croupier verwaltet alle Felder welche zum Gameplay nötig sind
@@ -25,6 +27,8 @@ public class Croupier  extends Observable {
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
     //Felderi
 	private static Croupier croupier;
+
+	
 	
 	boolean actionMode = true;
 	boolean buyMode    = false;
@@ -33,6 +37,26 @@ public class Croupier  extends Observable {
 	int actions;
 	int buys;
 	
+	SimpleIntegerProperty sip_buyPower = new SimpleIntegerProperty();
+
+	Label lbltest = new Label();
+	
+	public Label getLbltest() {
+		return lbltest;
+	}
+
+	public SimpleIntegerProperty getSimpleIntegerPropertyBuyPower() {
+		//macht er sip_buyPower.set(123);
+		System.out.println(sip_buyPower.getValue());
+		System.out.println(lbltest.getText());
+		return sip_buyPower;
+	}
+	
+	public void setSimpleIntegerPropertyBuyPower() {
+		lbltest.textProperty().bind(getSimpleIntegerPropertyBuyPower().asString());
+		sip_buyPower.set(buyPower);
+	}
+
 	//# of match cards and cost of match cards;
 	int stackSizeEstate   = 10; int costsEstate  = 1;
 	int stackSizeDuchy    = 10; int costsDuchy   = 3;
@@ -45,10 +69,9 @@ public class Croupier  extends Observable {
 
 	//# of Community Action Cards on Board
 	ArrayList<Integer> al_stackSizeCommunityActionCards = new ArrayList<Integer>();
-
 	
-	LinkedList<GameCard> ll_ablageStapel = new LinkedList<GameCard>();
-	LinkedList<GameCard> ll_nachziehStapel = new LinkedList<GameCard>();
+	LinkedList<GameCard> ll_ablagestapel = new LinkedList<GameCard>();
+	LinkedList<GameCard> ll_nachziehstapel = new LinkedList<GameCard>();
 	LinkedList<GameCard> ll_holeCards = new LinkedList<GameCard>();
 	
 	ArrayList<GameCard> al_communityActionCards = new ArrayList<GameCard>();
@@ -70,9 +93,52 @@ public class Croupier  extends Observable {
 	public Croupier(Observer o){   
 	      this.addObserver(o);
 		}
+
+	
+	
+	
 	
 
-			
+	public void setBuyPower(int buyPower) {
+		this.buyPower = buyPower;
+		
+ 		setChanged();
+		notifyObservers();	
+	}
+		
+	public void setBuyPower() {
+ 		this.buyPower++;
+ 		
+ 		
+ 		
+ 		Task dynamicTimeTask = new Task<Void>() {
+			int buypwr = croupier.getBuyPower();
+			@Override
+			protected Void call() throws Exception {
+				
+				
+				//croupier.buyPower = 22; 
+				System.out.println("thread executet");
+				return null;
+			}
+		};
+	
+		Thread t2 = new Thread(dynamicTimeTask);
+		t2.setName("Tesk Time Updater");
+		t2.setDaemon(true);
+		t2.start();
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		setChanged();
+		notifyObservers();
+		}	
+	
+	
+	
+	
 	
 	
 	public void setStackSize(GameCard gc){
@@ -253,20 +319,13 @@ public class Croupier  extends Observable {
 	}
 
 	public int getBuyPower() {
+
 		return buyPower;
+
 	}
 
 
-	public void setBuyPower(int buyPower) {
-		this.buyPower = buyPower;
-		
-	}
-		
-	public void setBuyPower() {
- 		this.buyPower++;
- 		setChanged();
-		notifyObservers();
-		}
+	
 
 
 	public int getActions() {
@@ -294,21 +353,27 @@ public class Croupier  extends Observable {
 		this.al_communityActionCards = al_communityActionCards;
 	}
 	
-
+	//    ----- ABLAGESTAPEL-------
 	public LinkedList<GameCard> getLl_ablageStapel() {
-		return ll_ablageStapel;
+		return ll_ablagestapel;
 	}
 
-	public void setLl_ablageStapel(LinkedList<GameCard> ll_ablageStapel) {
-		this.ll_ablageStapel = ll_ablageStapel;
+	public void setLl_ablageStapel(LinkedList<GameCard> ll_ablagestapel) {
+		this.ll_ablagestapel = ll_ablagestapel;
 	}
+	
+	public void addToAblagestapel(GameCard gc){
+		this.ll_ablagestapel.add(gc);
+	}
+	
+	
 
 	public LinkedList<GameCard> getLl_nachziehStapel() {
-		return ll_nachziehStapel;
+		return ll_nachziehstapel;
 	}
 
-	public void setLl_nachziehStapel(LinkedList<GameCard> ll_nachziehStapel) {
-		this.ll_nachziehStapel = ll_nachziehStapel;
+	public void setLl_nachziehStapel(LinkedList<GameCard> ll_nachziehstapel) {
+		this.ll_nachziehstapel = ll_nachziehstapel;
 	}
 
 	public LinkedList<GameCard> getLl_holeCards() {
@@ -337,5 +402,8 @@ public class Croupier  extends Observable {
 			al_stackSizeCommunityActionCards.add(10);	
 			}
 	}
+
+
+
 	
 }

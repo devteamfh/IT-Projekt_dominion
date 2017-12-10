@@ -51,6 +51,10 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	
 	ArrayList<GameCard> al_communityCards_left;
 	
+	Label buyPower;
+	Label actions;
+	Label buys;
+	
 	Label labeltest;
 	
 	Button provisorischCard1;
@@ -72,6 +76,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
     TextArea windowGameHistory;
     customButton btn_sendChatMsgPlayingStage;
     
+    HBox tryUpdateshit;
+    
 	HBox hb_wrp_communityActionCardsBackRow;
 	HBox hb_wrp_communityActionCardsFrontRow;
     
@@ -89,9 +95,16 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		for (GameCard ac : croupier.getAl_communityActionCards()){
 		croupier.addObserver(ac);	
+		System.out.println("observer added");
 		}
 		
-		croupier.addObserver(this);
+		//croupier.addObserver(croupier.getBuyPower());
+	//croupier.addObserver(croupier.getLbl_buyPower());
+		
+
+		
+		
+		
 		
 		croupier.prepareAL_stackSizeCommunityActionCards();
 		
@@ -129,13 +142,23 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		}
 		//--------------------------------------------------------------------------------------------//
 		
-		
-		
-		
-		//market = new ActionCard(new Label("market"),5,1,2,3);
-		//Croupier.getCroupier().addObserver(market);
-		//market.setMinSize(110, 120);
 
+		tryUpdateshit = new HBox();
+		
+		//buyPower = new Label("11");
+		
+		tryUpdateshit.getChildren().add(croupier.getLbltest());		
+	
+		
+
+		HBox hb_wrapper_buyPowerActionBuys = new HBox();
+		//croupier.setSimpleIntegerPropertyBuyPower();
+		//hb_wrapper_buyPowerActionBuys.getChildren().add(buyPower);
+		
+		
+		
+		
+		
 		
 	    sl = ServiceLocatorClient.getServiceLocator();  
 	    
@@ -172,6 +195,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		this.provisorisch4 = new Button("kjkjk");
 
+		
+		
 		sl.setButtonPlayActions("Aktion spielen");
 		sl.getButtonPlayActions().setDisable(true);
 		
@@ -193,6 +218,13 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		hb_chatButtonAndTextField.setPrefSize(200, 100);
 		
 		hb_chatButtonAndTextField.getChildren().addAll(tf_messagePlayingStage,btn_sendChatMsgPlayingStage);
+		
+		
+		
+	
+		
+		
+		
 		
 		vb_right.getChildren().addAll(label_gameHistory,windowGameHistory,label_chat,hb_chatButtonAndTextField,chatWindowPlayingStage);
 		
@@ -233,7 +265,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		gp_left.getChildren().addAll(province,duchy,estate,gold,silver,copper);
 		
 		VBox vb_center = new VBox();
-		GridPane gp_actionCards = new GridPane();
+		//GridPane gp_actionCards = new GridPane();
 		
 		
 
@@ -256,8 +288,9 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		//gc1.setMinSize(100,200);
 		
-		labeltest = new Label("kj");
-		vb_center.getChildren().addAll(hb_wrp_communityActionCardsBackRow,hb_wrp_communityActionCardsFrontRow,labeltest);
+
+		
+		vb_center.getChildren().addAll(hb_wrp_communityActionCardsBackRow,hb_wrp_communityActionCardsFrontRow);
 		
 		Label playedCards_label = new Label ("gespielte Karten");
 		vb_center.getChildren().addAll(playedCards_label);
@@ -269,12 +302,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		
 		
-
-
-
-
-		
-		
+	
 		
 		
 		
@@ -283,6 +311,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		VBox vb_bottom = new VBox();
 		vb_bottom.setPrefSize(1000, 60);
+		
 		sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
 		HBox hb_stack_hand_endAction_endBuy = new HBox();
 		hb_stack_hand_endAction_endBuy.setPrefSize(750, 120);
@@ -293,7 +322,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		VBox vb_stack_endGameHost = new VBox();
 		HBox hb_endGameHost_endGamePlayer = new HBox();
 		hb_endGameHost_endGamePlayer.getChildren().addAll(sl.getButtonEndGameHost(),sl.getButtonEndGamePlayer());
-		vb_stack_endGameHost.getChildren().addAll(stack,hb_endGameHost_endGamePlayer);
+		vb_stack_endGameHost.getChildren().addAll(tryUpdateshit,stack,hb_endGameHost_endGamePlayer);
 		
 		HBox.setMargin(vb_stack_endGameHost, new Insets(0, 100, 0, 0));
 		HBox.setMargin(yourHand, new Insets(0, 20, 0, 0));
@@ -323,20 +352,34 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		this.scene = new Scene (root,1000,800);
 		scene.getStylesheets().add(getClass().getResource("gameplay/style_playStage.css").toExternalForm());
 
+		   scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+		        @Override
+		        public void handle(MouseEvent mouseEvent) {
+		            System.out.println("mouse click detected! " + mouseEvent.getSource());
+		            croupier.setSimpleIntegerPropertyBuyPower();
+		        	tryUpdateshit.getChildren().clear();
+		        	tryUpdateshit.getChildren().addAll(croupier.getLbltest());
+		        }
+		    });
+		
+		
         return scene;
 	}
 
+	
+	
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		this.labeltest.setText("jaja"); 
 		System.out.println("obseverd");
+		
+
 		//hb_wrp_communityActionCardsBackRow.getChildren().addAll(provisorisch4,ac1);
+		
 		//hb_wrp_communityActionCardsFrontRow.getChildren().addAll(croupier.getAl_communityActionCards().get(5),croupier.getAl_communityActionCards().get(6),croupier.getAl_communityActionCards().get(7),croupier.getAl_communityActionCards().get(8),croupier.getAl_communityActionCards().get(9));
 		//stage.show();
-
-		
 	}
-
-
-
-}
+	
+	
+ }
