@@ -30,6 +30,12 @@ public class PlayerWithoutOS implements Serializable {
 		this.username = username;
 	}
 	
+	//is needed for clone a Player list
+	public PlayerWithoutOS(PlayerWithoutOS player){
+		this.id=-1;
+		this.username = player.getUsername();
+	}
+	
 	public void setID(){
 		if (this. id == -1){
 			this. id = nextMessageID();
@@ -91,6 +97,14 @@ public class PlayerWithoutOS implements Serializable {
 
 	public void buyEnded(){
 		this.numberOfBuys=0;
+	}
+	
+	public int getPoints(){
+		return this.points;
+	}
+	
+	public void increasePoints(){
+		this.points++;
 	}
 	
 

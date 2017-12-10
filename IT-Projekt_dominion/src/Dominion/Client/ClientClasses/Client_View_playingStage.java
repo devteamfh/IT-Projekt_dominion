@@ -84,7 +84,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		//Leafs 
 		
-		//____Community Cards links -> Ländereien und Geld_____________________________________________//
+		//____Community Cards links -> Lï¿½ndereien und Geld_____________________________________________//
 		estate   = new ProvinceCard(new Label("estate"),croupier.getCostsEstate());
 		duchy    = new ProvinceCard(new Label("duchy"),croupier.getCostsDuchy());
 		province = new ProvinceCard(new Label("province"),croupier.getCostsPovince());
@@ -183,7 +183,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		//will be evaluated as a loss.
 		sl.getButtonEndGameHost().setDisable(true);
 		//by default this button is also deactivated
-		sl.getButtonEndGamePlayer().setDisable(true);
+		sl.getButtonLeaveGamePlayer().setDisable(true);
 
 		root.setTop(vb_player);
 		vb_player.setAlignment(Pos.TOP_RIGHT);
@@ -275,7 +275,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		VBox vb_stack_endGameHost = new VBox();
 		HBox hb_endGameHost_endGamePlayer = new HBox();
-		hb_endGameHost_endGamePlayer.getChildren().addAll(sl.getButtonEndGameHost(),sl.getButtonEndGamePlayer());
+		hb_endGameHost_endGamePlayer.getChildren().addAll(sl.getButtonEndGameHost(),sl.getButtonLeaveGamePlayer());
 		vb_stack_endGameHost.getChildren().addAll(stack,hb_endGameHost_endGamePlayer);
 		
 		HBox.setMargin(vb_stack_endGameHost, new Insets(0, 100, 0, 0));
@@ -300,7 +300,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 			sl.getButtonEndGameHost().setDisable(false);
 		}else{
 			//button activation if the the client isn't the host
-			sl.getButtonEndGamePlayer().setDisable(false);
+			sl.getButtonLeaveGamePlayer().setDisable(false);
 		}
 		
 		this.scene = new Scene (root,1000,800);

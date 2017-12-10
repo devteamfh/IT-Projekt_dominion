@@ -23,8 +23,10 @@ public class GameParty extends GameObject{
 	private int numberOfLoggedInPlayers = 0;
 	private ArrayList <PlayerWithoutOS> playersOfThisGameParty = new ArrayList <PlayerWithoutOS>();
 	private int rounds;
+	private int roundCounter = 7;
 	private boolean gameHasStarted;
 	private int numberOfCardSet;
+	private boolean gameHasEnded;
 	
 
 	private static long nextMessageID() {		
@@ -106,6 +108,10 @@ public class GameParty extends GameObject{
 		this.rounds=rounds;
 	}
 	
+	public int getRounds(){
+		return this.rounds;
+	}
+	
 	public void setGameHasStarted(boolean gameHasStarted){
 		this.gameHasStarted=gameHasStarted;
 	}
@@ -117,5 +123,23 @@ public class GameParty extends GameObject{
 	public int getNumberOfCardSet(){
 		return this.numberOfCardSet;
 	}
+	
+	public void setGameHasEnded(boolean hasEnded){
+		this.gameHasEnded=hasEnded;
+	}
+	
+	public boolean getGameHasEnded(){
+		return this.gameHasEnded;
+	}
+	
+	public void increasePlayedRounds(){
+		this.roundCounter++;
+	}
+	
+	public int getRoundCounter(){
+		return this.roundCounter;
+	}
+	
+	
 
 }

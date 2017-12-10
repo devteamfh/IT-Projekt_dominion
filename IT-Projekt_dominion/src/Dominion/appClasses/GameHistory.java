@@ -17,11 +17,13 @@ public class GameHistory extends GameObject{
 	private PlayerWithoutOS playerForGUIActivation;
 	private PlayerWithoutOS currentPlayer;
 	private PlayerWithoutOS leavingPlayer;
+	private PlayerWithoutOS winner;
 	private HistoryType type;
 	
 	public enum HistoryType {
 		 PlayAction, PlayBuy, EndAction,
-		 EndBuy, LeaveGame, UpdateLobbyAfterLeave
+		 EndBuy, LeaveGame, UpdateLobbyAfterLeave,
+		 EndGame
 		 };
 	
 	private static long nextMessageID() {		
@@ -56,7 +58,11 @@ public class GameHistory extends GameObject{
 	}
 	
 	public void updateText(String text){
-		this.text = this.text+"\n"+text;
+		this.text = text;
+	}
+	
+	public void clearText(){
+		this.text = "";
 	}
 	
 	public HistoryType getHistoryType(){
@@ -89,6 +95,14 @@ public class GameHistory extends GameObject{
 	
 	public void setNewType(HistoryType type){
 		this.type=type;
+	}
+	
+	public void setWinner(PlayerWithoutOS winner){
+		this.winner=winner;
+	}
+	
+	public PlayerWithoutOS getWinner(){
+		return this.winner;
 	}
 
 }
