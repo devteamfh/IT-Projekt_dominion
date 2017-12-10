@@ -141,8 +141,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             @Override
             public void handle(ActionEvent event) {
             	
-            	croupier.setActionPoints(0);
-   
+            	croupier.setBuys(3);
             
             }
         });

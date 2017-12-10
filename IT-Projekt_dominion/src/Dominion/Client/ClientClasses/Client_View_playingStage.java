@@ -1,6 +1,7 @@
 package Dominion.Client.ClientClasses;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -55,38 +56,31 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	MoneyCard copper, silver, gold, curse;
 	
 	ArrayList<GameCard> al_communityCards_left;
+	ArrayList<GameCard> al_allStartingCards;
 	
+	VBox vb_player;
 	
-	
-	
-	
-	
-	Label buyPower;
-	Label actions;
-	Label buys;
-	
-	Label labeltest;
-	
+
 	Button provisorischCard1;
 	Button provisorischCard2;
 	Button provisorischCard3;
 	
 	Button provisorisch4;
-	GameCard ac1;
+
 	
 	Button action2;
 	
 	Label stack;
 	Label yourHand;
 	
-	VBox vb_player;
+
 	
 	TextField tf_messagePlayingStage;
     TextArea chatWindowPlayingStage;
     TextArea windowGameHistory;
     customButton btn_sendChatMsgPlayingStage;
     
-    HBox tryUpdateshit;
+
     
 
     
@@ -146,6 +140,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 	
 		//____Community Cards links -> L�ndereien und Geld, Curse____________________________________________//
+		
+		//Community Cards auf der Linken seite Initialisieren	
 		estate   = new ProvinceCard(new Label("estate"),croupier.getCostsEstate());
 		duchy    = new ProvinceCard(new Label("duchy"),croupier.getCostsDuchy());
 		province = new ProvinceCard(new Label("province"),croupier.getCostsPovince());
@@ -156,7 +152,6 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		curse = new MoneyCard(new Label("curse"),croupier.getBuyPowerCurse(),croupier.getCostsCurse());
 		
-		//
 		al_communityCards_left = new ArrayList<GameCard>();	
 		al_communityCards_left.add(estate);
 		al_communityCards_left.add(duchy);
@@ -173,6 +168,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 			croupier.addObserver(gc);
 			gc.setMinSize(120, 110);
 		}
+			
 		
 		//Branches
 		HBox hb_wrapper_communityCards_Left = new HBox();
@@ -328,7 +324,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		
 		
-		//____________Stacks holecards contorlbuttons___________________________________________________________________________________________________//
+		//____________holecards contorlbuttons___________________________________________________________________________________________________//
 		
 		customButton blank = new customButton();
 		blank.setMinSize(180, 240);
@@ -367,11 +363,43 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		//wrapper hole Cards
 		HBox hb_wrapper_holeCards = new HBox();
 	
+		//holeCards initialisieren (7 copper, 3 estates)
+		al_allStartingCards = new ArrayList<GameCard>();	
+			
+		for (int i = 0; i < 7; i++)
+			al_allStartingCards.add(new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper()));	
+			
+		for (int i = 0; i <3; i++)
+			al_allStartingCards.add(new ProvinceCard(new Label("estate"),croupier.getCostsEstate()));
+			
+		//alle Objekte in al_allStartingCards als "holeCards" true flaggieren
+		for (int i = 0; i < 10; i++) {
+			al_allStartingCards.get(i).setHoleCard(true);
+		}
+		
+		//Liste mischeln und 5 Karten in den nachziehstapel legen, und 5 karten in die hand legen
+		Collections.shuffle(al_allStartingCards);
+		for (int i = 0; i < 5; i++)
+			croupier.addToHoleCards(al_allStartingCards.get(i));
+		
+		for (int i = 5; i < 10; i++)
+			croupier.addToNachziehstapel(al_allStartingCards.get(i));
+		
+		
+				//holeCards auf Board Anzeigen
+				for (int i = 0; i < croupier.getHoleCards().size(); i++){
+				GameCard gc1 = al_allStartingCards.get(i);
+				hb_wrapper_holeCards.getChildren().add(gc1);
+				gc1.setMinSize(180, 240);
+				}
+		
+		//label anzahl nachziehkarten hier?= <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<		
+				
+				
 		
 		//Bereich nach holecards recht
 		HBox hb_wrapper_gameController = new HBox();
 		
-
 		
 		VBox vb_wrapper_controlButtons = new VBox();
 
@@ -554,7 +582,11 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		    		hb_wrapper_copper.getChildren().add(copper);    
 		            
 
-		    		
+					//holeCards auf Board Anzeigen
+					//for (int i = 0; i < croupier.getHoleCards().size(); i++){
+					//GameCard gc1 = al_allStartingCards.get(i);
+					//hb_wrapper_holeCards.getChildren().add(gc1);
+					//}
 
 		            
 		            

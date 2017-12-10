@@ -54,7 +54,7 @@ public class ActionCard extends GameCard{
 							
 								//gekaufte karte auf ablagestapel legen
 								croupier.addToAblagestapel(ac);
-								System.out.println(croupier.getLl_ablageStapel().size());
+								System.out.println(croupier.getAblagestapel().size());
 								
 								//GUI aktualisieren
 								//croupier.

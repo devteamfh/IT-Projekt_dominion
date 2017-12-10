@@ -311,42 +311,41 @@ public class Croupier  extends Observable {
 	}
 	
 	//    ----- ABLAGESTAPEL-------
-	public LinkedList<GameCard> getLl_ablageStapel() {
+	public LinkedList<GameCard> getAblagestapel() {
 		return ll_ablagestapel;
 	}
-
-	public void setLl_ablageStapel(LinkedList<GameCard> ll_ablagestapel) {
-		this.ll_ablagestapel = ll_ablagestapel;
-	}
-	
+	//hinzufügen
 	public void addToAblagestapel(GameCard gc){
 		gc.setHoleCard(true);
-		this.ll_ablagestapel.add(gc);
-		
+		this.ll_ablagestapel.add(gc);	
 	}
 	
 	
-
-	public LinkedList<GameCard> getLl_nachziehStapel() {
+	//    ----- Nachziehstapel-------
+	public LinkedList<GameCard> getNachziehstapel() {
 		return ll_nachziehstapel;
 	}
-
-	public void setLl_nachziehStapel(LinkedList<GameCard> ll_nachziehstapel) {
-		this.ll_nachziehstapel = ll_nachziehstapel;
+	//hinzufügen
+	public void addToNachziehstapel(GameCard gc) {
+		gc.setHoleCard(true);
+		this.ll_nachziehstapel.add(gc);
 	}
-
-	public LinkedList<GameCard> getLl_holeCards() {
+	//    ----- Karten in der Hand-------	
+	public LinkedList<GameCard> getHoleCards() {
 		return ll_holeCards;
 	}
-
-	public void setLl_holeCards(LinkedList<GameCard> ll_holeCards) {
-		this.ll_holeCards = ll_holeCards;
+	//hinzufügen
+	public void addToHoleCards(GameCard gc) {
+		gc.setHoleCard(true);
+		this.ll_holeCards.add(gc);
 	}
 	
-	//fï¿½gt eine Karte den hole cards hinzu
+	
+	/*//fï¿½gt eine Karte den hole cards hinzu
 	public void drawHoleCard(GameCard gc){
 		ll_holeCards.add(gc);
-	}
+	}*/
+	
 
 	public ArrayList<Integer> getAl_stackSizeCommunityActionCards() {
 		return al_stackSizeCommunityActionCards;
