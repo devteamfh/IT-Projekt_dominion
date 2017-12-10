@@ -59,13 +59,15 @@ public class ActionCard extends GameCard{
 								croupier.addToAblagestapel(newCard);
 								//System.out.println("neue ablagestapelgrösse: "+croupier.getAblagestapel().size());
 								
-								//GUI aktualisieren
-								//sl.getPlayingStage().updateGUI();
-								//System.out.println("updategui gesendet");
+
 								
 							}
 						}
 				}
+					
+					//GUI aktualisieren
+					sl.getPlayingStage().updateGUI();
+					//System.out.println("updategui gesendet");		
 			}});
 			}
 					
