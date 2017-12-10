@@ -111,18 +111,16 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         	
             @Override
             public void handle(ActionEvent event) {
-
+            	croupier.setActionMode(false);
             	croupier.setBuyMode(true);
-            	croupier.setBuyPower();
+            	croupier.setBuys(3);
             	System.out.println(croupier.getBuyPower());
          	
 
             }
             
           
-            
-            
-            
+           
             
             
         });
@@ -130,10 +128,10 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             @Override
             public void handle(ActionEvent event) {
 
-            	croupier.setBuyMode(true);
-            	croupier.setBuyPower(0);
-            	croupier.setActionPoints(3);
-            	System.out.println(croupier.getBuyPower());
+            	croupier.setBuyMode(false);
+            	croupier.setActionMode(true);
+            	croupier.setActions(3);
+            	System.out.println(croupier.getActions());
             }
         });
        
@@ -141,8 +139,9 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             @Override
             public void handle(ActionEvent event) {
             	
-            	croupier.setBuys(3);
-            
+            	croupier.setBuyPower();
+            	croupier.setBuys(5);
+            	croupier.setActions(5);
             }
         });
      
@@ -318,7 +317,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
     }
     
    
-    
     
     
     

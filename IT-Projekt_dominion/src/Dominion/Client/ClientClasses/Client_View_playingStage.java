@@ -61,6 +61,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	VBox vb_player;
 	
 
+	HBox hb_wrapper_holeCards;
+	
 	Button provisorischCard1;
 	Button provisorischCard2;
 	Button provisorischCard3;
@@ -266,9 +268,9 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
 		
 		
-		this.provisorischCard1 = new Button ("Karte prov");
-		this.provisorischCard2 = new Button ("Karte prov");
-		this.provisorischCard3 = new Button ("Karte prov");
+		this.provisorischCard1 = new Button ("Buy Modus Aktivieren");
+		this.provisorischCard2 = new Button ("Aktionsmodus Aktivieren");
+		this.provisorischCard3 = new Button ("Geld Nachfüllen");
 		
 		vb_wrapper_gameInformation.getChildren().addAll(hb_wrapper_lblBuyPower,hb_wrapper_lblActions,hb_wrapper_lblBuys, sl.getLabelNumberOfActionsAndBuys(),provisorischCard1,provisorischCard2,provisorischCard3);   //  << löschen: sl.getLabelNumberOfActionsAndBuys
 		
@@ -361,8 +363,9 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		hb_wrapper_stapel.getChildren().addAll(blank,nachziehstapel);
 		
 		//wrapper hole Cards
-		HBox hb_wrapper_holeCards = new HBox();
-	
+		//HBox hb_wrapper_holeCards = new HBox();
+		hb_wrapper_holeCards = new HBox();
+		
 		//holeCards initialisieren (7 copper, 3 estates)
 		al_allStartingCards = new ArrayList<GameCard>();	
 			
@@ -372,9 +375,10 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		for (int i = 0; i <3; i++)
 			al_allStartingCards.add(new ProvinceCard(new Label("estate"),croupier.getCostsEstate()));
 			
-		//alle Objekte in al_allStartingCards als "holeCards" true flaggieren
+		//alle Objekte in al_allStartingCards als "holeCards" true flaggieren und observer adden
 		for (int i = 0; i < 10; i++) {
 			al_allStartingCards.get(i).setHoleCard(true);
+			croupier.addObserver(al_allStartingCards.get(i));
 		}
 		
 		//Liste mischeln und 5 Karten in den nachziehstapel legen, und 5 karten in die hand legen
@@ -388,7 +392,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 				//holeCards auf Board Anzeigen
 				for (int i = 0; i < croupier.getHoleCards().size(); i++){
-				GameCard gc1 = al_allStartingCards.get(i);
+				GameCard gc1 = croupier.getHoleCards().get(i);
 				hb_wrapper_holeCards.getChildren().add(gc1);
 				gc1.setMinSize(180, 240);
 				}
@@ -565,39 +569,16 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		           // System.out.println("mouse click detected! " + mouseEvent.getSource());
 		            
 		            //redraw community cards left
-		            hb_wrapper_province.getChildren().remove(province);  
-		    		hb_wrapper_duchy.getChildren().remove(duchy); 	     
-		    		hb_wrapper_estate.getChildren().remove(estate);  	  
-		    		hb_wrapper_curse.getChildren().remove(curse);	  	 
-		    		hb_wrapper_gold.getChildren().remove(gold);	  	  
-		    		hb_wrapper_silver.getChildren().remove(silver);     
-		    		hb_wrapper_copper.getChildren().remove(copper); 
-		    		
-		            hb_wrapper_province.getChildren().add(province);  
-		    		hb_wrapper_duchy.getChildren().add(duchy); 	     
-		    		hb_wrapper_estate.getChildren().add(estate);  	  
-		    		hb_wrapper_curse.getChildren().add(curse);	  	 
-		    		hb_wrapper_gold.getChildren().add(gold);	  	  
-		    		hb_wrapper_silver.getChildren().add(silver);     
-		    		hb_wrapper_copper.getChildren().add(copper);    
 		            
-
-					//holeCards auf Board Anzeigen
-					//for (int i = 0; i < croupier.getHoleCards().size(); i++){
-					//GameCard gc1 = al_allStartingCards.get(i);
-					//hb_wrapper_holeCards.getChildren().add(gc1);
-					//}
-
-		            
-		            
-		    		hb_wrapper_lblBuyPower.getChildren().clear();
+   
+		    		/*hb_wrapper_lblBuyPower.getChildren().clear();
 		        	hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());
 		        	
 		    		hb_wrapper_lblActions.getChildren().clear();
 		    		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
 		    		
 		    		hb_wrapper_lblBuys.getChildren().clear();
-		    		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
+		    		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());*/
 		        }
 		    });
 		
@@ -605,6 +586,25 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
         return scene;
 	}
 
+	
+	
+	public void updateGUI() {
+		System.out.println("updategui erhalten");
+		
+
+		
+		//Zeichne holeCards Neu
+		hb_wrapper_holeCards.getChildren().clear();
+		for (int i = 0; i < croupier.getHoleCards().size(); i++){
+		GameCard gc1 = croupier.getHoleCards().get(i);
+		hb_wrapper_holeCards.getChildren().add(gc1);
+		gc1.setMinSize(180, 240);
+		}
+		
+		
+  
+		
+	};
 	
 
 	//im moment passiert hier nichts, später ev. löschen

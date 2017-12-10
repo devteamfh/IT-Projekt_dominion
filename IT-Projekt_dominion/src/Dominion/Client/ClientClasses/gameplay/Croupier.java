@@ -289,7 +289,7 @@ public class Croupier  extends Observable {
 		return actions;
 	}
 
-	public void setActionPoints(int actionPoints) {
+	public void setActions(int actionPoints) {
 		this.actions = actionPoints;
 	}
 
@@ -317,6 +317,7 @@ public class Croupier  extends Observable {
 	//hinzufügen
 	public void addToAblagestapel(GameCard gc){
 		gc.setHoleCard(true);
+		addObserver(gc);
 		this.ll_ablagestapel.add(gc);	
 	}
 	
