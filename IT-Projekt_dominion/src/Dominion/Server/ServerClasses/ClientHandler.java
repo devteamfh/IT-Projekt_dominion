@@ -35,7 +35,7 @@ public class ClientHandler implements Runnable {
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private PlayerWithOS PWOS_thisPlayer;
-	StringBuilder strBuilder = new StringBuilder();
+	private StringBuilder strBuilder = new StringBuilder();
 
 	private ServiceLocatorServer sl;
 	
@@ -287,6 +287,24 @@ public class ClientHandler implements Runnable {
 			
 		 case GameHistory:
 			 GameHistory history = (GameHistory) obj;
+			 /**
+			 //save the currrent player (as PlayerWithOS because we only need this on server side) of a GameParty. We get the right GameParty by reading the id of the GameParty within the GameHistory object
+			 long id3 = history.getGameParty().getID();
+			 
+			 //search the corresponding GamePartyOnServer with the same id
+			 for(int i=0; i<sl.getGameListFromServer().size();i++){
+				 if(sl.getGameListFromServer().get(i).getGameParty().getID() == id){
+					 GamePartyOnServer current = sl.getGameListFromServer().get(i);
+					 //break 1. for-loop
+					 break;
+					 //searching the right player and set him as current player
+					 for(int i2=0;i2<current.getPlayerList().size();i2++){
+						 if(history.getCurrentPlayer().getUsername().equals(current.getPlayerList().get(i2).getUsername())){
+							 
+						 }
+					 }
+				 }
+			 }*/
 			 
 			 while(iterGamePartyOnServer.hasNext()){
 					GamePartyOnServer current = iterGamePartyOnServer.next();
@@ -334,46 +352,14 @@ public class ClientHandler implements Runnable {
 							//we will save the name of the next player within the GameHistory object. On client side for each client it will be checked if this name corresponds to the name of the client. If yes we will
 							//activate his GUI (and only his!)
 							PlayerWithoutOS nextPlayer = history.getGameParty().getArrayListOfPlayers().get(indexOfNextPlayer);
-							history.setPlayerForGUIActivation(nextPlayer);
+							//set the name of the player whose GUI has to get activated
+							history.setPlayerForGUIActivation(nextPlayer);							
 							
 							if(indexOfNextPlayer ==0){
 								
-								//only checked if we play with number of rounds. The game will end if true
-								if(history.getGameParty().withRounds() && history.getGameParty().getRoundCounter() == history.getGameParty().getRounds()){
-									history.getGameParty().setGameHasEnded(true);
-									history.clearText();
-									
-									PlayerWithoutOS winner = determineWinner(history.getGameParty());
-									
-									if(winner !=null){
-										strBuilder.append("Gewinner ist: "+winner.getUsername()+"\n");
-										
-										ArrayList<PlayerWithoutOS> loser = determineLoser(winner,history.getGameParty());
-										strBuilder.append("Verloren haben: ");
-										for(int i=0; i<loser.size();i++){
-											strBuilder.append(loser.get(i).getUsername()+",");
-										}
-
-									}else{
-										strBuilder.append("Unentschieden!");
-
-									}
-									history.setNewType(GameHistory.HistoryType.EndGame);
-									history.setWinner(winner); //is null when all players have the same number of points
-									history.updateText(strBuilder.toString());
-									strBuilder.delete(0, strBuilder.length());
-									
-									
-								}else{
-									strBuilder.append(history.getText());
-									String update = "Runde "+(history.getGameParty().getRoundCounter())+" abgeschlossen\n_________________\nSpieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
-									strBuilder.append(update);
-									history.getGameParty().increasePlayedRounds();
-									history.updateText(strBuilder.toString());
-									strBuilder.delete(0, strBuilder.length());
-									
-								}
-
+								//a new round will begin because the last player in the sequence has finished his buy phase
+								//in this method we also check if the max number of rounds is reached (when game party with mode "Rundenanzahl)...the game would end here
+								prepareNewRound(history,nextPlayer);
 								
 							}else{
 								strBuilder.append(history.getText());
@@ -403,18 +389,40 @@ public class ClientHandler implements Runnable {
 							break;
 							
 						case LeaveGame:
-							
-							//first write to all players of the corresponding GameParty
-							for (int i =0; i<current.getPlayerList().size();i++){
-								current.getPlayerList().get(i).getOut().writeObject(history);
-								current.getPlayerList().get(i).getOut().flush();
+						
+							//first: check if the leaving player is the current player and determine the next player in the sequence 
+							if(history.getCurrentPlayer() !=null){
+								//if the leaving player is also the current player we have to activate the GUI of the next player in the sequence
+								indexOfCurrentPlayer = determineIndexOfCurrentPlayer(history);
+								indexOfNextPlayer = determineIndexOfNextPlayer(indexOfCurrentPlayer,history);
+								
+								//we will save the name of the next player within the GameHistory object. On client side for each client it will be checked if this name corresponds to the name of the client. If yes we will
+								//activate his GUI (and only his!)
+								nextPlayer = history.getGameParty().getArrayListOfPlayers().get(indexOfNextPlayer);
+								//set the name of the player whose GUI haas to get activated
+								history.setPlayerForGUIActivation(nextPlayer);							
+								
+								if(indexOfNextPlayer ==0){
+									
+									//a new round will begin because the last player in the sequence has left the game
+									//in this method we also check if the max number of rounds is reached (when game party with mode "Rundenanzahl)...the game would end here
+									prepareNewRound(history,nextPlayer);
+									
+								}else{
+									strBuilder.append(history.getText());
+									String update = "Spieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
+									strBuilder.append(update);
+									history.updateText(strBuilder.toString());
+									strBuilder.delete(0, strBuilder.length());
+								}
+								
 							}
 							
 							//remove leaving player in the corresponding GamePartyOnServer
 							long id3 = history.getGameParty().getID();
 							for (int i=0; i<sl.getGameListFromServer().size();i++){
 								 if(id3 == sl.getGameListFromServer().get(i).getGameParty().getID()){
-									 sl.getGameListFromServer().get(i).removePlayer(history.getCurrentPlayer());
+									 sl.getGameListFromServer().get(i).removePlayer(history.getLeavingPlayer());
 									 //the game ends automatically if there is only one player left (and the other players have left the game) -->remove GameParty on server-side
 									 if(sl.getGameListFromServer().get(i).getPlayerList().size() == 1){
 										 sl.getGameListFromServer().remove(i);
@@ -423,7 +431,16 @@ public class ClientHandler implements Runnable {
 									 //break the for-loop because we have found the right GameParty
 									 break;
 								 }
-							 }							
+							 }
+							
+							
+							//write to all players of the corresponding GameParty
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+										
 
 							//break case LeaveGame
 							break;
@@ -518,6 +535,44 @@ public class ClientHandler implements Runnable {
 	    for(int i=0; i<clone.size();i++){
 	    }
 	    return clone;
+	}
+	
+	public void prepareNewRound(GameHistory history, PlayerWithoutOS nextPlayer){
+		//only checked if we play with number of rounds. The game will end if true
+		if(history.getGameParty().withRounds() && history.getGameParty().getRoundCounter() == history.getGameParty().getRounds()){
+			history.getGameParty().setGameHasEnded(true);
+			history.clearText();
+			
+			PlayerWithoutOS winner = determineWinner(history.getGameParty());
+			
+			if(winner !=null){
+				strBuilder.append("Gewinner ist: "+winner.getUsername()+"\n");
+				
+				ArrayList<PlayerWithoutOS> loser = determineLoser(winner,history.getGameParty());
+				strBuilder.append("Verloren haben: ");
+				for(int i=0; i<loser.size();i++){
+					strBuilder.append(loser.get(i).getUsername()+",");
+				}
+
+			}else{
+				strBuilder.append("Unentschieden!");
+
+			}
+			history.setNewType(GameHistory.HistoryType.EndGame);
+			history.setWinner(winner); //is null when all players have the same number of points
+			history.updateText(strBuilder.toString());
+			strBuilder.delete(0, strBuilder.length());
+			
+			
+		}else{
+			strBuilder.append(history.getText());
+			String update = "Runde "+(history.getGameParty().getRoundCounter())+" abgeschlossen\n_________________\nSpieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
+			strBuilder.append(update);
+			history.getGameParty().increasePlayedRounds();
+			history.updateText(strBuilder.toString());
+			strBuilder.delete(0, strBuilder.length());
+			
+		}
 	}
 	
 }

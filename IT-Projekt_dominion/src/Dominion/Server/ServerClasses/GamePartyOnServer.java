@@ -54,6 +54,10 @@ public class GamePartyOnServer {
 		return this.playerList;
 	}
 	
+	public void setCurrentPlayer(){
+		
+	}
+	
 
 	
 

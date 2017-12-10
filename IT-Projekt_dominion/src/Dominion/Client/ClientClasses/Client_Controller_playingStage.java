@@ -299,9 +299,19 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	}
             	
             	sl.getButtonLeaveGamePlayer().setDisable(true);
-            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" verlässt das Spiel\n");
-            	GameHistory history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),GameHistory.HistoryType.LeaveGame);
-            	history.setLeavingPlayer(sl.getPlayer_noOS());
+            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" verlässt das Spiel\n\n");
+            	//here we set current_player of the playing stage as null so we don't overwrite the current_player saved on server-side (instance variable in class ClientHandler)
+            	GameHistory history;
+            	if(sl.getButtonEndActions().isDisabled() && sl.getButtonEndBuys().isDisabled()){
+            		//here we set current player as null
+            		history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),null,GameHistory.HistoryType.LeaveGame);
+                	history.setLeavingPlayer(sl.getPlayer_noOS());
+            	}else{
+            		//the leaving player is also the current player
+            		history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),GameHistory.HistoryType.LeaveGame);
+                	history.setLeavingPlayer(sl.getPlayer_noOS());
+            	}
+
             	
             	try {
             		//model.out.reset();
