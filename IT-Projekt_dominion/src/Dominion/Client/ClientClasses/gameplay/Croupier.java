@@ -1,6 +1,7 @@
 package Dominion.Client.ClientClasses.gameplay;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
@@ -25,7 +26,7 @@ import javafx.scene.control.Label;
  */
 public class Croupier  extends Observable {
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
-    //Felderi
+    //Felder
 	private static Croupier croupier;
 
 	
@@ -65,6 +66,10 @@ public class Croupier  extends Observable {
 	
 	ArrayList<GameCard> al_communityActionCards = new ArrayList<GameCard>();
 
+	
+	
+
+	
 	
 	//Konstruktoren
     public static Croupier getCroupier() {
@@ -129,9 +134,39 @@ public class Croupier  extends Observable {
 		case "silver":    return getStackSizeSilver(); 
 		case "gold":      return getStackSizeGold(); 
 		}
+		sl.getLogger().info("something went wrong");
 		return -1;
 	}
 
+	
+	//Legt die Karten von den Hole Cards zum Ablagestapel (am Ende jeder Buyphase)
+		public void muckHoleCards() {
+			for (int i = ll_holeCards.size()-1; i >= 0; i--){
+				addToAblagestapel(ll_holeCards.get(i));
+				ll_holeCards.remove(i);
+			}	
+		}
+		
+		//Zieht 5 Karten vom Nachziehstapel zu den Hole Cards am Anfang jeder Spielphase
+		public void drawHoleCards(){
+			if (ll_nachziehstapel.size() < 5){
+				putAblagestapelToNachziehstapel();
+			}
+			
+			for (int i = 5; i > 0; i--){
+				ll_holeCards.add(ll_nachziehstapel.pop());
+			   	sl.getPlayingStage().updateGUI();
+			}	
+		}
+		
+		//mischt den Ablagestapel durch und fügt die Karten dem Nachziehstapel hinzu
+		public void putAblagestapelToNachziehstapel(){
+			Collections.shuffle(ll_ablagestapel);
+			
+			while(ll_ablagestapel.size() != 0)
+				ll_nachziehstapel.add(ll_ablagestapel.pop());
+		}
+		
 	public int getStackSizeEstate() {
 		return stackSizeEstate;
 	}
@@ -281,9 +316,6 @@ public class Croupier  extends Observable {
 	}
 
 
-	
-
-
 	public int getActions() {
 		return actions;
 	}
@@ -316,7 +348,6 @@ public class Croupier  extends Observable {
 	//hinzufï¿½gen
 	public void addToAblagestapel(GameCard gc){
 		gc.setHoleCard(true);
-		addObserver(gc);
 		this.ll_ablagestapel.add(gc);	
 	}
 	
