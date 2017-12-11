@@ -225,8 +225,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		//Leafs
 
-		lbl_descrBuyPower = new Label("Münzen");
-		lbl_descrBuys     = new Label("Käufe");
+		lbl_descrBuyPower = new Label("Mï¿½nzen");
+		lbl_descrBuys     = new Label("Kï¿½ufe");
 		lbl_descrActions  = new Label("Aktionen");
 
 		
@@ -574,7 +574,6 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_playStage.css").toExternalForm());
 	    //stage.initStyle(StageStyle.TRANSPARENT);   
 		
-		
 
 		   scene.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
 		        @Override
@@ -614,7 +613,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		gc1.setMinSize(180, 240);
 		}
 		
-		//Ziechne Game sTatus Informationen neu (münzen, buy, actions)
+		//Ziechne Game sTatus Informationen neu (mï¿½nzen, buy, actions)
 		hb_wrapper_lblBuyPower.getChildren().clear();
 		hb_wrapper_lblActions.getChildren().clear();
 		hb_wrapper_lblBuys.getChildren().clear();
