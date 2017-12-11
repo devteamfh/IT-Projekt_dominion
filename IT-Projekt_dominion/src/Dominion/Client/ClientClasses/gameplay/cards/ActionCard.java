@@ -40,7 +40,6 @@ public class ActionCard extends GameCard{
 							
 								//anzahl buy redurzieren
 								croupier.setBuys(croupier.getBuys()-1);
-								System.out.println("bought");
 					
 								//buyPower reduzieren
 								croupier.setBuyPower(croupier.getBuyPower()-ac.costs);
@@ -59,13 +58,26 @@ public class ActionCard extends GameCard{
 								croupier.addObserver(newCard);
 								croupier.addToAblagestapel(newCard);
 								
-								//System.out.println("neue ablagestapelgrösse: "+croupier.getAblagestapel().size());
-								
-
-								
+									
 							}
 						}
 				}
+					
+					
+					
+					//wenn ich die Karte in der Hand spielen darf:
+					if(isHoleCard() == true && croupier.isActionMode() && croupier.getActions() > 0 ){		
+					
+					croupier.setBuyPower(croupier.getBuyPower()+adtnlBuyPower);
+					croupier.setBuys(croupier.getBuys()+adtnlBuys);
+					croupier.setActions(croupier.getActions()+adtnlActions);
+					croupier.getHoleCards().remove(ac);
+					croupier.addToAblagestapel(ac);
+					
+
+					}
+					
+					
 					
 					//GUI aktualisieren
 					sl.getPlayingStage().updateGUI();

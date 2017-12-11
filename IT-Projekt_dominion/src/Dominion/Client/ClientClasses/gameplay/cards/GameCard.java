@@ -49,85 +49,15 @@ public class GameCard extends Button implements Observer  {
 			}
 		}
 		
-
-		//finde heraus um welche community Card links es sich handelt und ob noch karten vorhanden sind
-		for (int i = 0; i < sl.getPlayingStage().getAl_communityCards_left().size();i++){
-			if (gc.equals(sl.getPlayingStage().getAl_communityCards_left().get(i)) && croupier.getStackSize(gc) == 0){
-				this.getStyleClass().remove("highlight");
-			}
-		}
+		//finde heraus um welche community card links es sich handelt und ob noch karten da sind
+		if (croupier.getStackSize(gc) == 0)
+			this.getStyleClass().remove("highlight");
 		
 		
 	}
 		
 		
-		/*
-		 * 
-		 * 
-		 * 	  Platform.runLater(new Runnable(){
-	         
 
-				@Override
-	              public void run() {
-					getStyleClass().remove("highlight");
-	              }
-	          });
-	          */
-		
-	
-
-
-		/* final Task task;
-	        task = new Task<Void>() {
-	            @Override
-	            protected Void call() throws Exception {
-	   
-	            		
-	            		System.out.println("jaja");
-	                return null;
-	            }
-	        };
-		
-		new Thread(task).start();
-		*/
-		
-		
-		
-		
-		//Aktiviert Karten für den Kaufmodus. (in hole und auf deck, werden mehr geldkarten (moneytoSpend) geklickt, wird es möglich, andere Geldkarten zu kaufen
-		//GameCard gc = this;
-		 //else {
-		
-		
-			
-
-
-		
-		
-		
-		//Aktiviert holeCards für Aktionsmodus
-	//	if (croupier.isActionMode() == true && this.isHoleCard() && this instanceof ActionCard){
-
-//		}else 
-		
-	//	if (croupier.getStackSize(this) == 0) {
-
-		//}
-		
-		
-		/*test observable
-		 *
-		System.out.println("notifyed");
-		if (croupier.isActionMode() == true && croupier.getCoinsSpent() >= this.int_costs ){
-			
-			System.out.println("croupier changed to action mode and the costs is lower than the coins Spent");
-		}*/
-		
-		
-	
-	//}
-	
-	
 	
 	public void assignPicture(){
 		this.getStyleClass().addAll("card",lbl_cardName.getText());

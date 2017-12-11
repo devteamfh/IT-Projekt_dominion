@@ -134,11 +134,9 @@ public class Croupier  extends Observable {
 		case "copper":    return getStackSizeCopper(); 
 		case "silver":    return getStackSizeSilver(); 
 		case "gold":      return getStackSizeGold(); 
+		case "curse":	  return getStackSizeCurse();
 		}
 		sl.getLogger().info("something went wrong");
-		setChanged();
-		notifyObservers();
-    	sl.getPlayingStage().updateGUI();
 		return -1;
 	}
 
@@ -435,6 +433,12 @@ public class Croupier  extends Observable {
 		return lbl_buys;
 	}
 	
+	public void clearHoleCards(){
+		this.ll_holeCards.clear();
+		for(int i=0; i<ll_holeCards.size();i++){
+			System.out.println(ll_holeCards.get(i));
+		}
+}
 	
 	
 }

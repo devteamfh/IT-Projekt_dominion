@@ -41,9 +41,7 @@ import javafx.scene.input.MouseEvent;
 						if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(mc) > 0){
 							croupier.setBuys(croupier.getBuys()-1);
 							
-							System.out.println("alte STackgrösse: "+croupier.getStackSize(mc));
 							croupier.setStackSize(mc); //stacksize von moneyCards wird um eins reduziert
-							System.out.println("neue STackgrösse: "+croupier.getStackSize(mc));
 							
 							//code ab hier dann in true teil unten
 							//String text = sl.getPlayer_noOS().getUsername()+" spielt "+lbl_cardName.getText();
