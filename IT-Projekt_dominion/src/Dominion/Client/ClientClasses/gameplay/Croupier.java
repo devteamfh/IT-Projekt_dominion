@@ -29,8 +29,6 @@ public class Croupier  extends Observable {
     //Felder
 	private static Croupier croupier;
 
-	
-	
 	boolean actionMode = true;
 	boolean buyMode    = false;
 	
@@ -93,6 +91,7 @@ public class Croupier  extends Observable {
 		
 		setChanged();
 		notifyObservers();	
+    	sl.getPlayingStage().updateGUI(); 
 	}
 		
 	public void setBuyPower() {
@@ -120,11 +119,13 @@ public class Croupier  extends Observable {
 			break;
 		case "curse": 	  setStackSizeCurse(getStackSizeCurse()-1);
 		}
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
 	}
 	
 	public int getStackSize(GameCard gc){
 
-	
 		switch (gc.getLbl_cardName().getText()) {
 		
 		case "estate":    return getStackSizeEstate(); 
@@ -135,6 +136,9 @@ public class Croupier  extends Observable {
 		case "gold":      return getStackSizeGold(); 
 		}
 		sl.getLogger().info("something went wrong");
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
 		return -1;
 	}
 
@@ -322,6 +326,9 @@ public class Croupier  extends Observable {
 
 	public void setActions(int actionPoints) {
 		this.actions = actionPoints;
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
 	}
 
 	public int getBuys() {
@@ -330,6 +337,9 @@ public class Croupier  extends Observable {
 
 	public void setBuys(int buys) {
 		this.buys = buys;
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
 	}
 
 	
@@ -371,13 +381,6 @@ public class Croupier  extends Observable {
 		this.ll_holeCards.add(gc);
 	}
 	
-	
-	/*//f�gt eine Karte den hole cards hinzu
-	public void drawHoleCard(GameCard gc){
-		ll_holeCards.add(gc);
-	}*/
-	
-
 	public ArrayList<Integer> getAl_stackSizeCommunityActionCards() {
 		return al_stackSizeCommunityActionCards;
 	}
@@ -432,12 +435,6 @@ public class Croupier  extends Observable {
 		return lbl_buys;
 	}
 	
-	public void clearHoleCards(){
-		this.ll_holeCards.clear();
-		for(int i=0; i<ll_holeCards.size();i++){
-			System.out.println(ll_holeCards.get(i));
-		}
-	}
 	
 	
 }

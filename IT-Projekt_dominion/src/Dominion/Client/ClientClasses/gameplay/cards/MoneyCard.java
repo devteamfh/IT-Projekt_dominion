@@ -36,7 +36,6 @@ import javafx.scene.input.MouseEvent;
 				addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 					@Override public void handle(MouseEvent e) {
 						
-						System.out.println("moneycard clicked");
 						
 						//Wenn die karte aus den communty cards gekauft wird
 						if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(mc) > 0){
@@ -60,12 +59,9 @@ import javafx.scene.input.MouseEvent;
 
 							
 							//gekaufte karte auf ablagestapel legen
-							System.out.println("alte ablagestapelgrösse: "+croupier.getAblagestapel().size());
 							MoneyCard newCard = new MoneyCard(mc.lbl_cardName,mc.costs,mc.buyPower);
 							croupier.addObserver(newCard);
-							croupier.addToAblagestapel(newCard);
-							System.out.println("neue ablagestapelgrösse: "+croupier.getAblagestapel().size());
-		
+							croupier.addToAblagestapel(newCard);		
 						}
 
 						

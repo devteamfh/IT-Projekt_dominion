@@ -3,6 +3,7 @@ package Dominion.Client.ClientClasses.gameplay.cards;
 import java.util.Observable;
 import java.util.Observer;
 
+import Dominion.Client.ClientClasses.ServiceLocatorClient;
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.appClasses.GameObject.ObjectType;
 import javafx.application.Platform;
@@ -13,15 +14,12 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
 public class GameCard extends Button implements Observer  {
-	
 	Croupier croupier;
 	
 	Label   lbl_cardName;
 	boolean holeCard  = false;
 
-	
 	int costs;
-
 	
 	public GameCard(Label cardName) {
 		super();
@@ -31,14 +29,17 @@ public class GameCard extends Button implements Observer  {
 	}
 	
 
-	
-	
 	@Override
-	public void update(Observable arg0, Object arg1) {
-	
-
-					
+	public void update(Observable arg0, Object arg1) {							
+		System.out.println("object has been observed");
 		getStyleClass().remove("highlight");
+		
+		//Highlighte alle Karten im Kaufmodus, welche ich mit der aktuelln Buypower kaufen kann
+		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard() && croupier.getBuys() > 0){
+			this.getStyleClass().add("highlight");
+		}
+	}
+
 		
 		/*
 		 * 
@@ -75,22 +76,11 @@ public class GameCard extends Button implements Observer  {
 		
 		//Aktiviert Karten für den Kaufmodus. (in hole und auf deck, werden mehr geldkarten (moneytoSpend) geklickt, wird es möglich, andere Geldkarten zu kaufen
 		//GameCard gc = this;
-		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard()){
-			//this.setDisable(false);
+		 //else {
+		
+		
 			
 
-			
-			//System.out.println("GameCardClass: cards highlighted");
-			this.getStyleClass().add("highlight");
-			
-	
-			
-		} //else {
-		
-		
-			
-		}
-		
 
 		
 		
@@ -122,10 +112,7 @@ public class GameCard extends Button implements Observer  {
 	public void assignPicture(){
 		this.getStyleClass().addAll("card",lbl_cardName.getText());
 	}
-	
-	
-	
-	
+
 	
 	public boolean isHoleCard() {
 		return holeCard;
@@ -144,9 +131,5 @@ public class GameCard extends Button implements Observer  {
 	}
 
 	
-
-
-
-
 	
 }

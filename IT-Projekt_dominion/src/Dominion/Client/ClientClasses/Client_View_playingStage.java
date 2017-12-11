@@ -46,7 +46,7 @@ import sun.misc.GC;
  * @author: Styling und Anordnung: kab
  *                                        
  */
-public class Client_View_playingStage extends View<Client_Model> implements Observer {
+public class Client_View_playingStage extends View<Client_Model> {
 	ServiceLocatorClient sl;
 	Croupier croupier;
 
@@ -70,7 +70,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	HBox hb_wrapper_lblActions;
 	HBox hb_wrapper_lblBuys;
 	
-	
+	HBox hb_wrapper_curse;
 	
 	
 	Button provisorischCard1;
@@ -193,7 +193,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		HBox hb_wrapper_province = new HBox();   hb_wrapper_province.getChildren().add(province);  hb_wrapper_province.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_duchy    = new HBox();   hb_wrapper_duchy.getChildren().add(duchy); 	   hb_wrapper_duchy.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_estate   = new HBox();   hb_wrapper_estate.getChildren().add(estate);  	   hb_wrapper_estate.setPadding(new Insets(0,5,5,0));
-		HBox hb_wrapper_curse    = new HBox();   hb_wrapper_curse.getChildren().add(curse);	  	   hb_wrapper_curse.setPadding(new Insets(0,5,5,0)); 	
+		hb_wrapper_curse    = new HBox();   hb_wrapper_curse.getChildren().add(curse);	  	   hb_wrapper_curse.setPadding(new Insets(0,5,5,0)); 	
 		HBox hb_wrapper_gold     = new HBox();   hb_wrapper_gold.getChildren().add(gold);	  	   hb_wrapper_gold.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_silver   = new HBox();   hb_wrapper_silver.getChildren().add(silver);      hb_wrapper_silver.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_copper   = new HBox();   hb_wrapper_copper.getChildren().add(copper);      hb_wrapper_copper.setPadding(new Insets(0,5,5,0));		
@@ -614,7 +614,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		gc1.setMinSize(180, 240);
 		}
 		
-		//Ziechne Game sTatus Informationen neu (münzen, buy, actions)
+		//Zeichhne Game status Informationen neu (münzen, buy, actions)
 		hb_wrapper_lblBuyPower.getChildren().clear();
 		hb_wrapper_lblActions.getChildren().clear();
 		hb_wrapper_lblBuys.getChildren().clear();
@@ -623,33 +623,13 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
 		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
   
+		hb_wrapper_curse.getChildren().clear();
+		hb_wrapper_curse.getChildren().add(curse);
+		
 		
 	};
 	
-
-	//im moment passiert hier nichts, spï¿½ter ev. lï¿½schen
-	@Override
-	public void update(Observable o, Object arg) {
-		System.out.println("obseverd");
-		System.out.println("observed: "+Thread.currentThread());
-		
-		  /*  	
-		  	Task task = new Task<Void>() {
-		    	    @Override public Void call() {
-		    	    	
-		            	System.out.println(Thread.currentThread());
-		               	tryUpdateshit.getChildren().clear();
-				    	tryUpdateshit.getChildren().addAll(croupier.getLbltest());
-
-		    	        return null;
-		    	    }
-		    	};*/
-	
-		//hb_wrp_communityActionCardsBackRow.getChildren().addAll(provisorisch4,ac1);
-		
-		//hb_wrp_communityActionCardsFrontRow.getChildren().addAll(croupier.getAl_communityActionCards().get(5),croupier.getAl_communityActionCards().get(6),croupier.getAl_communityActionCards().get(7),croupier.getAl_communityActionCards().get(8),croupier.getAl_communityActionCards().get(9));
-		//stage.show();
 	}
 	
 	
- }
+ 
