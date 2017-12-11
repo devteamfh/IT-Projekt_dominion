@@ -225,8 +225,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		//Leafs
 
-		lbl_descrBuyPower = new Label("Münzen");
-		lbl_descrBuys     = new Label("Käufe");
+		lbl_descrBuyPower = new Label("Mï¿½nzen");
+		lbl_descrBuys     = new Label("Kï¿½ufe");
 		lbl_descrActions  = new Label("Aktionen");
 
 		
@@ -574,7 +574,6 @@ public class Client_View_playingStage extends View<Client_Model> {
 		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_playStage.css").toExternalForm());
 	    //stage.initStyle(StageStyle.TRANSPARENT);   
 		
-		
 
 		   scene.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
 		        @Override
@@ -615,6 +614,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		}
 		
 		//Zeichhne Game status Informationen neu (münzen, buy, actions)
+
 		hb_wrapper_lblBuyPower.getChildren().clear();
 		hb_wrapper_lblActions.getChildren().clear();
 		hb_wrapper_lblBuys.getChildren().clear();
