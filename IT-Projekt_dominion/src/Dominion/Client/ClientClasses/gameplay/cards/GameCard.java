@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
 public class GameCard extends Button implements Observer  {
+	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	Croupier croupier;
 	
 	Label   lbl_cardName;
@@ -28,18 +29,37 @@ public class GameCard extends Button implements Observer  {
 		this.assignPicture();
 	}
 	
-
+	GameCard gc = this;
 	@Override
 	public void update(Observable arg0, Object arg1) {							
 		System.out.println("object has been observed");
 		getStyleClass().remove("highlight");
 		
-		//Highlighte alle Karten im Kaufmodus, welche ich mit der aktuelln Buypower kaufen kann
+		//Highlighte alle Karten im Kaufmodus, welche ich mit der aktuelln Buypower und buys kaufen kann
 		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard() && croupier.getBuys() > 0){
 			this.getStyleClass().add("highlight");
 		}
-	}
+		
+		//wenn stacksize auf 0, wird highlighting ebenfalls deaktiviert
+		
+		//finde heraus um welche community action  karte es sich handelt und ob noch karten vorhanden sind
+		for (int i = 0; i < croupier.getAl_communityActionCards().size(); i++){
+			if (gc.equals(croupier.getAl_communityActionCards().get(i)) && croupier.getAl_stackSizeCommunityActionCards().get(i) == 0) {
+				this.getStyleClass().remove("highlight");
+			}
+		}
+		
 
+		//finde heraus um welche community Card links es sich handelt und ob noch karten vorhanden sind
+		for (int i = 0; i < sl.getPlayingStage().getAl_communityCards_left().size();i++){
+			if (gc.equals(sl.getPlayingStage().getAl_communityCards_left().get(i)) && croupier.getStackSize(gc) == 0){
+				this.getStyleClass().remove("highlight");
+			}
+		}
+		
+		
+	}
+		
 		
 		/*
 		 * 

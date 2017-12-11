@@ -70,7 +70,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 	HBox hb_wrapper_lblActions;
 	HBox hb_wrapper_lblBuys;
 	
-	HBox hb_wrapper_curse;
+	
 	
 	
 	Button provisorischCard1;
@@ -193,7 +193,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		HBox hb_wrapper_province = new HBox();   hb_wrapper_province.getChildren().add(province);  hb_wrapper_province.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_duchy    = new HBox();   hb_wrapper_duchy.getChildren().add(duchy); 	   hb_wrapper_duchy.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_estate   = new HBox();   hb_wrapper_estate.getChildren().add(estate);  	   hb_wrapper_estate.setPadding(new Insets(0,5,5,0));
-		hb_wrapper_curse    = new HBox();   hb_wrapper_curse.getChildren().add(curse);	  	   hb_wrapper_curse.setPadding(new Insets(0,5,5,0)); 	
+		HBox hb_wrapper_curse    = new HBox();   hb_wrapper_curse.getChildren().add(curse);	  	   hb_wrapper_curse.setPadding(new Insets(0,5,5,0)); 	
 		HBox hb_wrapper_gold     = new HBox();   hb_wrapper_gold.getChildren().add(gold);	  	   hb_wrapper_gold.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_silver   = new HBox();   hb_wrapper_silver.getChildren().add(silver);      hb_wrapper_silver.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_copper   = new HBox();   hb_wrapper_copper.getChildren().add(copper);      hb_wrapper_copper.setPadding(new Insets(0,5,5,0));		
@@ -623,10 +623,12 @@ public class Client_View_playingStage extends View<Client_Model> {
 		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
 		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
   
-		hb_wrapper_curse.getChildren().clear();
-		hb_wrapper_curse.getChildren().add(curse);
+
 		
-		
+	}
+
+	public ArrayList<GameCard> getAl_communityCards_left() {
+		return al_communityCards_left;
 	};
 	
 	}
