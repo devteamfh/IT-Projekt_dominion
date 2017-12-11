@@ -144,8 +144,6 @@ public class Croupier  extends Observable {
 			for (int i = ll_holeCards.size()-1; i >= 0; i--){
 				addToAblagestapel(ll_holeCards.get(i));
 				ll_holeCards.remove(i);
-				System.out.println("hit");
-			
 			}	
 		}
 		
@@ -157,6 +155,7 @@ public class Croupier  extends Observable {
 			
 			for (int i = 5; i > 0; i--){
 				ll_holeCards.add(ll_nachziehstapel.pop());
+			   	sl.getPlayingStage().updateGUI();
 			}	
 		}
 		
