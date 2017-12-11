@@ -62,12 +62,12 @@ import javafx.scene.input.MouseEvent;
 							//gekaufte karte auf ablagestapel legen
 							System.out.println("alte ablagestapelgrösse: "+croupier.getAblagestapel().size());
 							MoneyCard newCard = new MoneyCard(mc.lbl_cardName,mc.costs,mc.buyPower);
+							croupier.addObserver(newCard);
 							croupier.addToAblagestapel(newCard);
 							System.out.println("neue ablagestapelgrösse: "+croupier.getAblagestapel().size());
-							
-							
-							
+		
 						}
+
 						
 						//wenn ich die Karte in der Hand spielen darf:
 						if(isHoleCard() == true && croupier.isBuyMode() && croupier.getBuys() > 0 ){		

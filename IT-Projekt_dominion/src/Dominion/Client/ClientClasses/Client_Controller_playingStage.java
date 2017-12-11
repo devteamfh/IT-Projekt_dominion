@@ -105,17 +105,13 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         view.provisorischCard1.setOnAction(new EventHandler<ActionEvent>() {
         	
         	
-        	
-        	
-        	
-        	
-            @Override
+                  @Override
             public void handle(ActionEvent event) {
             	croupier.setActionMode(false);
             	croupier.setBuyMode(true);
             	croupier.setBuys(3);
             	sl.getPlayingStage().updateGUI();
-         	
+            	System.out.println(croupier.getHoleCards().size());
 
             }
             
@@ -127,7 +123,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         view.provisorischCard2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
             	croupier.setBuyMode(false);
             	croupier.setActionMode(true);
             	croupier.setActions(3);
@@ -142,6 +137,8 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	croupier.setBuyPower();
             	croupier.setBuys(5);
             	croupier.setActions(5);
+            	croupier.muckHoleCards();
+            	croupier.drawHoleCards();
             	sl.getPlayingStage().updateGUI();
             }
         });

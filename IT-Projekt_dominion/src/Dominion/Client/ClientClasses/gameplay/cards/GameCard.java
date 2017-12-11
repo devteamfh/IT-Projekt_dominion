@@ -80,7 +80,7 @@ public class GameCard extends Button implements Observer  {
 			
 
 			
-			System.out.println("GameCardClass: cards highlighted");
+			//System.out.println("GameCardClass: cards highlighted");
 			this.getStyleClass().add("highlight");
 			
 	
