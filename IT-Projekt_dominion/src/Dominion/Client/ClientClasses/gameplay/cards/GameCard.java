@@ -32,7 +32,6 @@ public class GameCard extends Button implements Observer  {
 	GameCard gc = this;
 	@Override
 	public void update(Observable arg0, Object arg1) {							
-		System.out.println("object has been observed");
 		getStyleClass().remove("highlight");
 		
 		//Highlighte alle Karten im Kaufmodus, welche ich mit der aktuelln Buypower und buys kaufen kann
@@ -41,23 +40,16 @@ public class GameCard extends Button implements Observer  {
 		}
 		
 		//wenn stacksize auf 0, wird highlighting ebenfalls deaktiviert
-		
-		//finde heraus um welche community action  karte es sich handelt und ob noch karten vorhanden sind
-		for (int i = 0; i < croupier.getAl_communityActionCards().size(); i++){
-			if (gc.equals(croupier.getAl_communityActionCards().get(i)) && croupier.getAl_stackSizeCommunityActionCards().get(i) == 0) {
-				this.getStyleClass().remove("highlight");
-			}
-		}
-		
-		//finde heraus um welche community card links es sich handelt und ob noch karten da sind
-		if (croupier.getStackSize(gc) == 0)
+		if (croupier.getStackSize(gc) == 0) {
 			this.getStyleClass().remove("highlight");
-		
+		}
+	
+		//update das STackSize infoLabel auf der Karte
 		
 	}
 		
-		
-
+	
+	
 	
 	public void assignPicture(){
 		this.getStyleClass().addAll("card",lbl_cardName.getText());

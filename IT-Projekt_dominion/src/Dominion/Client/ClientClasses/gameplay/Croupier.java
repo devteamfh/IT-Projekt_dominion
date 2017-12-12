@@ -125,7 +125,8 @@ public class Croupier  extends Observable {
 	}
 	
 	public int getStackSize(GameCard gc){
-
+		
+		//ist es eine action Karte links (province, curse, money?)
 		switch (gc.getLbl_cardName().getText()) {
 		
 		case "estate":    return getStackSizeEstate(); 
@@ -135,10 +136,16 @@ public class Croupier  extends Observable {
 		case "silver":    return getStackSizeSilver(); 
 		case "gold":      return getStackSizeGold(); 
 		case "curse":	  return getStackSizeCurse();
+		
 		}
-		sl.getLogger().info("something went wrong");
+		//dann ist es eine Community Action Card
+		if (getAl_communityActionCards().contains(gc)) {
+			int i = getAl_communityActionCards().indexOf(gc);
+			return getAl_stackSizeCommunityActionCards().get(i);
+		}
 		return -1;
 	}
+
 
 	
 	//Legt die Karten von den Hole Cards zum Ablagestapel (am Ende jeder Buyphase)
@@ -438,7 +445,7 @@ public class Croupier  extends Observable {
 		for(int i=0; i<ll_holeCards.size();i++){
 			System.out.println(ll_holeCards.get(i));
 		}
-}
-	
+	}
+
 	
 }

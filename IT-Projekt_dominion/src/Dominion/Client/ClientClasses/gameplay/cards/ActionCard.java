@@ -31,13 +31,9 @@ public class ActionCard extends GameCard{
 			addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 				@Override public void handle(MouseEvent e) {
 					
-					//wenn karte aus den community action cards gekauft wird
-					if(isHoleCard() == false && croupier.isBuyMode() == true && costs <= croupier.getBuyPower() && croupier.getBuys() > 0){
-					
-						//finde heraus um welche karte es sich handelt und ob noch karten vorhanden sind
-						for (int i = 0; i < croupier.getAl_communityActionCards().size(); i++){
-							if (ac.equals(croupier.getAl_communityActionCards().get(i)) && croupier.getAl_stackSizeCommunityActionCards().get(i)>0) {
-							
+					//wenn karte aus den community action cards gekauft wird (kaufmodus on, buypower und buys ausreichend, sowie genügend karten da
+					if(isHoleCard() == false && croupier.isBuyMode() == true && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(ac)>0){
+										
 								//anzahl buy redurzieren
 								croupier.setBuys(croupier.getBuys()-1);
 					
@@ -45,9 +41,12 @@ public class ActionCard extends GameCard{
 								croupier.setBuyPower(croupier.getBuyPower()-ac.costs);
 								
 								//stack reduzieren      <--------------------------------------------------------------@joel
-								Integer valueToChange = croupier.getAl_stackSizeCommunityActionCards().get(i);
+								Integer valueToChange = croupier.getStackSize(ac);
 								int newValue = Integer.parseInt(valueToChange.toString());
 								newValue--;
+								
+								int i = croupier.getAl_communityActionCards().indexOf(ac);
+								
 								croupier.getAl_stackSizeCommunityActionCards().set(i, Integer.valueOf(newValue));
 								//System.out.println("alte stackgrösse:"+valueToChange);
 								//System.out.println("neue Stackgrösse:"+newValue);
@@ -56,14 +55,9 @@ public class ActionCard extends GameCard{
 								//System.out.println("alte Ablagestapelgrösse: "+croupier.getAblagestapel().size());
 								ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower);
 								croupier.addObserver(newCard);
-								croupier.addToAblagestapel(newCard);
-								
-									
-							}
+								croupier.addToAblagestapel(newCard);						
 						}
-				}
-					
-					
+			
 					
 					//wenn ich die Karte in der Hand spielen darf:
 					if(isHoleCard() == true && croupier.isActionMode() && croupier.getActions() > 0 ){		
@@ -73,17 +67,15 @@ public class ActionCard extends GameCard{
 					croupier.setActions(croupier.getActions()+adtnlActions);
 					croupier.getHoleCards().remove(ac);
 					croupier.addToAblagestapel(ac);
-					
-
 					}
 					
 					
-					
-					//GUI aktualisieren
-					sl.getPlayingStage().updateGUI();
-					//System.out.println("updategui gesendet");		
-			}});
-			}
+				//GUI aktualisieren
+				sl.getPlayingStage().updateGUI();
+				//System.out.println("updategui gesendet");		
+				}
+			});
+		}
 					
 					
 		

@@ -1,4 +1,4 @@
-package Dominion.Client.ClientClasses.gameplay.cards;
+/*package Dominion.Client.ClientClasses.gameplay.cards;
 
 import java.util.ArrayList;
 
@@ -17,8 +17,8 @@ import javafx.scene.image.Image;
  *
  */
 
-//Switch Statement für verschiedene Karten
-
+//Switch Statement fï¿½r verschiedene Karten
+/*
 public class VictoryCard extends Button {
 	private String title;					
 	private ImageIcon victoryImg;						
@@ -68,7 +68,7 @@ public class VictoryCard extends Button {
 	}
 		
 		
-	// Getter und Setter für VictoryCard-Objekte
+	// Getter und Setter fï¿½r VictoryCard-Objekte
 	public String getTitle(){
 		return this.title;
 	}
@@ -163,23 +163,24 @@ public class VictoryCard extends Button {
 		this.player = player;
 	}
 }
+*/
 	
 	/*
-	// Spiel wird gestartet, Stapel für Estate
+	// Spiel wird gestartet, Stapel fï¿½r Estate
 	public void setVictoryCardStackEstate(){
 			VictoryCard [] stackEstate = new VictoryCard[10];
 			for (int i=0; i < stackEstate.length; i++){
 			stackEstate[i] = new VictoryCard(Estate);
 			}
 		}
-	// Spiel wird gestartet, Stapel für Duchy
+	// Spiel wird gestartet, Stapel fï¿½r Duchy
 	public void setVictoryCardStackDuchy(){
 			VictoryCard [] stackDuchy = new VictoryCard[10];
 			for (int i=0; i < stackDuchy.length; i++){
 			stackDuchy[i] = new VictoryCard(Duchy);
 			}
 		}
-	// Spiel wird gestartet, Stapel für Province
+	// Spiel wird gestartet, Stapel fï¿½r Province
 	public void setVictoryCardStackProvince(){
 			VictoryCard [] stackProvince = new VictoryCard[10];
 			for (int i=0; i < stackProvince.length; i++){
@@ -230,7 +231,7 @@ public class VictoryCard extends Button {
 	// Stimmt das so?
 }
 	
-// Getter und Setter für VictoryPoints
+// Getter und Setter fï¿½r VictoryPoints
 public void setVictoryPoints(int victoryPoints){
 	this.victoryPoints = victoryPoints;
 	
@@ -243,7 +244,7 @@ public void buy(int sizeOfStack){
 	this.sizeOfStack = sizeOfStack--;
 	
 }
-//Getter und Setter für Title
+//Getter und Setter fï¿½r Title
 public void setTitle(String title){
 	this.title = title;
 	
@@ -252,7 +253,7 @@ public String getTitle(){
 	return title;
 	
 }
-//Getter und Setter für Costs
+//Getter und Setter fï¿½r Costs
 public void setCosts(int costs){
 	this.costs = costs;
 	
@@ -260,7 +261,7 @@ public void setCosts(int costs){
 public int getCosts(){
 	return costs;
 }
-//Getter und Setter für Image
+//Getter und Setter fï¿½r Image
 public void setVictoryImg(Image victoryImg){
 	this.victoryImg = victoryImg;
 }
