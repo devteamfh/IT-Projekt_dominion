@@ -32,9 +32,9 @@
 }
 
 
-.copper			{-fx-background-image: url('../img/cards/copper.jpg');}	
-.silver			{-fx-background-image: url('../img/cards/silver.jpg');}
-.gold			{-fx-background-image: url('../img/cards/gold.jpg');}   
+.copper			{-fx-background-image: url('../img/cards/small/copper.png');}	
+.silver			{-fx-background-image: url('../img/cards/small/silver.png');}
+.gold			{-fx-background-image: url('../img/cards/small/gold.png');}   
 .adventure		{-fx-background-image: url('../img/cards/adventure.jpg');}
 .basement		{-fx-background-image: url('../img/cards/basement.jpg');}
 .bureaucrat		{-fx-background-image: url('../img/cards/bureaucrat.jpg');	}
@@ -43,27 +43,61 @@
 .chapel			{-fx-background-image: url('../img/cards/chapel.jpg');}
 .councilmeeting	{-fx-background-image: url('../img/cards/councilmeeting.jpg');}
 .curse			{-fx-background-image: url('../img/cards/curse.jpg');}
-.duchy			{-fx-background-image: url('../img/cards/duchy.jpg');}
-.estate			{-fx-background-image: url('../img/cards/estate.jpg');}
+.duchy			{-fx-background-image: url('../img/cards/small/duchy.png');}
+.estate			{-fx-background-image: url('../img/cards/small/estate.png');}
 .feast			{-fx-background-image: url('../img/cards/feast.jpg');}
-.forge			{-fx-background-image: url('../img/cards/forge.jpg');}
-.funfair		{-fx-background-image: url('../img/cards/funfair.jpg');}
+.forge			{-fx-background-image: url('../img/cards/small/smithy.png');}
+.funfair		{-fx-background-image: url('../img/cards/small/funfair.png');}
 .gardens		{-fx-background-image: url('../img/cards/gardens.jpg');}
-.gold			{-fx-background-image: url('../img/cards/gold.jpg');}
-.laboratory		{-fx-background-image: url('../img/cards/laboratory.jpg');}
+.laboratory		{-fx-background-image: url('../img/cards/small/laboratory.png');}
 .library		{-fx-background-image: url('../img/cards/library.jpg');}
-.lumberjack		{-fx-background-image: url('../img/cards/lumberjack.jpg');}
-.market			{-fx-background-image: url('../img/cards/market.jpg');}
+.lumberjack		{-fx-background-image: url('../img/cards/small/lumberjack.png');}
+.market			{-fx-background-image: url('../img/cards/small/market.png');}
 .militia		{-fx-background-image: url('../img/cards/militia.jpg');}
 .mine			{-fx-background-image: url('../img/cards/mine.jpg');}
 .moat			{-fx-background-image: url('../img/cards/moat.jpg');}
-.moneylender	{-fx-background-image: url('../img/cards/moneylender.jpg');}
-.province		{-fx-background-image: url('../img/cards/province.jpg');}
+.moneylender	{-fx-background-image: url('../img/cards/small/moneylender.png');}
+.province		{-fx-background-image: url('../img/cards/small/province.png');}
 .rebuilding		{-fx-background-image: url('../img/cards/rebuilding.jpg');}
 .spy			{-fx-background-image: url('../img/cards/spy.jpg');}
 .thief			{-fx-background-image: url('../img/cards/img/thief.jpg');}
 .throneroom		{-fx-background-image: url('../img/cards/throneroom.jpg');}
-.village		{-fx-background-image: url('../img/cards/village.jpg');}
+.village		{-fx-background-image: url('../img/cards/small/village.png');}
+.waste			{-fx-background-image: url('../img/cards/waste.jpg');}
+.witch			{-fx-background-image: url('../img/cards/witch.jpg');}
+.workshop		{-fx-background-image: url('../img/cards/workshop.jpg');}
+
+.copper			{-fx-background-image: url('../img/cards/big/copper.png');}	
+.silver			{-fx-background-image: url('../img/cards/big/silver.png');}
+.gold			{-fx-background-image: url('../img/cards/big/gold.png');}   
+.adventure		{-fx-background-image: url('../img/cards/adventure.jpg');}
+.basement		{-fx-background-image: url('../img/cards/basement.jpg');}
+.bureaucrat		{-fx-background-image: url('../img/cards/bureaucrat.jpg');	}
+.cardback		{-fx-background-image: url('../img/cards/cardback.jpg');}
+.chancellor		{-fx-background-image: url('../img/cards/chancellor.jpg');}
+.chapel			{-fx-background-image: url('../img/cards/chapel.jpg');}
+.councilmeeting	{-fx-background-image: url('../img/cards/councilmeeting.jpg');}
+.curse			{-fx-background-image: url('../img/cards/curse.jpg');}
+.duchy			{-fx-background-image: url('../img/cards/big/duchy.png');}
+.estate			{-fx-background-image: url('../img/cards/big/estate.png');}
+.feast			{-fx-background-image: url('../img/cards/feast.jpg');}
+.forge			{-fx-background-image: url('../img/cards/big/smithy.png');}
+.funfair		{-fx-background-image: url('../img/cards/big/funfair.png');}
+.gardens		{-fx-background-image: url('../img/cards/gardens.jpg');}
+.laboratory		{-fx-background-image: url('../img/cards/big/laboratory.png');}
+.library		{-fx-background-image: url('../img/cards/library.jpg');}
+.lumberjack		{-fx-background-image: url('../img/cards/big/lumberjack.png');}
+.market			{-fx-background-image: url('../img/cards/big/market.png');}
+.militia		{-fx-background-image: url('../img/cards/militia.jpg');}
+.mine			{-fx-background-image: url('../img/cards/mine.jpg');}
+.moat			{-fx-background-image: url('../img/cards/moat.jpg');}
+.moneylender	{-fx-background-image: url('../img/cards/big/moneylender.png');}
+.province		{-fx-background-image: url('../img/cards/big/province.png');}
+.rebuilding		{-fx-background-image: url('../img/cards/rebuilding.jpg');}
+.spy			{-fx-background-image: url('../img/cards/spy.jpg');}
+.thief			{-fx-background-image: url('../img/cards/thief.jpg');}
+.throneroom		{-fx-background-image: url('../img/cards/throneroom.jpg');}
+.village		{-fx-background-image: url('../img/cards/big/village.png');}
 .waste			{-fx-background-image: url('../img/cards/waste.jpg');}
 .witch			{-fx-background-image: url('../img/cards/witch.jpg');}
 .workshop		{-fx-background-image: url('../img/cards/workshop.jpg');}

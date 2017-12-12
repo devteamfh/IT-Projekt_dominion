@@ -11,6 +11,7 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 public class GameCard extends Button implements Observer  {
@@ -52,9 +53,12 @@ public class GameCard extends Button implements Observer  {
 	
 	
 	public void assignPicture(){
-		this.getStyleClass().addAll("card",lbl_cardName.getText());
+		if (this.holeCard == false)
+			this.getStyleClass().addAll("card",lbl_cardName.getText());
+		else 
+			this.getStyleClass().addAll("card",lbl_cardName.getText()+"_big");
 	}
-
+	
 	
 	public boolean isHoleCard() {
 		return holeCard;

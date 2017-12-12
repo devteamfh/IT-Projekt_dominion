@@ -3,8 +3,15 @@ package Dominion.Client.ClientClasses.gameplay.cards;
 import Dominion.Client.ClientClasses.ServiceLocatorClient;
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ActionCard extends GameCard{
 		ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
@@ -55,7 +62,8 @@ public class ActionCard extends GameCard{
 								//System.out.println("alte Ablagestapelgrösse: "+croupier.getAblagestapel().size());
 								ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower);
 								croupier.addObserver(newCard);
-								croupier.addToAblagestapel(newCard);						
+								croupier.addToAblagestapel(newCard);
+								newCard.assignPicture(); 
 						}
 			
 					
@@ -73,6 +81,32 @@ public class ActionCard extends GameCard{
 				//GUI aktualisieren
 				sl.getPlayingStage().updateGUI();
 				//System.out.println("updategui gesendet");		
+				
+				
+				//bei rechtsklick bild öffnen
+				 if (e.getButton() == MouseButton.SECONDARY && ac.isHoleCard() == false) {
+	                    System.out.println("consuming right release button in cm filter");
+	                    
+	                    Pane pane = new Pane();
+	                    ImageView imgView = new ImageView();
+	                    Image img = new Image(getClass().getResource("/img/cards/big/"+ac.lbl_cardName.getText()+".png").toExternalForm());
+	                    imgView.setImage(img);
+	                    pane.getChildren().add(imgView);
+	                                       
+	                    Stage stage = new Stage ();
+	                    Scene scene = new Scene(pane,310,497);
+	                   
+	                    stage.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+	    					@Override public void handle(MouseEvent e1) { 
+	    					stage.close();
+	    					} 
+	    					});
+	                    
+	                    stage.setScene(scene);
+	            	    stage.initStyle(StageStyle.TRANSPARENT);   
+	                    stage.show();
+	                    }
+				
 				}
 			});
 		}

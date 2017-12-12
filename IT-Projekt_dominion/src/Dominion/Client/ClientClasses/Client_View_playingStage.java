@@ -392,6 +392,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		for (int i = 0; i < 10; i++) {
 			al_allStartingCards.get(i).setHoleCard(true);
 			croupier.addObserver(al_allStartingCards.get(i));
+			al_allStartingCards.get(i).assignPicture();
 		}
 		
 		//Liste mischeln und 5 Karten in den nachziehstapel legen, und 5 karten in die hand legen
