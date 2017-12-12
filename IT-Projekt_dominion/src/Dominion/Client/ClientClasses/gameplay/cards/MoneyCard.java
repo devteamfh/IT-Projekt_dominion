@@ -28,7 +28,6 @@ import javafx.stage.StageStyle;
 			//buyPower of the actual treasure card
 			int buyPower;
 			ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
-
 			
 			public MoneyCard(Label cardName, int buyPower, int costs) {
 				super(cardName);
@@ -53,6 +52,9 @@ import javafx.stage.StageStyle;
 							croupier.setBuys(croupier.getBuys()-1);
 							
 							croupier.setStackSize(mc); //stacksize von moneyCards wird um eins reduziert
+							
+							//buyPower reduzieren
+							croupier.setBuyPower(croupier.getBuyPower()-mc.costs);
 							
 							//code ab hier dann in true teil unten
 							//String text = sl.getPlayer_noOS().getUsername()+" spielt "+lbl_cardName.getText();
@@ -129,7 +131,8 @@ import javafx.stage.StageStyle;
 			public void setInt_buyPower(int buyPower) {
 				this.buyPower = buyPower;
 			}
-		
+
+
 	
 
 }

@@ -17,7 +17,8 @@ import javafx.stage.StageStyle;
 
 public class ProvinceCard extends GameCard{
 	int matchPoints;
-
+	final double PADDINGTOP   = -75;
+	final double PADDINGRIGHT = 5;
 	
 	public ProvinceCard(Label cardName, int costs) {
 		super(cardName);
@@ -49,9 +50,10 @@ public class ProvinceCard extends GameCard{
 				if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(pc) > 0){
 					croupier.setBuys(croupier.getBuys()-1);
 					
-					System.out.println("alte STackgrösse: "+croupier.getStackSize(pc));
 					croupier.setStackSize(pc); //stacksize von moneyCards wird um eins reduziert
-					System.out.println("neue STackgrösse: "+croupier.getStackSize(pc));
+					
+					//buyPower reduzieren
+					croupier.setBuyPower(croupier.getBuyPower()-pc.costs);
 					
 					//code ab hier dann in true teil unten
 					//String text = sl.getPlayer_noOS().getUsername()+" spielt "+lbl_cardName.getText();
@@ -119,7 +121,9 @@ public class ProvinceCard extends GameCard{
 		});
 	
 	}
-	
+
+
+
 	
 	
 	

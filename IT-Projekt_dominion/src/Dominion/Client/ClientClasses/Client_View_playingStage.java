@@ -17,17 +17,26 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sun.misc.GC;
@@ -69,8 +78,6 @@ public class Client_View_playingStage extends View<Client_Model> {
 	HBox hb_wrapper_lblBuyPower;
 	HBox hb_wrapper_lblActions;
 	HBox hb_wrapper_lblBuys;
-	
-	
 	
 	
 	Button provisorischCard1;
@@ -180,6 +187,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 			gc = al_communityCards_left.get(i);
 			croupier.addObserver(gc);
 			gc.setMinSize(120, 110);
+			gc.assignStackSizeInfo();
 		}
 			
 		
@@ -211,17 +219,16 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		//____________CenterPane   communtiycard in der mitte und statusinformationen zum spiel (buypower, action etc)_________________________________________________________________________//
 		
-		//Allen CommunityActionCards einen observer hinzuf�gen
-		for (GameCard ac : croupier.getAl_communityActionCards()){
-		croupier.addObserver(ac);	
-		}
-				
 		//community Action Cards in der Mitte mit 10 karten initialisieren
 		croupier.prepareAL_stackSizeCommunityActionCards();
 		
-		for (int i = 0;i<10;i++){
-			croupier.getAl_communityActionCards().get(i).setMinSize(200, 170);
-			}
+		//Allen CommunityActionCards einen observer hinzuf�gen
+		for (GameCard ac : croupier.getAl_communityActionCards()){
+		croupier.addObserver(ac);
+		ac.setMinSize(200, 170);
+		ac.assignStackSizeInfo();
+		}
+				
 		
 		//Leafs
 
@@ -229,8 +236,6 @@ public class Client_View_playingStage extends View<Client_Model> {
 		lbl_descrBuys     = new Label("K�ufe");
 		lbl_descrActions  = new Label("Aktionen");
 
-		
-		
 		
 		//Branches
 		VBox vb_wrapper_center = new VBox();
@@ -602,10 +607,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 	
 	
 	public void updateGUI() {
-		System.out.println("updategui erhalten");
 		
-
-		
+	
 		//Zeichne holeCards Neu
 		hb_wrapper_holeCards.getChildren().clear();
 		for (int i = 0; i < croupier.getHoleCards().size(); i++){
@@ -623,14 +626,19 @@ public class Client_View_playingStage extends View<Client_Model> {
 		hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower,croupier.getLbl_buyPower());
 		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
 		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
-  
-
+  		
+		
 		
 	}
 
 	public ArrayList<GameCard> getAl_communityCards_left() {
 		return al_communityCards_left;
-	};
+	}
+	
+	
+	
+		
+	
 	
 	}
 	

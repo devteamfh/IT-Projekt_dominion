@@ -105,19 +105,19 @@ public class Croupier  extends Observable {
 
 		switch (gc.getLbl_cardName().getText()) {
 		
-		case "estate":    setStackSizeEstate(getStackSizeEstate()-1);
+		case "estate":    setStackSizeEstate(stackSizeEstate-1);
 			break;
-		case "duchy":     setStackSizeDuchy(getStackSizeDuchy()-1);
+		case "duchy":     setStackSizeDuchy(stackSizeDuchy-1);
 			break;
-		case "province":  setStackSizeProvince(getStackSizeProvince()-1);
+		case "province":  setStackSizeProvince(stackSizeProvince-1);
 			break;
-		case "copper":    setStackSizeCopper(getStackSizeCopper()-1);
+		case "copper":    setStackSizeCopper(stackSizeCopper-1);
 			break;
-		case "silver":    setStackSizeSilver(getStackSizeSilver()-1);
+		case "silver":    setStackSizeSilver(stackSizeSilver-1);
 			break;
-		case "gold":      setStackSizeGold(getStackSizeGold()-1);
+		case "gold":      setStackSizeGold(stackSizeGold-1);
 			break;
-		case "curse": 	  setStackSizeCurse(getStackSizeCurse()-1);
+		case "curse": 	  setStackSizeCurse(stackSizeCurse-1);
 		}
 		setChanged();
 		notifyObservers();
@@ -392,6 +392,16 @@ public class Croupier  extends Observable {
 
 	public void setAl_stackSizeCommunityActionCards(ArrayList<Integer> al_stackSizeCommunityActionCards) {
 		this.al_stackSizeCommunityActionCards = al_stackSizeCommunityActionCards;
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
+	}
+	
+	public void setAl_stackSizeCommunityActionCards(int i) {
+		this.al_stackSizeCommunityActionCards.set(i,al_stackSizeCommunityActionCards.get(i)-1);
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
 	}
 	
 	// Initiale # communityActionCards

@@ -23,7 +23,7 @@ public class ActionCard extends GameCard{
 
 		public ActionCard(Label cardName, int costs, int adtnlActions, int adtnlBuys, int adtnlMoneyToSpend) {
 			super(cardName);
-			super.costs         = costs;	
+			super.costs        = costs;
 			this.adtnlActions  = adtnlActions;
 			this.adtnlBuys     = adtnlBuys;
 			this.adtnlBuyPower = adtnlMoneyToSpend;
@@ -54,9 +54,9 @@ public class ActionCard extends GameCard{
 								
 								int i = croupier.getAl_communityActionCards().indexOf(ac);
 								
-								croupier.getAl_stackSizeCommunityActionCards().set(i, Integer.valueOf(newValue));
-								//System.out.println("alte stackgrösse:"+valueToChange);
-								//System.out.println("neue Stackgrösse:"+newValue);
+								System.out.println("alte stackgrösse:"+valueToChange);
+								croupier.setAl_stackSizeCommunityActionCards(i);
+								System.out.println("neue Stackgrösse:"+newValue);
 							
 								//gekaufte karte auf ablagestapel legen
 								//System.out.println("alte Ablagestapelgrösse: "+croupier.getAblagestapel().size());
@@ -121,7 +121,7 @@ public class ActionCard extends GameCard{
 		public void setPositionOnBoard(int positionOnBoard) {
 			this.positionOnBoard = positionOnBoard;
 		}
-		
-		
-		
+
+
+
 }
