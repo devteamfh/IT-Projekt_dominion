@@ -78,7 +78,7 @@ import javafx.stage.StageStyle;
 
 						
 						//wenn ich die Karte in der Hand spielen darf:
-						if(isHoleCard() == true && croupier.isBuyMode() && croupier.getBuys() > 0 ){		
+						if(isHoleCard() == true && croupier.isBuyMode() && croupier.getBuys() > 0 && mc.getLbl_cardName().getText() != "curse"){		
 						
 						croupier.setBuyPower(croupier.getBuyPower()+buyPower);
 						croupier.getHoleCards().remove(mc);
