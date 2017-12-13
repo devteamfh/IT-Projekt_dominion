@@ -187,6 +187,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 			gc = al_communityCards_left.get(i);
 			croupier.addObserver(gc);
 			gc.setMinSize(120, 110);
+			//gc.setAlignment(Pos.BOTTOM_LEFT);
 			gc.assignStackSizeInfo();
 		}
 			
@@ -198,7 +199,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		VBox vb_wrapper_communityCards_Left_col1 = new VBox();
 		VBox vb_wrapper_communityCards_Left_col2 = new VBox();
 		 
-		HBox hb_wrapper_province = new HBox();   hb_wrapper_province.getChildren().add(province);  hb_wrapper_province.setPadding(new Insets(0,5,5,0));
+		HBox hb_wrapper_province = new HBox();   hb_wrapper_province.getChildren().add(province);  hb_wrapper_province.setPadding(new Insets(0,5,5,0));  
 		HBox hb_wrapper_duchy    = new HBox();   hb_wrapper_duchy.getChildren().add(duchy); 	   hb_wrapper_duchy.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_estate   = new HBox();   hb_wrapper_estate.getChildren().add(estate);  	   hb_wrapper_estate.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_curse    = new HBox();   hb_wrapper_curse.getChildren().add(curse);	  	   hb_wrapper_curse.setPadding(new Insets(0,5,5,0)); 	
@@ -589,14 +590,14 @@ public class Client_View_playingStage extends View<Client_Model> {
 		            //redraw community cards left
 		            
    
-		    		/*hb_wrapper_lblBuyPower.getChildren().clear();
+		    		hb_wrapper_lblBuyPower.getChildren().clear();
 		        	hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());
 		        	
 		    		hb_wrapper_lblActions.getChildren().clear();
 		    		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
 		    		
 		    		hb_wrapper_lblBuys.getChildren().clear();
-		    		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());*/
+		    		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
 		        }
 		    });
 		

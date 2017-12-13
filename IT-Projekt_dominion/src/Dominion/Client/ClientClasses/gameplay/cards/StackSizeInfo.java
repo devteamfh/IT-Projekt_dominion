@@ -4,6 +4,7 @@ import Dominion.Client.ClientClasses.gameplay.Croupier;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -20,7 +21,6 @@ public class StackSizeInfo {
 	Rectangle r = new Rectangle(26, 26);
     DropShadow e = new DropShadow();
 	StackPane stackPane = new StackPane();
-	HBox wrapper = new HBox();
 	Group g = new Group();
 	
 	GameCard gc;
@@ -61,20 +61,21 @@ public class StackSizeInfo {
 		stackPane.getChildren().addAll(g,t);
 		stackPane.setCache(true);
 		
-		wrapper.setAlignment(Pos.TOP_RIGHT);
-		wrapper.getChildren().add(stackPane);
-		wrapper.setPadding(new Insets(0,0,0,0));
-		gc.setGraphic(wrapper);
-
+		gc.setText(" "); //!important
+		gc.setPadding(new Insets(0,5,0,0));
+        gc.setContentDisplay(ContentDisplay.RIGHT);
+        gc.setAlignment(Pos.TOP_RIGHT);
+		gc.setGraphic(stackPane);	
+	
 }
 	
 	public void updateStackSizeInfo(){
 		t.setText(""+croupier.getStackSize(gc));
 		stackPane.getChildren().clear();
 		stackPane.getChildren().addAll(g,t);
-		wrapper.getChildren().clear();
-		wrapper.getChildren().add(stackPane);
-		gc.setGraphic(wrapper);
+		gc.setGraphic(stackPane);
+
+		
 	}
 
 	
