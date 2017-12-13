@@ -17,17 +17,26 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sun.misc.GC;
@@ -46,7 +55,7 @@ import sun.misc.GC;
  * @author: Styling und Anordnung: kab
  *                                        
  */
-public class Client_View_playingStage extends View<Client_Model> implements Observer {
+public class Client_View_playingStage extends View<Client_Model> {
 	ServiceLocatorClient sl;
 	Croupier croupier;
 
@@ -69,8 +78,6 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	HBox hb_wrapper_lblBuyPower;
 	HBox hb_wrapper_lblActions;
 	HBox hb_wrapper_lblBuys;
-	
-	
 	
 	
 	Button provisorischCard1;
@@ -180,6 +187,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 			gc = al_communityCards_left.get(i);
 			croupier.addObserver(gc);
 			gc.setMinSize(120, 110);
+			//gc.setAlignment(Pos.BOTTOM_LEFT);
+			gc.assignStackSizeInfo();
 		}
 			
 		
@@ -190,7 +199,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		VBox vb_wrapper_communityCards_Left_col1 = new VBox();
 		VBox vb_wrapper_communityCards_Left_col2 = new VBox();
 		 
-		HBox hb_wrapper_province = new HBox();   hb_wrapper_province.getChildren().add(province);  hb_wrapper_province.setPadding(new Insets(0,5,5,0));
+		HBox hb_wrapper_province = new HBox();   hb_wrapper_province.getChildren().add(province);  hb_wrapper_province.setPadding(new Insets(0,5,5,0));  
 		HBox hb_wrapper_duchy    = new HBox();   hb_wrapper_duchy.getChildren().add(duchy); 	   hb_wrapper_duchy.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_estate   = new HBox();   hb_wrapper_estate.getChildren().add(estate);  	   hb_wrapper_estate.setPadding(new Insets(0,5,5,0));
 		HBox hb_wrapper_curse    = new HBox();   hb_wrapper_curse.getChildren().add(curse);	  	   hb_wrapper_curse.setPadding(new Insets(0,5,5,0)); 	
@@ -211,17 +220,16 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		//____________CenterPane   communtiycard in der mitte und statusinformationen zum spiel (buypower, action etc)_________________________________________________________________________//
 		
-		//Allen CommunityActionCards einen observer hinzufï¿½gen
-		for (GameCard ac : croupier.getAl_communityActionCards()){
-		croupier.addObserver(ac);	
-		}
-				
 		//community Action Cards in der Mitte mit 10 karten initialisieren
 		croupier.prepareAL_stackSizeCommunityActionCards();
 		
-		for (int i = 0;i<10;i++){
-			croupier.getAl_communityActionCards().get(i).setMinSize(200, 170);
-			}
+		//Allen CommunityActionCards einen observer hinzufï¿½gen
+		for (GameCard ac : croupier.getAl_communityActionCards()){
+		croupier.addObserver(ac);
+		ac.setMinSize(200, 170);
+		ac.assignStackSizeInfo();
+		}
+				
 		
 		//Leafs
 
@@ -229,8 +237,6 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		lbl_descrBuys     = new Label("Kï¿½ufe");
 		lbl_descrActions  = new Label("Aktionen");
 
-		
-		
 		
 		//Branches
 		VBox vb_wrapper_center = new VBox();
@@ -397,6 +403,7 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		for (int i = 0; i < 10; i++) {
 			al_allStartingCards.get(i).setHoleCard(true);
 			croupier.addObserver(al_allStartingCards.get(i));
+			al_allStartingCards.get(i).assignPicture();
 		}
 		
 		//Liste mischeln und 5 Karten in den nachziehstapel legen, und 5 karten in die hand legen
@@ -574,14 +581,14 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		            //redraw community cards left
 		            
    
-		    		/*hb_wrapper_lblBuyPower.getChildren().clear();
+		    		hb_wrapper_lblBuyPower.getChildren().clear();
 		        	hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());
 		        	
 		    		hb_wrapper_lblActions.getChildren().clear();
 		    		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
 		    		
 		    		hb_wrapper_lblBuys.getChildren().clear();
-		    		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());*/
+		    		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
 		        }
 		    });
 		
@@ -592,10 +599,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 	
 	
 	public void updateGUI() {
-		System.out.println("updategui erhalten");
 		
-
-		
+	
 		//Zeichne holeCards Neu
 		hb_wrapper_holeCards.getChildren().clear();
 		for (int i = 0; i < croupier.getHoleCards().size(); i++){
@@ -604,7 +609,8 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		gc1.setMinSize(180, 240);
 		}
 		
-		//Ziechne Game sTatus Informationen neu (mï¿½nzen, buy, actions)
+		//Zeichhne Game status Informationen neu (münzen, buy, actions)
+
 		hb_wrapper_lblBuyPower.getChildren().clear();
 		hb_wrapper_lblActions.getChildren().clear();
 		hb_wrapper_lblBuys.getChildren().clear();
@@ -612,34 +618,21 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower,croupier.getLbl_buyPower());
 		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions,croupier.getLbl_actions());
 		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys,croupier.getLbl_buys());
-  
+  		
 		
-	};
-	
+		
+	}
 
-	//im moment passiert hier nichts, spï¿½ter ev. lï¿½schen
-	@Override
-	public void update(Observable o, Object arg) {
-		System.out.println("obseverd");
-		System.out.println("observed: "+Thread.currentThread());
-		
-		  /*  	
-		  	Task task = new Task<Void>() {
-		    	    @Override public Void call() {
-		    	    	
-		            	System.out.println(Thread.currentThread());
-		               	tryUpdateshit.getChildren().clear();
-				    	tryUpdateshit.getChildren().addAll(croupier.getLbltest());
-
-		    	        return null;
-		    	    }
-		    	};*/
-	
-		//hb_wrp_communityActionCardsBackRow.getChildren().addAll(provisorisch4,ac1);
-		
-		//hb_wrp_communityActionCardsFrontRow.getChildren().addAll(croupier.getAl_communityActionCards().get(5),croupier.getAl_communityActionCards().get(6),croupier.getAl_communityActionCards().get(7),croupier.getAl_communityActionCards().get(8),croupier.getAl_communityActionCards().get(9));
-		//stage.show();
+	public ArrayList<GameCard> getAl_communityCards_left() {
+		return al_communityCards_left;
 	}
 	
 	
- }
+	
+		
+	
+	
+	}
+	
+	
+ 

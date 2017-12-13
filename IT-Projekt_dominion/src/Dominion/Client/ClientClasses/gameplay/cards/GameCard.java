@@ -3,128 +3,83 @@ package Dominion.Client.ClientClasses.gameplay.cards;
 import java.util.Observable;
 import java.util.Observer;
 
+import Dominion.Client.ClientClasses.ServiceLocatorClient;
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.appClasses.GameObject.ObjectType;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
+import sun.misc.GC;
 
 public class GameCard extends Button implements Observer  {
-	
-	Croupier croupier;
+	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
+	Croupier croupier = Croupier.getCroupier();
 	
 	Label   lbl_cardName;
 	boolean holeCard  = false;
-
 	
 	int costs;
+
+	StackSizeInfo stackSizeInfo;
 
 	
 	public GameCard(Label cardName) {
 		super();
 		this.lbl_cardName = cardName;
-		croupier = Croupier.getCroupier();
 		this.assignPicture();
 	}
 	
-
-	
-	
+	GameCard gc = this;
 	@Override
-	public void update(Observable arg0, Object arg1) {
-	
-
-					
+	public void update(Observable arg0, Object arg1) {							
 		getStyleClass().remove("highlight");
 		
-		/*
-		 * 
-		 * 
-		 * 	  Platform.runLater(new Runnable(){
-	         
-
-				@Override
-	              public void run() {
-					getStyleClass().remove("highlight");
-	              }
-	          });
-	          */
-		
-	
-
-
-		/* final Task task;
-	        task = new Task<Void>() {
-	            @Override
-	            protected Void call() throws Exception {
-	   
-	            		
-	            		System.out.println("jaja");
-	                return null;
-	            }
-	        };
-		
-		new Thread(task).start();
-		*/
-		
-		
-		
-		
-		//Aktiviert Karten für den Kaufmodus. (in hole und auf deck, werden mehr geldkarten (moneytoSpend) geklickt, wird es möglich, andere Geldkarten zu kaufen
-		//GameCard gc = this;
-		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard()){
-			//this.setDisable(false);
-			
-
-			
-			//System.out.println("GameCardClass: cards highlighted");
+		//Highlighte alle Karten im Kaufmodus, welche ich mit der aktuelln Buypower und buys kaufen kann
+		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard() && croupier.getBuys() > 0){
 			this.getStyleClass().add("highlight");
-			
-	
-			
-		} //else {
-		
-		
-			
 		}
 		
-
-		
-		
-		
-		//Aktiviert holeCards für Aktionsmodus
-	//	if (croupier.isActionMode() == true && this.isHoleCard() && this instanceof ActionCard){
-
-//		}else 
-		
-	//	if (croupier.getStackSize(this) == 0) {
-
-		//}
-		
-		
-		/*test observable
-		 *
-		System.out.println("notifyed");
-		if (croupier.isActionMode() == true && croupier.getCoinsSpent() >= this.int_costs ){
-			
-			System.out.println("croupier changed to action mode and the costs is lower than the coins Spent");
-		}*/
-		
+		//wenn stacksize auf 0, wird highlighting ebenfalls deaktiviert
+		if (croupier.getStackSize(gc) == 0) {
+			this.getStyleClass().remove("highlight");
+		}
+	
+		//update das STackSize infoLabel auf der Karte		
+		if (this.stackSizeInfo != null){
+		this.stackSizeInfo.updateStackSizeInfo();	
+		}
+	}
 		
 	
-	//}
+	public void assignStackSizeInfo(){
+		stackSizeInfo = new StackSizeInfo(gc,croupier.getStackSize(gc));
+	}
+
 	
 	
 	
 	public void assignPicture(){
-		this.getStyleClass().addAll("card",lbl_cardName.getText());
+		if (this.holeCard == false)
+			this.getStyleClass().addAll("card",lbl_cardName.getText());
+		else 
+			this.getStyleClass().addAll("card",lbl_cardName.getText()+"_big");
 	}
-	
-	
-	
 	
 	
 	public boolean isHoleCard() {
@@ -143,10 +98,10 @@ public class GameCard extends Button implements Observer  {
 		this.lbl_cardName = lbl_cardName;
 	}
 
+
+
+
+
 	
-
-
-
-
 	
 }

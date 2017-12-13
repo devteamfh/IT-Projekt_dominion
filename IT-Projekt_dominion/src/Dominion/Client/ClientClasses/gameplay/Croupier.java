@@ -29,8 +29,6 @@ public class Croupier  extends Observable {
     //Felder
 	private static Croupier croupier;
 
-	
-	
 	boolean actionMode = true;
 	boolean buyMode    = false;
 	
@@ -93,6 +91,7 @@ public class Croupier  extends Observable {
 		
 		setChanged();
 		notifyObservers();	
+    	sl.getPlayingStage().updateGUI(); 
 	}
 		
 	public void setBuyPower() {
@@ -106,25 +105,28 @@ public class Croupier  extends Observable {
 
 		switch (gc.getLbl_cardName().getText()) {
 		
-		case "estate":    setStackSizeEstate(getStackSizeEstate()-1);
+		case "estate":    setStackSizeEstate(stackSizeEstate-1);
 			break;
-		case "duchy":     setStackSizeDuchy(getStackSizeDuchy()-1);
+		case "duchy":     setStackSizeDuchy(stackSizeDuchy-1);
 			break;
-		case "province":  setStackSizeProvince(getStackSizeProvince()-1);
+		case "province":  setStackSizeProvince(stackSizeProvince-1);
 			break;
-		case "copper":    setStackSizeCopper(getStackSizeCopper()-1);
+		case "copper":    setStackSizeCopper(stackSizeCopper-1);
 			break;
-		case "silver":    setStackSizeSilver(getStackSizeSilver()-1);
+		case "silver":    setStackSizeSilver(stackSizeSilver-1);
 			break;
-		case "gold":      setStackSizeGold(getStackSizeGold()-1);
+		case "gold":      setStackSizeGold(stackSizeGold-1);
 			break;
-		case "curse": 	  setStackSizeCurse(getStackSizeCurse()-1);
+		case "curse": 	  setStackSizeCurse(stackSizeCurse-1);
 		}
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
 	}
 	
 	public int getStackSize(GameCard gc){
-
-	
+		
+		//ist es eine action Karte links (province, curse, money?)
 		switch (gc.getLbl_cardName().getText()) {
 		
 		case "estate":    return getStackSizeEstate(); 
@@ -133,10 +135,17 @@ public class Croupier  extends Observable {
 		case "copper":    return getStackSizeCopper(); 
 		case "silver":    return getStackSizeSilver(); 
 		case "gold":      return getStackSizeGold(); 
+		case "curse":	  return getStackSizeCurse();
+		
 		}
-		sl.getLogger().info("something went wrong");
+		//dann ist es eine Community Action Card
+		if (getAl_communityActionCards().contains(gc)) {
+			int i = getAl_communityActionCards().indexOf(gc);
+			return getAl_stackSizeCommunityActionCards().get(i);
+		}
 		return -1;
 	}
+
 
 	
 	//Legt die Karten von den Hole Cards zum Ablagestapel (am Ende jeder Buyphase)
@@ -322,6 +331,9 @@ public class Croupier  extends Observable {
 
 	public void setActions(int actionPoints) {
 		this.actions = actionPoints;
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
 	}
 
 	public int getBuys() {
@@ -330,6 +342,9 @@ public class Croupier  extends Observable {
 
 	public void setBuys(int buys) {
 		this.buys = buys;
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
 	}
 
 	
@@ -371,19 +386,22 @@ public class Croupier  extends Observable {
 		this.ll_holeCards.add(gc);
 	}
 	
-	
-	/*//f�gt eine Karte den hole cards hinzu
-	public void drawHoleCard(GameCard gc){
-		ll_holeCards.add(gc);
-	}*/
-	
-
 	public ArrayList<Integer> getAl_stackSizeCommunityActionCards() {
 		return al_stackSizeCommunityActionCards;
 	}
 
 	public void setAl_stackSizeCommunityActionCards(ArrayList<Integer> al_stackSizeCommunityActionCards) {
 		this.al_stackSizeCommunityActionCards = al_stackSizeCommunityActionCards;
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
+	}
+	
+	public void setAl_stackSizeCommunityActionCards(int i) {
+		this.al_stackSizeCommunityActionCards.set(i,al_stackSizeCommunityActionCards.get(i)-1);
+		setChanged();
+		notifyObservers();
+    	sl.getPlayingStage().updateGUI();
 	}
 	
 	// Initiale # communityActionCards
@@ -443,6 +461,6 @@ public class Croupier  extends Observable {
 		Croupier.croupier=null;
 		
 	}
-	
+
 	
 }

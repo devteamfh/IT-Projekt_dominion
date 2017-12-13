@@ -111,7 +111,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	croupier.setActionMode(false);
             	croupier.setBuyMode(true);
             	croupier.setBuys(3);
-          
+            
             	System.out.println(croupier.getHoleCards().size());
 
             }
@@ -128,6 +128,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	croupier.setActionMode(true);
             	croupier.setActions(3);
             	
+            	
             }
         });
        
@@ -140,6 +141,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	croupier.setActions(5);
             	croupier.muckHoleCards();
             	croupier.drawHoleCards();
+            	
 
             }
         });
