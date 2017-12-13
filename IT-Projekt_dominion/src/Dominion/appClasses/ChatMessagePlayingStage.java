@@ -40,6 +40,10 @@ public class ChatMessagePlayingStage extends GameObject {
 			this. id = nextMessageID();
 		}
 	}
+	
+	public void setID2(long id){
+		this.id=id;
+	}
 	   
 	public long getID(){
 		return this.id;

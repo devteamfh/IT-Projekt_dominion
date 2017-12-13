@@ -23,6 +23,8 @@ public class GameHistory extends GameObject{
 	private HistoryType type;
 	private String card;
 	private int buyPower;
+	private int numberOfActions;
+	private int numberOfBuys;
 	
 	public enum HistoryType {
 		 PlayAction, PlayBuy, EndAction,
@@ -34,7 +36,7 @@ public class GameHistory extends GameObject{
 		return messageID++;
 	}
 	
-	//we use this constructor for events like: player leaves a game / host ends the game / a player ends his buy or action phase by clicking on the buttons "Kaufphase beenden" oder "Aktionsphase beenden" / etc
+	//we use this constructor for events like: player leaves a game / host ends the game / a player ends his buy phase (the next players turn in the sequence will start)
 	public GameHistory(String text, GameParty party,PlayerWithoutOS currentPlayer, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
@@ -44,13 +46,16 @@ public class GameHistory extends GameObject{
 		this.type=type;
 	}
 	
-	//we use this constructor when we play a money card
-	public GameHistory(GameParty party,PlayerWithoutOS currentPlayer,String card,int buyPower, HistoryType type){
+	//we use this constructor while playing (playing cards, ending action phase)
+	public GameHistory(String text,GameParty party,PlayerWithoutOS currentPlayer,String card, int numberOfActions, int numberOfBuys,int buyPower, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
+		this.text=text;
 		this.party=party;
 		this.currentPlayer=currentPlayer;
 		this.card=card;
+		this.numberOfActions=numberOfActions;
+		this.numberOfBuys=numberOfBuys;
 		this.buyPower=buyPower;
 		this.type=type;
 	}
@@ -127,6 +132,14 @@ public class GameHistory extends GameObject{
 	
 	public int getBuyPower(){
 		return this.buyPower;
+	}
+	
+	public int getNumberOfActions(){
+		return this.numberOfActions;
+	}
+	
+	public int getNumberOfBuys(){
+		return this.numberOfBuys;
 	}
 
 }

@@ -83,9 +83,10 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	//a host is able to end the game until the game isn't full. If a host ends the game, his playing stage will be closed. The same will happen to all other players who have joined the game.
             	//In addition, the game will be removed from the ListView of EVERY client.
             	CancelGame cancel = new CancelGame(party);
+
             	try {
-					model.out.writeObject(cancel);
-					model.out.flush();
+					sl.getPlayer_OS().getOut().writeObject(cancel);
+					sl.getPlayer_OS().getOut().flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -146,7 +147,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 
         
         
-        sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
+        /**sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
         	
             @Override
             public void handle(ActionEvent event) {
@@ -188,9 +189,9 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         			e.printStackTrace();
         		}
             }
-        });
+        });*/
         
-        sl.getButtonPlayBuy().setOnAction(new EventHandler<ActionEvent>() {
+        /**sl.getButtonPlayBuy().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	
@@ -226,7 +227,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         			e.printStackTrace();
         		}
             }
-        });
+        });*/
         
         sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -235,23 +236,22 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	croupier.setActionMode(false);
             	croupier.setBuyMode(true);
             	
+            	croupier.setActions(0);
+            	
             	if(strBuilder != null){
             		strBuilder.delete(0, strBuilder.length());
             	}
             	
-            	GameHistory history;
-            	sl.getPlayer_noOS().actionEnded();
-            	sl.getButtonPlayActions().setDisable(true);
             	sl.getButtonEndActions().setDisable(true);
-            	sl.getButtonPlayBuy().setDisable(false);
             	sl.getButtonEndBuys().setDisable(false);
             	strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
-            	history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndAction);
+            	GameHistory history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,croupier.getActions(),croupier.getBuys(),croupier.getBuyPower(), GameHistory.HistoryType.EndAction);
 
             	try {
-            		//model.out.reset();
-        			model.out.writeObject(history);
-        			model.out.flush();
+            		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
+            		//sl.getPlayer_OS().getOut().reset();
+            		sl.getPlayer_OS().getOut().writeObject(history);
+            		sl.getPlayer_OS().getOut().flush();
         		} catch (IOException e) {
         			// TODO Auto-generated catch block
         			e.printStackTrace();
@@ -267,27 +267,30 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             		strBuilder.delete(0, strBuilder.length());
             	}
             	
-            	GameHistory history;
-            	sl.getPlayer_noOS().buyEnded();
-            	sl.getButtonPlayBuy().setDisable(true);
-        		sl.getButtonEndBuys().setDisable(true);
+            	croupier.setBuyMode(false);
+            	croupier.setBuys(0);
+            	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
+            	croupier.setBuyPower(0);
+            	
+            	sl.getButtonEndBuys().setDisable(true);
+
         		strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
-        		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
+        		GameHistory history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
+        		//history.setID();
 
             	try {
-            		//model.out.reset();
-        			model.out.writeObject(history);
-        			model.out.flush();
+            		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
+            		//sl.getPlayer_OS().getOut().reset();
+            		sl.getPlayer_OS().getOut().writeObject(history);
+            		sl.getPlayer_OS().getOut().flush();
         		} catch (IOException e) {
         			// TODO Auto-generated catch block
         			e.printStackTrace();
         		}
-            	//setting the initial numbers of actions and buys so the player will start with 1 action and 1 buy when his turn will start again in the next round
-            	sl.getPlayer_noOS().setInitialActionsAndBuys();
             }
         });
         
-        sl.getButtonLeaveGamePlayer().setOnAction(new EventHandler<ActionEvent>() {
+       /** sl.getButtonLeaveGamePlayer().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	
@@ -302,25 +305,25 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	if(sl.getButtonEndActions().isDisabled() && sl.getButtonEndBuys().isDisabled()){
             		//here we set current player as null
             		history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),null,GameHistory.HistoryType.LeaveGame);
+            		history.setID();
                 	history.setLeavingPlayer(sl.getPlayer_noOS());
             	}else{
             		//the leaving player is also the current player
             		history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),GameHistory.HistoryType.LeaveGame);
+            		//history.setID();
                 	history.setLeavingPlayer(sl.getPlayer_noOS());
             	}
-
-            	
+           	
             	try {
-            		//model.out.reset();
-        			model.out.writeObject(history);
-        			model.out.flush();
+            		sl.getPlayer_OS().getOut().writeObject(history);
+            		sl.getPlayer_OS().getOut().flush();
         		} catch (IOException e) {
         			// TODO Auto-generated catch block
         			e.printStackTrace();
         		}
             	
             }
-        });  
+        }); */ 
         
     }
 
@@ -328,10 +331,11 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 		String name = model.getName();
 		String msg = view.tf_messagePlayingStage.getText();
 		ChatMessagePlayingStage cmsg = new ChatMessagePlayingStage(name, msg,sl.getCurrentGameParty());
+		//cmsg.setID();
 		
 		try {
-			model.out.writeObject(cmsg);
-			model.out.flush();
+			sl.getPlayer_OS().getOut().writeObject(cmsg);
+			sl.getPlayer_OS().getOut().flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -34,7 +34,7 @@ public class Croupier  extends Observable {
 	boolean actionMode = true;
 	boolean buyMode    = false;
 	
-	int buyPower = 4;
+	int buyPower = 0;
 	int actions;
 	int buys;
 	
@@ -159,7 +159,7 @@ public class Croupier  extends Observable {
 			}	
 		}
 		
-		//mischt den Ablagestapel durch und fügt die Karten dem Nachziehstapel hinzu
+		//mischt den Ablagestapel durch und fï¿½gt die Karten dem Nachziehstapel hinzu
 		public void putAblagestapelToNachziehstapel(){
 			Collections.shuffle(ll_ablagestapel);
 			
@@ -434,9 +434,14 @@ public class Croupier  extends Observable {
 	
 	public void clearHoleCards(){
 		this.ll_holeCards.clear();
-		for(int i=0; i<ll_holeCards.size();i++){
-			System.out.println(ll_holeCards.get(i));
-		}
+
+	}
+	
+	//clear all croupier resources so the player will start with new resources when he joins a new game party
+	//--> evtl croupier nicht als singleton?
+	public void clear(){
+		Croupier.croupier=null;
+		
 	}
 	
 	

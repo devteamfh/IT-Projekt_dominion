@@ -54,6 +54,7 @@ public class ReadMsgFromServer implements Runnable {
 				switch (obj.getType()) {
 				
 				case ChatMessageLobby:
+
 					ChatMessageLobby msg = (ChatMessageLobby) obj;					 
 					String nameLobby = msg.getName();
 					String textLobby = msg.getMsg();
@@ -119,13 +120,15 @@ public class ReadMsgFromServer implements Runnable {
 					break;
 					 
 				case GameParty:
+					
 					GameParty newGame = (GameParty) obj;
 					 
 					Platform.runLater(new Runnable() {
 				           @Override 
 				           public void run() {
+				        	//updating the ListView of each client   
 				            sl.addNewGame(newGame);
-				            //croupier.setAl_communityActionCards(newGame.getCommunityActionCards());
+				            
 				            if(newGame.getHost().getUsername().equals(model.getName())){
 				            	sl.setCurrentGameParty(newGame);
 				            	
@@ -168,7 +171,8 @@ public class ReadMsgFromServer implements Runnable {
 					break;
 			
 				case JoinGameParty:
-					JoinGameParty join=(JoinGameParty) obj;
+					
+					JoinGameParty join = (JoinGameParty) obj;									
 
 					//updating the current GameParty object in the ServiceLocator for all players who have already joined this GameParty
 					for (int i=0; i<join.getSelectedGameParty().getArrayListOfPlayers().size();i++){						
@@ -239,8 +243,9 @@ public class ReadMsgFromServer implements Runnable {
 				
 					
 				case CancelGame:
+									
 					CancelGame cancelObject = (CancelGame) obj;
-					
+										
 					GameParty gamePartyToCancel = cancelObject.getGameParty();
 					
 					Platform.runLater(new Runnable() {
@@ -274,6 +279,11 @@ public class ReadMsgFromServer implements Runnable {
 					break;
 				
 				case ChatMessagePlayingStage:			 	
+					
+					/**ChatMessagePlayingStage currentMsgPlay = (ChatMessagePlayingStage) obj;
+					ChatMessagePlayingStage msg_obj = new ChatMessagePlayingStage(currentMsgPlay.getName(), currentMsgPlay.getMsg(), currentMsgPlay.getGameParty());
+					msg_obj.setID2(currentMsgPlay.getID());*/
+					
 					ChatMessagePlayingStage msg_obj = (ChatMessagePlayingStage) obj;
 					
 					String namePlayingStage = msg_obj.getName();
@@ -284,51 +294,15 @@ public class ReadMsgFromServer implements Runnable {
 					break;
 					
 				case GameHistory:
-					GameHistory history = (GameHistory) obj;
+					
+					GameHistory history =(GameHistory) obj;
+										
 					PlayerWithoutOS currentPlayer = history.getCurrentPlayer();
 					
 					switch(history.getHistoryType()){
-					case PlayAction:
-						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
-						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
-						
-						Platform.runLater(new Runnable() {
-
-							@Override 
-					           public void run() {
-								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
-								}else{
-									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
-								}							
-					           }
-					      });
-						
-						
-						break;
-						
-					/**case PlayBuy:
-	
-						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
-						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
-						
-						Platform.runLater(new Runnable() {
-
-							@Override 
-					           public void run() {
-								
-								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
-								}else{
-									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
-								}									
-
-					           }
-					      });*/
-						
-						//break;
 						
 					case EndAction:
+						
 						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 						
@@ -337,38 +311,81 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+history.getNumberOfActions()+" Aktionen, "+history.getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
 								}else{
-									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe");
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+history.getNumberOfActions()+" Aktionen, "+history.getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
 								}	
 								
 					           }
 					      });
 						break;
-						
+					
+					//here we switch the player
 					case EndBuy:
+						
 						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 						
 						if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-							sl.getButtonPlayActions().setDisable(false);
+							//its the next players turn, so prepare his stage and croupier
 							sl.getButtonEndActions().setDisable(false);
+							croupier.setActionMode(true);
+							croupier.setBuyMode(false);
+							croupier.setActions(1);
+							croupier.setBuys(1);
+							croupier.setBuyPower(0);
 						}
-						PlayerWithoutOS playerForGUIActivation= history.getPlayerForGUIActivation();
+
 						Platform.runLater(new Runnable() {
 
 							@Override 
 					           public void run() {
 								
-								if(playerForGUIActivation.getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+playerForGUIActivation.getNumberOfActions()+" Aktionen, "+playerForGUIActivation.getNumberOfBuys()+" Käufe");
+								if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 								}else{
-									sl.getLabelNumberOfActionsAndBuys().setText(playerForGUIActivation.getUsername()+" ist an der Reihe: "+playerForGUIActivation.getNumberOfActions()+" Aktionen, "+playerForGUIActivation.getNumberOfBuys()+" Käufe");
+									sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist an der Reihe: 1 Aktionen, 1 Käufe, 0 Geld");
 								}
 								
 					           }
 					      });
 						
+						
+						/**try{
+							history = new GameHistory (currentHistory.getText(),currentHistory.getGameParty(),currentHistory.getCurrentPlayer(),GameHistory.HistoryType.EndBuy);
+							history.setID2(currentHistory.getID());
+							
+							sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+							sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+							
+							if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+								//its the next players turn, so prepare his stage and croupier
+								sl.getButtonEndActions().setDisable(false);
+								croupier.setActionMode(true);
+								croupier.setBuyMode(false);
+								croupier.setActions(1);
+								croupier.setBuys(1);
+								croupier.setBuyPower(0);
+							}
+
+							Platform.runLater(new Runnable() {
+
+								@Override 
+						           public void run() {
+									
+									if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+										sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+									}else{
+										sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist an der Reihe: 1 Aktionen, 1 Käufe, 0 Geld");
+									}
+									
+						           }
+						      });
+							
+						}catch (NullPointerException e){
+							//
+						}*/
+					
 						break;
 						
 					case LeaveGame:
@@ -378,121 +395,79 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								
-								if(history.getLeavingPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									//clear all resources of the current game party so the client will start next time with a new GUI and new resources
-									sl.clearCurrentGameParty();
-									
-									//check if the game has started. We have to make +1player on number of logged in players because we have already removed the player on client side
-									if(history.getGameParty().getGameHasStarted()){
+								//first we have to update the ListView of each client if the game hasn't started yet. Remove also the leaving player
+								if(!history.getGameParty().getGameHasStarted()){
+									if(history.getLeavingPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
 										
-										//game party is full when player is leaving: he gets a defeat
-										Label popUpMsg = new Label ("Du hast das Spiel verlassen\nund verlierst!");
-										sl.setLbl_popUpMessage(popUpMsg);
-										
-										Stage popUp = new Stage();	
-										popUp.setResizable(true);
-										Client_View_popUp view = new Client_View_popUp (popUp, model);
-										new Client_Controller_popUp(model, view); 
-										view.start();
+										handleLeavingPlayerNoDefeat();
 									}else{
-										
-										//we have to update the ListView of each client if the game hasn't started yet. Remove also the leaving player
-										history.getGameParty().removePlayer(history.getLeavingPlayer());
-										history.setNewType(GameHistory.HistoryType.UpdateLobbyAfterLeave);
-										
-										try {
-											sl.getPlayer_OS().getOut().writeObject(history);
-											sl.getPlayer_OS().getOut().flush();
-										} catch (IOException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-
-										sl.getPlayingStage().stop();
-										sl.getTextAreaChatPlayingStage().clear();
-										sl.getTextAreaGameHistory().clear();
-										
-										//leaving player won't get a defeat
-										Label popUpMsg = new Label ("Du hast das Spiel verlassen");
-										sl.setLbl_popUpMessage(popUpMsg);
-										
-										Stage popUp = new Stage();	
-										popUp.setResizable(true);
-										Client_View_popUp view = new Client_View_popUp (popUp, model);
-										new Client_Controller_popUp(model, view); 
-										view.start();
+										//game hasn't started yet
+										handleAllConnectedClients1(history);
 									}
+
 									
-								//else-clause is for all other players which are still ingame	
 								}else{
-									//remove first the leaving player
-									history.getGameParty().removePlayer(history.getLeavingPlayer());
-
-									//we check if there is only one player left. If yes: he will win the party
-									if(history.getGameParty().getNumberOfLoggedInPlayers() == 1 && history.getGameParty().getGameHasStarted()){
-										
-										sl.clearCurrentGameParty();
-										
-										Label popUpMsg = new Label ("Glückwunsch, du hast gewonnen!");
-										sl.setLbl_popUpMessage(popUpMsg);
-										Stage popUp = new Stage();	
-										popUp.setResizable(true);
-										Client_View_popUp view = new Client_View_popUp (popUp, model);
-										new Client_Controller_popUp(model, view); 
-										view.start();
+									if(history.getLeavingPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+										handleLeavingPlayerWithDefeat();
 									}else{
-										//read the GameHistory message
-										sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
-										sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
-										
-										//update the saved GameParty because one player has left the game
-										sl.setCurrentGameParty(history.getGameParty());
-										
-										//activate the GUI of the next player in the sequence
-										
-										//clear the player list and then set it updated
-										sl.getPlayingStage().vb_player.getChildren().clear();
-										for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
-											Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername());
-											sl.getPlayingStage().vb_player.getChildren().add(label);
-										}
+										//game has already started so we have to determine the next player in the sequence
+										handleAllConnectedClients2(history);
 									}
 									
-									//finally: activate the GUI of the next player
 									
-									Platform.runLater(new Runnable() {
-
-										@Override 
-								           public void run() {
-											
-											if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-												sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+history.getPlayerForGUIActivation().getNumberOfActions()+" Aktionen, "+history.getPlayerForGUIActivation().getNumberOfBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
-												sl.getButtonPlayActions().setDisable(false);
-												sl.getButtonEndActions().setDisable(false);
-											}else{
-												sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist an der Reihe: "+history.getPlayerForGUIActivation().getNumberOfActions()+" Aktionen, "+history.getPlayerForGUIActivation().getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
-											}
-											
-								           }
-								      });
-									
-									if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-										sl.getButtonPlayActions().setDisable(false);
-										sl.getButtonEndActions().setDisable(false);
-										
-										
-									}
-	
 								}
 
 					           }
 					      });
 						
+						
+						/**try{
+							history = new GameHistory (currentHistory.getText(),currentHistory.getGameParty(),currentHistory.getCurrentPlayer(),GameHistory.HistoryType.LeaveGame);
+							history.setID2(currentHistory.getID());
+							
+							System.out.println(history.getLeavingPlayer().getUsername());
+							
+							Platform.runLater(new Runnable() {
+
+								@Override 
+						           public void run() {
+									
+									//first we have to update the ListView of each client if the game hasn't started yet. Remove also the leaving player
+									if(!history.getGameParty().getGameHasStarted()){
+										if(history.getLeavingPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+											
+											handleLeavingPlayerNoDefeat();
+										}else{
+											//game hasn't started yet
+											handleAllConnectedClients1(history);
+										}
+
+										
+									}else{
+										if(history.getLeavingPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+											handleLeavingPlayerWithDefeat();
+										}else{
+											//game has already started so we have to determine the next player in the sequence
+											handleAllConnectedClients2(history);
+										}
+										
+										
+									}
+
+						           }
+						      });
+							
+						}catch(NullPointerException e){
+							//
+						}*/
+		
 						//break case LeaveGame
 						break;
 						
 					//this msg is written only by server (class ClientHandler in case "EndBuy" and if the number of max rounds is reached)
 					case EndGame:
+						
+						
 						
 						Platform.runLater(new Runnable() {
 
@@ -513,6 +488,10 @@ public class ReadMsgFromServer implements Runnable {
 					      });
 	
 					case UpdateLobbyAfterLeave:
+						
+						/**history = new GameHistory (currentHistory.getText(),currentHistory.getGameParty(),currentHistory.getCurrentPlayer(),GameHistory.HistoryType.UpdateLobbyAfterLeave);
+						history.setID2(currentHistory.getID());*/
+						
 						Platform.runLater(new Runnable() {
 
 							@Override 
@@ -526,15 +505,18 @@ public class ReadMsgFromServer implements Runnable {
 						
 					case PlayMoneyCard:
 						
+						/**history = new GameHistory (currentHistory.getText(),currentHistory.getGameParty(),currentHistory.getCurrentPlayer(),currentHistory.getPlayedGameCard(),currentHistory.getNumberOfActions(),currentHistory.getNumberOfBuys(),currentHistory.getBuyPower(),GameHistory.HistoryType.PlayMoneyCard);
+						history.setID2(currentHistory.getID());*/
+						
 						Platform.runLater(new Runnable() {
 
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 								}else{
 
-									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+currentPlayer.getNumberOfActions()+" Aktionen, "+currentPlayer.getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+history.getNumberOfActions()+" Aktionen, "+history.getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
 								}	
 								
 								sl.getTextAreaGameHistory().appendText(history.getCurrentPlayer().getUsername()+" spielt "+history.getPlayedGameCard()+"\n"); //to do: noch farblich abheben je player
@@ -579,6 +561,100 @@ public class ReadMsgFromServer implements Runnable {
 
 		}
 
+	}
+	
+	public void handleAllConnectedClients1(GameHistory history){
+		history.getGameParty().removePlayer(history.getLeavingPlayer());
+		//game hasn't started yet. We have to update the ListView of every client (-1 player)
+		history.setNewType(GameHistory.HistoryType.UpdateLobbyAfterLeave);
+		
+		try {
+			sl.getPlayer_OS().getOut().writeObject(history);
+			sl.getPlayer_OS().getOut().flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void handleAllConnectedClients2(GameHistory history){
+		//remove first the leaving player
+		history.getGameParty().removePlayer(history.getLeavingPlayer());
+
+		//we check if there is only one player left. If yes: he will win the party (if the game has started)
+		if(history.getGameParty().getNumberOfLoggedInPlayers() == 1 && history.getGameParty().getArrayListOfPlayers().get(0).getUsername().equals(sl.getPlayer_noOS().getUsername())){
+			
+			sl.clearCurrentGameParty();
+			
+			Label popUpMsg = new Label ("Glückwunsch, du hast gewonnen!");
+			sl.setLbl_popUpMessage(popUpMsg);
+			Stage popUp = new Stage();	
+			popUp.setResizable(true);
+			Client_View_popUp view = new Client_View_popUp (popUp, model);
+			new Client_Controller_popUp(model, view); 
+			view.start();
+		}else{
+			//read the GameHistory message
+			sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+			sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+			
+			//update the saved GameParty because one player has left the game
+			sl.setCurrentGameParty(history.getGameParty());
+			
+			//clear the player list and then set it updated
+			sl.getPlayingStage().vb_player.getChildren().clear();
+			for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
+				Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername());
+				sl.getPlayingStage().vb_player.getChildren().add(label);
+			}
+			
+			
+		}
+		
+		//finally: activate the GUI of the next player and get his resources
+		if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+			
+			//its the next players turn, so prepare his stage and croupier
+			sl.getButtonEndActions().setDisable(false);
+			croupier.setActionMode(true);
+			croupier.setBuyMode(false);
+			croupier.setActions(1);
+			croupier.setBuys(1);
+			croupier.setBuyPower(0);
+			
+			sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+
+		}else{
+			sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist an der Reihe: 1 Aktionen, 1 Käufe, 0 Geld");
+		}
+	}
+	
+	public void handleLeavingPlayerNoDefeat(){
+		sl.clearCurrentGameParty();
+		
+		//leaving player won't get a defeat
+		Label popUpMsg = new Label ("Du hast das Spiel verlassen");
+		sl.setLbl_popUpMessage(popUpMsg);
+		
+		Stage popUp = new Stage();	
+		popUp.setResizable(true);
+		Client_View_popUp view = new Client_View_popUp (popUp, model);
+		new Client_Controller_popUp(model, view); 
+		view.start();
+	}
+	
+	public void handleLeavingPlayerWithDefeat(){
+		sl.clearCurrentGameParty();
+		
+		//game party is full when player is leaving: he gets a defeat
+		Label popUpMsg = new Label ("Du hast das Spiel verlassen\nund verlierst!");
+		sl.setLbl_popUpMessage(popUpMsg);
+		
+		Stage popUp = new Stage();	
+		popUp.setResizable(true);
+		Client_View_popUp view = new Client_View_popUp (popUp, model);
+		new Client_Controller_popUp(model, view); 
+		view.start();
 	}
 
 }

@@ -13,6 +13,8 @@ public class ChatMessageLobby extends GameObject {
 	private String message;
 	// Generator for a unique message ID
 	private static long messageID = 0;
+	
+	private Object obj;
 	 
 	private static long nextMessageID() {		
 		return messageID++;

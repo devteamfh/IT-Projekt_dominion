@@ -274,8 +274,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         			current.setAtt9          (checkUserData.getAl_currentUserandStats().get(9));
                 	
         			try {
-						model.getOutput().writeObject(current);
-						model.getOutput().flush();
+        				sl.getPlayer_OS().getOut().writeObject(current);
+        				sl.getPlayer_OS().getOut().flush();
+						/**model.getOutput().writeObject(current);
+						model.getOutput().flush();*/
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

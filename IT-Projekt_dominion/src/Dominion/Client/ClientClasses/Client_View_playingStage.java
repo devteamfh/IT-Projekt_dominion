@@ -329,8 +329,13 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		vb_wrapper_right.setPadding(new Insets(0,20,0,20));
 
 		VBox vb_wrapper_spielverlauf_chat_btns = new VBox();
+		
+		vb_player = new VBox();
+
+		vb_player.setAlignment(Pos.TOP_RIGHT);
+		vb_player.setPrefHeight(60.0);	
 				
-		vb_wrapper_spielverlauf_chat_btns.getChildren().addAll(windowGameHistory,chatWindowPlayingStage,tf_messagePlayingStage,btn_sendChatMsgPlayingStage);
+		vb_wrapper_spielverlauf_chat_btns.getChildren().addAll(windowGameHistory,chatWindowPlayingStage,tf_messagePlayingStage,btn_sendChatMsgPlayingStage,vb_player);
 		
 		vb_wrapper_right.getChildren().addAll(vb_wrapper_spielverlauf_chat_btns);
 		
@@ -474,20 +479,6 @@ public class Client_View_playingStage extends View<Client_Model> implements Obse
 		
 		this.provisorisch4 = new Button("kjkjk");
 
-		
-	
-		
-	
-
-		
-		vb_player = new VBox();
-		
-
-
-		root.setTop(vb_player);
-		vb_player.setAlignment(Pos.TOP_RIGHT);
-		vb_player.setPrefHeight(60.0);
-		
 		//setting the treasure and point cards to buy
 		//GridPane gp_left = new GridPane();
 		

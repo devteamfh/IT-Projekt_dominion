@@ -36,35 +36,23 @@ import javafx.scene.input.MouseEvent;
 				addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 					@Override public void handle(MouseEvent e) {
 						
-						System.out.println("moneycard clicked");
+						//System.out.println("moneycard clicked");
 						
 						//Wenn die karte aus den communty cards gekauft wird
 						if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(mc) > 0){
 							croupier.setBuys(croupier.getBuys()-1);
 							
-							System.out.println("alte STackgrösse: "+croupier.getStackSize(mc));
+							//System.out.println("alte STackgrï¿½sse: "+croupier.getStackSize(mc));
 							croupier.setStackSize(mc); //stacksize von moneyCards wird um eins reduziert
-							System.out.println("neue STackgrösse: "+croupier.getStackSize(mc));
-							
-							//code ab hier dann in true teil unten
-							//String text = sl.getPlayer_noOS().getUsername()+" spielt "+lbl_cardName.getText();
-							//System.out.println(buyPower); // --> wird komischerweise 2x ausgefÃ¼hrt wenn klick auf gold, also buy power = 6
-							GameHistory history = new GameHistory (sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.lbl_cardName.getText(),croupier.getBuyPower(), GameHistory.HistoryType.PlayMoneyCard);
-							try {
-								sl.getPlayer_OS().getOut().writeObject(history);
-								sl.getPlayer_OS().getOut().flush();
-							} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+							//System.out.println("neue STackgrï¿½sse: "+croupier.getStackSize(mc));
 
 							
 							//gekaufte karte auf ablagestapel legen
-							System.out.println("alte ablagestapelgrösse: "+croupier.getAblagestapel().size());
+							System.out.println("alte ablagestapelgrï¿½sse: "+croupier.getAblagestapel().size());
 							MoneyCard newCard = new MoneyCard(mc.lbl_cardName,mc.costs,mc.buyPower);
 							croupier.addObserver(newCard);
 							croupier.addToAblagestapel(newCard);
-							System.out.println("neue ablagestapelgrösse: "+croupier.getAblagestapel().size());
+							System.out.println("neue ablagestapelgrï¿½sse: "+croupier.getAblagestapel().size());
 		
 						}
 
@@ -75,6 +63,18 @@ import javafx.scene.input.MouseEvent;
 						croupier.setBuyPower(croupier.getBuyPower()+buyPower);
 						croupier.getHoleCards().remove(mc);
 						croupier.addToAblagestapel(mc);
+						
+						//in this case we will send an empty string. Each client will append a new text line by reading the sender name and played card name in the class ReadMsgFromServer
+						String text = "";
+						
+						GameHistory history = new GameHistory (text,sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.lbl_cardName.getText(),croupier.getActions(),croupier.getBuys(),croupier.getBuyPower(), GameHistory.HistoryType.PlayMoneyCard);
+						try {
+							sl.getPlayer_OS().getOut().writeObject(history);
+							sl.getPlayer_OS().getOut().flush();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						
 
 						}

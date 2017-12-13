@@ -94,11 +94,8 @@ public class ServiceLocatorClient {
     //while waiting for full game, this button is deactivated for the host because he can end the game via "Spiel beenden (Host)" --> see button implemented above. For all other players while waiting
     //for full game: via button endGamePlayer they can leave the game without getting a defeat
     private Button endGamePlayer = new Button ("Spiel verlassen");
-    
     private Croupier croupier;
 
-    
-    
     /**
      * @author Brad Richards
      * Factory method for returning the singleton
@@ -241,34 +238,33 @@ public class ServiceLocatorClient {
 	} 
 	
 	//prepare the playing stage of the host so he can start the game
-	public void prepareGame(GameParty party){
+	public void prepareGame(GameParty party){		
 		if(party.getHost().getUsername().equals(this.player_noOS.getUsername())){
-			this.playAction.setDisable(false);
+			//this.playAction.setDisable(false);
 			this.endAction.setDisable(false);
+			this.croupier.setActionMode(true);
+			this.croupier.setActions(1);
+			this.croupier.setBuys(1);
+			this.croupier.setBuyPower(0);
 			this.endGameHost.setDisable(true);
 			//activate the button for leaving games also for the host
 			this.endGamePlayer.setDisable(false);
+			
+			//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
+			
+			this.numberOfActionsAndBuys.setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+			
+			this.ta_gameHistory.appendText("Spiel beginnt\n");
+			this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
+			this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
+		}else{
+			this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: 1 Aktionen, 1 Käufe, 0 Geld");
+			
+			this.ta_gameHistory.appendText("Spiel beginnt\n");
+			this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
+			this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
 		}
-		
-		//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
-		for(int i=0; i<party.getArrayListOfPlayers().size();i++){
-			if(party.getArrayListOfPlayers().get(i).getUsername().equals(this.player_noOS.getUsername())){
-				
-				if(party.getArrayListOfPlayers().get(i).getUsername().equals(party.getHost().getUsername())){
-					this.numberOfActionsAndBuys.setText("Du bist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
-					
-					this.ta_gameHistory.appendText("Spiel beginnt\n");
-					this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
-					this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
-				}else{
-					this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: "+party.getHost().getNumberOfActions()+" Aktionen, "+party.getHost().getNumberOfBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
-					
-					this.ta_gameHistory.appendText("Spiel beginnt\n");
-					this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
-					this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
-				}				
-			}
-		}
+
 	}
 	
 	public void updateGamePartyAfterLeave(GameParty party){
@@ -440,7 +436,8 @@ public class ServiceLocatorClient {
 		this.currentGameParty = null;
 		this.view_playingStage.stop();
 		this.view_playingStage.root.getChildren().clear();
-		this.croupier.clearHoleCards();
+		//set croupier singleton null
+		this.croupier.clear();
 		this.ta_ChatPlayingStage.clear();
 		this.ta_gameHistory.clear();
 	}
