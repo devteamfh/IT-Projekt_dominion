@@ -2,7 +2,7 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 
-
+import com.sun.glass.ui.View;
 
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.abstractClasses.Controller;
@@ -373,6 +373,14 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						            		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
 						            		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndBuy);
 						
+						            		
+						            		//Restliche Karten in händen werden auf ablagestapel gelegt
+						            		croupier.muckHoleCards();
+						            		
+						            		//es werden 5 neue Karten gezogen
+						            		croupier.drawHoleCards();
+						            		
+						            		
 						                	try {
 						                		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
 						                		//sl.getPlayer_OS().getOut().reset();

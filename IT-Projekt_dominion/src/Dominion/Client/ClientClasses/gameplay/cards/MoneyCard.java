@@ -101,6 +101,13 @@ import javafx.stage.StageStyle;
 				            	sl.getButtonEndBuys().setDisable(true);
 								strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
 				        		
+			            		//Restliche Karten in händen werden auf ablagestapel gelegt
+			            		croupier.muckHoleCards();
+			            		
+			            		//es werden 5 neue Karten gezogen
+			            		croupier.drawHoleCards();
+			            		
+								
 				        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
 				        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.getLbl_cardName().getText(), GameHistory.HistoryType.EndBuy);
 				        		
