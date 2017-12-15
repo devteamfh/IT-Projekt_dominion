@@ -102,6 +102,7 @@ public class Croupier  extends Observable {
 	
 	public void setStackSize(String gc){
 
+		//ist es eine action Karte links (province, curse, money?)
 		switch (gc) {
 		
 		case "estate":    setStackSizeEstate(stackSizeEstate-1);
@@ -117,6 +118,11 @@ public class Croupier  extends Observable {
 		case "gold":      setStackSizeGold(stackSizeGold-1);
 			break;
 		case "curse": 	  setStackSizeCurse(stackSizeCurse-1);
+		}
+		//dann ist es eine Community Action Card
+		if (getAl_communityActionCards().contains(gc)){
+			int i = getAl_communityActionCards().indexOf(gc);
+			this.setAl_stackSizeCommunityActionCards(i);
 		}
 		setChanged();
 		notifyObservers();
@@ -135,7 +141,6 @@ public class Croupier  extends Observable {
 		case "silver":    return getStackSizeSilver(); 
 		case "gold":      return getStackSizeGold(); 
 		case "curse":	  return getStackSizeCurse();
-		
 		}
 		//dann ist es eine Community Action Card
 		if (getAl_communityActionCards().contains(gc)) {
