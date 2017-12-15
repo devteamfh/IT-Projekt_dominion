@@ -1,11 +1,60 @@
 
 /*author: kab */
 
+.bg {
+	
+	
+}
+
+.bg_gameInfo {
+	-fx-background-image: url('../img/backgrounds/bg_gameInfo.png');
+	-fx-background-repeat: no-repeat;
+	/*-fx-background-size: auto, auto;*/
+	-fx-background-color: transparent;
+}
+
+
+
+
 .btn {
 	-fx-background-repeat: stretch;
 	-fx-background-color: transparent;
 }
+
+.lbl {  /* f�r Text Button Chat */
+	-fx-font-family: "Times New Roman";
+	-fx-font-size: 14px;
+	-fx-text-fill: white;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */)
+	}
+	
+.lbl_btnUserInteraction { /* f�r btn_userInteraction*/
+	-fx-font-family: "Times New Roman";
+	-fx-font-size: 28px;
+	-fx-text-fill        : #cdcac4;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */)
+	}
+
+
+.btn_sendChatMsg {
+	  -fx-background-image: url('../img/btns/btn_chat_blue_mini.png');  
+}
+
+.btn_sendChatMsg_hover {
+	  -fx-background-image: url('../img/btns/btn_chat_blue_mini_hover.png');  
+}
+
+
+.btn_userInteraction {
+	  -fx-background-image: url('../img/btns/btn_playStage.png');
+}
+
+.btn_playStage_hover {
+	 /* -fx-background-image: url('../img/btns/btn_view_hover.png'); */
+}
 /*-------------------------------------- */
+
+
 
 
 /*close Button */
@@ -15,6 +64,32 @@
 .btn_close_hover {
 	-fx-background-image: url('../img/btns/btn_close_normal.png'); }
 /*-------------------------------------------------------- */	
+	
+	
+	
+	
+/*game information */
+.h1 {
+	-fx-font-family: "Kokila";
+	-fx-font-size: 28px;
+	-fx-font-weight: bold;
+	-fx-text-fill: #996633;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
+	)
+	}
+	
+.h2 {
+	-fx-font-family: "Kokila";
+	-fx-font-size: 26px;
+	-fx-font-weight: bold;
+	-fx-text-fill: #666666;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
+	)
+}
+/*------------------------------------------------------------------------------------------------- */	
+	
+	
+	
 	
 	
 	

@@ -404,9 +404,7 @@ public class ReadMsgFromServer implements Runnable {
 								croupier.setBuys(1);
 								croupier.setBuyPower(0);
 							}
-
 							Platform.runLater(new Runnable() {
-
 								@Override 
 						           public void run() {
 									
@@ -465,7 +463,6 @@ public class ReadMsgFromServer implements Runnable {
 							System.out.println(history.getLeavingPlayer().getUsername());
 							
 							Platform.runLater(new Runnable() {
-
 								@Override 
 						           public void run() {
 									
@@ -478,7 +475,6 @@ public class ReadMsgFromServer implements Runnable {
 											//game hasn't started yet
 											handleAllConnectedClients1(history);
 										}
-
 										
 									}else{
 										if(history.getLeavingPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
@@ -490,7 +486,6 @@ public class ReadMsgFromServer implements Runnable {
 										
 										
 									}
-
 						           }
 						      });
 							

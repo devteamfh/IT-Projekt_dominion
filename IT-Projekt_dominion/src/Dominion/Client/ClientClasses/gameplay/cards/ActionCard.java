@@ -58,6 +58,7 @@ public class ActionCard extends GameCard{
 	            	}
 					
 					//wenn karte aus den community action cards gekauft wird (kaufmodus on, buypower und buys ausreichend, sowie gen�gend karten da
+
 					if(isHoleCard() == false && croupier.isBuyMode() == true && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(ac)>0){
 						
 						croupier.setBuys(croupier.getBuys()-1);
@@ -117,6 +118,15 @@ public class ActionCard extends GameCard{
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
+						
+					}
+
+					/**if(		   isHoleCard() == false 
+							&& croupier.isBuyMode() == true 
+							&& costs <= croupier.getBuyPower() 
+							&& croupier.getBuys() > 0 
+							&& croupier.getStackSize(ac)>0){*/
+
 										
 						
 						
@@ -136,20 +146,27 @@ public class ActionCard extends GameCard{
 								
 								int i = croupier.getAl_communityActionCards().indexOf(ac);
 								
+<<<<<<< HEAD
 								
 								
 								System.out.println("alte stackgr�sse:"+valueToChange);
+=======
+>>>>>>> e80ebdf242d4e52355534ef254d9e6362839a9d1
 								croupier.setAl_stackSizeCommunityActionCards(i);
-								System.out.println("neue Stackgr�sse:"+newValue);
 							
 								//gekaufte karte auf ablagestapel legen
 								//System.out.println("alte Ablagestapelgr�sse: "+croupier.getAblagestapel().size());
 								ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower);
 								croupier.addObserver(newCard);
 								croupier.addToAblagestapel(newCard);
+<<<<<<< HEAD
 								newCard.assignPicture(); */
+
+								//newCard.assignPicture(); 
+								//newCard.setHoleCard(true);
+
 								
-						}
+						//}
 			
 					
 					//wenn ich die Karte in der Hand spielen darf:
@@ -164,6 +181,7 @@ public class ActionCard extends GameCard{
 					croupier.getHoleCards().remove(ac);
 					croupier.addToAblagestapel(ac);
 					
+
 					GameHistory history=null;
 									
 					//do the specific action
@@ -294,6 +312,7 @@ public class ActionCard extends GameCard{
 							e1.printStackTrace();
 						}
 					
+
 					}
 					
 					
@@ -303,7 +322,7 @@ public class ActionCard extends GameCard{
 				
 				
 				//bei rechtsklick bild �ffnen
-				 if (e.getButton() == MouseButton.SECONDARY && ac.isHoleCard() == false) {
+				 /**if (e.getButton() == MouseButton.SECONDARY && ac.isHoleCard() == false) {
 	                    System.out.println("consuming right release button in cm filter");
 	                    
 	                    Pane pane = new Pane();
@@ -324,10 +343,10 @@ public class ActionCard extends GameCard{
 	                    stage.setScene(scene);
 	            	    stage.initStyle(StageStyle.TRANSPARENT);   
 	                    stage.show();
-	                    }
+	             }*/
 				
-				}
-			});
+				//}
+			//});
 			
 			//anstatt clicker eher mouse over zum vergrössern
 			/**if (e.getButton() == MouseButton.SECONDARY && ac.isHoleCard() == false) {
@@ -355,11 +374,11 @@ public class ActionCard extends GameCard{
 			
 			
 			
-		}
+				}
 					
-					
+			});
 		
-		
+		}		
 
 		public int getPositionOnBoard() {
 			return positionOnBoard;
@@ -369,5 +388,5 @@ public class ActionCard extends GameCard{
 		}
 
 
-
+				
 }

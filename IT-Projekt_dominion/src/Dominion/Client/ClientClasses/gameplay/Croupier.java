@@ -10,6 +10,7 @@ import com.sun.glass.ui.View;
 
 import Dominion.Client.ClientClasses.Client_View_playingStage;
 import Dominion.Client.ClientClasses.ServiceLocatorClient;
+import Dominion.Client.ClientClasses.customButton;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Server.ServerClasses.ServiceLocatorServer;
@@ -68,10 +69,7 @@ public class Croupier  extends Observable {
 	
 	ArrayList<GameCard> al_communityActionCards = new ArrayList<GameCard>();
 
-	
-	
 
-	
 	
 	//Konstruktoren
     public static Croupier getCroupier() {
@@ -582,6 +580,8 @@ public class Croupier  extends Observable {
 	public int getTrashCounter(){
 		return this.counterTrashedCards;
 	}
+
+
 
 	
 }

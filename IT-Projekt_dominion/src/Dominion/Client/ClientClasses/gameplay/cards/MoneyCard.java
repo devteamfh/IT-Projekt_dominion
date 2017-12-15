@@ -75,6 +75,10 @@ import javafx.stage.StageStyle;
 							croupier.addObserver(newCard);
 							croupier.addToAblagestapel(newCard);
 							newCard.assignPicture();
+
+							newCard.setHoleCard(true);
+							System.out.println("neue ablagestapelgr�sse: "+croupier.getAblagestapel().size());
+							
 							
 							System.out.println("add zum ablagestapel gekaufte karte: "+mc.text_DE);
 							System.out.println("ablagestapel neu:////////////////////");
@@ -106,6 +110,13 @@ import javafx.stage.StageStyle;
 				            	
 								strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase und zieht 5 neue Karten\n\n");
 				        		
+			            		//Restliche Karten in h�nden werden auf ablagestapel gelegt
+			            		croupier.muckHoleCards();
+			            		
+			            		//es werden 5 neue Karten gezogen
+			            		croupier.drawHoleCards();
+			            		
+								
 				        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
 				        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.text_DE, GameHistory.HistoryType.EndBuy);
 				        		
