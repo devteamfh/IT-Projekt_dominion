@@ -330,7 +330,7 @@ public class ReadMsgFromServer implements Runnable {
 								try{
 									croupier.setStackSize(history.getGameCard());	
 									
-									if(history.getGameCard().equals("estate") || history.getGameCard().equals("duchy") || history.getGameCard().equals("province")){
+									if(history.getGameCard().equals("Anwesen") || history.getGameCard().equals("Herzogtum") || history.getGameCard().equals("Provinz")){
 										
 										sl.getPlayingStage().vb_player.getChildren().clear();	
 										Label allPlayer = new Label("Spieler dieser Partie:");
@@ -365,7 +365,6 @@ public class ReadMsgFromServer implements Runnable {
 									
 									sl.getButtonEndActions().setDisable(false);
 									croupier.setActionMode(true);
-									croupier.setBuyMode(false);
 									croupier.setActions(1);
 									croupier.setBuys(1);
 									croupier.setBuyPower(0);
@@ -544,7 +543,27 @@ public class ReadMsgFromServer implements Runnable {
 						break;
 						
 					case PlayCard:
-						
+						if(history.getGameCard() !=null){
+							switch(history.getGameCard()){
+							
+							case "Kapelle":
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									
+									Platform.runLater(new Runnable() {
+
+										@Override 
+								           public void run() {
+											croupier.setTrashMode(true);
+											
+								           }
+								      });
+									
+									
+								}
+
+							}
+						}
+					
 						
 						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
@@ -606,6 +625,7 @@ public class ReadMsgFromServer implements Runnable {
 								//update the list of players because there was a buy
 								sl.setCurrentGameParty(history.getGameParty());
 								
+								//updating the player list with the points
 								sl.getPlayingStage().vb_player.getChildren().clear();	
 								Label allPlayer = new Label("Spieler dieser Partie:");
 								sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
@@ -635,6 +655,9 @@ public class ReadMsgFromServer implements Runnable {
 					      });
 						
 						break;
+						
+					case Trash:
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea());
 						
 					}
 					

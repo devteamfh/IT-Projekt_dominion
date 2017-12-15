@@ -1,8 +1,7 @@
 package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
-
-
+import java.util.Collections;
 
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.abstractClasses.Controller;
@@ -146,91 +145,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 
             }
         });
-     
-
-        
-        
-        /**sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
-        	
-            @Override
-            public void handle(ActionEvent event) {
-            	
-            	croupier.setActionMode(false);
-            	croupier.setBuyMode(true);
-            	
-            	if(strBuilder != null){
-            		strBuilder.delete(0, strBuilder.length());
-            	}
-
-            	
-            	
-            	GameHistory history;
-            	sl.getPlayer_noOS().decreaseNumberOfActions();
-            	
-            	
-            	
-            	if(sl.getPlayer_noOS().getNumberOfActions()==0){
-            		sl.getButtonPlayActions().setDisable(true);
-            		sl.getButtonEndActions().setDisable(true);
-                	sl.getButtonPlayBuy().setDisable(false);
-                	sl.getButtonEndBuys().setDisable(false);
-                	strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht eine Aktion\n");
-                	strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
-                	history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndAction);
-            	}else{
-            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht eine Aktion\n");
-            		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.PlayAction);
-            	}
-            
-                     	
-            	try {
-            		model.out.reset();//reset necessary for correct number of actions
-        			model.out.writeObject(history); 
-        			model.out.flush();
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-            }
-        });*/
-        
-        /**sl.getButtonPlayBuy().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	
-
-            	
-            	if(strBuilder != null){
-            		strBuilder.delete(0, strBuilder.length());
-            	}
-           
-            	GameHistory history;
-            	sl.getPlayer_noOS().decreaseNumberOfBuys();
-            	
-            	if(sl.getPlayer_noOS().getNumberOfBuys()==0){
-            		sl.getButtonPlayBuy().setDisable(true);
-            		sl.getButtonEndBuys().setDisable(true);
-            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht einen Kauf\n");
-            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n");
-            		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
-            		
-            		//setting the initial numbers of actions and buys so the player will start with 1 action and 1 buy when his turn will start again in the next round
-            		sl.getPlayer_noOS().setInitialActionsAndBuys();
-            	}else{
-            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht einen Kauf\n");
-            		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.PlayBuy);
-            	}
-
-            	try {
-            		//model.out.reset();
-        			model.out.writeObject(history);
-        			model.out.flush();
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-            }
-        });*/
         
         sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -284,8 +198,44 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	croupier.setBuyPower(0);
             	
             	sl.getButtonEndBuys().setDisable(true);
+            	
+////////////////////for loop wieder löschen///////////////////////
+						/**System.out.println("Ablagestapel: ");
+						for(int i=0; i< croupier.getAblagestapel().size();i++){
+							System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
+						}
+						
+						System.out.println("Nachziehstapel: ");
+						for(int i=0; i< croupier.getNachziehstapel().size();i++){
+							System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
+						}
+						
+						System.out.println("Hole cards: ");
+						for(int i=0; i< croupier.getHoleCards().size();i++){
+							System.out.println(croupier.getHoleCards().get(i).getLbl_cardName().getText());
+						}*/
+						
 
-        		strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
+            	croupier.removeHoleCards();
+            	
+            	
+////////////////////for loop wieder löschen///////////////////////
+					/**System.out.println("Ablagestapel: ");
+					for(int i=0; i< croupier.getAblagestapel().size();i++){
+						System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
+					}
+					
+					System.out.println("Nachziehstapel: ");
+					for(int i=0; i< croupier.getNachziehstapel().size();i++){
+						System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
+					}
+					
+					System.out.println("Hole cards: ");
+					for(int i=0; i< croupier.getHoleCards().size();i++){
+						System.out.println(croupier.getHoleCards().get(i).getLbl_cardName().getText());
+					}*/
+
+        		strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase und zieht 5 neue Karten\n\n");
         		
         		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
         		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndBuy);

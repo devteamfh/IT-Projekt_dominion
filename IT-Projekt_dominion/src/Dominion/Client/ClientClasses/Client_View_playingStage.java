@@ -163,15 +163,15 @@ public class Client_View_playingStage extends View<Client_Model> {
 		//____Community Cards links -> L�ndereien und Geld, Curse____________________________________________//
 		
 		//Community Cards auf der Linken seite Initialisieren	
-		estate   = new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate());
-		duchy    = new VictoryCard(new Label("duchy"),croupier.getCostsDuchy(),croupier.getPointsDuchy());
-		province = new VictoryCard(new Label("province"),croupier.getCostsPovince(),croupier.getPointsProvince());
+		estate   = new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate(), "Anwesen");
+		duchy    = new VictoryCard(new Label("duchy"),croupier.getCostsDuchy(),croupier.getPointsDuchy(), "Herzogtum");
+		province = new VictoryCard(new Label("province"),croupier.getCostsPovince(),croupier.getPointsProvince(), "Provinz");
 		
-		copper = new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper());
-		silver = new MoneyCard(new Label("silver"),croupier.getBuyPowerSilver(),croupier.getCostsSilver());
-		gold   = new MoneyCard(new Label("gold"),croupier.getBuyPowerGold(),croupier.getCostsGold());
+		copper = new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper(),"Kupfer");
+		silver = new MoneyCard(new Label("silver"),croupier.getBuyPowerSilver(),croupier.getCostsSilver(), "Silber");
+		gold   = new MoneyCard(new Label("gold"),croupier.getBuyPowerGold(),croupier.getCostsGold(), "Gold");
 		
-		curse = new MoneyCard(new Label("curse"),croupier.getBuyPowerCurse(),croupier.getCostsCurse());
+		curse = new MoneyCard(new Label("curse"),croupier.getBuyPowerCurse(),croupier.getCostsCurse(), "Fluch");
 		
 		al_communityCards_left = new ArrayList<GameCard>();	
 		al_communityCards_left.add(estate);
@@ -395,10 +395,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 		al_allStartingCards = new ArrayList<GameCard>();	
 			
 		for (int i = 0; i < 7; i++)
-			al_allStartingCards.add(new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper()));	
+			al_allStartingCards.add(new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper(),"Kupfer"));	
 			
 		for (int i = 0; i <3; i++)
-			al_allStartingCards.add(new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate()));
+			al_allStartingCards.add(new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate(), "Anwesen"));
 			
 		//alle Objekte in al_allStartingCards als "holeCards" true flaggieren und observer adden
 		for (int i = 0; i < 10; i++) {

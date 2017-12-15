@@ -22,7 +22,7 @@ import javafx.scene.control.Label;
 
 /**
  * @author kab: Croupier verwaltet alle Felder welche zum Gameplay n�tig sind
- * 
+ * @author Joel: methods where mentioned
  * 
  */
 public class Croupier  extends Observable {
@@ -30,12 +30,15 @@ public class Croupier  extends Observable {
     //Felder
 	private static Croupier croupier;
 
-	boolean actionMode = true;
+	boolean actionMode = false;
 	boolean buyMode    = false;
+	boolean discardMode = false;
+	boolean trashMode=false;
 	
 	int buyPower = 0;
 	int actions;
 	int buys;
+	int counterTrashedCards;
 	
 
 	Label lbl_buyPower = new Label();
@@ -320,6 +323,30 @@ public class Croupier  extends Observable {
 		setChanged();
 		notifyObservers();
 	}
+	
+	public boolean isDiscardMode(){
+		return this.discardMode;
+	}
+	
+	public void setDiscardMode(boolean discardMode){
+		this.discardMode = discardMode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isTrashMode(){
+		return this.trashMode;
+	}
+	
+	public void setTrashMode(boolean trashMode){
+		this.trashMode = trashMode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void setTrashCounter(int counter){
+		this.counterTrashedCards = counter;
+	}
 
 
 	public boolean isBuyMode() {
@@ -469,11 +496,91 @@ public class Croupier  extends Observable {
 
 	}
 	
-	//clear all croupier resources so the player will start with new resources when he joins a new game party
-	//--> evtl croupier nicht als singleton?
+	/**
+	 * @author Joel: 
+	 clear all croupier resources so the player will start with new resources when he joins a new game party*/
 	public void clear(){
 		Croupier.croupier=null;
 		
+	}
+	
+	/**
+	 * @author Joel: 
+	 after a players turn*/
+	public void removeHoleCards(){
+		while(!this.getHoleCards().isEmpty()){
+    		this.getAblagestapel().add(this.getHoleCards().poll());
+    	}
+		
+		this.getNewHoleCards(5);
+	}
+	
+	/**
+	 * @author Joel: 
+	 */
+	public void getNewHoleCards (int number){
+		
+		//get new cards from "Nachziehstapel"
+    	if(!(this.getNachziehstapel().size()<number)){
+    		for(int i=0; i<number;i++){
+    			this.getHoleCards().add(this.getNachziehstapel().poll());
+    			System.out.println("Nachziehstapel hatte mind. 5 Karten");
+    		}
+    	}else{
+    		System.out.println("Nachziehstapel hatte weniger als 5 karten");
+    		int count=0;
+    		//draw cards from Nachziehstapel until it is empty
+    		while(!this.getNachziehstapel().isEmpty()){
+    			this.getHoleCards().add(this.getNachziehstapel().poll());
+    			count++;
+    			
+    		}
+    		
+    		System.out.println("es wurden noch "+count+" Karten vom Nachziehstapel genommen");
+    		System.out.println("Nachziehstapel sollte nun leer sein...");
+    		for(int i=0; i<croupier.getNachziehstapel().size();i++){
+        		System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
+        	}
+    		
+    		
+    		//shuffle the "Ablagestapel"
+    		Collections.shuffle(this.getAblagestapel());
+    		//add the whole Ablagestapel to Nachziehstapel
+    		System.out.println("ablagestapel mischen; er sieht nun so aus///////");
+    		for(int i=0; i<croupier.getAblagestapel().size();i++){
+        		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
+        	}
+    		
+    		System.out.println("nachziehstapel nun neu befüllen, cards nehmen von ablage");
+    		
+    		while(!this.getAblagestapel().isEmpty()){
+    			this.getNachziehstapel().add(this.getAblagestapel().poll());
+    			System.out.println("karte von ablagestapel auf den nachziehstapel gelegt");
+    		}
+    		System.out.println("nachziehstapel sieht nun so aus//////");
+    		for(int i=0; i<croupier.getNachziehstapel().size();i++){
+        		System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
+        	}
+    		
+    		//adding the last cards
+    		int numberOfDrawsNachziehstapel = number-count;
+    		System.out.println("es fehlen noch "+numberOfDrawsNachziehstapel+" karten auf der hand");
+    		for(int i=0; i<numberOfDrawsNachziehstapel;i++){
+    			this.getHoleCards().add(this.getNachziehstapel().poll());
+    			System.out.println("karte von nachzieh auf hand gelegt");
+    		}
+    	}
+		
+		
+		sl.getPlayingStage().updateGUI();
+	}
+	
+	public void increaseTrashedCards(){
+		this.counterTrashedCards++;
+	}
+	
+	public int getTrashCounter(){
+		return this.counterTrashedCards;
 	}
 
 	

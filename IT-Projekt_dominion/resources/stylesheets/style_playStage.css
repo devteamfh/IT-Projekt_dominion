@@ -27,6 +27,10 @@
 	-fx-effect: dropshadow( gaussian , yellow , 7 , 0.7 , 0 , 0 );	
 }
 
+.highlight2 {
+	-fx-effect: dropshadow( gaussian , red , 7 , 0.7 , 0 , 0 );	
+}
+
 .cardback2 {
 		-fx-background-image: url('../img/cards/cardback2.jpg');
 }
