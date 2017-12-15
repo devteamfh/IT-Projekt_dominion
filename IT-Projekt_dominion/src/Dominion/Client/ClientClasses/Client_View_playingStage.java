@@ -59,6 +59,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 	ServiceLocatorClient sl;
 	Croupier croupier;
 
+	Scene scene;
+	
+	BorderPane root;
+	
 	Button btn_close;
 
 	VictoryCard estate, duchy, province;
@@ -79,10 +83,23 @@ public class Client_View_playingStage extends View<Client_Model> {
 	VBox vb_wrapper_gameInformation_content;
 	HBox hb_wrapper_ActionsBuysBuyPower;
 	
-/*	HBox hb_wrapper_lblBuyPower;
-	HBox hb_wrapper_lblActions;
-	HBox hb_wrapper_lblBuys;
-*/
+	
+	TextArea windowGameHistory;
+	
+	customButton btn_userInteraction;
+	
+	TextArea chatWindowPlayingStage;
+	TextField tf_messagePlayingStage;
+	customButton btn_sendChatMsgPlayingStage;
+
+
+
+
+	
+	
+	
+	
+	
 	Button provisorischCard1;
 	Button provisorischCard2;
 	Button provisorischCard3;
@@ -94,12 +111,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 	Label stack;
 	Label yourHand;
 
-	TextField tf_messagePlayingStage;
-	TextArea chatWindowPlayingStage;
-	TextArea windowGameHistory;
-	customButton btn_sendChatMsgPlayingStage;
 
-	BorderPane root;
 
 	public Client_View_playingStage(Stage stage, Client_Model model, GameParty party) {
 		super(stage, model, party);
@@ -166,8 +178,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		
 		
-		// ____Community Cards links -> Lï¿½ndereien und Geld,
-		// Curse____________________________________________//
+		// ____Community Cards links -> Lï¿½ndereien und Geld, Curse_________________________//
 
 		// Community Cards auf der Linken seite Initialisieren
 		estate = new VictoryCard(new Label("estate"), croupier.getCostsEstate(), croupier.getPointsEstate());
@@ -242,9 +253,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		
 		
-		// ____________CenterPane communtiycard in der mitte und
-		// statusinformationen zum spiel (buypower, action
-		// etc)_________________________________________________________________________//
+		// ____________CenterPane communtiycard in der mitte und  statusinformationen zum spiel (buypower, action__________________________________________________//
 
 		// community Action Cards in der Mitte mit 10 karten initialisieren
 		croupier.prepareAL_stackSizeCommunityActionCards();
@@ -350,8 +359,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 			vb_wrapper_gameInformation_content.getChildren().addAll(
 					sl.getLabelNumberOfActionsAndBuys(), hb_wrapper_ActionsBuysBuyPower);
 					
-					
-					
+									
 							
 		hb_wrapper_gameInformation.getChildren().add(vb_wrapper_gameInformation_content);    
 
@@ -367,70 +375,83 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		
 		
-		// ____________Chat und Spielverlauf rechte
-		// Seite___________________________________________________________________________________________________//
+		// ____________Spielverlauf rechte Seite__________________________________________________________________//
 
+		
+		vb_player = new VBox();
+		vb_player.setAlignment(Pos.TOP_LEFT);
+		vb_player.setPrefHeight(60.0);
+				
 		windowGameHistory = sl.getTextAreaGameHistory();
 		windowGameHistory.setEditable(false);
 		windowGameHistory.setStyle("-fx-opacity: 0.80;");
 
-		chatWindowPlayingStage = sl.getTextAreaChatPlayingStage();
-		chatWindowPlayingStage.setEditable(false);
-		chatWindowPlayingStage.setStyle("-fx-opacity: 0.80;");
-
-		tf_messagePlayingStage = new TextField();
-		tf_messagePlayingStage.setStyle("-fx-opacity: 0.80;");
-
-		btn_sendChatMsgPlayingStage = new customButton("senden");
-		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn", "btn_sendChatMsg");
-		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
-
-		// Label label_gameHistory = new Label("Spielverlauf");
-		// Label label_chat = new Label("Chat");
-
+		btn_userInteraction = new customButton("Dominion");
+		btn_userInteraction.setBtnTextEmpty(btn_userInteraction);
+		btn_userInteraction.getStyleClass().addAll("btn","btn_userInteraction");
+		btn_userInteraction.getLbl().getStyleClass().add("lbl_btnUserInteraction"); //überschreibt Stylezuweisung in customButton
+		btn_userInteraction.setPrefSize(350, 89);
+		croupier.addObserver(btn_userInteraction);
+			
+		
 		VBox vb_wrapper_right = new VBox();
 		vb_wrapper_right.setMinWidth(350);
 		vb_wrapper_right.setMaxWidth(350);
-
-		vb_wrapper_right.setPadding(new Insets(0, 20, 0, 0));
-
-		VBox vb_wrapper_spielverlauf_chat_btns = new VBox();
-
-		vb_player = new VBox();
-
-		vb_player.setAlignment(Pos.TOP_RIGHT);
-		vb_player.setPrefHeight(60.0);
-
-		vb_wrapper_spielverlauf_chat_btns.getChildren().addAll(windowGameHistory, chatWindowPlayingStage,
-				tf_messagePlayingStage, btn_sendChatMsgPlayingStage, vb_player);
-
-		vb_wrapper_right.getChildren().addAll(vb_wrapper_spielverlauf_chat_btns);
-
 		
 		
-		
-		
+			HBox hb_wrapper_windowGameHistory = new HBox();
+			hb_wrapper_windowGameHistory.getChildren().add(windowGameHistory);
+			
+			HBox hb_wrapper_btn_userInteraction = new HBox();
+			hb_wrapper_btn_userInteraction.setPadding(new Insets(15,0,0,0));
+			hb_wrapper_btn_userInteraction.getChildren().add(btn_userInteraction);
+			
+			
+			
+			
+			
+			
+			//dieser bereich anschliessend löschen
+			sl.setButtonPlayActions("Aktion spielen");
+			sl.getButtonPlayActions().setDisable(true);
+
+			sl.setButtonPlayBuy("Kauf spielen");
+			sl.getButtonPlayBuy().setDisable(true);
+
+			sl.setButtonEndActions("Aktionsphase beenden");
+			sl.getButtonEndActions().setDisable(true);
+
+			sl.setButtonEndBuys("Kaufphase beenden");
+			sl.getButtonEndBuys().setDisable(true);
+
+			
+			VBox vb_wrapper_gameController = new VBox();
+			VBox vb_wrapper_controlButtons = new VBox();
+
+			vb_wrapper_controlButtons.getChildren().addAll(sl.getButtonPlayActions(), sl.getButtonPlayBuy(),
+					sl.getButtonEndActions(), sl.getButtonEndBuys());
+
+			vb_wrapper_gameController.getChildren().addAll(vb_wrapper_controlButtons);
+			//////////////////////////////////////
+			
+			
+			
+				
+		VBox vb_wrapper_spielverlauf_btn = new VBox();
+		vb_wrapper_spielverlauf_btn.getChildren().addAll(vb_player, hb_wrapper_windowGameHistory, hb_wrapper_btn_userInteraction,vb_wrapper_gameController);
+
+		vb_wrapper_right.getChildren().addAll(vb_wrapper_spielverlauf_btn);
 		// --------------------------------------------------------------------------------------------------------------------------------------//
-
-		// ____________holecards
-		// contorlbuttons___________________________________________________________________________________________________//
+		
+		
+		
+		
+		// ____________holecards  contorlbuttons   chat Window__________________________________________________________________//
 
 		customButton blank = new customButton();
 		blank.setMinSize(180, 240);
 		customButton nachziehstapel = new customButton();
 		nachziehstapel.setMinSize(180, 240);
-
-		sl.setButtonPlayActions("Aktion spielen");
-		sl.getButtonPlayActions().setDisable(true);
-
-		sl.setButtonPlayBuy("Kauf spielen");
-		sl.getButtonPlayBuy().setDisable(true);
-
-		sl.setButtonEndActions("Aktionsphase beenden");
-		sl.getButtonEndActions().setDisable(true);
-
-		sl.setButtonEndBuys("Kaufphase beenden");
-		sl.getButtonEndBuys().setDisable(true);
 
 		HBox hb_wrapper_bottom = new HBox();
 		hb_wrapper_bottom.setPadding(new Insets(0, 20, 20, 20));
@@ -482,38 +503,70 @@ public class Client_View_playingStage extends View<Client_Model> {
 			hb_wrapper_holeCards.getChildren().add(gc1);
 			gc1.setPrefSize(180, 240);
 		}
-
-		// label anzahl nachziehkarten hier?=
-		// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-		// Bereich nach holecards recht
-		HBox hb_wrapper_gameController = new HBox();
-
-		VBox vb_wrapper_controlButtons = new VBox();
-
-		vb_wrapper_controlButtons.getChildren().addAll(sl.getButtonPlayActions(), sl.getButtonPlayBuy(),
-				sl.getButtonEndActions(), sl.getButtonEndBuys());
-
-		hb_wrapper_gameController.getChildren().addAll(vb_wrapper_controlButtons);
-
 		
+		
+		
+
+		// Bereich nach holecards recht mit Chat Fenster
+		
+		chatWindowPlayingStage = sl.getTextAreaChatPlayingStage();
+		chatWindowPlayingStage.setEditable(false);
+		chatWindowPlayingStage.setStyle("-fx-opacity: 0.80;");
+
+		tf_messagePlayingStage = new TextField();
+		tf_messagePlayingStage.setStyle("-fx-opacity: 0.80;");
+		tf_messagePlayingStage.setPrefSize(250, 40);
+
+		btn_sendChatMsgPlayingStage = new customButton("senden");
+		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn", "btn_sendChatMsg");
+		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
+		btn_sendChatMsgPlayingStage.setPrefSize(95, 40);
+		
+		
+		VBox vb_wrapper_chat = new VBox();
+		vb_wrapper_chat.setMinSize(330, 200);
+		vb_wrapper_chat.setMaxSize(330, 200);
+		vb_wrapper_chat.setPadding(new Insets(0,-20,0,0));
+		
+			HBox hb_wrapper_chatInput_btnSend = new HBox();
+			
+				HBox hb_wrapper_tf_messagePlayingStage = new HBox();
+				hb_wrapper_tf_messagePlayingStage.getChildren().add(tf_messagePlayingStage);
+				
+				HBox hb_wrapper_btn_sendChatMsgPlayingStage = new HBox();
+				hb_wrapper_btn_sendChatMsgPlayingStage.setPadding(new Insets(0,0,0,5));
+				hb_wrapper_btn_sendChatMsgPlayingStage.getChildren().add(btn_sendChatMsgPlayingStage);
+			
+			
+			hb_wrapper_chatInput_btnSend.getChildren().addAll(hb_wrapper_tf_messagePlayingStage,hb_wrapper_btn_sendChatMsgPlayingStage);
+			hb_wrapper_chatInput_btnSend.setPadding(new Insets(5,0,0,0));
+		
+		vb_wrapper_chat.getChildren().addAll(chatWindowPlayingStage,hb_wrapper_chatInput_btnSend);
+		
+		
+		
+		
+		
+
+	
+		
+		
+		
+		VBox vb_wrapper_provisorische_buttons = new VBox();
 		this.provisorischCard1 = new Button("Buy Modus Aktivieren");
 		this.provisorischCard2 = new Button("Aktionsmodus Aktivieren");
 		this.provisorischCard3 = new Button("Geld Nachfï¿½llen");
-
+		vb_wrapper_provisorische_buttons.getChildren().addAll(provisorischCard1,provisorischCard2,provisorischCard3);
 		
 		HBox spacer2 = new HBox();
 		HBox.setHgrow(spacer2, Priority.ALWAYS);
-		hb_wrapper_bottom.getChildren().addAll(hb_wrapper_stapel, hb_wrapper_holeCards,		
-				provisorischCard1,
-				provisorischCard2,			
-				provisorischCard3, 
-				spacer2,hb_wrapper_gameController);
+		hb_wrapper_bottom.getChildren().addAll(hb_wrapper_stapel, hb_wrapper_holeCards,
+				vb_wrapper_provisorische_buttons,
+				spacer2,  vb_wrapper_chat);
 
 		// --------------------------------------------------------------------------------------------------------------------------------------//
 
-		// ____________Community Action Cards
-		// (Mitte)___________________________________________________________________________________________________//
+		// ____________Community Action Cards (Mitte)__________________________________//
 		// --------------------------------------------------------------------------------------------------------------------------------------//
 
 		gold.addClickListener();
@@ -530,25 +583,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 		this.provisorisch4 = new Button("kjkjk");
 
-		// setting the treasure and point cards to buy
-		// GridPane gp_left = new GridPane();
-
-		// Button curse = new Button ("Curse");
-
-		// Button silver = new Button ("Silver");
-		// Button copper = new Button ("Copper");
-
-		/*
-		 * GridPane.setConstraints(province, 0, 0);
-		 * GridPane.setConstraints(duchy, 0, 1); GridPane.setConstraints(estate,
-		 * 0, 2); //GridPane.setConstraints(curse, 0, 3);
-		 * 
-		 * GridPane.setConstraints(gold, 1, 0); GridPane.setConstraints(silver,
-		 * 1, 1); GridPane.setConstraints(copper, 1, 2);
-		 * 
-		 * gp_left.getChildren().addAll(province,duchy,estate,gold,silver,copper
-		 * );
-		 */
+		
 
 		VBox vb_center = new VBox();
 		// GridPane gp_actionCards = new GridPane();
@@ -602,7 +637,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 		root.setCenter(vb_wrapper_center);
 		root.setRight(vb_wrapper_right);
 		root.setBottom(hb_wrapper_bottom);
-
+		root.setPadding(new Insets(0,20,0,0));
+		
 		this.scene = new Scene(root, 1850, 900);
 		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_playStage.css").toExternalForm());
 		// stage.initStyle(StageStyle.TRANSPARENT);

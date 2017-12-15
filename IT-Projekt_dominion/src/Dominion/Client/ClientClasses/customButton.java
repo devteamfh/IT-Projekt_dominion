@@ -1,7 +1,11 @@
 package Dominion.Client.ClientClasses;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
+import Dominion.Client.ClientClasses.gameplay.Croupier;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,7 +15,8 @@ import javafx.scene.input.MouseEvent;
 /**
  * @author Beda Kaufmann
  */
-public class customButton extends Button {
+public class customButton extends Button implements Observer {
+	Croupier croupier = Croupier.getCroupier();
 	private customButton btn;
 	private Label lbl;
 	private String lblText;
@@ -25,7 +30,7 @@ public class customButton extends Button {
 		super(s);
 	}
 	
-	
+	//Text Property leeren und daf�r direkt das label lbl verwenden
 	public void setBtnTextEmpty(customButton btn){
 	this.btn=btn;
 	this.lblText = this.btn.getText();
@@ -41,8 +46,7 @@ public class customButton extends Button {
 	this.lbl.getStyleClass().add("lbl");
 	this.btn.setGraphic(this.lbl);
 	}
-	
-	
+		
 	
 	
 	//TextEffekt dem Button hinzuf�gen
@@ -117,7 +121,56 @@ public class customButton extends Button {
 			String labelText = this.lblText;
 			return labelText;
 			}
-		
-		
 
-}
+	public Label getLbl() {
+		return lbl;
+	}
+
+	public void setLbl(Label lbl) {
+		this.lbl = lbl;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		
+		//System.out.println("customButton has been observerd");
+		
+		if (croupier.isActionMode() == true) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Aktionen beenden");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+			
+		if (croupier.isBuyMode() == true)		
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		    			lbl.setText("Kaufen beenden");
+		    			btn.setGraphic(lbl);	
+		           }
+			});
+		
+	
+		if (croupier.isBuyMode() == false && croupier.isActionMode() == false)		
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		    			lbl.setText("Gegner spielt");
+		    			btn.setGraphic(lbl);	
+		           }
+			});
+		}
+		
+		
+		
+	}
+		
+		

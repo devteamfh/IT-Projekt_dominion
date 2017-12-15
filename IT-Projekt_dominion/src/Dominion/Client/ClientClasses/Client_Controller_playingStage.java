@@ -19,6 +19,8 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -122,12 +124,65 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             }
         });*/
         
+		
+		/// Chatbutton
         view.btn_sendChatMsgPlayingStage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	sendMessageToServer();    	
             }
         });
+        
+        
+        
+      //Button enterGame verhalten
+    	view.btn_sendChatMsgPlayingStage.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+    		    new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn_sendChatMsg_hover");
+    		        	view.btn_sendChatMsgPlayingStage.getStyleClass().remove("btn_sendChatMsg");
+    		        }
+    		});
+     		
+    		view.btn_sendChatMsgPlayingStage.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_sendChatMsgPlayingStage.getStyleClass().remove("btn_sendChatMsg_hover");
+    		        	view.btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn_sendChatMsg");
+    		        }
+    		});
+        
+   
+        
+        /**
+         * @author Joel Henz
+         * key event for the chat program (sending the chat message by pressing enter)
+         * */
+        view.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            	if (event.getCode().equals(KeyCode.ENTER)){
+            		sendMessageToServer();	
+            	}
+            }
+        }); 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         view.provisorischCard1.setOnAction(new EventHandler<ActionEvent>() {
         	
@@ -256,6 +311,92 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         		}
             }
         });*/
+        
+        
+        
+        view.btn_userInteraction.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            
+            	System.out.println("button pressed");
+            	switch (view.btn_userInteraction.getLbl().getText()) {
+            	
+            	case "Aktionen beenden":
+						            		croupier.setActionMode(false);
+						                	croupier.setBuyMode(true);
+						                	
+						                	croupier.setActions(0);
+						                	
+						                	if(strBuilderTextArea != null){
+						                		strBuilderTextArea.delete(0, strBuilderTextArea.length());
+						                	}
+						                	
+						                	if(strBuilderLabel != null){
+						                		strBuilderLabel.delete(0, strBuilderLabel.length());
+						                	}
+						                	
+						                	sl.getButtonEndActions().setDisable(true);
+						                	sl.getButtonEndBuys().setDisable(false);
+						                	
+						                	strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+						                	strBuilderLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+						                	
+						                	//we don't send a card here, so set it null
+						                	GameHistory history2 = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndAction);
+						
+						                	try {
+						                		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
+						                		//sl.getPlayer_OS().getOut().reset();
+						                		sl.getPlayer_OS().getOut().writeObject(history2);
+						                		sl.getPlayer_OS().getOut().flush();
+						            		} catch (IOException e) {
+						            			// TODO Auto-generated catch block
+						            			e.printStackTrace();
+						            		}
+						                	break;
+					                	
+					                	
+            	case "Kaufen beenden": 
+						            		if(strBuilderTextArea != null){
+						                		strBuilderTextArea.delete(0, strBuilderTextArea.length());
+						                	}
+						                	
+						                	croupier.setBuyMode(false);
+						                	croupier.setBuys(0);
+						                	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
+						                	croupier.setBuyPower(0);
+						                	
+						                	sl.getButtonEndBuys().setDisable(true);
+						
+						            		strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
+						            		
+						            		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
+						            		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndBuy);
+						
+						                	try {
+						                		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
+						                		//sl.getPlayer_OS().getOut().reset();
+						                		sl.getPlayer_OS().getOut().writeObject(history);
+						                		sl.getPlayer_OS().getOut().flush();
+						            		} catch (IOException e) {
+						            			// TODO Auto-generated catch block
+						            			e.printStackTrace();
+						            		}
+						                	
+						                	break;
+            		
+            		
+            	}
+            	
+            	
+            	
+            }
+            
+        });
+     
+    
+        
+        
         
         sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
             @Override
