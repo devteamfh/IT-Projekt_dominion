@@ -175,13 +175,23 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		
 		
+
+		//Community Cards auf der Linken seite Initialisieren	
+		estate   = new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate(), "Anwesen");
+		duchy    = new VictoryCard(new Label("duchy"),croupier.getCostsDuchy(),croupier.getPointsDuchy(), "Herzogtum");
+		province = new VictoryCard(new Label("province"),croupier.getCostsPovince(),croupier.getPointsProvince(), "Provinz");
 		
+		copper = new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper(),"Kupfer");
+		silver = new MoneyCard(new Label("silver"),croupier.getBuyPowerSilver(),croupier.getCostsSilver(), "Silber");
+		gold   = new MoneyCard(new Label("gold"),croupier.getBuyPowerGold(),croupier.getCostsGold(), "Gold");
 		
+		curse = new MoneyCard(new Label("curse"),croupier.getBuyPowerCurse(),croupier.getCostsCurse(), "Fluch");
+
 		
 		// ____Community Cards links -> Lï¿½ndereien und Geld, Curse_________________________//
 
 		// Community Cards auf der Linken seite Initialisieren
-		estate = new VictoryCard(new Label("estate"), croupier.getCostsEstate(), croupier.getPointsEstate());
+		/**estate = new VictoryCard(new Label("estate"), croupier.getCostsEstate(), croupier.getPointsEstate());
 		duchy = new VictoryCard(new Label("duchy"), croupier.getCostsDuchy(), croupier.getPointsDuchy());
 		province = new VictoryCard(new Label("province"), croupier.getCostsPovince(), croupier.getPointsProvince());
 
@@ -189,7 +199,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		silver = new MoneyCard(new Label("silver"), croupier.getBuyPowerSilver(), croupier.getCostsSilver());
 		gold = new MoneyCard(new Label("gold"), croupier.getBuyPowerGold(), croupier.getCostsGold());
 
-		curse = new MoneyCard(new Label("curse"), croupier.getBuyPowerCurse(), croupier.getCostsCurse());
+		curse = new MoneyCard(new Label("curse"), croupier.getBuyPowerCurse(), croupier.getCostsCurse());*/
 
 		al_communityCards_left = new ArrayList<GameCard>();
 		al_communityCards_left.add(estate);
@@ -266,7 +276,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		}
 
 		lbl_descrBuyPower = new Label(" Kaufkraft ");
-		lbl_descrBuys = new Label(" Käufe ");
+		lbl_descrBuys = new Label(" Kï¿½ufe ");
 		lbl_descrActions = new Label(" Aktionen ");
 
 		// Branches
@@ -389,7 +399,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		btn_userInteraction = new customButton("Dominion");
 		btn_userInteraction.setBtnTextEmpty(btn_userInteraction);
 		btn_userInteraction.getStyleClass().addAll("btn","btn_userInteraction");
-		btn_userInteraction.getLbl().getStyleClass().add("lbl_btnUserInteraction"); //überschreibt Stylezuweisung in customButton
+		btn_userInteraction.getLbl().getStyleClass().add("lbl_btnUserInteraction"); //ï¿½berschreibt Stylezuweisung in customButton
 		btn_userInteraction.setPrefSize(350, 89);
 		croupier.addObserver(btn_userInteraction);
 			
@@ -411,7 +421,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 			
 			
 			
-			//dieser bereich anschliessend löschen
+			//dieser bereich anschliessend lï¿½schen
 			sl.setButtonPlayActions("Aktion spielen");
 			sl.getButtonPlayActions().setDisable(true);
 
@@ -473,15 +483,22 @@ public class Client_View_playingStage extends View<Client_Model> {
 		al_allStartingCards = new ArrayList<GameCard>();
 
 		for (int i = 0; i < 7; i++)
-			al_allStartingCards
+			al_allStartingCards.add(new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper(),"Kupfer"));	
+			
+		for (int i = 0; i <3; i++)
+			al_allStartingCards.add(new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate(), "Anwesen"));
+			
+		//alle Objekte in al_allStartingCards als "holeCards" true flaggieren und observer adden
+			/**al_allStartingCards
 					.add(new MoneyCard(new Label("copper"), croupier.getBuyPowerCopper(), croupier.getCostsCopper()));
 
 		for (int i = 0; i < 3; i++)
 			al_allStartingCards
-					.add(new VictoryCard(new Label("estate"), croupier.getCostsEstate(), croupier.getPointsEstate()));
+					.add(new VictoryCard(new Label("estate"), croupier.getCostsEstate(), croupier.getPointsEstate()));*/
 
 		// alle Objekte in al_allStartingCards als "holeCards" true flaggieren
 		// und observer adden
+		
 		for (int i = 0; i < 10; i++) {
 			al_allStartingCards.get(i).setHoleCard(true);
 			croupier.addObserver(al_allStartingCards.get(i));

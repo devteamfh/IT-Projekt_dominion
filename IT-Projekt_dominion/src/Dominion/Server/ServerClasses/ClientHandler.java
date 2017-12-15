@@ -324,13 +324,13 @@ public class ClientHandler implements Runnable {
 							break;
 							
 						case EndBuy:
-							GamePartyOnServer current2=null;
+
 							//check first if there was a buy of a point card
 							try{  
 
-								if(history.getGameCard().equals("estate") || history.getGameCard().equals("duchy") || history.getGameCard().equals("province")){
+								if(history.getGameCard().equals("Anwesen") || history.getGameCard().equals("Herzogtum") || history.getGameCard().equals("Provinz")){
 									//first search the corresponding GamePartyOnServer
-									//GamePartyOnServer current2=null;
+									GamePartyOnServer current2=null;
 									long id4 = history.getGameParty().getID();									
 									for(int i =0; i<sl.getGameListFromServer().size();i++){
 										if(id4 == (sl.getGameListFromServer().get(i).getGameParty().getID())){
@@ -565,7 +565,7 @@ public class ClientHandler implements Runnable {
 							break;
 							
 						case BuyPointCard:
-							if(history.getGameCard().equals("estate") || history.getGameCard().equals("duchy") || history.getGameCard().equals("province")){
+							if(history.getGameCard().equals("Anwesen") || history.getGameCard().equals("Herzogtum") || history.getGameCard().equals("Provinz")){
 								//first search the corresponding GamePartyOnServer
 								long id4 = history.getGameParty().getID();
 								GamePartyOnServer current3=null;
@@ -599,6 +599,12 @@ public class ClientHandler implements Runnable {
 
 							//break case
 							break;
+							
+						case Trash:
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
 						
 						}
 

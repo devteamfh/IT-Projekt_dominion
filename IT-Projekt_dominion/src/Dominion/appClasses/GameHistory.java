@@ -27,7 +27,8 @@ public class GameHistory extends GameObject{
 	
 	public enum HistoryType {
 		 EndAction, EndBuy, LeaveGame, UpdateLobbyAfterLeave,
-		 EndGame, PlayCard, BuyPointCard, BuyNoPointCard
+		 EndGame, PlayCard, BuyPointCard, BuyNoPointCard,
+		 Trash
 		 };
 	
 	private static long nextMessageID() {		
