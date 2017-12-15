@@ -20,6 +20,7 @@ import javafx.stage.StageStyle;
 
 /**
 		 * @author kab: MoneyCard
+		 * @author Joel: only communication (creating GameHistory obj, sending them and doing the necessary work on server and client side after read)
 		 * 
 		 * 
 		 */
@@ -28,6 +29,8 @@ import javafx.stage.StageStyle;
 			//buyPower of the actual treasure card
 			int buyPower;
 			ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
+			StringBuilder strBuilderForTextArea = new StringBuilder();
+			StringBuilder strBuilderForLabel = new StringBuilder();
 			
 			public MoneyCard(Label cardName, int buyPower, int costs) {
 				super(cardName);
@@ -47,15 +50,25 @@ import javafx.stage.StageStyle;
 					@Override public void handle(MouseEvent e) {
 						
 						//System.out.println("moneycard clicked");
+						
+						if(strBuilderForTextArea != null){
+		            		strBuilderForTextArea.delete(0, strBuilderForTextArea.length());
+		            	}
+						
+						if(strBuilderForLabel != null){
+							strBuilderForLabel.delete(0, strBuilderForLabel.length());
+		            	}
 
 						
 						//Wenn die karte aus den communty cards gekauft wird
 						if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(mc) > 0){
 							croupier.setBuys(croupier.getBuys()-1);
+							//in case player has more than 1 buy
+							croupier.setBuyPower(croupier.getBuyPower()-mc.costs);
 							
 
 							//System.out.println("alte STackgr�sse: "+croupier.getStackSize(mc));
-							croupier.setStackSize(mc); //stacksize von moneyCards wird um eins reduziert
+							//croupier.setStackSize(mc.lbl_cardName.getText()); //stacksize von moneyCards wird um eins reduziert
 							//System.out.println("neue STackgr�sse: "+croupier.getStackSize(mc));
 
 							
@@ -64,7 +77,47 @@ import javafx.stage.StageStyle;
 							MoneyCard newCard = new MoneyCard(mc.lbl_cardName,mc.costs,mc.buyPower);
 							croupier.addObserver(newCard);
 							croupier.addToAblagestapel(newCard);
+							newCard.assignPicture();
 							System.out.println("neue ablagestapelgr�sse: "+croupier.getAblagestapel().size());
+							
+							
+							////////////////////for loop wieder löschen///////////////////////
+							for(int i=0; i< croupier.getAblagestapel().size();i++){
+								System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
+							}
+							
+							//send the buy information to server
+							
+							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" kauft eine "+mc.getLbl_cardName().getText()+"-Karte\n");
+							
+							GameHistory history;
+							
+							if(croupier.getBuys()==0){
+								croupier.setBuyMode(false);
+				            	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
+				            	croupier.setBuyPower(0);
+				            	
+				            	sl.getButtonEndBuys().setDisable(true);
+								strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
+				        		
+				        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
+				        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.getLbl_cardName().getText(), GameHistory.HistoryType.EndBuy);
+				        		
+							}else{
+								strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+								history = new GameHistory (strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.getLbl_cardName().getText(), GameHistory.HistoryType.BuyNoPointCard);
+								
+							}
+							
+							
+
+							try {
+								sl.getPlayer_OS().getOut().writeObject(history);
+								sl.getPlayer_OS().getOut().flush();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 		
 
 							/**croupier.setStackSize(mc); //stacksize von moneyCards wird um eins reduziert
@@ -88,11 +141,11 @@ import javafx.stage.StageStyle;
 						croupier.setBuyPower(croupier.getBuyPower()+buyPower);
 						croupier.getHoleCards().remove(mc);
 						croupier.addToAblagestapel(mc);
+
+						String textForTextArea = sl.getPlayer_noOS().getUsername()+" spielt "+mc.getLbl_cardName().getText()+"-Karte und gewinnt "+buyPower+" Geld\n";
+						String textForLabel = "an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld";
+						GameHistory history = new GameHistory(textForTextArea,textForLabel,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.PlayCard);
 						
-						//in this case we will send an empty string. Each client will append a new text line by reading the sender name and played card name in the class ReadMsgFromServer
-						String text = "";
-						
-						GameHistory history = new GameHistory (text,sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.lbl_cardName.getText(),croupier.getActions(),croupier.getBuys(),croupier.getBuyPower(), GameHistory.HistoryType.PlayMoneyCard);
 						try {
 							sl.getPlayer_OS().getOut().writeObject(history);
 							sl.getPlayer_OS().getOut().flush();

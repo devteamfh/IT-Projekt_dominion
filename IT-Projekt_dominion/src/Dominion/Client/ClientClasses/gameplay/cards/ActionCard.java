@@ -13,6 +13,12 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+
+/** @author kab: ActionCard
+* @author Joel: only communication (creating GameHistory obj, sending them and doing the necessary work on server and client side after read)
+* 
+* 
+*/
 public class ActionCard extends GameCard{
 		ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 		int adtnlActions;
@@ -38,7 +44,7 @@ public class ActionCard extends GameCard{
 			addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 				@Override public void handle(MouseEvent e) {
 					
-					//wenn karte aus den community action cards gekauft wird (kaufmodus on, buypower und buys ausreichend, sowie genügend karten da
+					//wenn karte aus den community action cards gekauft wird (kaufmodus on, buypower und buys ausreichend, sowie genï¿½gend karten da
 					if(isHoleCard() == false && croupier.isBuyMode() == true && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(ac)>0){
 										
 								//anzahl buy redurzieren
@@ -47,23 +53,26 @@ public class ActionCard extends GameCard{
 								//buyPower reduzieren
 								croupier.setBuyPower(croupier.getBuyPower()-ac.costs);
 								
-								//stack reduzieren      <--------------------------------------------------------------@joel
 								Integer valueToChange = croupier.getStackSize(ac);
 								int newValue = Integer.parseInt(valueToChange.toString());
 								newValue--;
 								
 								int i = croupier.getAl_communityActionCards().indexOf(ac);
 								
-								System.out.println("alte stackgrösse:"+valueToChange);
+								System.out.println("alte stackgrï¿½sse:"+valueToChange);
 								croupier.setAl_stackSizeCommunityActionCards(i);
-								System.out.println("neue Stackgrösse:"+newValue);
+								System.out.println("neue Stackgrï¿½sse:"+newValue);
 							
 								//gekaufte karte auf ablagestapel legen
-								//System.out.println("alte Ablagestapelgrösse: "+croupier.getAblagestapel().size());
+								//System.out.println("alte Ablagestapelgrï¿½sse: "+croupier.getAblagestapel().size());
 								ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower);
 								croupier.addObserver(newCard);
 								croupier.addToAblagestapel(newCard);
 								newCard.assignPicture(); 
+								
+								for(int i2=0; i2< croupier.getAblagestapel().size();i2++){
+									System.out.println(croupier.getAblagestapel().get(i2));
+								}
 						}
 			
 					
@@ -83,7 +92,7 @@ public class ActionCard extends GameCard{
 				//System.out.println("updategui gesendet");		
 				
 				
-				//bei rechtsklick bild öffnen
+				//bei rechtsklick bild ï¿½ffnen
 				 if (e.getButton() == MouseButton.SECONDARY && ac.isHoleCard() == false) {
 	                    System.out.println("consuming right release button in cm filter");
 	                    
@@ -109,6 +118,33 @@ public class ActionCard extends GameCard{
 				
 				}
 			});
+			
+			//anstatt clicker eher mouse over zum vergrÃ¶ssern
+			/**if (e.getButton() == MouseButton.SECONDARY && ac.isHoleCard() == false) {
+                System.out.println("consuming right release button in cm filter");
+                
+                Pane pane = new Pane();
+                ImageView imgView = new ImageView();
+                Image img = new Image(getClass().getResource("/img/cards/big/"+ac.lbl_cardName.getText()+".png").toExternalForm());
+                imgView.setImage(img);
+                pane.getChildren().add(imgView);
+                                   
+                Stage stage = new Stage ();
+                Scene scene = new Scene(pane,310,497);
+               
+                stage.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+					@Override public void handle(MouseEvent e1) { 
+					stage.close();
+					} 
+					});
+                
+                stage.setScene(scene);
+        	    stage.initStyle(StageStyle.TRANSPARENT);   
+                stage.show();
+                }*/
+			
+			
+			
 		}
 					
 					

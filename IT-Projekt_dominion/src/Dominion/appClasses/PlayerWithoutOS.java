@@ -52,8 +52,12 @@ public class PlayerWithoutOS implements Serializable {
 		return this.points;
 	}
 	
-	public void increasePoints(){
-		this.points++;
+	public void increasePoints(int points){
+		this.points= this.points+points;
+	}
+	
+	public void setPoints(int points){
+		this.points=points;
 	}
 	
 

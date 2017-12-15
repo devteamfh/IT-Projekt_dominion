@@ -13,6 +13,7 @@ import Dominion.Client.ClientClasses.ServiceLocatorClient;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Server.ServerClasses.ServiceLocatorServer;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,9 +44,9 @@ public class Croupier  extends Observable {
 	
 
 	//# of match cards and cost of match cards;
-	int stackSizeEstate   = 10; int costsEstate  = 1;
-	int stackSizeDuchy    = 10; int costsDuchy   = 3;
-	int stackSizeProvince = 10; int costsPovince = 6;
+	int stackSizeEstate   = 10; int costsEstate  = 2; int pointsEstate =1;
+	int stackSizeDuchy    = 10; int costsDuchy   = 5; int pointsDuchy =3;
+	int stackSizeProvince = 10; int costsPovince = 8; int pointsProvince =6;
 	
 	//# of money cards and cost of money cards;
 	int stackSizeCopper   = 50; int costsCopper  = 0; int buyPowerCopper = 1;
@@ -101,9 +102,9 @@ public class Croupier  extends Observable {
 		notifyObservers();
 		}	
 	
-	public void setStackSize(GameCard gc){
+	public void setStackSize(String gc){
 
-		switch (gc.getLbl_cardName().getText()) {
+		switch (gc) {
 		
 		case "estate":    setStackSizeEstate(stackSizeEstate-1);
 			break;
@@ -295,6 +296,18 @@ public class Croupier  extends Observable {
 	public void setBuyPowerGold(int buyPowerGold) {
 		this.buyPowerGold = buyPowerGold;
 	}
+	
+	public int getPointsEstate(){
+		return this.pointsEstate;
+	}
+	
+	public int getPointsDuchy(){
+		return this.pointsDuchy;
+	}
+	
+	public int getPointsProvince(){
+		return this.pointsProvince;
+	}
 
 	public boolean isActionMode() {
 		return actionMode;
@@ -302,6 +315,7 @@ public class Croupier  extends Observable {
 
 
 	public void setActionMode(boolean actionMode) {
+		
 		this.actionMode = actionMode;
 		setChanged();
 		notifyObservers();

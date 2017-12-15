@@ -32,7 +32,8 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 	private ServiceLocatorClient sl;
 	private Croupier croupier;
 	private Client_View_playingStage view_playingStage;
-	private StringBuilder strBuilder = new StringBuilder();
+	private StringBuilder strBuilderTextArea = new StringBuilder();
+	private StringBuilder strBuilderLabel = new StringBuilder();
        
     /**
      * @author Joel Henz
@@ -240,14 +241,22 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	
             	croupier.setActions(0);
             	
-            	if(strBuilder != null){
-            		strBuilder.delete(0, strBuilder.length());
+            	if(strBuilderTextArea != null){
+            		strBuilderTextArea.delete(0, strBuilderTextArea.length());
+            	}
+            	
+            	if(strBuilderLabel != null){
+            		strBuilderLabel.delete(0, strBuilderLabel.length());
             	}
             	
             	sl.getButtonEndActions().setDisable(true);
             	sl.getButtonEndBuys().setDisable(false);
-            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
-            	GameHistory history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,croupier.getActions(),croupier.getBuys(),croupier.getBuyPower(), GameHistory.HistoryType.EndAction);
+            	
+            	strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+            	strBuilderLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+            	
+            	//we don't send a card here, so set it null
+            	GameHistory history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndAction);
 
             	try {
             		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
@@ -265,8 +274,8 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             @Override
             public void handle(ActionEvent event) {
             	
-            	if(strBuilder != null){
-            		strBuilder.delete(0, strBuilder.length());
+            	if(strBuilderTextArea != null){
+            		strBuilderTextArea.delete(0, strBuilderTextArea.length());
             	}
             	
             	croupier.setBuyMode(false);
@@ -276,9 +285,10 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	
             	sl.getButtonEndBuys().setDisable(true);
 
-        		strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
-        		GameHistory history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
-        		//history.setID();
+        		strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
+        		
+        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
+        		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndBuy);
 
             	try {
             		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)

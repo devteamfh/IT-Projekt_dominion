@@ -9,7 +9,7 @@ import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.ClientClasses.gameplay.cards.ActionCard;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Client.ClientClasses.gameplay.cards.MoneyCard;
-import Dominion.Client.ClientClasses.gameplay.cards.ProvinceCard;
+import Dominion.Client.ClientClasses.gameplay.cards.VictoryCard;
 import Dominion.Client.abstractClasses.View;
 import Dominion.appClasses.GameParty;
 import javafx.application.Platform;
@@ -56,12 +56,13 @@ import sun.misc.GC;
  *                                        
  */
 public class Client_View_playingStage extends View<Client_Model> {
+
 	ServiceLocatorClient sl;
 	Croupier croupier;
 
 	Button btn_close;
 	
-	ProvinceCard estate, duchy, province;
+	VictoryCard estate, duchy, province;
 	MoneyCard copper, silver, gold, curse;
 	
 	ArrayList<GameCard> al_communityCards_left;
@@ -162,9 +163,9 @@ public class Client_View_playingStage extends View<Client_Model> {
 		//____Community Cards links -> Lï¿½ndereien und Geld, Curse____________________________________________//
 		
 		//Community Cards auf der Linken seite Initialisieren	
-		estate   = new ProvinceCard(new Label("estate"),croupier.getCostsEstate());
-		duchy    = new ProvinceCard(new Label("duchy"),croupier.getCostsDuchy());
-		province = new ProvinceCard(new Label("province"),croupier.getCostsPovince());
+		estate   = new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate());
+		duchy    = new VictoryCard(new Label("duchy"),croupier.getCostsDuchy(),croupier.getPointsDuchy());
+		province = new VictoryCard(new Label("province"),croupier.getCostsPovince(),croupier.getPointsProvince());
 		
 		copper = new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper());
 		silver = new MoneyCard(new Label("silver"),croupier.getBuyPowerSilver(),croupier.getCostsSilver());
@@ -397,7 +398,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 			al_allStartingCards.add(new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper()));	
 			
 		for (int i = 0; i <3; i++)
-			al_allStartingCards.add(new ProvinceCard(new Label("estate"),croupier.getCostsEstate()));
+			al_allStartingCards.add(new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate()));
 			
 		//alle Objekte in al_allStartingCards als "holeCards" true flaggieren und observer adden
 		for (int i = 0; i < 10; i++) {
@@ -609,7 +610,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		gc1.setMinSize(180, 240);
 		}
 		
-		//Zeichhne Game status Informationen neu (münzen, buy, actions)
+		//Zeichhne Game status Informationen neu (mï¿½nzen, buy, actions)
 
 		hb_wrapper_lblBuyPower.getChildren().clear();
 		hb_wrapper_lblActions.getChildren().clear();

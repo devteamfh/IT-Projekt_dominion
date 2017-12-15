@@ -1,5 +1,6 @@
 package Dominion.appClasses;
 
+import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 
 /**
@@ -14,7 +15,8 @@ public class GameHistory extends GameObject{
 	// Generator for a unique message ID
 	private static long messageID = 0;
 	
-	private String text;
+	private String textForTextArea;
+	private String textForLabel;
 	private GameParty party;
 	private PlayerWithoutOS playerForGUIActivation;
 	private PlayerWithoutOS currentPlayer;
@@ -22,41 +24,36 @@ public class GameHistory extends GameObject{
 	private PlayerWithoutOS winner;
 	private HistoryType type;
 	private String card;
-	private int buyPower;
-	private int numberOfActions;
-	private int numberOfBuys;
 	
 	public enum HistoryType {
-		 PlayAction, PlayBuy, EndAction,
-		 EndBuy, LeaveGame, UpdateLobbyAfterLeave,
-		 EndGame, PlayMoneyCard, PlayActionCard
+		 EndAction, EndBuy, LeaveGame, UpdateLobbyAfterLeave,
+		 EndGame, PlayCard, BuyPointCard, BuyNoPointCard
 		 };
 	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-	//we use this constructor for events like: player leaves a game / host ends the game / a player ends his buy phase (the next players turn in the sequence will start)
-	public GameHistory(String text, GameParty party,PlayerWithoutOS currentPlayer, HistoryType type){
+	//we use this constructor for events like: player leaves a game / host ends the game
+	public GameHistory(String textForTextArea, GameParty party,PlayerWithoutOS currentPlayer, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
-		this.text=text;
+		this.textForTextArea=textForTextArea;
 		this.party=party;
 		this.currentPlayer=currentPlayer;
 		this.type=type;
 	}
 	
-	//we use this constructor while playing (playing cards, ending action phase)
-	public GameHistory(String text,GameParty party,PlayerWithoutOS currentPlayer,String card, int numberOfActions, int numberOfBuys,int buyPower, HistoryType type){
+	
+	//we use this constructor while playing (playing cards, ending action phase, ending buy phase, buying cards)
+	public GameHistory(String textForTextArea, String textForLabel, GameParty party,PlayerWithoutOS currentPlayer,String card, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
-		this.text=text;
+		this.textForTextArea=textForTextArea;
+		this.textForLabel=textForLabel;
 		this.party=party;
 		this.currentPlayer=currentPlayer;
 		this.card=card;
-		this.numberOfActions=numberOfActions;
-		this.numberOfBuys=numberOfBuys;
-		this.buyPower=buyPower;
 		this.type=type;
 	}
 	
@@ -74,16 +71,28 @@ public class GameHistory extends GameObject{
 		return this.party;
 	}
 	
-	public String getText(){
-		return this.text;
+	public void updateGameParty(GameParty party){
+		this.party=party;
 	}
 	
-	public void updateText(String text){
-		this.text = text;
+	public String getTextForTextArea(){
+		return this.textForTextArea;
+	}
+	
+	public String getTextForLabel(){
+		return this.textForLabel;
+	}
+	
+	public void updateTextForTextArea(String text){
+		this.textForTextArea = text;
 	}
 	
 	public void clearText(){
-		this.text = "";
+		this.textForTextArea = "";
+	}
+	
+	public String getGameCard(){
+		return this.card;
 	}
 	
 	public HistoryType getHistoryType(){
@@ -126,20 +135,5 @@ public class GameHistory extends GameObject{
 		return this.winner;
 	}
 	
-	public String getPlayedGameCard(){
-		return this.card;
-	}
-	
-	public int getBuyPower(){
-		return this.buyPower;
-	}
-	
-	public int getNumberOfActions(){
-		return this.numberOfActions;
-	}
-	
-	public int getNumberOfBuys(){
-		return this.numberOfBuys;
-	}
 
 }

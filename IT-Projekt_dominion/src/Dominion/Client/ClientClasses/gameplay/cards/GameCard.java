@@ -47,11 +47,18 @@ public class GameCard extends Button implements Observer  {
 	
 	GameCard gc = this;
 	@Override
-	public void update(Observable arg0, Object arg1) {							
+	public void update(Observable arg0, Object arg1) {
+		
+		
 		getStyleClass().remove("highlight");
 		
 		//Highlighte alle Karten im Kaufmodus, welche ich mit der aktuelln Buypower und buys kaufen kann
 		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard() && croupier.getBuys() > 0){
+			this.getStyleClass().add("highlight");
+		}
+		
+		//Highlighte alle Geldkarten im Kaufmodus
+		if (croupier.isBuyMode() == true && this.isHoleCard() && this instanceof MoneyCard){
 			this.getStyleClass().add("highlight");
 		}
 		
@@ -62,8 +69,12 @@ public class GameCard extends Button implements Observer  {
 	
 		//update das STackSize infoLabel auf der Karte		
 		if (this.stackSizeInfo != null){
-		this.stackSizeInfo.updateStackSizeInfo();	
+			
+			stackSizeInfo.updateStackSizeInfo();
+				
 		}
+		
+		
 	}
 		
 	

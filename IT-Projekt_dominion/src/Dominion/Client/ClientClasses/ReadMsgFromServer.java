@@ -303,7 +303,7 @@ public class ReadMsgFromServer implements Runnable {
 						
 					case EndAction:
 						
-						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 						
 						Platform.runLater(new Runnable() {
@@ -311,9 +311,9 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+history.getNumberOfActions()+" Aktionen, "+history.getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
-									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+history.getNumberOfActions()+" Aktionen, "+history.getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
 								}	
 								
 					           }
@@ -322,18 +322,56 @@ public class ReadMsgFromServer implements Runnable {
 					
 					//here we switch the player
 					case EndBuy:
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								
+								try{
+									croupier.setStackSize(history.getGameCard());	
+									
+									if(history.getGameCard().equals("estate") || history.getGameCard().equals("duchy") || history.getGameCard().equals("province")){
+										
+										sl.getPlayingStage().vb_player.getChildren().clear();	
+										Label allPlayer = new Label("Spieler dieser Partie:");
+										sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+										
+										for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
+											Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+history.getGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
+											sl.getPlayingStage().vb_player.getChildren().add(label);
+										}
+									}
+									
+									
+															           
+								}catch(NullPointerException e){
+									//we dont get a GameCard if player ends his buy phase without buying a card
+								}
+				
+					           }
+					      });
 						
-						sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+						
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 						
 						if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
 							//its the next players turn, so prepare his stage and croupier
-							sl.getButtonEndActions().setDisable(false);
-							croupier.setActionMode(true);
-							croupier.setBuyMode(false);
-							croupier.setActions(1);
-							croupier.setBuys(1);
-							croupier.setBuyPower(0);
+							
+							Platform.runLater(new Runnable() {
+
+								@Override 
+						           public void run() {
+									
+									sl.getButtonEndActions().setDisable(false);
+									croupier.setActionMode(true);
+									croupier.setBuyMode(false);
+									croupier.setActions(1);
+									croupier.setBuys(1);
+									croupier.setBuyPower(0);
+									
+						           }
+						      });
 						}
 
 						Platform.runLater(new Runnable() {
@@ -476,7 +514,7 @@ public class ReadMsgFromServer implements Runnable {
 								//clear the playing stage and stop. Set also the current Game Party null
 								sl.clearCurrentGameParty();
 								
-								Label popUpMsg = new Label (history.getText());
+								Label popUpMsg = new Label (history.getTextForTextArea());
 								sl.setLbl_popUpMessage(popUpMsg);
 								Stage popUp = new Stage();	
 								popUp.setResizable(true);
@@ -486,6 +524,8 @@ public class ReadMsgFromServer implements Runnable {
 
 					           }
 					      });
+						
+						break;
 	
 					case UpdateLobbyAfterLeave:
 						
@@ -503,29 +543,96 @@ public class ReadMsgFromServer implements Runnable {
 						//break case UpdateLobbyAfterLeave
 						break;
 						
-					case PlayMoneyCard:
+					case PlayCard:
 						
-						/**history = new GameHistory (currentHistory.getText(),currentHistory.getGameParty(),currentHistory.getCurrentPlayer(),currentHistory.getPlayedGameCard(),currentHistory.getNumberOfActions(),currentHistory.getNumberOfBuys(),currentHistory.getBuyPower(),GameHistory.HistoryType.PlayMoneyCard);
-						history.setID2(currentHistory.getID());*/
+						
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 						
 						Platform.runLater(new Runnable() {
 
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
-
-									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist an der Reihe: "+history.getNumberOfActions()+" Aktionen, "+history.getNumberOfBuys()+" Käufe, "+history.getBuyPower()+" Geld");
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
 								}	
 								
-								sl.getTextAreaGameHistory().appendText(history.getCurrentPlayer().getUsername()+" spielt "+history.getPlayedGameCard()+"\n"); //to do: noch farblich abheben je player
-								sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
-
 					           }
 					      });
 						
 						
+						//break case PlayCard
+						break;
+					
+					case BuyNoPointCard:
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								croupier.setStackSize(history.getGameCard());	
+								
+					           }
+					      });
+						
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+								}else{
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+								}	
+								
+					           }
+					      });
+						
+						//break case BuyNoPointCard
+						break;
+						
+					case BuyPointCard:
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								croupier.setStackSize(history.getGameCard());	
+								//update the list of players because there was a buy
+								sl.setCurrentGameParty(history.getGameParty());
+								
+								sl.getPlayingStage().vb_player.getChildren().clear();	
+								Label allPlayer = new Label("Spieler dieser Partie:");
+								sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+								
+								for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
+									Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+history.getGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
+									sl.getPlayingStage().vb_player.getChildren().add(label);
+								}
+								
+					           }
+					      });
+						
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+								}else{
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+								}	
+								
+					           }
+					      });
 						
 						break;
 						
@@ -595,7 +702,7 @@ public class ReadMsgFromServer implements Runnable {
 			view.start();
 		}else{
 			//read the GameHistory message
-			sl.getTextAreaGameHistory().appendText(history.getText()); //to do: noch farblich abheben je player
+			sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 			sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 			
 			//update the saved GameParty because one player has left the game
