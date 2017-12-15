@@ -12,6 +12,8 @@
 
 .bg_createGame {
 	-fx-background-image: url('../img/backgrounds/bg_createGame.png');
+	-fx-background-repeat: no-repeat;
+	/*-fx-background-size: auto, auto;*/
 	
 }
 

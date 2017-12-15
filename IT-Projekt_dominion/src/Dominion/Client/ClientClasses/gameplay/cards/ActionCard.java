@@ -63,9 +63,7 @@ public class ActionCard extends GameCard{
 								
 								int i = croupier.getAl_communityActionCards().indexOf(ac);
 								
-								System.out.println("alte stackgr�sse:"+valueToChange);
 								croupier.setAl_stackSizeCommunityActionCards(i);
-								System.out.println("neue Stackgr�sse:"+newValue);
 							
 								//gekaufte karte auf ablagestapel legen
 								//System.out.println("alte Ablagestapelgr�sse: "+croupier.getAblagestapel().size());
@@ -89,6 +87,9 @@ public class ActionCard extends GameCard{
 					croupier.setActions(croupier.getActions()+adtnlActions);
 					croupier.getHoleCards().remove(ac);
 					croupier.addToAblagestapel(ac);
+					
+					//am Schluss Aktionen um eins Reduzieren
+					croupier.setActions(croupier.getActions()-1);
 					}
 					
 					

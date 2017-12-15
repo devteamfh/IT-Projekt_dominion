@@ -75,10 +75,14 @@ public class Client_View_playingStage extends View<Client_Model> {
 	Label lbl_descrBuys;
 	Label lbl_descrActions;
 
-	HBox hb_wrapper_lblBuyPower;
+	
+	VBox vb_wrapper_gameInformation_content;
+	HBox hb_wrapper_ActionsBuysBuyPower;
+	
+/*	HBox hb_wrapper_lblBuyPower;
 	HBox hb_wrapper_lblActions;
 	HBox hb_wrapper_lblBuys;
-
+*/
 	Button provisorischCard1;
 	Button provisorischCard2;
 	Button provisorischCard3;
@@ -106,12 +110,15 @@ public class Client_View_playingStage extends View<Client_Model> {
 	 * @author Joel Henz, kab
 	 */
 	protected Scene create_GUI() {
+		
 		croupier = Croupier.getCroupier();
-
 		sl = ServiceLocatorClient.getServiceLocator();
 
 		root = new BorderPane();
 
+		
+		
+		
 		// _______________X Button top right__________________________//
 		btn_close = new Button();
 		btn_close.setPrefSize(35, 33);
@@ -153,6 +160,12 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 		// ----------------------------------------------------------//
 
+		
+		
+		
+		
+		
+		
 		// ____Community Cards links -> Lï¿½ndereien und Geld,
 		// Curse____________________________________________//
 
@@ -224,6 +237,11 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 		// --------------------------------------------------------------------------------------------------------------------------------------//
 
+		
+		
+		
+		
+		
 		// ____________CenterPane communtiycard in der mitte und
 		// statusinformationen zum spiel (buypower, action
 		// etc)_________________________________________________________________________//
@@ -234,15 +252,13 @@ public class Client_View_playingStage extends View<Client_Model> {
 		// Allen CommunityActionCards einen observer hinzufï¿½gen
 		for (GameCard ac : croupier.getAl_communityActionCards()) {
 			croupier.addObserver(ac);
-			ac.setMinSize(200, 170);
+			ac.setMinSize(200, 165);
 			ac.assignStackSizeInfo();
 		}
 
-		// Leafs
-
-		lbl_descrBuyPower = new Label("Mï¿½nzen");
-		lbl_descrBuys = new Label("Kï¿½ufe");
-		lbl_descrActions = new Label("Aktionen");
+		lbl_descrBuyPower = new Label(" Kaufkraft ");
+		lbl_descrBuys = new Label(" Käufe ");
+		lbl_descrActions = new Label(" Aktionen ");
 
 		// Branches
 		VBox vb_wrapper_center = new VBox();
@@ -290,43 +306,67 @@ public class Client_View_playingStage extends View<Client_Model> {
 		hb_wrp_communityActionCardsFrontRow.getChildren().addAll(hb_wrapper_comntyACSlot5, hb_wrapper_comntyACSlot6,
 				hb_wrapper_comntyACSlot7, hb_wrapper_comntyACSlot8, hb_wrapper_comntyACSlot9);
 
+		
+		
 		HBox hb_wrapper_playedCards_gameInformation = new HBox();
+		hb_wrapper_playedCards_gameInformation.setPadding(new Insets(20,0,20,0));
 
 		HBox hb_playedCards = new HBox();
+		hb_playedCards.setMinSize(250, 150);
 
-		VBox vb_wrapper_gameInformation = new VBox();
-		vb_wrapper_gameInformation.setPadding(new Insets(50, 0, 0, 0));
-		vb_wrapper_gameInformation.setAlignment(Pos.CENTER_RIGHT);
+		
+		
+		
+		HBox hb_wrapper_gameInformation = new HBox();
+		hb_wrapper_gameInformation.getStyleClass().add("bg_gameInfo");
+		hb_wrapper_gameInformation.setMinSize(550, 100);
+		hb_wrapper_gameInformation.setPadding(new Insets(20,0,0,30));
 
-		// buypower label und wert
-		hb_wrapper_lblBuyPower = new HBox();
-		hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());
+			vb_wrapper_gameInformation_content = new VBox();
+		
+		
+				//Leafes gameInformation
+				sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
+				
+				
+				hb_wrapper_ActionsBuysBuyPower = new HBox();
+				
+				hb_wrapper_ActionsBuysBuyPower.getChildren().addAll(
+					
+						lbl_descrActions, croupier.getLbl_actions()            	// actions label und Wert
+						,lbl_descrBuys, croupier.getLbl_buys()                  // buys label und Wert
+						,lbl_descrBuyPower, croupier.getLbl_buyPower());     	// buypower label und wert) 
+								
+						//LabelStyling
+						sl.getLabelNumberOfActionsAndBuys().getStyleClass().add("h1");
+						lbl_descrActions.getStyleClass().add("h2");
+						croupier.getLbl_actions().getStyleClass().add("h2");
+						lbl_descrBuys.getStyleClass().add("h2");
+						croupier.getLbl_buys().getStyleClass().add("h2");  
+						lbl_descrBuyPower.getStyleClass().add("h2");
+						croupier.getLbl_buyPower().getStyleClass().add("h2"); 
+						
+										
+			vb_wrapper_gameInformation_content.getChildren().addAll(
+					sl.getLabelNumberOfActionsAndBuys(), hb_wrapper_ActionsBuysBuyPower);
+					
+					
+					
+							
+		hb_wrapper_gameInformation.getChildren().add(vb_wrapper_gameInformation_content);    
 
-		sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
-
-		// actions label und Wert
-		hb_wrapper_lblActions = new HBox();
-		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions, croupier.getLbl_actions());
-
-		// buys label und Wert
-		hb_wrapper_lblBuys = new HBox();
-		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys, croupier.getLbl_buys());
-
-		this.provisorischCard1 = new Button("Buy Modus Aktivieren");
-		this.provisorischCard2 = new Button("Aktionsmodus Aktivieren");
-		this.provisorischCard3 = new Button("Geld Nachfï¿½llen");
-
-		vb_wrapper_gameInformation.getChildren().addAll(hb_wrapper_lblBuyPower, hb_wrapper_lblActions,
-				hb_wrapper_lblBuys, sl.getLabelNumberOfActionsAndBuys(), provisorischCard1, provisorischCard2,
-				provisorischCard3); // << lï¿½schen:
-									// sl.getLabelNumberOfActionsAndBuys
-
-		hb_wrapper_playedCards_gameInformation.getChildren().addAll(hb_playedCards, vb_wrapper_gameInformation);
+		
+	
+		hb_wrapper_playedCards_gameInformation.getChildren().addAll(hb_playedCards, hb_wrapper_gameInformation);
 
 		vb_wrapper_center.getChildren().addAll(hb_wrp_communityActionCardsBackRow, hb_wrp_communityActionCardsFrontRow,
 				hb_wrapper_playedCards_gameInformation);
 		// --------------------------------------------------------------------------------------------------------------------------------------//
 
+		
+		
+		
+		
 		// ____________Chat und Spielverlauf rechte
 		// Seite___________________________________________________________________________________________________//
 
@@ -349,10 +389,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 		// Label label_chat = new Label("Chat");
 
 		VBox vb_wrapper_right = new VBox();
-		vb_wrapper_right.setMinWidth(300);
-		vb_wrapper_right.setMaxWidth(300);
+		vb_wrapper_right.setMinWidth(350);
+		vb_wrapper_right.setMaxWidth(350);
 
-		vb_wrapper_right.setPadding(new Insets(0, 20, 0, 20));
+		vb_wrapper_right.setPadding(new Insets(0, 20, 0, 0));
 
 		VBox vb_wrapper_spielverlauf_chat_btns = new VBox();
 
@@ -366,6 +406,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 		vb_wrapper_right.getChildren().addAll(vb_wrapper_spielverlauf_chat_btns);
 
+		
+		
+		
+		
 		// --------------------------------------------------------------------------------------------------------------------------------------//
 
 		// ____________holecards
@@ -401,8 +445,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 		hb_wrapper_stapel.getChildren().addAll(blank, nachziehstapel);
 
 		// wrapper hole Cards
-		// HBox hb_wrapper_holeCards = new HBox();
 		hb_wrapper_holeCards = new HBox();
+		hb_wrapper_holeCards.setMaxSize(800, 250);
 
 		// holeCards initialisieren (7 copper, 3 estates)
 		al_allStartingCards = new ArrayList<GameCard>();
@@ -436,7 +480,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		for (int i = 0; i < croupier.getHoleCards().size(); i++) {
 			GameCard gc1 = croupier.getHoleCards().get(i);
 			hb_wrapper_holeCards.getChildren().add(gc1);
-			gc1.setMinSize(180, 240);
+			gc1.setPrefSize(180, 240);
 		}
 
 		// label anzahl nachziehkarten hier?=
@@ -452,10 +496,19 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 		hb_wrapper_gameController.getChildren().addAll(vb_wrapper_controlButtons);
 
+		
+		this.provisorischCard1 = new Button("Buy Modus Aktivieren");
+		this.provisorischCard2 = new Button("Aktionsmodus Aktivieren");
+		this.provisorischCard3 = new Button("Geld Nachfï¿½llen");
+
+		
 		HBox spacer2 = new HBox();
 		HBox.setHgrow(spacer2, Priority.ALWAYS);
-		hb_wrapper_bottom.getChildren().addAll(hb_wrapper_stapel, hb_wrapper_holeCards, spacer2,
-				hb_wrapper_gameController);
+		hb_wrapper_bottom.getChildren().addAll(hb_wrapper_stapel, hb_wrapper_holeCards,		
+				provisorischCard1,
+				provisorischCard2,			
+				provisorischCard3, 
+				spacer2,hb_wrapper_gameController);
 
 		// --------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -562,7 +615,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 				// redraw community cards left
 
-				hb_wrapper_lblBuyPower.getChildren().clear();
+			/*	hb_wrapper_lblBuyPower.getChildren().clear();
 				hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());
 
 				hb_wrapper_lblActions.getChildren().clear();
@@ -570,8 +623,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 				hb_wrapper_lblBuys.getChildren().clear();
 				hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys, croupier.getLbl_buys());
+			*/
 			}
 		});
+		
 
 		return scene;
 	}
@@ -583,19 +638,20 @@ public class Client_View_playingStage extends View<Client_Model> {
 		for (int i = 0; i < croupier.getHoleCards().size(); i++) {
 			GameCard gc1 = croupier.getHoleCards().get(i);
 			hb_wrapper_holeCards.getChildren().add(gc1);
-			gc1.setMinSize(180, 240);
+			gc1.setPrefSize(180, 240);
 		}
 
 		// Zeichhne Game status Informationen neu (mï¿½nzen, buy, actions)
 
-		hb_wrapper_lblBuyPower.getChildren().clear();
-		hb_wrapper_lblActions.getChildren().clear();
-		hb_wrapper_lblBuys.getChildren().clear();
+		hb_wrapper_ActionsBuysBuyPower.getChildren().clear();
+		hb_wrapper_ActionsBuysBuyPower.getChildren().addAll(
+				
+				lbl_descrActions, croupier.getLbl_actions()            	// actions label und Wert
+				,lbl_descrBuys, croupier.getLbl_buys()                  // buys label und Wert
+				,lbl_descrBuyPower, croupier.getLbl_buyPower());     	// buypower label und wert) 
+		
 
-		hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());
-		hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions, croupier.getLbl_actions());
-		hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys, croupier.getLbl_buys());
-
+		
 	}
 
 	public ArrayList<GameCard> getAl_communityCards_left() {
