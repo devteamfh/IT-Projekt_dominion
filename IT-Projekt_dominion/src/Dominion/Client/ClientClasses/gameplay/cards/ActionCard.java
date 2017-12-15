@@ -45,7 +45,11 @@ public class ActionCard extends GameCard{
 				@Override public void handle(MouseEvent e) {
 					
 					//wenn karte aus den community action cards gekauft wird (kaufmodus on, buypower und buys ausreichend, sowie gen�gend karten da
-					if(isHoleCard() == false && croupier.isBuyMode() == true && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(ac)>0){
+					if(		   isHoleCard() == false 
+							&& croupier.isBuyMode() == true 
+							&& costs <= croupier.getBuyPower() 
+							&& croupier.getBuys() > 0 
+							&& croupier.getStackSize(ac)>0){
 										
 								//anzahl buy redurzieren
 								croupier.setBuys(croupier.getBuys()-1);
@@ -69,6 +73,7 @@ public class ActionCard extends GameCard{
 								croupier.addObserver(newCard);
 								croupier.addToAblagestapel(newCard);
 								newCard.assignPicture(); 
+								newCard.setHoleCard(true);
 								
 								for(int i2=0; i2< croupier.getAblagestapel().size();i2++){
 									System.out.println(croupier.getAblagestapel().get(i2));

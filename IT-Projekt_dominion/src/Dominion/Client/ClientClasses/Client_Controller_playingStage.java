@@ -66,6 +66,31 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         @Override
         public void handle(ActionEvent event) {
         	view.stop();
+
+        	//wenn host game schliesst
+        	if (sl.getIsHost()){
+        		
+            	//first we have to get the current GameParty object
+        		GameParty party = sl.getCurrentGameParty();
+            	
+            	//a host is able to end the game until the game isn't full. If a host ends the game, his playing stage will be closed. The same will happen to all other players who have joined the game.
+            	//In addition, the game will be removed from the ListView of EVERY client.
+            	CancelGame cancel = new CancelGame(party);
+
+            	try {
+					sl.getPlayer_OS().getOut().writeObject(cancel);
+					sl.getPlayer_OS().getOut().flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		
+        	}
+        	
+        	
+        	//wenn nicht-host game schliesst
+        	
+        	
         	
         }
     });
@@ -75,7 +100,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         
         
         
-        sl.getButtonEndGameHost().setOnAction(new EventHandler<ActionEvent>() {
+    /*    sl.getButtonEndGameHost().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	//first we have to get the current GameParty object
@@ -95,7 +120,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	
             	
             }
-        });
+        });*/
         
         view.btn_sendChatMsgPlayingStage.setOnAction(new EventHandler<ActionEvent>() {
             @Override

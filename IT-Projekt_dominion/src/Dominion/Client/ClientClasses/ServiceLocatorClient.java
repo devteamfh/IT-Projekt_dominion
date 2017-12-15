@@ -88,12 +88,13 @@ public class ServiceLocatorClient {
     //if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
   	//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
   	//will be evaluated as a loss.
-    private Button endGameHost = new Button ("Spiel beenden (Host)");
+    //private Button endGameHost = new Button ("Spiel beenden (Host)");
     
     //button for leaving the game. If a party starts, each player gets a defeat if he clicks this button
     //while waiting for full game, this button is deactivated for the host because he can end the game via "Spiel beenden (Host)" --> see button implemented above. For all other players while waiting
     //for full game: via button endGamePlayer they can leave the game without getting a defeat
-    private Button endGamePlayer = new Button ("Spiel verlassen");
+   // private Button endGamePlayer = new Button ("Spiel verlassen");
+    
     private Croupier croupier;
 
     /**
@@ -246,9 +247,9 @@ public class ServiceLocatorClient {
 			this.croupier.setActions(1);
 			this.croupier.setBuys(1);
 			this.croupier.setBuyPower(0);
-			this.endGameHost.setDisable(true);
+			//this.endGameHost.setDisable(true);
 			//activate the button for leaving games also for the host
-			this.endGamePlayer.setDisable(false);
+			//this.endGamePlayer.setDisable(false);
 			
 			//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
 			
@@ -358,13 +359,13 @@ public class ServiceLocatorClient {
 		this.isHost=isHost;
 	}
 	
-	public Button getButtonEndGameHost(){
-		return this.endGameHost;
-	}
-	
-	public Button getButtonLeaveGamePlayer(){
-		return this.endGamePlayer;
-	}
+//	public Button getButtonEndGameHost(){
+//	return this.endGameHost;
+//}
+
+//public Button getButtonLeaveGamePlayer(){
+//	return this.endGamePlayer;
+//}
 	
 	//getter and setter for some playing stage buttons
 	public Button getButtonPlayActions(){

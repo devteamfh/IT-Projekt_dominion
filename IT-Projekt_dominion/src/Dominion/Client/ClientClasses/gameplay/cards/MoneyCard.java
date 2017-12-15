@@ -78,6 +78,7 @@ import javafx.stage.StageStyle;
 							croupier.addObserver(newCard);
 							croupier.addToAblagestapel(newCard);
 							newCard.assignPicture();
+							newCard.setHoleCard(true);
 							System.out.println("neue ablagestapelgr�sse: "+croupier.getAblagestapel().size());
 							
 							

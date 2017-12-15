@@ -77,6 +77,7 @@ public class VictoryCard extends GameCard{
 					croupier.addObserver(newCard);
 					croupier.addToAblagestapel(newCard);
 					newCard.assignPicture(); 
+					newCard.setHoleCard(true);
 					
 					sl.getPlayer_noOS().increasePoints(pc.getMatchPoints());
 					
