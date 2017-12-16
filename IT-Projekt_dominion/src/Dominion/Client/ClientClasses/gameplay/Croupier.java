@@ -125,6 +125,7 @@ public class Croupier  extends Observable {
 		case "gold":      setStackSizeGold(stackSizeGold-1);
 			break;
 		case "curse": 	  setStackSizeCurse(stackSizeCurse-1);
+			break;
 		}
 		
 		//dann ist es eine Community Action Card

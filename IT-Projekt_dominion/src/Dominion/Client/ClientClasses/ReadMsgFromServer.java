@@ -334,15 +334,8 @@ public class ReadMsgFromServer implements Runnable {
 								
 								try{
 									
-									if(history.getBuy_AC()){
-										croupier.setAl_stackSizeCommunityActionCards(history.getIndex_AC());
-									}else{
-										croupier.setStackSize(history.getGameCard_EN());
-									}
-										
-									System.out.println(history.getGameCard_EN());
-									System.out.println("case endbuy");
-									System.out.println(history.getCurrentPlayer().getPoints());
+									croupier.setStackSize(history.getGameCard_EN());
+
 									if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
 										
 										sl.getPlayingStage().vb_player.getChildren().clear();	
@@ -620,11 +613,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								
-								if(history.getBuy_AC()){
-									croupier.setAl_stackSizeCommunityActionCards(history.getIndex_AC());
-								}else{
-									croupier.setStackSize(history.getGameCard_EN());
-								}	
+								croupier.setStackSize(history.getGameCard_EN());
 								
 					           }
 					      });
@@ -751,7 +740,7 @@ public class ReadMsgFromServer implements Runnable {
 			
 			//sl.clearCurrentGameParty();
 			
-			Label popUpMsg = new Label ("Glückwunsch, du hast gewonnen!");
+			Label popUpMsg = new Label ("Glï¿½ckwunsch, du hast gewonnen!");
 			sl.setLbl_popUpMessage(popUpMsg);
 			Stage popUp = new Stage();	
 			popUp.setResizable(true);
