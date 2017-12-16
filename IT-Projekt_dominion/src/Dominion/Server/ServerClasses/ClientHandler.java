@@ -261,6 +261,7 @@ public class ClientHandler implements Runnable {
 			 while (iterOut.hasNext()){
 				 //no reset needed because we won't send this object again
 					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+					current.reset();
 					current.writeObject(obj);
 					current.flush();			
 			 } 
@@ -601,10 +602,44 @@ public class ClientHandler implements Runnable {
 							break;
 							
 						case Trash:
+							
+							try{
+								
+								if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
+									//first search the corresponding GamePartyOnServer
+									long id4 = history.getGameParty().getID();
+									GamePartyOnServer current3=null;
+									for(int i =0; i<sl.getGameListFromServer().size();i++){
+										if(id4 == (sl.getGameListFromServer().get(i).getGameParty().getID())){
+											current3 = sl.getGameListFromServer().get(i);
+											//break for loop
+											break;
+										}
+									}
+									
+									//search the player who gained points
+									String currentPlayer = history.getCurrentPlayer().getUsername();
+
+									for(int i=0; i<current3.getGameParty().getArrayListOfPlayers().size();i++){
+										if(currentPlayer.equals(current3.getGameParty().getArrayListOfPlayers().get(i).getUsername())){
+											current3.getGameParty().getArrayListOfPlayers().get(i).setPoints(history.getCurrentPlayer().getPoints());
+										}
+									}
+									
+									//set the updated GameParty within GameHistory
+									history.updateGameParty(current3.getGameParty());
+								}
+								
+							}catch (NullPointerException e){
+								//
+							}
+
 							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().reset();
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
 							}
+
 						
 						}
 

@@ -34,7 +34,9 @@ public class Croupier  extends Observable {
 	boolean actionMode = false;
 	boolean buyMode    = false;
 	boolean discardMode = false;
-	boolean trashMode=false;
+	boolean trashModeChapel=false;
+	boolean trashModeMine = false;
+	boolean modeForMine = false;
 	
 	int buyPower = 0;
 	int actions;
@@ -347,12 +349,32 @@ public class Croupier  extends Observable {
 		notifyObservers();
 	}
 	
-	public boolean isTrashMode(){
-		return this.trashMode;
+	public boolean isTrashModeChapel(){
+		return this.trashModeChapel;
 	}
 	
-	public void setTrashMode(boolean trashMode){
-		this.trashMode = trashMode;
+	public void setTrashModeChapel(boolean trashMode){
+		this.trashModeChapel = trashMode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isTrashModeMine(){
+		return this.trashModeMine;
+	}
+	
+	public void setTrashModeMine(boolean trashMode){
+		this.trashModeMine = trashMode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isModeForMine(){
+		return this.modeForMine;
+	}
+	
+	public void setModeForMine(boolean trashMode){
+		this.modeForMine = trashMode;
 		setChanged();
 		notifyObservers();
 	}

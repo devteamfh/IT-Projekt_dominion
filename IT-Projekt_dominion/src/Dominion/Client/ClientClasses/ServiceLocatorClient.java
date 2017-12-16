@@ -56,7 +56,7 @@ public class ServiceLocatorClient {
     private ToggleGroup numberOfPlayersGroup;
     private TextField inputNumberOfRounds;
     
-    private TextArea ta_ChatLobby;
+    private TextArea ta_ChatLobby =new TextArea();
     private TextArea ta_ChatPlayingStage = new TextArea();
     private TextArea ta_gameHistory = new TextArea();
     
@@ -200,10 +200,6 @@ public class ServiceLocatorClient {
     
     public TextArea getTextAreaChatLobby(){
     	return this.ta_ChatLobby;
-    }
-    
-    public void setTextAreaLobby(TextArea area){
-    	this.ta_ChatLobby =area;
     }
     
     public TextArea getTextAreaChatPlayingStage(){

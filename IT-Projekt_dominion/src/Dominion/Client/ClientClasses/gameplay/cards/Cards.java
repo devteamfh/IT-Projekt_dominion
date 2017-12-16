@@ -39,7 +39,7 @@ public class Cards {
 	//ActionCard gardens      = new ActionCard(new Label("gardens"),4,0,0,0);  //pro 10 karten 1 match pint
 	ActionCard laboratory	  = new ActionCard(new Label("laboratory"),5,1,0,0, "Laboratorium"); // +2 Karten
 	//ActionCard library	  = new ActionCard(new Label("library"),5,0,0,0);  //ziehen bis 7 karten
-	ActionCard lumberjack 	  = new ActionCard(new Label("lumberjack"),3,1,0,2, "Holzfäller");
+	ActionCard lumberjack 	  = new ActionCard(new Label("lumberjack"),3,0,1,2, "Holzfäller");
 	ActionCard market		  = new ActionCard(new Label("market"),5,1,1,1, "Markt");  //plus 1 karte
 	ActionCard militia 		  = new ActionCard(new Label("militia"),4,0,0,2, "Miliz"); //jeder legt karten ab bis nur noch 3 auf der hand
 	ActionCard mine			  = new ActionCard(new Label("mine"),5,0,0,0, "Mine"); // entsorge eine geldkarte aus der hand, nimm eine geldkarte die bis zu 4 mehr kostet auf die hand

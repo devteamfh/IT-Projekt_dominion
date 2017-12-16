@@ -22,9 +22,12 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -70,7 +73,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 		view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
         @Override
         public void handle(ActionEvent event) {
-        	view.stop();
 
         	//wenn host game schliesst
         	if (sl.getIsHost()){
@@ -83,6 +85,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	CancelGame cancel = new CancelGame(party);
 
             	try {
+            		sl.getPlayer_OS().getOut().reset();
             		sl.getPlayer_OS().getOut().writeObject(cancel);
             		sl.getPlayer_OS().getOut().flush();
 				} catch (IOException e) {
@@ -168,24 +171,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	}
             }
         }); 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
         view.provisorischCard1.setOnAction(new EventHandler<ActionEvent>() {
         	
@@ -353,8 +338,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	try {
             		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
             		//sl.getPlayer_OS().getOut().reset();
-            		//model.out.writeObject(history);
-            		//model.out.flush();
             		sl.getPlayer_OS().getOut().writeObject(history);
             		sl.getPlayer_OS().getOut().flush();
         		} catch (IOException e) {

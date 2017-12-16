@@ -56,7 +56,6 @@ public class ReadMsgFromServer implements Runnable {
 
 					ChatMessageLobby msg = (ChatMessageLobby) obj;
 					
-					System.out.println(msg.getMsg());
 					String nameLobby = msg.getName();
 					String textLobby = msg.getMsg();
 					sl.getTextAreaChatLobby().appendText(nameLobby+": "+textLobby+"\n");
@@ -246,7 +245,6 @@ public class ReadMsgFromServer implements Runnable {
 				
 					
 				case CancelGame:
-									
 					CancelGame cancelObject = (CancelGame) obj;
 										
 					GameParty gamePartyToCancel = cancelObject.getGameParty();
@@ -257,18 +255,38 @@ public class ReadMsgFromServer implements Runnable {
 				           public void run() {
 							
 							try{
+															
 								//stop the playing stage ONLY for the players who have joined this GameParty
 								if(gamePartyToCancel.getID() == sl.getCurrentGameParty().getID()){
-									sl.setLbl_popUpMessage(new Label("Der Host hat das Spiel beendet."));
-
+									
+									
+									sl.getPlayingStage().stop();
+									
+									//clear SL and croupier
+									ServiceLocatorClient.setServiceLocatorClientNull();
+									Croupier.setCroupierNull();
+									
+									//get a new SL with new resources
+									sl = ServiceLocatorClient.getServiceLocator();
+									croupier = Croupier.getCroupier();
+									
+									Label popUpMsg = new Label ("Der Host hat das Spiel beendet");
+									sl.setLbl_popUpMessage(popUpMsg);
 									Stage popUp = new Stage();	
-									popUp.setResizable(false);
-									popUp.initModality(Modality.APPLICATION_MODAL);
-						        	Client_View_popUp view = new Client_View_popUp (popUp, model);
-						        	new Client_Controller_popUp(model, view); 
-						        	view.start();
-						        	ServiceLocatorClient.setServiceLocatorClientNull();
-						        	Croupier.setCroupierNull();
+									popUp.setResizable(true);
+									Client_View_popUp viewPopup = new Client_View_popUp (popUp, model);
+									new Client_Controller_popUp(model, viewPopup); 
+					
+									
+									//recreate a lobby view
+									Stage lobby_stage = new Stage();				
+							        Client_View_lobby viewLobby = new Client_View_lobby(lobby_stage, model); 
+							        sl.setView_lobby(viewLobby);
+							        new Client_Controller_lobby(model, viewLobby); 
+							        viewLobby.start();  
+									
+									viewPopup.start();
+					
 								}
 							}catch (NullPointerException e){
 								//NullPointerException caught
@@ -279,6 +297,8 @@ public class ReadMsgFromServer implements Runnable {
 							
 				           }
 				      });
+					
+
 					
 					break;
 				
@@ -315,8 +335,8 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
-									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
 								}	
@@ -513,15 +533,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								
-								
-								Label popUpMsg = new Label (history.getTextForTextArea());
-								sl.setLbl_popUpMessage(popUpMsg);
-								Stage popUp = new Stage();	
-								popUp.setResizable(true);
-								Client_View_popUp viewPopup = new Client_View_popUp (popUp, model);
-								new Client_Controller_popUp(model, viewPopup); 
 								sl.getPlayingStage().stop();
-								
 								
 								//clear SL and croupier
 								ServiceLocatorClient.setServiceLocatorClientNull();
@@ -530,6 +542,14 @@ public class ReadMsgFromServer implements Runnable {
 								//get a new SL with new resources
 								sl = ServiceLocatorClient.getServiceLocator();
 								croupier = Croupier.getCroupier();
+								
+								Label popUpMsg = new Label (history.getTextForTextArea());
+								sl.setLbl_popUpMessage(popUpMsg);
+								Stage popUp = new Stage();	
+								popUp.setResizable(true);
+								Client_View_popUp viewPopup = new Client_View_popUp (popUp, model);
+								new Client_Controller_popUp(model, viewPopup); 
+				
 								
 								//recreate a lobby view
 								Stage lobby_stage = new Stage();				
@@ -573,7 +593,24 @@ public class ReadMsgFromServer implements Runnable {
 
 										@Override 
 								           public void run() {
-											croupier.setTrashMode(true);
+											croupier.setTrashModeChapel(true);
+											
+								           }
+								      });
+									
+									
+								}
+								//break case chapel
+								break;
+								
+							case "mine":
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									
+									Platform.runLater(new Runnable() {
+
+										@Override 
+								           public void run() {
+											croupier.setTrashModeMine(true);
 											
 								           }
 								      });
@@ -644,8 +681,9 @@ public class ReadMsgFromServer implements Runnable {
 
 							@Override 
 					           public void run() {
-								croupier.setStackSize(history.getGameCard_EN());	
-								//update the list of players because there was a buy
+								croupier.setStackSize(history.getGameCard_EN());
+								
+								//update the list of players (points) because there was a buy
 								sl.setCurrentGameParty(history.getGameParty());
 								
 								//updating the player list with the points
@@ -682,6 +720,36 @@ public class ReadMsgFromServer implements Runnable {
 						
 					case Trash:
 						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea());
+						
+						try{
+							
+							if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
+								Platform.runLater(new Runnable() {
+
+									@Override 
+							           public void run() {
+										
+										//update the list of players (points) because there was a buy
+										sl.setCurrentGameParty(history.getGameParty());
+										
+										//updating the player list with the points
+										sl.getPlayingStage().vb_player.getChildren().clear();	
+										Label allPlayer = new Label("Spieler dieser Partie:");
+										sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+										
+										for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
+											Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+history.getGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
+											sl.getPlayingStage().vb_player.getChildren().add(label);
+										}
+										
+							           }
+							      });
+							}
+							
+						}catch (NullPointerException e){
+							//catch if it wasn't trashed a point card
+						}
+						
 						
 					}
 					

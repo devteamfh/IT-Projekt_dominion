@@ -83,14 +83,29 @@ public class GameCard extends Button implements Observer  {
 			this.getStyleClass().add("highlight2");
 		}
 		
-		//Highlighte alle HoleCards im TrashModus
-		if (croupier.isTrashMode() == true && this.isHoleCard()){
+		//Highlighte alle HoleCards im TrashModus Kapelle
+		if (croupier.isTrashModeChapel() == true && this.isHoleCard()){
 			this.getStyleClass().add("highlight2");
 		}
 		
-		//Highlighte alle HoleCards im TrashModus
-		if (croupier.isTrashMode() == false && this.isHoleCard()){
+		//Highlighte alle MoneyCards im TrashModus Mine
+		if (croupier.isTrashModeMine() == true && this instanceof MoneyCard && this.isHoleCard()){
+			this.getStyleClass().add("highlight2");
+		}
+		
+		//Highlighte alle MoneyCards, welche erworben werden können im Minen-Modus
+		if (croupier.isModeForMine() == true && this instanceof MoneyCard && !this.isHoleCard()){
+			this.getStyleClass().add("highlight3");
+		}
+		
+		//Highlight wegnehmen wenn Trash Modus wieder verlassen wird (Kapelle, Mine)
+		if ((croupier.isTrashModeChapel() == false && this.isHoleCard())   ||   (croupier.isTrashModeMine() == false && this.isHoleCard() && this instanceof MoneyCard)){
 			this.getStyleClass().remove("highlight2");
+		}
+		
+		//Highlight wegnehmen wenn Minen-Modus wieder verlassen wird
+		if ((croupier.isModeForMine() == false && !this.isHoleCard())  && this instanceof MoneyCard){
+			this.getStyleClass().remove("highlight3");
 		}
 		
 		//wenn stacksize auf 0, wird highlighting ebenfalls deaktiviert

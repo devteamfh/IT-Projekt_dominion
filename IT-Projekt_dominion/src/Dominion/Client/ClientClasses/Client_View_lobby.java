@@ -96,13 +96,10 @@ public class Client_View_lobby extends View<Client_Model> {
 		btn_enterGame.setDisable(true);
 		
 		//CHAT
-		chatWindow = new TextArea();
-				//sl.getTextAreaChatLobby();
+		chatWindow = sl.getTextAreaChatLobby();
 		chatWindow.setEditable(false);
 		chatWindow.setPrefSize(820, 150);
 		chatWindow.setStyle("-fx-opacity: 0.80;");
-		
-		sl.setTextAreaLobby(chatWindow);
 		
 		tf_message = new TextField();
 		tf_message.setPrefSize(450,40);
