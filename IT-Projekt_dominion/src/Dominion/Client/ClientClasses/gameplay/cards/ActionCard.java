@@ -59,7 +59,6 @@ public class ActionCard extends GameCard{
 	            	}
 					
 					//wenn karte aus den community action cards gekauft wird (kaufmodus on, buypower und buys ausreichend, sowie gen�gend karten da
-
 					if(isHoleCard() == false && croupier.isBuyMode() == true && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(ac)>0){
 						
 						croupier.setBuys(croupier.getBuys()-1);
@@ -103,7 +102,9 @@ public class ActionCard extends GameCard{
 							strBuilderForTextArea.append(sl.getPlayerName()+" beendet Kaufphase\n\n");
 			        		
 			        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
+
 			        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.lbl_cardName.getText(),ac.text_DE, GameHistory.HistoryType.EndBuy,buy_AC,index_AC);
+
 			        		
 						}else{
 							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
@@ -125,52 +126,9 @@ public class ActionCard extends GameCard{
 						
 					}
 
-					/**if(		   isHoleCard() == false 
-							&& croupier.isBuyMode() == true 
-							&& costs <= croupier.getBuyPower() 
-							&& croupier.getBuys() > 0 
-							&& croupier.getStackSize(ac)>0){*/
-
-										
-						
-						
-						
-						
-						
-						/**
-								//anzahl buy redurzieren
-								croupier.setBuys(croupier.getBuys()-1);
+			
 					
-								//buyPower reduzieren
-								croupier.setBuyPower(croupier.getBuyPower()-ac.costs);
-								
-								/**Integer valueToChange = croupier.getStackSize(ac);
-								int newValue = Integer.parseInt(valueToChange.toString());
-								newValue--;
-								
-								int i = croupier.getAl_communityActionCards().indexOf(ac);
-								
-<<<<<<< HEAD
-								
-								
-								System.out.println("alte stackgr�sse:"+valueToChange);
-=======
->>>>>>> e80ebdf242d4e52355534ef254d9e6362839a9d1
-								croupier.setAl_stackSizeCommunityActionCards(i);
-							
-								//gekaufte karte auf ablagestapel legen
-								//System.out.println("alte Ablagestapelgr�sse: "+croupier.getAblagestapel().size());
-								ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower);
-								croupier.addObserver(newCard);
-								croupier.addToAblagestapel(newCard);
-<<<<<<< HEAD
-								newCard.assignPicture(); */
 
-								//newCard.assignPicture(); 
-								//newCard.setHoleCard(true);
-
-								
-						//}
 			
 					
 					//wenn ich die Karte in der Hand spielen darf:

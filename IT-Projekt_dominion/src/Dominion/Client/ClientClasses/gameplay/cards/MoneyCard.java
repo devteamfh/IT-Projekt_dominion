@@ -64,30 +64,32 @@ import javafx.stage.StageStyle;
 		            	}
 
 						
-						//Wenn die karte aus den communty cards gekauft wird
+						//Wenn die karte aus den community cards gekauft wird
 						if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(mc) > 0){
 							croupier.setBuys(croupier.getBuys()-1);
 							//in case player has more than 1 buy
 							croupier.setBuyPower(croupier.getBuyPower()-mc.costs);
 							
+							//croupier.setStackSize(mc.lbl_cardName.getText()); //stacksize von moneyCards wird um eins reduziert
+	
 							//gekaufte karte auf ablagestapel legen
 							MoneyCard newCard = new MoneyCard(mc.lbl_cardName,mc.buyPower,mc.costs,mc.text_DE);
+
 							croupier.addObserver(newCard);
 							croupier.addToAblagestapel(newCard);
 							newCard.assignPicture();
 
 							newCard.setHoleCard(true);
-							System.out.println("neue ablagestapelgr�sse: "+croupier.getAblagestapel().size());
 							
-							
+
 							System.out.println("add zum ablagestapel gekaufte karte: "+mc.text_DE);
 							System.out.println("ablagestapel neu:////////////////////");
 							for(int i=0; i<croupier.getAblagestapel().size();i++){
 			            		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
 			            	}
+
 							
-							//send the buy information to server
-							
+							//send the buy information to server						
 							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" kauft eine "+mc.text_DE+"-Karte\n");
 							
 							GameHistory history;
@@ -116,7 +118,7 @@ import javafx.stage.StageStyle;
 			            		//es werden 5 neue Karten gezogen
 			            		//croupier.drawHoleCards();
 			            		
-								
+							
 				        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
 				        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.lbl_cardName.getText(),mc.text_DE, GameHistory.HistoryType.EndBuy);
 				        		

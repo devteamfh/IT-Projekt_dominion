@@ -107,9 +107,10 @@ public class Croupier  extends Observable {
 		notifyObservers();
 		}	
 	
-	public void setStackSize(String gc){
+	public void setStackSize(String str_lbl_cardName){
 
-		switch (gc) {
+		//ist es eine action Karte links (province, curse, money?)
+		switch (str_lbl_cardName) {
 		
 		case "estate":    setStackSizeEstate(stackSizeEstate-1);
 			break;
@@ -124,6 +125,16 @@ public class Croupier  extends Observable {
 		case "gold":      setStackSizeGold(stackSizeGold-1);
 			break;
 		case "curse": 	  setStackSizeCurse(stackSizeCurse-1);
+		}
+		
+		//dann ist es eine Community Action Card
+		for (int i = 0; i < getAl_communityActionCards().size();i++){
+			System.out.println(getAl_communityActionCards().get(i).getLbl_cardName().getText());
+			System.out.println("String label cardname: "+str_lbl_cardName);
+			//welche  hier u 1 reduziert wird
+			if (getAl_communityActionCards().get(i).getLbl_cardName().getText().equals(str_lbl_cardName)){
+			this.al_stackSizeCommunityActionCards.set(i,al_stackSizeCommunityActionCards.get(i)-1);
+			System.out.println("eine karte reduziert"); }
 		}
 		setChanged();
 		notifyObservers();
@@ -142,7 +153,6 @@ public class Croupier  extends Observable {
 		case "silver":    return getStackSizeSilver(); 
 		case "gold":      return getStackSizeGold(); 
 		case "curse":	  return getStackSizeCurse();
-		
 		}
 		//dann ist es eine Community Action Card
 		if (getAl_communityActionCards().contains(gc)) {
@@ -440,12 +450,11 @@ public class Croupier  extends Observable {
     	sl.getPlayingStage().updateGUI();
 	}
 	
-	public void setAl_stackSizeCommunityActionCards(int i) {
+	/*public void setAl_stackSizeCommunityActionCards(int i) {
 		this.al_stackSizeCommunityActionCards.set(i,al_stackSizeCommunityActionCards.get(i)-1);
 		setChanged();
 		notifyObservers();
-    	sl.getPlayingStage().updateGUI();
-	}
+    */
 	
 	// Initiale # communityActionCards
 	public void prepareAL_stackSizeCommunityActionCards(){
