@@ -1,8 +1,11 @@
 package Dominion.appClasses;
 
+import Dominion.Client.ClientClasses.gameplay.Croupier;
+import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
+
 /**
  * @author Joel Henz:
- * 
+ * GameHistory is used for communication between client and server while playing on playing stage. An instance of this class can save different information which the server and the opponents have to know
  */
 public class GameHistory extends GameObject{
 	
@@ -12,30 +15,46 @@ public class GameHistory extends GameObject{
 	// Generator for a unique message ID
 	private static long messageID = 0;
 	
-	private String text;
+	private String textForTextArea;
+	private String textForLabel;
 	private GameParty party;
 	private PlayerWithoutOS playerForGUIActivation;
 	private PlayerWithoutOS currentPlayer;
 	private PlayerWithoutOS leavingPlayer;
 	private PlayerWithoutOS winner;
 	private HistoryType type;
+	private String card;
 	
 	public enum HistoryType {
-		 PlayAction, PlayBuy, EndAction,
-		 EndBuy, LeaveGame, UpdateLobbyAfterLeave,
-		 EndGame
+		 EndAction, EndBuy, LeaveGame, UpdateLobbyAfterLeave,
+		 EndGame, PlayCard, BuyPointCard, BuyNoPointCard,
+		 Trash
 		 };
 	
 	private static long nextMessageID() {		
 		return messageID++;
 	}
 	
-	public GameHistory(String text, GameParty party,PlayerWithoutOS currentPlayer, HistoryType type){
+	//we use this constructor for events like: player leaves a game / host ends the game
+	public GameHistory(String textForTextArea, GameParty party,PlayerWithoutOS currentPlayer, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
-		this.text=text;
+		this.textForTextArea=textForTextArea;
 		this.party=party;
 		this.currentPlayer=currentPlayer;
+		this.type=type;
+	}
+	
+	
+	//we use this constructor while playing (playing cards, ending action phase, ending buy phase, buying cards)
+	public GameHistory(String textForTextArea, String textForLabel, GameParty party,PlayerWithoutOS currentPlayer,String card, HistoryType type){
+		super(GameObject.ObjectType.GameHistory);
+		this.id=-1;
+		this.textForTextArea=textForTextArea;
+		this.textForLabel=textForLabel;
+		this.party=party;
+		this.currentPlayer=currentPlayer;
+		this.card=card;
 		this.type=type;
 	}
 	
@@ -53,16 +72,28 @@ public class GameHistory extends GameObject{
 		return this.party;
 	}
 	
-	public String getText(){
-		return this.text;
+	public void updateGameParty(GameParty party){
+		this.party=party;
 	}
 	
-	public void updateText(String text){
-		this.text = text;
+	public String getTextForTextArea(){
+		return this.textForTextArea;
+	}
+	
+	public String getTextForLabel(){
+		return this.textForLabel;
+	}
+	
+	public void updateTextForTextArea(String text){
+		this.textForTextArea = text;
 	}
 	
 	public void clearText(){
-		this.text = "";
+		this.textForTextArea = "";
+	}
+	
+	public String getGameCard(){
+		return this.card;
 	}
 	
 	public HistoryType getHistoryType(){
@@ -104,5 +135,6 @@ public class GameHistory extends GameObject{
 	public PlayerWithoutOS getWinner(){
 		return this.winner;
 	}
+	
 
 }

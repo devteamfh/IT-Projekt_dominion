@@ -104,7 +104,7 @@ public class Client_View_popUp extends View<Client_Model> {
 
 		
 		this.scene = new Scene (root, 600,180);
-		scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_clientStart.css").toExternalForm());
 	    stage.initStyle(StageStyle.TRANSPARENT);   
 	    
         return scene;

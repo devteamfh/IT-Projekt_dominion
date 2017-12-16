@@ -40,11 +40,13 @@ import javafx.stage.WindowEvent;
  * 
  * @author Brad Richards (MVC), Joel Henz (events)
  */
+ 
 public class Client_Controller_createGame extends Controller<Client_Model, Client_View_createGame> {
     private ServiceLocatorClient sl;
     private Client_View_createGame view_createGame;
     private String selectedGameMode;
     private int numberOfPlayers;
+    private Croupier croupier = Croupier.getCroupier();
        
     /**
      * @author Joel Henz
@@ -254,11 +256,12 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	PlayerWithoutOS creator = new PlayerWithoutOS(model.playerName);
             	
             	Cards cards = new Cards();
-            	Croupier croupier = Croupier.getCroupier();
             	
             	//get a card set (chosen randomly among 4 sets)
             	croupier.setAl_communityActionCards(cards.getRandomCardSet());
+            	
             	sl.setCroupier(croupier);
+            	
             	int numberOfCardSet = cards.getNumberOfCardSet();
    	
             	GameParty newParty = new GameParty(selectedGameMode,creator,numberOfPlayers,numberOfCardSet);
@@ -269,8 +272,8 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	}
 
             	try {
-					model.out.writeObject(newParty);
-					model.out.flush();
+					sl.getPlayer_OS().getOut().writeObject(newParty);
+					sl.getPlayer_OS().getOut().flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

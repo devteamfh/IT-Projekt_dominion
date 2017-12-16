@@ -2,6 +2,9 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Observable;
+import java.util.Observer;
+
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.PlayerWithOS;
 import Dominion.appClasses.PlayerWithoutOS;
@@ -271,8 +274,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         			current.setAtt9          (checkUserData.getAl_currentUserandStats().get(9));
                 	
         			try {
-						model.getOutput().writeObject(current);
-						model.getOutput().flush();
+        				sl.getPlayer_OS().getOut().writeObject(current);
+        				sl.getPlayer_OS().getOut().flush();
+						/**model.getOutput().writeObject(current);
+						model.getOutput().flush();*/
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -319,5 +324,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             }
         });	                
     }
+
+
+
     
 }

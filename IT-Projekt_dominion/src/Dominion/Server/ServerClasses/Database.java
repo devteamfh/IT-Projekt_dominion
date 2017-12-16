@@ -71,7 +71,7 @@ import Dominion.ServiceLocator;
                     + "	Column07 text NULL,   \n"
                     + "	Column08 text NULL,   \n"
                     + "	Column09 text NULL,   \n"
-                    + "	PRIMARY KEY (Name, PassWrd)"
+                    + "	PRIMARY KEY (Name      )"
                     + ");";
 
                 if(sql_execute(sql_createTables)) {

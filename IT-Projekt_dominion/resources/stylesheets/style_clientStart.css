@@ -3,20 +3,22 @@
 /*---------------------------------------------------------------------------------------- */
 /*author: Beda Kaufmann */
 .bg_login {
-	-fx-background-image: url('img/bg_login.png');
+	-fx-background-image: url('../img/backgrounds/bg_login.png');
 }
 
 .bg_lobby {
-	-fx-background-image: url('img/bg_lobby_big2.png');
+	-fx-background-image: url('../img/backgrounds/bg_lobby_big2.png');
 }
 
 .bg_createGame {
-	-fx-background-image: url('img/bg_createGame.png');
+	-fx-background-image: url('../img/backgrounds/bg_createGame.png');
+	-fx-background-repeat: no-repeat;
+	/*-fx-background-size: auto, auto;*/
 	
 }
 
 .bg_popUp {
-	-fx-background-image: url('img/bg_popUp.png');
+	-fx-background-image: url('../img/backgrounds/bg_popUp.png');
 }
 
 /*
@@ -89,33 +91,33 @@
 }
 
 .btn_view {
-	  -fx-background-image: url('img/btn_view.png');
+	  -fx-background-image: url('../img/btns/btn_view.png');
 }
 
 .btn_view_hover {
-	  -fx-background-image: url('img/btn_view_hover.png');
+	  -fx-background-image: url('../img/btns/btn_view_hover.png');
 }
 
 .btn_view_green {
-	  -fx-background-image: url('img/btn_view_green.png');
+	  -fx-background-image: url('../img/btns/btn_view_green.png');
 }
 
 .btn_sendChatMsg {
-	  -fx-background-image: url('img/btn_chat_blue_small.png');  
+	  -fx-background-image: url('../img/btns/btn_chat_blue_small.png');  
 }
 
 .btn_sendChatMsg_hover {
-	  -fx-background-image: url('img/btn_chat_blue_small_hover.png');  
+	  -fx-background-image: url('../img/btns/btn_chat_blue_small_hover.png');  
 }
 
 
 /*Radio Buttons */
 .btnRdo {
-	-fx-background-image: url('img/btnRdo.png')
+	-fx-background-image: url('../img/btns/btnRdo.png')
 }
 
 .btnRdo_active {
-	-fx-background-image: url('img/btnRdo_hover.png')
+	-fx-background-image: url('../img/btns/btnRdo_hover.png')
 }
 
 
@@ -126,27 +128,27 @@
 }
 
 .btn_Plus {
-    -fx-background-image:  url('img/btn_Plus.png');
+    -fx-background-image:  url('../img/btns/btn_Plus.png');
 }
 
 .btn_Plus_clicked {
-    -fx-background-image:  url('img/btn_Plus_clicked.png');
+    -fx-background-image:  url('../img/btns/btn_Plus_clicked.png');
 }
 .btn_Minus {
-    -fx-background-image:  url('img/btn_Minus.png');
+    -fx-background-image:  url('../img/btns/btn_Minus.png');
 }
 .btn_Minus_clicked {
-    -fx-background-image:  url('img/btn_Minus_clicked.png');
+    -fx-background-image:  url('../img/btns/btn_Minus_clicked.png');
 }
 
 
 /*close Button */
 .btn_close_normal{
-	-fx-background-image: url('img/btn_close_hover.png');	
+	-fx-background-image: url('../img/btns/btn_close_hover.png');	
 }
 
 .btn_close_hover {
-	-fx-background-image: url('img/btn_close_normal.png'); }
+	-fx-background-image: url('../img/btns/btn_close_normal.png'); }
 /*---------------------------------------------------------------------------------------- */
 /*Client View Start -END- */
 

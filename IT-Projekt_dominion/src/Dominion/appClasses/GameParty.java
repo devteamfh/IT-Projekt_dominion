@@ -104,6 +104,10 @@ public class GameParty extends GameObject{
 		return this.selectedMode.equals("Rundenanzahl");
 	}
 	
+	public String getSelectedMode(){
+		return this.selectedMode;
+	}
+	
 	public void setRounds (int rounds){
 		this.rounds=rounds;
 	}
@@ -140,6 +144,9 @@ public class GameParty extends GameObject{
 		return this.roundCounter;
 	}
 	
+	public void setNumberOfLoggedInPlayers(int number){
+		this.numberOfLoggedInPlayers=number;
+	}
 	
 
 }

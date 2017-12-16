@@ -113,7 +113,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {
 
-                sendMessageToServer();
+                sendChatMessageToServer();
             }
         });
         
@@ -143,7 +143,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(KeyEvent event) {
             	if (event.getCode().equals(KeyCode.ENTER)){
-            		sendMessageToServer();	
+            		sendChatMessageToServer();	
             	}
             }
         }); 
@@ -172,8 +172,9 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
         	   JoinGameParty gameToJoin = new JoinGameParty(joinGame,model.getName());
         	   
         	   try {
-				model.out.writeObject(gameToJoin);
-				model.out.flush();
+        		   sl.getPlayer_OS().getOut().reset(); //in case a player joins a game, leaves and rejoins the same game party (after leaving it is possible that another player has joined game before the leaving player rejoins)
+        		   sl.getPlayer_OS().getOut().writeObject(gameToJoin);
+        		   sl.getPlayer_OS().getOut().flush();
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -245,14 +246,16 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
      * @author Joel Henz: 
      * method for sending the chat messages
      * */
-	protected void sendMessageToServer() {
+	protected void sendChatMessageToServer() {
 		String name = model.getName();
 		String msg = view.tf_message.getText();
 		ChatMessageLobby cmsg = new ChatMessageLobby(name, msg);
 		
 		try {
-			model.out.writeObject(cmsg);
-			model.out.flush();
+			
+			sl.getPlayer_OS().getOut().writeObject(cmsg);
+			sl.getPlayer_OS().getOut().flush();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

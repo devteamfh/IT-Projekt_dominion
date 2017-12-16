@@ -2,6 +2,11 @@ package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
 
+import java.util.Collections;
+
+
+import com.sun.glass.ui.View;
+
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.CancelGame;
@@ -12,8 +17,14 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -26,7 +37,8 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 	private ServiceLocatorClient sl;
 	private Croupier croupier;
 	private Client_View_playingStage view_playingStage;
-	private StringBuilder strBuilder = new StringBuilder();
+	private StringBuilder strBuilderTextArea = new StringBuilder();
+	private StringBuilder strBuilderLabel = new StringBuilder();
        
     /**
      * @author Joel Henz
@@ -37,7 +49,63 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         sl = ServiceLocatorClient.getServiceLocator(); 
         croupier = Croupier.getCroupier();
         
-        sl.getButtonEndGameHost().setOnAction(new EventHandler<ActionEvent>() {
+
+     // Button Close Style Hover und Action press
+        
+		view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+  		    new EventHandler<MouseEvent>() {
+  		        @Override public void handle(MouseEvent e) {
+  		        	view.btn_close.getStyleClass().addAll("btn_close_hover");
+  		        	view.btn_close.getStyleClass().remove("btn_close_normal");
+  		        }
+		});
+		      			
+		view.btn_close.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+		        @Override public void handle(MouseEvent e) {
+		        	view.btn_close.getStyleClass().remove("btn_close_hover");
+		        	view.btn_close.getStyleClass().addAll("btn_close_normal");
+		        }
+		});
+		        
+		view.btn_close.setOnAction(new EventHandler<ActionEvent>() { 
+        @Override
+        public void handle(ActionEvent event) {
+        	view.stop();
+
+        	//wenn host game schliesst
+        	if (sl.getIsHost()){
+        		
+            	//first we have to get the current GameParty object
+        		GameParty party = sl.getCurrentGameParty();
+            	
+            	//a host is able to end the game until the game isn't full. If a host ends the game, his playing stage will be closed. The same will happen to all other players who have joined the game.
+            	//In addition, the game will be removed from the ListView of EVERY client.
+            	CancelGame cancel = new CancelGame(party);
+
+            	try {
+					sl.getPlayer_OS().getOut().writeObject(cancel);
+					sl.getPlayer_OS().getOut().flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		
+        	}
+        	
+        	
+        	//wenn nicht-host game schliesst
+        	
+        	
+        	
+        }
+    });
+    //-----------------------------------------------------------------------------------------------//    
+        
+        
+        
+        
+        
+    /*    sl.getButtonEndGameHost().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	//first we have to get the current GameParty object
@@ -46,9 +114,10 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	//a host is able to end the game until the game isn't full. If a host ends the game, his playing stage will be closed. The same will happen to all other players who have joined the game.
             	//In addition, the game will be removed from the ListView of EVERY client.
             	CancelGame cancel = new CancelGame(party);
+
             	try {
-					model.out.writeObject(cancel);
-					model.out.flush();
+					sl.getPlayer_OS().getOut().writeObject(cancel);
+					sl.getPlayer_OS().getOut().flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -56,126 +125,236 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	
             	
             }
-        });
+        });*/
         
+		
+		/// Chatbutton
         view.btn_sendChatMsgPlayingStage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	sendMessageToServer();    	
             }
         });
-
-        view.action2.setOnAction(new EventHandler<ActionEvent>() {
+        
+        
+        
+      //Button enterGame verhalten
+    	view.btn_sendChatMsgPlayingStage.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+    		    new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn_sendChatMsg_hover");
+    		        	view.btn_sendChatMsgPlayingStage.getStyleClass().remove("btn_sendChatMsg");
+    		        }
+    		});
+     		
+    		view.btn_sendChatMsgPlayingStage.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+    		        @Override public void handle(MouseEvent e) {
+    		        	view.btn_sendChatMsgPlayingStage.getStyleClass().remove("btn_sendChatMsg_hover");
+    		        	view.btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn_sendChatMsg");
+    		        }
+    		});
+        
+   
+        
+        /**
+         * @author Joel Henz
+         * key event for the chat program (sending the chat message by pressing enter)
+         * */
+        view.scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-
-            	Croupier.getCroupier().setBuyMode(true);
-            	Croupier.getCroupier().setBuyPowerCopper(10);
+            public void handle(KeyEvent event) {
+            	if (event.getCode().equals(KeyCode.ENTER)){
+            		sendMessageToServer();	
+            	}
             }
-        });
+        }); 
         
         
         
         
         
-        sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        view.provisorischCard1.setOnAction(new EventHandler<ActionEvent>() {
         	
+        	
+                  @Override
+            public void handle(ActionEvent event) {
+            	croupier.setActionMode(false);
+            	croupier.setBuyMode(true);
+            	croupier.setBuys(3);
+            
+            	System.out.println(croupier.getHoleCards().size());
+
+            }
+            
+          
+           
+            
+            
+        });
+        view.provisorischCard2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	croupier.setBuyMode(false);
+            	croupier.setActionMode(true);
+            	croupier.setActions(3);
+            	
+            	
+            }
+        });
+       
+        view.provisorischCard3.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	
-            	if(strBuilder != null){
-            		strBuilder.delete(0, strBuilder.length());
-            	}
+            	croupier.setBuyPower();
+            	croupier.setBuys(5);
+            	croupier.setActions(5);
+            	croupier.muckHoleCards();
+            	croupier.drawHoleCards();
+            	
 
-            	
-            	
-            	GameHistory history;
-            	sl.getPlayer_noOS().decreaseNumberOfActions();
-            	
-            	
-            	
-            	if(sl.getPlayer_noOS().getNumberOfActions()==0){
-            		sl.getButtonPlayActions().setDisable(true);
-            		sl.getButtonEndActions().setDisable(true);
-                	sl.getButtonPlayBuy().setDisable(false);
-                	sl.getButtonEndBuys().setDisable(false);
-                	strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht eine Aktion\n");
-                	strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
-                	history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndAction);
-            	}else{
-            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht eine Aktion\n");
-            		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.PlayAction);
-            	}
-            
-                     	
-            	try {
-            		model.out.reset();//reset necessary for correct number of actions
-        			model.out.writeObject(history); 
-        			model.out.flush();
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
             }
         });
         
-        sl.getButtonPlayBuy().setOnAction(new EventHandler<ActionEvent>() {
+        
+        
+        view.btn_userInteraction.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            
+            	System.out.println("button pressed");
+            	switch (view.btn_userInteraction.getLbl().getText()) {
             	
-            	if(strBuilder != null){
-            		strBuilder.delete(0, strBuilder.length());
-            	}
-           
-            	GameHistory history;
-            	sl.getPlayer_noOS().decreaseNumberOfBuys();
-            	
-            	if(sl.getPlayer_noOS().getNumberOfBuys()==0){
-            		sl.getButtonPlayBuy().setDisable(true);
-            		sl.getButtonEndBuys().setDisable(true);
-            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht einen Kauf\n");
-            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n");
-            		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
+            	case "Aktionen beenden":
+						            		croupier.setActionMode(false);
+						                	croupier.setBuyMode(true);
+						                	
+						                	croupier.setActions(0);
+						                	
+						                	if(strBuilderTextArea != null){
+						                		strBuilderTextArea.delete(0, strBuilderTextArea.length());
+						                	}
+						                	
+						                	if(strBuilderLabel != null){
+						                		strBuilderLabel.delete(0, strBuilderLabel.length());
+						                	}
+						                	
+						                	sl.getButtonEndActions().setDisable(true);
+						                	sl.getButtonEndBuys().setDisable(false);
+						                	
+						                	strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+						                	strBuilderLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+						                	
+						                	//we don't send a card here, so set it null
+						                	GameHistory history2 = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndAction);
+						
+						                	try {
+						                		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
+						                		//sl.getPlayer_OS().getOut().reset();
+						                		sl.getPlayer_OS().getOut().writeObject(history2);
+						                		sl.getPlayer_OS().getOut().flush();
+						            		} catch (IOException e) {
+						            			// TODO Auto-generated catch block
+						            			e.printStackTrace();
+						            		}
+						                	break;
+					                	
+					                	
+            	case "Kaufen beenden": 
+						            		if(strBuilderTextArea != null){
+						                		strBuilderTextArea.delete(0, strBuilderTextArea.length());
+						                	}
+						                	
+						                	croupier.setBuyMode(false);
+						                	croupier.setBuys(0);
+						                	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
+						                	croupier.setBuyPower(0);
+						                	
+						                	sl.getButtonEndBuys().setDisable(true);
+						
+						            		strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
+						            		
+						            		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
+						            		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndBuy);
+						
+						            		
+						            		//Restliche Karten in h�nden werden auf ablagestapel gelegt
+						            		croupier.muckHoleCards();
+						            		
+						            		//es werden 5 neue Karten gezogen
+						            		croupier.drawHoleCards();
+						            		
+						            		
+						                	try {
+						                		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
+						                		//sl.getPlayer_OS().getOut().reset();
+						                		sl.getPlayer_OS().getOut().writeObject(history);
+						                		sl.getPlayer_OS().getOut().flush();
+						            		} catch (IOException e) {
+						            			// TODO Auto-generated catch block
+						            			e.printStackTrace();
+						            		}
+						                	
+						                	break;
             		
-            		//setting the initial numbers of actions and buys so the player will start with 1 action and 1 buy when his turn will start again in the next round
-            		sl.getPlayer_noOS().setInitialActionsAndBuys();
-            	}else{
-            		strBuilder.append(sl.getPlayer_noOS().getUsername()+" macht einen Kauf\n");
-            		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.PlayBuy);
+            		
             	}
-
-            	try {
-            		//model.out.reset();
-        			model.out.writeObject(history);
-        			model.out.flush();
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
+            	
+            	
+            	
             }
+            
         });
+     
+    
+        
+        
         
         sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	
-            	if(strBuilder != null){
-            		strBuilder.delete(0, strBuilder.length());
+            	croupier.setActionMode(false);
+            	croupier.setBuyMode(true);
+            	
+            	croupier.setActions(0);
+            	
+            	if(strBuilderTextArea != null){
+            		strBuilderTextArea.delete(0, strBuilderTextArea.length());
             	}
             	
-            	GameHistory history;
-            	sl.getPlayer_noOS().actionEnded();
-            	sl.getButtonPlayActions().setDisable(true);
+            	if(strBuilderLabel != null){
+            		strBuilderLabel.delete(0, strBuilderLabel.length());
+            	}
+            	
             	sl.getButtonEndActions().setDisable(true);
-            	sl.getButtonPlayBuy().setDisable(false);
             	sl.getButtonEndBuys().setDisable(false);
-            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
-            	history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndAction);
+            	
+            	strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+            	strBuilderLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+            	
+            	//we don't send a card here, so set it null
+            	GameHistory history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndAction);
 
             	try {
-            		//model.out.reset();
-        			model.out.writeObject(history);
-        			model.out.flush();
+            		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
+            		//sl.getPlayer_OS().getOut().reset();
+            		sl.getPlayer_OS().getOut().writeObject(history);
+            		sl.getPlayer_OS().getOut().flush();
         		} catch (IOException e) {
         			// TODO Auto-generated catch block
         			e.printStackTrace();
@@ -187,31 +366,71 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             @Override
             public void handle(ActionEvent event) {
             	
-            	if(strBuilder != null){
-            		strBuilder.delete(0, strBuilder.length());
+            	if(strBuilderTextArea != null){
+            		strBuilderTextArea.delete(0, strBuilderTextArea.length());
             	}
             	
-            	GameHistory history;
-            	sl.getPlayer_noOS().buyEnded();
-            	sl.getButtonPlayBuy().setDisable(true);
-        		sl.getButtonEndBuys().setDisable(true);
-        		strBuilder.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
-        		history = new GameHistory(strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(), GameHistory.HistoryType.EndBuy);
+            	croupier.setBuyMode(false);
+            	croupier.setBuys(0);
+            	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
+            	croupier.setBuyPower(0);
+            	
+            	sl.getButtonEndBuys().setDisable(true);
+            	
+////////////////////for loop wieder löschen///////////////////////
+						/**System.out.println("Ablagestapel: ");
+						for(int i=0; i< croupier.getAblagestapel().size();i++){
+							System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
+						}
+						
+						System.out.println("Nachziehstapel: ");
+						for(int i=0; i< croupier.getNachziehstapel().size();i++){
+							System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
+						}
+						
+						System.out.println("Hole cards: ");
+						for(int i=0; i< croupier.getHoleCards().size();i++){
+							System.out.println(croupier.getHoleCards().get(i).getLbl_cardName().getText());
+						}*/
+						
+
+            	croupier.removeHoleCards();
+            	
+            	
+////////////////////for loop wieder löschen///////////////////////
+					/**System.out.println("Ablagestapel: ");
+					for(int i=0; i< croupier.getAblagestapel().size();i++){
+						System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
+					}
+					
+					System.out.println("Nachziehstapel: ");
+					for(int i=0; i< croupier.getNachziehstapel().size();i++){
+						System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
+					}
+					
+					System.out.println("Hole cards: ");
+					for(int i=0; i< croupier.getHoleCards().size();i++){
+						System.out.println(croupier.getHoleCards().get(i).getLbl_cardName().getText());
+					}*/
+
+        		strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase und zieht 5 neue Karten\n\n");
+        		
+        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
+        		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndBuy);
 
             	try {
-            		//model.out.reset();
-        			model.out.writeObject(history);
-        			model.out.flush();
+            		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
+            		//sl.getPlayer_OS().getOut().reset();
+            		sl.getPlayer_OS().getOut().writeObject(history);
+            		sl.getPlayer_OS().getOut().flush();
         		} catch (IOException e) {
         			// TODO Auto-generated catch block
         			e.printStackTrace();
         		}
-            	//setting the initial numbers of actions and buys so the player will start with 1 action and 1 buy when his turn will start again in the next round
-            	sl.getPlayer_noOS().setInitialActionsAndBuys();
             }
         });
         
-        sl.getButtonLeaveGamePlayer().setOnAction(new EventHandler<ActionEvent>() {
+       /** sl.getButtonLeaveGamePlayer().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	
@@ -220,38 +439,43 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	}
             	
             	sl.getButtonLeaveGamePlayer().setDisable(true);
-            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" verlässt das Spiel\n");
-            	GameHistory history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),GameHistory.HistoryType.LeaveGame);
-            	history.setLeavingPlayer(sl.getPlayer_noOS());
-            	
+            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" verlässt das Spiel\n\n");
+            	//here we set current_player of the playing stage as null so we don't overwrite the current_player saved on server-side (instance variable in class ClientHandler)
+            	GameHistory history;
+            	if(sl.getButtonEndActions().isDisabled() && sl.getButtonEndBuys().isDisabled()){
+            		//here we set current player as null
+            		history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),null,GameHistory.HistoryType.LeaveGame);
+            		history.setID();
+                	history.setLeavingPlayer(sl.getPlayer_noOS());
+            	}else{
+            		//the leaving player is also the current player
+            		history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),GameHistory.HistoryType.LeaveGame);
+            		//history.setID();
+                	history.setLeavingPlayer(sl.getPlayer_noOS());
+            	}
+           	
             	try {
-            		//model.out.reset();
-        			model.out.writeObject(history);
-        			model.out.flush();
+            		sl.getPlayer_OS().getOut().writeObject(history);
+            		sl.getPlayer_OS().getOut().flush();
         		} catch (IOException e) {
         			// TODO Auto-generated catch block
         			e.printStackTrace();
         		}
             	
             }
-        });  
+        }); */ 
         
     }
-    
-    
-    
-    
-    
-    
-    
+
     protected void sendMessageToServer() {
 		String name = model.getName();
 		String msg = view.tf_messagePlayingStage.getText();
 		ChatMessagePlayingStage cmsg = new ChatMessagePlayingStage(name, msg,sl.getCurrentGameParty());
+		//cmsg.setID();
 		
 		try {
-			model.out.writeObject(cmsg);
-			model.out.flush();
+			sl.getPlayer_OS().getOut().writeObject(cmsg);
+			sl.getPlayer_OS().getOut().flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

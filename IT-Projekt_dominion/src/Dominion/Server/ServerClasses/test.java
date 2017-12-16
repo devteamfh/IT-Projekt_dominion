@@ -1,4 +1,4 @@
-package Dominion.Server.ServerClasses;
+/*package Dominion.Server.ServerClasses;
 
 
 import com.sun.xml.internal.fastinfoset.util.StringArray;
@@ -30,7 +30,7 @@ public class test {
 				e.printStackTrace();
 			}*/
             
-            Database db = new Database();
+           /* Database db = new Database();
             
             db.createNewDatabase();
             db.createTables();
@@ -41,3 +41,4 @@ public class test {
         }
     }
 
+*/

@@ -166,7 +166,7 @@ public class Client_View_createGame extends View<Client_Model> {
 		    
 	    
 	    
-	    //Nodes
+	    //Nodebranches
 	    BorderPane root = new BorderPane();
 
 		
@@ -182,7 +182,7 @@ public class Client_View_createGame extends View<Client_Model> {
 	   	
 		    //Wrapper Content
 		    HBox hb_wrapper_Content = new HBox();
-		    hb_wrapper_Content.setPadding(new Insets(0,50,20,0));
+		    hb_wrapper_Content.setPadding(new Insets(0,50,0,0));
 		    
 		    VBox vb_wrapper_properties = new VBox();
 		    
@@ -208,7 +208,7 @@ public class Client_View_createGame extends View<Client_Model> {
 				    
 			    //Boxes for menu "Spielmodus"
 			    VBox vb_wrapper_Spielmodus = new VBox();
-			    vb_wrapper_Spielmodus.setPadding(new Insets(20,15,20,50));
+			    vb_wrapper_Spielmodus.setPadding(new Insets(20,15,0,50));
 			    
 			    	//Boxes for Menu items
 			    	HBox hb_wrapper_mode1 = new HBox();
@@ -227,7 +227,7 @@ public class Client_View_createGame extends View<Client_Model> {
 			    		//Boxes 
 			    		VBox vb_wrapper_btns_iRunden = new VBox();
 			    			 vb_wrapper_btns_iRunden.getChildren().addAll(btn_iRundenPLUS,btn_iRundenMINUS);
-			    			 vb_wrapper_btns_iRunden.setPadding(new Insets(10,70,5,15));
+			    			 vb_wrapper_btns_iRunden.setPadding(new Insets(10,70,0,15));
 			    			 
 			    			 
 			    			 
@@ -253,7 +253,7 @@ public class Client_View_createGame extends View<Client_Model> {
 		root.getStyleClass().add("bg_createGame");
 		
 		this.scene = new Scene (root, 750, 410);
-		scene.getStylesheets().add(getClass().getResource("style_clientStart.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_clientStart.css").toExternalForm());
 	    stage.initStyle(StageStyle.TRANSPARENT);     
         return scene;
 		
