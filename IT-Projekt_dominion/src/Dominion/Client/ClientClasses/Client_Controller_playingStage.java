@@ -83,8 +83,8 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	CancelGame cancel = new CancelGame(party);
 
             	try {
-					sl.getPlayer_OS().getOut().writeObject(cancel);
-					sl.getPlayer_OS().getOut().flush();
+            		sl.getPlayer_OS().getOut().writeObject(cancel);
+            		sl.getPlayer_OS().getOut().flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -256,11 +256,11 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                	sl.getButtonEndActions().setDisable(true);
 						                	sl.getButtonEndBuys().setDisable(false);
 						                	
-						                	strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+						                	strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Aktionsphase\n");
 						                	strBuilderLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 						                	
 						                	//we don't send a card here, so set it null
-						                	GameHistory history2 = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndAction);
+						                	GameHistory history2 = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndAction);
 						
 						                	try {
 						                		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
@@ -286,10 +286,10 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                	
 						                	sl.getButtonEndBuys().setDisable(true);
 						
-						            		strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
+						            		strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Kaufphase\n\n");
 						            		
 						            		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
-						            		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndBuy);
+						            		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndBuy);
 						
 						            		
 						            		//Restliche Karten in h�nden werden auf ablagestapel gelegt
@@ -344,15 +344,17 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	sl.getButtonEndActions().setDisable(true);
             	sl.getButtonEndBuys().setDisable(false);
             	
-            	strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+            	strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Aktionsphase\n");
             	strBuilderLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
             	
             	//we don't send a card here, so set it null
-            	GameHistory history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndAction);
+            	GameHistory history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndAction);
 
             	try {
             		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
             		//sl.getPlayer_OS().getOut().reset();
+            		//model.out.writeObject(history);
+            		//model.out.flush();
             		sl.getPlayer_OS().getOut().writeObject(history);
             		sl.getPlayer_OS().getOut().flush();
         		} catch (IOException e) {
@@ -413,10 +415,10 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						System.out.println(croupier.getHoleCards().get(i).getLbl_cardName().getText());
 					}*/
 
-        		strBuilderTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase und zieht 5 neue Karten\n\n");
+        		strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Kaufphase und zieht 5 neue Karten\n\n");
         		
         		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
-        		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.EndBuy);
+        		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndBuy);
 
             	try {
             		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)

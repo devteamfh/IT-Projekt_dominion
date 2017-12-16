@@ -111,19 +111,19 @@ import javafx.stage.StageStyle;
 								strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase und zieht 5 neue Karten\n\n");
 				        		
 			            		//Restliche Karten in h�nden werden auf ablagestapel gelegt
-			            		croupier.muckHoleCards();
+			            		//croupier.muckHoleCards();
 			            		
 			            		//es werden 5 neue Karten gezogen
-			            		croupier.drawHoleCards();
+			            		//croupier.drawHoleCards();
 			            		
 								
 				        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
-				        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.text_DE, GameHistory.HistoryType.EndBuy);
+				        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.lbl_cardName.getText(),mc.text_DE, GameHistory.HistoryType.EndBuy);
 				        		
 							}else{
 								strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 								strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" hat noch weitere Käufe\n");
-								history = new GameHistory (strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.text_DE, GameHistory.HistoryType.BuyNoPointCard);
+								history = new GameHistory (strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.getLbl_cardName().getText(),mc.text_DE, GameHistory.HistoryType.BuyNoPointCard);
 								
 							}
 							
@@ -157,7 +157,7 @@ import javafx.stage.StageStyle;
 
 						String textForTextArea = sl.getPlayer_noOS().getUsername()+" spielt "+mc.text_DE+"-Karte und gewinnt "+buyPower+" Geld\n";
 						String textForLabel = "an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld";
-						GameHistory history = new GameHistory(textForTextArea,textForLabel,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.PlayCard);
+						GameHistory history = new GameHistory(textForTextArea,textForLabel,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.PlayCard);
 						
 						try {
 							sl.getPlayer_OS().getOut().reset(); //noch testen ohne reset
@@ -201,7 +201,7 @@ import javafx.stage.StageStyle;
 								}
 							}
 							
-							GameHistory history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.Trash);
+							GameHistory history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.Trash);
 							
 							try {
 								//sl.getPlayer_OS().getOut().reset();

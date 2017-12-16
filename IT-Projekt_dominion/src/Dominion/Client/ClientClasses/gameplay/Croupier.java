@@ -77,6 +77,10 @@ public class Croupier  extends Observable {
             croupier = new Croupier();
         return croupier;
     }
+    
+    public static void setCroupierNull(){
+    	croupier=null;
+    }
   
     private Croupier() {
 

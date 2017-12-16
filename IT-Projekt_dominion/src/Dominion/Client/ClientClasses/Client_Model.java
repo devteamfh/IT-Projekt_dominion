@@ -10,6 +10,7 @@ import java.net.Socket;
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.Model;
 import Dominion.appClasses.PlayerWithOS;
+import Dominion.appClasses.PlayerWithoutOS;
 
 /**
  * MVC Pattern:
@@ -29,6 +30,8 @@ public class Client_Model extends Model {
     private InetAddress addr;
     private int port;    
     boolean connected = false;
+    private PlayerWithoutOS player;
+    private PlayerWithOS player_OS;
   
     /**
      * @author Joel Henz
@@ -88,6 +91,22 @@ public class Client_Model extends Model {
 	
 	public Socket getSocket (){
 		return this.client;
+	}
+	
+	public PlayerWithoutOS getPlayer(){
+		return this.player;
+	}
+	
+	public void setPlayer(PlayerWithoutOS player){
+		this.player=player;
+	}
+	
+	public PlayerWithOS getPlayer_OS(){
+		return this.player_OS;
+	}
+	
+	public void setPlayer(PlayerWithOS player_OS){
+		this.player_OS =player_OS;
 	}
 	
 }

@@ -256,10 +256,10 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             		String name = view.tf_userName.getText();
                 	model.setName(name);
                 	PlayerWithOS player_OS = new PlayerWithOS (name,model.getOutput());
-                	sl.setPlayer_OS(player_OS);
+                	model.setPlayer(player_OS);
                 	
                 	PlayerWithoutOS player_noOS = new PlayerWithoutOS (name);
-                	sl.setPlayer_noOS(player_noOS);
+                	model.setPlayer(player_noOS);
                 	
                 	//the StartInformation object is needed on server-side so the server can store the username and statistics of all connected players
                 	StartInformation current = new StartInformation(model.getName());
@@ -274,10 +274,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
         			current.setAtt9          (checkUserData.getAl_currentUserandStats().get(9));
                 	
         			try {
-        				sl.getPlayer_OS().getOut().writeObject(current);
-        				sl.getPlayer_OS().getOut().flush();
-						/**model.getOutput().writeObject(current);
-						model.getOutput().flush();*/
+						model.getOutput().writeObject(current);
+						model.getOutput().flush();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

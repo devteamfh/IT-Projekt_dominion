@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import Dominion.ServiceLocator;
 import Dominion.Client.abstractClasses.View;
+import Dominion.appClasses.PlayerWithOS;
+import Dominion.appClasses.PlayerWithoutOS;
 import Dominion.appClasses.StartInformation;
 import Dominion.appClasses.UpdateLobby;
 import javafx.collections.FXCollections;
@@ -52,7 +54,7 @@ public class Client_View_lobby extends View<Client_Model> {
 
     TextArea chatWindow;
     Scene scene;
-    ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
+    ServiceLocatorClient sl;
     String PlayerName;
     Label name;
     Label yourSign;
@@ -71,10 +73,16 @@ public class Client_View_lobby extends View<Client_Model> {
 	
 	protected Scene create_GUI() {
 
-	    ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();  
+	    sl = ServiceLocatorClient.getServiceLocator();  
 	    sl.setListView();
 		sl.getListView().setPrefSize(730,200);
 		sl.getListView().setStyle("-fx-opacity: 0.80;");
+		
+		PlayerWithoutOS player = new PlayerWithoutOS(model.getName());
+		
+		sl.setPlayerName(model.getName());
+		sl.setPlayer_noOS(player);
+		sl.setPlayer_OS(model.getPlayer_OS());
 
 		btn_newGame = new customButton ("neues Spiel");
 		btn_newGame.getStyleClass().addAll("btn","btn_view");
@@ -88,10 +96,13 @@ public class Client_View_lobby extends View<Client_Model> {
 		btn_enterGame.setDisable(true);
 		
 		//CHAT
-		chatWindow = sl.getTextAreaChatLobby();
+		chatWindow = new TextArea();
+				//sl.getTextAreaChatLobby();
 		chatWindow.setEditable(false);
 		chatWindow.setPrefSize(820, 150);
 		chatWindow.setStyle("-fx-opacity: 0.80;");
+		
+		sl.setTextAreaLobby(chatWindow);
 		
 		tf_message = new TextField();
 		tf_message.setPrefSize(450,40);
@@ -307,8 +318,10 @@ public class Client_View_lobby extends View<Client_Model> {
 	    UpdateLobby toUpdate = new UpdateLobby();
 	    
 	    try {
-			model.out.writeObject(toUpdate);
-			model.out.flush();
+	    	sl.getPlayer_OS().getOut().writeObject(toUpdate);
+	    	sl.getPlayer_OS().getOut().flush();
+			//model.out.writeObject(toUpdate);
+			//model.out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

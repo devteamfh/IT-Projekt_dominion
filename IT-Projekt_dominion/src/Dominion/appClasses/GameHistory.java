@@ -23,7 +23,10 @@ public class GameHistory extends GameObject{
 	private PlayerWithoutOS leavingPlayer;
 	private PlayerWithoutOS winner;
 	private HistoryType type;
-	private String card;
+	private String card_EN;
+	private String card_DE;
+	private boolean buy_AC=false;
+	private int index_AC;
 	
 	public enum HistoryType {
 		 EndAction, EndBuy, LeaveGame, UpdateLobbyAfterLeave,
@@ -47,16 +50,33 @@ public class GameHistory extends GameObject{
 	
 	
 	//we use this constructor while playing (playing cards, ending action phase, ending buy phase, buying cards)
-	public GameHistory(String textForTextArea, String textForLabel, GameParty party,PlayerWithoutOS currentPlayer,String card, HistoryType type){
+	public GameHistory(String textForTextArea, String textForLabel, GameParty party,PlayerWithoutOS currentPlayer,String card_EN,String card_DE, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
 		this.textForTextArea=textForTextArea;
 		this.textForLabel=textForLabel;
 		this.party=party;
 		this.currentPlayer=currentPlayer;
-		this.card=card;
+		this.card_EN=card_EN;
+		this.card_DE=card_DE;
 		this.type=type;
 	}
+	
+	//constructor only needed when we buy an action card for reducing the stack on client-side (ReadMsg...)
+		public GameHistory(String textForTextArea, String textForLabel, GameParty party,PlayerWithoutOS currentPlayer,String card_EN,String card_DE, HistoryType type, boolean buy_AC, int index_AC){
+			super(GameObject.ObjectType.GameHistory);
+			this.id=-1;
+			this.textForTextArea=textForTextArea;
+			this.textForLabel=textForLabel;
+			this.party=party;
+			this.currentPlayer=currentPlayer;
+			this.card_EN=card_EN;
+			this.card_DE=card_DE;
+			this.type=type;
+			this.buy_AC=buy_AC;
+			this.index_AC=index_AC;
+			
+		}
 	
 	public void setID(){
 		if (this. id == -1){
@@ -92,8 +112,8 @@ public class GameHistory extends GameObject{
 		this.textForTextArea = "";
 	}
 	
-	public String getGameCard(){
-		return this.card;
+	public String getGameCard_EN(){
+		return this.card_EN;
 	}
 	
 	public HistoryType getHistoryType(){
@@ -134,6 +154,14 @@ public class GameHistory extends GameObject{
 	
 	public PlayerWithoutOS getWinner(){
 		return this.winner;
+	}
+	
+	public boolean getBuy_AC(){
+		return this.buy_AC;
+	}
+	
+	public int getIndex_AC(){
+		return this.index_AC;
 	}
 	
 

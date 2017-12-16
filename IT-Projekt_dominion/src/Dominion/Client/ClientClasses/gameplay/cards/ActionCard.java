@@ -23,7 +23,7 @@ import javafx.stage.StageStyle;
 * 
 */
 public class ActionCard extends GameCard{
-		ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
+		ServiceLocatorClient sl;
 		int adtnlActions; //+ aktionen
 		int adtnlBuys; //+ käufe
 		int adtnlBuyPower; //+geld
@@ -38,6 +38,7 @@ public class ActionCard extends GameCard{
 			this.adtnlActions  = adtnlActions;
 			this.adtnlBuys     = adtnlBuys;
 			this.adtnlBuyPower = adtnlMoneyToSpend;
+			sl = ServiceLocatorClient.getServiceLocator();
 			this.addClickListener();
 			
 	}
@@ -66,6 +67,9 @@ public class ActionCard extends GameCard{
 						//buyPower reduzieren
 						croupier.setBuyPower(croupier.getBuyPower()-ac.costs);
 						
+						int index_AC = croupier.getAl_communityActionCards().indexOf(ac);
+						boolean buy_AC = true;
+						
 						//gekaufte karte auf ablagestapel legen
 						ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower,ac.text_DE);
 						croupier.addObserver(newCard);
@@ -78,7 +82,7 @@ public class ActionCard extends GameCard{
 		            		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
 		            	}
 						
-						strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" kauft eine "+ac.text_DE+"-Karte\n");
+						strBuilderForTextArea.append(sl.getPlayerName()+" kauft eine "+ac.text_DE+"-Karte\n");
 						
 						GameHistory history;
 						
@@ -96,14 +100,14 @@ public class ActionCard extends GameCard{
 			            		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
 			            	}
 			            	
-							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
+							strBuilderForTextArea.append(sl.getPlayerName()+" beendet Kaufphase\n\n");
 			        		
 			        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
-			        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.text_DE, GameHistory.HistoryType.EndBuy);
+			        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.lbl_cardName.getText(),ac.text_DE, GameHistory.HistoryType.EndBuy,buy_AC,index_AC);
 			        		
 						}else{
 							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
-							history = new GameHistory (strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.text_DE, GameHistory.HistoryType.BuyNoPointCard);
+							history = new GameHistory (strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.lbl_cardName.getText(),ac.text_DE, GameHistory.HistoryType.BuyNoPointCard,buy_AC,index_AC);
 							
 						}
 						
@@ -195,7 +199,7 @@ public class ActionCard extends GameCard{
 						croupier.setDiscardMode(true); //achtung danach wieder auf false wenn action gemacht
 						
 						//not necessary that we send the card because the other players won't interact with this event
-						history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.PlayCard);
+						history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.PlayCard);
 						
 						break;
 						
@@ -205,7 +209,7 @@ public class ActionCard extends GameCard{
 						
 						croupier.setActionMode(false);
 
-						history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.text_DE, GameHistory.HistoryType.PlayCard);
+						history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.getLbl_cardName().getText(),ac.text_DE, GameHistory.HistoryType.PlayCard);
 						break;
 						
 					case "forge":
@@ -215,7 +219,7 @@ public class ActionCard extends GameCard{
 						croupier.getNewHoleCards(3);
 						
 						//not necessary that we send the card because the other players won't interact with this event
-						history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.PlayCard);
+						history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.PlayCard);
 						break;
 					
 					case "funfair":
@@ -301,7 +305,7 @@ public class ActionCard extends GameCard{
 							}
 						}
 						
-						GameHistory history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.Trash);
+						GameHistory history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.Trash);
 						
 						try {
 							//sl.getPlayer_OS().getOut().reset();

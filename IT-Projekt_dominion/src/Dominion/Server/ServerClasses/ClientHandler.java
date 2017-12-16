@@ -328,7 +328,7 @@ public class ClientHandler implements Runnable {
 							//check first if there was a buy of a point card
 							try{  
 
-								if(history.getGameCard().equals("Anwesen") || history.getGameCard().equals("Herzogtum") || history.getGameCard().equals("Provinz")){
+								if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
 									//first search the corresponding GamePartyOnServer
 									GamePartyOnServer current2=null;
 									long id4 = history.getGameParty().getID();									
@@ -565,7 +565,7 @@ public class ClientHandler implements Runnable {
 							break;
 							
 						case BuyPointCard:
-							if(history.getGameCard().equals("Anwesen") || history.getGameCard().equals("Herzogtum") || history.getGameCard().equals("Provinz")){
+							if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
 								//first search the corresponding GamePartyOnServer
 								long id4 = history.getGameParty().getID();
 								GamePartyOnServer current3=null;

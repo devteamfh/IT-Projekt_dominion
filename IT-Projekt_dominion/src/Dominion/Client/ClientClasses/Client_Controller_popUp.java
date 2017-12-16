@@ -4,6 +4,7 @@ import Dominion.Client.abstractClasses.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -73,6 +74,8 @@ public class Client_Controller_popUp extends Controller<Client_Model, Client_Vie
 				            public void handle(ActionEvent event) {
 				
 				                    	view.stop();
+				                    	 
+	                    	
 				            }
                 
                 });

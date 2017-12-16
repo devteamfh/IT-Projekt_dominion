@@ -79,6 +79,14 @@ public class VictoryCard extends GameCard{
 					newCard.assignPicture(); 
 					newCard.setHoleCard(true);
 					
+					//increase the points for this player within his current GameParty
+					/**for(int i=0; i<sl.getCurrentGameParty().getArrayListOfPlayers().size();i++){
+						if(sl.getPlayer_noOS().getUsername().equals(sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getUsername())){
+							sl.getCurrentGameParty().getArrayListOfPlayers().get(i).increasePoints(pc.getMatchPoints());
+							break;
+						}
+					}*/
+					
 					sl.getPlayer_noOS().increasePoints(pc.getMatchPoints());
 					
 					System.out.println("ablagestapel neu, karte gekauft und treasure cards verwendet");
@@ -107,11 +115,11 @@ public class VictoryCard extends GameCard{
 						strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
 		        		
 		        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
-		        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),pc.text_DE, GameHistory.HistoryType.EndBuy);
+		        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),pc.lbl_cardName.getText(),pc.text_DE, GameHistory.HistoryType.EndBuy);
 		        		
 					}else{
 						strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
-						history = new GameHistory (strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),pc.text_DE, GameHistory.HistoryType.BuyPointCard);
+						history = new GameHistory (strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),pc.lbl_cardName.getText(),pc.text_DE, GameHistory.HistoryType.BuyPointCard);
 						
 					}
 					
@@ -170,7 +178,7 @@ public class VictoryCard extends GameCard{
 						}
 					}
 					
-					GameHistory history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null, GameHistory.HistoryType.Trash);
+					GameHistory history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.Trash);
 					
 					try {
 						//sl.getPlayer_OS().getOut().reset();

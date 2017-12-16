@@ -172,7 +172,10 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
         	   JoinGameParty gameToJoin = new JoinGameParty(joinGame,model.getName());
         	   
         	   try {
-        		   sl.getPlayer_OS().getOut().reset(); //in case a player joins a game, leaves and rejoins the same game party (after leaving it is possible that another player has joined game before the leaving player rejoins)
+        		   //model.out.reset(); //in case a player joins a game, leaves and rejoins the same game party (after leaving it is possible that another player has joined game before the leaving player rejoins)
+        		   //model.out.writeObject(gameToJoin);
+        		   //model.out.flush();
+        		   sl.getPlayer_OS().getOut().reset();//in case a player joins a game, leaves and rejoins the same game party (after leaving it is possible that another player has joined game before the leaving player rejoins)
         		   sl.getPlayer_OS().getOut().writeObject(gameToJoin);
         		   sl.getPlayer_OS().getOut().flush();
 				
@@ -253,8 +256,8 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 		
 		try {
 			
-			sl.getPlayer_OS().getOut().writeObject(cmsg);
-			sl.getPlayer_OS().getOut().flush();
+ 		   	sl.getPlayer_OS().getOut().writeObject(cmsg);
+ 		   	sl.getPlayer_OS().getOut().flush();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
