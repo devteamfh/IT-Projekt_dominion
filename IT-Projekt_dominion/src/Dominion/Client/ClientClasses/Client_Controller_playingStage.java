@@ -238,8 +238,8 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                		strBuilderLabel.delete(0, strBuilderLabel.length());
 						                	}
 						                	
-						                	sl.getButtonEndActions().setDisable(true);
-						                	sl.getButtonEndBuys().setDisable(false);
+						                	//sl.getButtonEndActions().setDisable(true);
+						                	//sl.getButtonEndBuys().setDisable(false);
 						                	
 						                	strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Aktionsphase\n");
 						                	strBuilderLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
