@@ -397,7 +397,7 @@ public class ReadMsgFromServer implements Runnable {
 								@Override 
 						           public void run() {
 									
-									sl.getButtonEndActions().setDisable(false);
+									//sl.getButtonEndActions().setDisable(false);
 									croupier.setActionMode(true);
 									croupier.setActions(1);
 									croupier.setBuys(1);

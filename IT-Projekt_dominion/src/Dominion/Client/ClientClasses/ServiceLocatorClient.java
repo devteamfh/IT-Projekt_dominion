@@ -259,7 +259,7 @@ public class ServiceLocatorClient {
 	public void prepareGame(GameParty party){		
 		if(party.getHost().getUsername().equals(this.player_noOS.getUsername())){
 			//this.playAction.setDisable(false);
-			this.endAction.setDisable(false);
+			//this.endAction.setDisable(false);
 			this.croupier.setActionMode(true);
 			this.croupier.setActions(1);
 			this.croupier.setBuys(1);

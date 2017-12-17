@@ -269,7 +269,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
 						                	croupier.setBuyPower(0);
 						                	
-						                	sl.getButtonEndBuys().setDisable(true);
+						                	//sl.getButtonEndBuys().setDisable(true);
 						
 						            		strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Kaufphase\n\n");
 						            		strBuilderLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");

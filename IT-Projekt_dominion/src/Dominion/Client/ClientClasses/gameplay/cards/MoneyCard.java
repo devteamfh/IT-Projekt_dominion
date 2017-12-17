@@ -92,7 +92,7 @@ import javafx.stage.StageStyle;
 					            	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
 					            	croupier.setBuyPower(0);
 					            	
-					            	sl.getButtonEndBuys().setDisable(true);
+					            	//sl.getButtonEndBuys().setDisable(true);
 					            	
 					            	croupier.removeHoleCards();
 					            	
@@ -176,8 +176,8 @@ import javafx.stage.StageStyle;
 									croupier.setTrashCounter(0);
 									if(croupier.getActions()==0){
 										croupier.setBuyMode(true);
-										sl.getButtonEndActions().setDisable(true);
-										sl.getButtonEndBuys().setDisable(false);
+									//	sl.getButtonEndActions().setDisable(true);
+										//sl.getButtonEndBuys().setDisable(false);
 										strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
 									}else{
 										croupier.setActionMode(true);
@@ -244,8 +244,8 @@ import javafx.stage.StageStyle;
 								if(croupier.getActions()==0){
 									croupier.setBuyMode(true);
 						        	
-						        	sl.getButtonEndActions().setDisable(true);
-						        	sl.getButtonEndBuys().setDisable(false);
+						        	//sl.getButtonEndActions().setDisable(true);
+						        	//sl.getButtonEndBuys().setDisable(false);
 						        	
 									strBuilderForTextArea.append(sl.getPlayerName()+" beendet Aktionsphase\n");
 
