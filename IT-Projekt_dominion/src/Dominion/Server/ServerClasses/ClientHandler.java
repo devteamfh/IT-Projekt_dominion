@@ -639,6 +639,16 @@ public class ClientHandler implements Runnable {
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
 							}
+							//break case Trash
+							break;
+							
+						case MineModeEnd:
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							break;
 
 						
 						}

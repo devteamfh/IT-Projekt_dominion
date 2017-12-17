@@ -158,12 +158,12 @@ public class ActionCard extends GameCard{
 							
 							break;
 							
-						case "chapel": //to do entsprechender allzweck button label setzen "Wegwerfen beenden"; methode bei if clause noch verfeinern
+						case "chapel": //to do entsprechender allzweck button label setzen "Wegwerfen beenden"; methode bei if clause noch verfeinern; if actions =0 noch einbauen
+							
+							croupier.setActionMode(false);
 							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte und darf bis 4 Karten aus der Hand wegwerfen\n");
 							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 							
-							croupier.setActionMode(false);
-
 							history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.getLbl_cardName().getText(),ac.text_DE, GameHistory.HistoryType.PlayCard);
 							break;
 							
@@ -287,7 +287,16 @@ public class ActionCard extends GameCard{
 						case "militia":
 							break;
 							
-						case "mine"://hier weiterfahren
+						case "mine"://custom button "Minen-Aktion beenden", ansonsten done
+							croupier.setActionMode(false);
+							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte: darf eine Geldkarte entsorgen und eine neue erwerben,\ndie bis zu 3 Geld mehr kostet als die Weggeworfene\n");
+							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							
+							//specific action
+							//done above
+
+							history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.getLbl_cardName().getText(),ac.text_DE, GameHistory.HistoryType.PlayCard);
+
 							break;
 							
 						case "moat":

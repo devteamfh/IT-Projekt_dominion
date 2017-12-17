@@ -62,6 +62,8 @@ public class GameCard extends Button implements Observer  {
 		
 		
 		getStyleClass().remove("highlight");
+		getStyleClass().remove("highlight2");
+		getStyleClass().remove("highlight3");
 		
 		//Highlighte alle Karten im Kaufmodus, welche ich mit der aktuelln Buypower und buys kaufen kann
 		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard() && croupier.getBuys() > 0){
@@ -94,19 +96,19 @@ public class GameCard extends Button implements Observer  {
 		}
 		
 		//Highlighte alle MoneyCards, welche erworben werden können im Minen-Modus
-		if (croupier.isModeForMine() == true && this instanceof MoneyCard && !this.isHoleCard()){
+		if (croupier.isModeForMine() == true && this instanceof MoneyCard && !this.isHoleCard() && this.costs <= croupier.getSavedMCValueForMineMode()){
 			this.getStyleClass().add("highlight3");
 		}
 		
 		//Highlight wegnehmen wenn Trash Modus wieder verlassen wird (Kapelle, Mine)
-		if ((croupier.isTrashModeChapel() == false && this.isHoleCard())   ||   (croupier.isTrashModeMine() == false && this.isHoleCard() && this instanceof MoneyCard)){
-			this.getStyleClass().remove("highlight2");
-		}
+		//if ((croupier.isTrashModeChapel() == false && this.isHoleCard())   ||   (croupier.isTrashModeMine() == false && this.isHoleCard() && this instanceof MoneyCard)){
+			//this.getStyleClass().remove("highlight2");
+		//}
 		
 		//Highlight wegnehmen wenn Minen-Modus wieder verlassen wird
-		if ((croupier.isModeForMine() == false && !this.isHoleCard())  && this instanceof MoneyCard){
-			this.getStyleClass().remove("highlight3");
-		}
+		//if ((croupier.isModeForMine() == false && !this.isHoleCard())  && this instanceof MoneyCard){
+			//this.getStyleClass().remove("highlight3");
+		//}
 		
 		//wenn stacksize auf 0, wird highlighting ebenfalls deaktiviert
 		if (croupier.getStackSize(gc) == 0) {
@@ -160,6 +162,7 @@ public class GameCard extends Button implements Observer  {
 	public void setLbl_cardName(Label lbl_cardName) {
 		this.lbl_cardName = lbl_cardName;
 	}
+	
 
 	
 	

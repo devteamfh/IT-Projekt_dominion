@@ -42,6 +42,8 @@ public class Croupier  extends Observable {
 	int actions;
 	int buys;
 	int counterTrashedCards;
+	int savedMCValueForMineMode;
+	int discardCounter;
 	
 
 	Label lbl_buyPower = new Label();
@@ -373,8 +375,8 @@ public class Croupier  extends Observable {
 		return this.modeForMine;
 	}
 	
-	public void setModeForMine(boolean trashMode){
-		this.modeForMine = trashMode;
+	public void setModeForMine(boolean mode){
+		this.modeForMine = mode;
 		setChanged();
 		notifyObservers();
 	}
@@ -616,8 +618,21 @@ public class Croupier  extends Observable {
 	public int getTrashCounter(){
 		return this.counterTrashedCards;
 	}
-
-
-
+	
+	public void setMCValueForMineMode(int costs_MC){
+		this.savedMCValueForMineMode = costs_MC+3;
+	}
+	
+	public int getSavedMCValueForMineMode(){
+		return this.savedMCValueForMineMode;
+	}
+	
+	public void increaseDiscardedCards(){
+		this.discardCounter++;
+	}
+	
+	public int getDiscrardCounter(){
+		return this.discardCounter;
+	}
 	
 }

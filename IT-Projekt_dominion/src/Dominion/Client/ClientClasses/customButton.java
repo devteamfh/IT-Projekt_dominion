@@ -167,7 +167,25 @@ public class customButton extends Button implements Observer {
 		    			btn.setGraphic(lbl);	
 		           }
 			});
+		
+		
+		if (croupier.isDiscardMode() == true) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Tauschen beenden");
+					btn.setGraphic(lbl);
+		           }
+			});	
 		}
+		
+		}
+	
+		
 		
 		
 		
