@@ -119,7 +119,7 @@ public class VictoryCard extends GameCard{
 			        		history = new GameHistory(strBuilderForTextArea.toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),pc.lbl_cardName.getText(),pc.text_DE, GameHistory.HistoryType.EndBuy);
 			        		
 						}else{
-							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							strBuilderForLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 							history = new GameHistory (strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),pc.lbl_cardName.getText(),pc.text_DE, GameHistory.HistoryType.BuyPointCard);
 							
 						}

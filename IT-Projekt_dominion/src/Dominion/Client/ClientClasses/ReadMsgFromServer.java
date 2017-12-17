@@ -405,10 +405,9 @@ public class ReadMsgFromServer implements Runnable {
 					           public void run() {
 								
 								if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
-									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 								}else{
-									sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist an der Reihe: 1 Aktionen, 1 Käufe, 0 Geld");
+									sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist am Zug\n1 Aktionen, 1 Käufe, 0 Geld");
 								}
 								
 					           }
@@ -629,7 +628,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug");
 									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
@@ -662,7 +661,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug");
 									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
@@ -706,7 +705,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug");
 									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
@@ -877,11 +876,11 @@ public class ReadMsgFromServer implements Runnable {
 			croupier.setBuys(1);
 			croupier.setBuyPower(0);
 			
-			sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
+			sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug");
 			//sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 
 		}else{
-			sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist an der Reihe: 1 Aktionen, 1 Käufe, 0 Geld");
+			sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist am Zug\n1 Aktionen, 1 K�ufe, 0 Geld");
 		}
 	}
 	

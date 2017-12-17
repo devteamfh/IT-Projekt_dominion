@@ -140,7 +140,7 @@ import javafx.stage.StageStyle;
 							
 
 							String textForTextArea = sl.getPlayer_noOS().getUsername()+" spielt "+mc.text_DE+"-Karte und gewinnt "+buyPower+" Geld\n";
-							String textForLabel = "an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld";
+							String textForLabel = "am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld";
 							GameHistory history = new GameHistory(textForTextArea,textForLabel,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.PlayCard);
 							
 							try {
