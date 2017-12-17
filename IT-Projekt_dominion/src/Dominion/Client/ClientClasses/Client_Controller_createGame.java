@@ -253,6 +253,7 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
         view.btn_finish.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	
             	PlayerWithoutOS creator = new PlayerWithoutOS(model.playerName);
             	
             	Cards cards = new Cards();
@@ -272,8 +273,10 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	}
 
             	try {
-					sl.getPlayer_OS().getOut().writeObject(newParty);
-					sl.getPlayer_OS().getOut().flush();
+            		sl.getPlayer_OS().getOut().writeObject(newParty);
+            		sl.getPlayer_OS().getOut().flush();
+					//model.out.writeObject(newParty);
+					//model.out.flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

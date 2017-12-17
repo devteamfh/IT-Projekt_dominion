@@ -34,12 +34,16 @@ public class Croupier  extends Observable {
 	boolean actionMode = false;
 	boolean buyMode    = false;
 	boolean discardMode = false;
-	boolean trashMode=false;
+	boolean trashModeChapel=false;
+	boolean trashModeMine = false;
+	boolean modeForMine = false;
 	
 	int buyPower = 0;
 	int actions;
 	int buys;
 	int counterTrashedCards;
+	int savedMCValueForMineMode;
+	int discardCounter;
 	
 
 	Label lbl_buyPower = new Label();
@@ -76,6 +80,10 @@ public class Croupier  extends Observable {
         if (croupier == null)
             croupier = new Croupier();
         return croupier;
+    }
+    
+    public static void setCroupierNull(){
+    	croupier=null;
     }
   
     private Croupier() {
@@ -121,6 +129,7 @@ public class Croupier  extends Observable {
 		case "gold":      setStackSizeGold(stackSizeGold-1);
 			break;
 		case "curse": 	  setStackSizeCurse(stackSizeCurse-1);
+			break;
 		}
 		
 		//dann ist es eine Community Action Card
@@ -342,12 +351,32 @@ public class Croupier  extends Observable {
 		notifyObservers();
 	}
 	
-	public boolean isTrashMode(){
-		return this.trashMode;
+	public boolean isTrashModeChapel(){
+		return this.trashModeChapel;
 	}
 	
-	public void setTrashMode(boolean trashMode){
-		this.trashMode = trashMode;
+	public void setTrashModeChapel(boolean trashMode){
+		this.trashModeChapel = trashMode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isTrashModeMine(){
+		return this.trashModeMine;
+	}
+	
+	public void setTrashModeMine(boolean trashMode){
+		this.trashModeMine = trashMode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isModeForMine(){
+		return this.modeForMine;
+	}
+	
+	public void setModeForMine(boolean mode){
+		this.modeForMine = mode;
 		setChanged();
 		notifyObservers();
 	}
@@ -589,8 +618,21 @@ public class Croupier  extends Observable {
 	public int getTrashCounter(){
 		return this.counterTrashedCards;
 	}
-
-
-
+	
+	public void setMCValueForMineMode(int costs_MC){
+		this.savedMCValueForMineMode = costs_MC+3;
+	}
+	
+	public int getSavedMCValueForMineMode(){
+		return this.savedMCValueForMineMode;
+	}
+	
+	public void increaseDiscardedCards(){
+		this.discardCounter++;
+	}
+	
+	public int getDiscrardCounter(){
+		return this.discardCounter;
+	}
 	
 }

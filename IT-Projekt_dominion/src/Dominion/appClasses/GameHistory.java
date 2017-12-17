@@ -23,12 +23,13 @@ public class GameHistory extends GameObject{
 	private PlayerWithoutOS leavingPlayer;
 	private PlayerWithoutOS winner;
 	private HistoryType type;
-	private String card;
+	private String card_EN;
+	private String card_DE;
 	
 	public enum HistoryType {
 		 EndAction, EndBuy, LeaveGame, UpdateLobbyAfterLeave,
 		 EndGame, PlayCard, BuyPointCard, BuyNoPointCard,
-		 Trash
+		 Trash, MineModeEnd
 		 };
 	
 	private static long nextMessageID() {		
@@ -47,14 +48,15 @@ public class GameHistory extends GameObject{
 	
 	
 	//we use this constructor while playing (playing cards, ending action phase, ending buy phase, buying cards)
-	public GameHistory(String textForTextArea, String textForLabel, GameParty party,PlayerWithoutOS currentPlayer,String card, HistoryType type){
+	public GameHistory(String textForTextArea, String textForLabel, GameParty party,PlayerWithoutOS currentPlayer,String card_EN,String card_DE, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
 		this.textForTextArea=textForTextArea;
 		this.textForLabel=textForLabel;
 		this.party=party;
 		this.currentPlayer=currentPlayer;
-		this.card=card;
+		this.card_EN=card_EN;
+		this.card_DE=card_DE;
 		this.type=type;
 	}
 	
@@ -92,8 +94,8 @@ public class GameHistory extends GameObject{
 		this.textForTextArea = "";
 	}
 	
-	public String getGameCard(){
-		return this.card;
+	public String getGameCard_EN(){
+		return this.card_EN;
 	}
 	
 	public HistoryType getHistoryType(){
@@ -135,6 +137,5 @@ public class GameHistory extends GameObject{
 	public PlayerWithoutOS getWinner(){
 		return this.winner;
 	}
-	
 
 }

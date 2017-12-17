@@ -88,14 +88,14 @@
 }
 /*------------------------------------------------------------------------------------------------- */	
 	
-	
-	
-	
-	
-	
+		
 .card {	
 		-fx-background-size: cover;
 		-fx-background-color: transparent;
+}
+
+.holeCard {
+	-fx-background-size: stretch;
 }
 
 .highlight {
@@ -104,6 +104,10 @@
 
 .highlight2 {
 	-fx-effect: dropshadow( gaussian , red , 7 , 0.7 , 0 , 0 );	
+}
+
+.highlight3 {
+	-fx-effect: dropshadow( gaussian , blue , 7 , 0.7 , 0 , 0 );	
 }
 
 .cardback2 {

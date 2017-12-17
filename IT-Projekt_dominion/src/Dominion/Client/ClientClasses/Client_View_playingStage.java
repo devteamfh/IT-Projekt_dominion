@@ -347,27 +347,11 @@ public class Client_View_playingStage extends View<Client_Model> {
 				//Leafes gameInformation
 				sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
 				
-				
-				hb_wrapper_ActionsBuysBuyPower = new HBox();
-				
-				hb_wrapper_ActionsBuysBuyPower.getChildren().addAll(
-					
-						lbl_descrActions, croupier.getLbl_actions()            	// actions label und Wert
-						,lbl_descrBuys, croupier.getLbl_buys()                  // buys label und Wert
-						,lbl_descrBuyPower, croupier.getLbl_buyPower());     	// buypower label und wert) 
-								
 						//LabelStyling
-						sl.getLabelNumberOfActionsAndBuys().getStyleClass().add("h1");
-						lbl_descrActions.getStyleClass().add("h2");
-						croupier.getLbl_actions().getStyleClass().add("h2");
-						lbl_descrBuys.getStyleClass().add("h2");
-						croupier.getLbl_buys().getStyleClass().add("h2");  
-						lbl_descrBuyPower.getStyleClass().add("h2");
-						croupier.getLbl_buyPower().getStyleClass().add("h2"); 
-						
+						sl.getLabelNumberOfActionsAndBuys().getStyleClass().add("h1");						
 										
 			vb_wrapper_gameInformation_content.getChildren().addAll(
-					sl.getLabelNumberOfActionsAndBuys(), hb_wrapper_ActionsBuysBuyPower);
+					sl.getLabelNumberOfActionsAndBuys());
 					
 									
 							
@@ -459,12 +443,13 @@ public class Client_View_playingStage extends View<Client_Model> {
 		// ____________holecards  contorlbuttons   chat Window__________________________________________________________________//
 
 		customButton blank = new customButton();
-		blank.setMinSize(180, 240);
+		blank.setMinSize(160, 260);
 		customButton nachziehstapel = new customButton();
-		nachziehstapel.setMinSize(180, 240);
+		nachziehstapel.setMinSize(160, 260);
 
 		HBox hb_wrapper_bottom = new HBox();
 		hb_wrapper_bottom.setPadding(new Insets(0, 20, 20, 20));
+		hb_wrapper_bottom.setMinHeight(500);
 
 		// Ablage und Nachziehstapel
 		HBox hb_wrapper_stapel = new HBox();
@@ -477,7 +462,9 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 		// wrapper hole Cards
 		hb_wrapper_holeCards = new HBox();
-		hb_wrapper_holeCards.setMaxSize(800, 250);
+		hb_wrapper_holeCards.setMaxWidth(800);
+
+
 
 		// holeCards initialisieren (7 copper, 3 estates)
 		al_allStartingCards = new ArrayList<GameCard>();
@@ -488,13 +475,6 @@ public class Client_View_playingStage extends View<Client_Model> {
 		for (int i = 0; i <3; i++)
 			al_allStartingCards.add(new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate(), "Anwesen"));
 			
-		//alle Objekte in al_allStartingCards als "holeCards" true flaggieren und observer adden
-			/**al_allStartingCards
-					.add(new MoneyCard(new Label("copper"), croupier.getBuyPowerCopper(), croupier.getCostsCopper()));
-
-		for (int i = 0; i < 3; i++)
-			al_allStartingCards
-					.add(new VictoryCard(new Label("estate"), croupier.getCostsEstate(), croupier.getPointsEstate()));*/
 
 		// alle Objekte in al_allStartingCards als "holeCards" true flaggieren
 		// und observer adden
@@ -518,7 +498,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		for (int i = 0; i < croupier.getHoleCards().size(); i++) {
 			GameCard gc1 = croupier.getHoleCards().get(i);
 			hb_wrapper_holeCards.getChildren().add(gc1);
-			gc1.setPrefSize(180, 240);
+			gc1.setPrefSize(160, 260);
 		}
 		
 		
@@ -618,37 +598,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 		playedCards_hbox.getChildren().addAll(playedCard1, playedCard2, playedCard3);
 		vb_center.getChildren().add(playedCards_hbox);
 
-		// VBox vb_bottom = new VBox();
-		// vb_bottom.setPrefSize(800, 60);
 
-		HBox hb_stack_hand_endAction_endBuy = new HBox();
-		// hb_stack_hand_endAction_endBuy.setPrefSize(750, 120);
-
-		/*
-		 * HBox hb_hand = new HBox();
-		 * hb_hand.getChildren().addAll(provisorischCard1,
-		 * provisorischCard2,provisorischCard3);
-		 * 
-		 * VBox vb_stack_endGameHost = new VBox();
-		 * 
-		 * vb_stack_endGameHost.getChildren().addAll(tryUpdateshit,stack);
-		 * 
-		 * 
-		 * 
-		 * HBox.setMargin(vb_stack_endGameHost, new Insets(0, 100, 0, 0));
-		 * HBox.setMargin(yourHand, new Insets(0, 20, 0, 0));
-		 * HBox.setMargin(hb_hand, new Insets(0, 20, 0, 0));
-		 * 
-		 * hb_stack_hand_endAction_endBuy.getChildren().addAll(
-		 * vb_stack_endGameHost,yourHand,hb_hand,sl.getButtonPlayActions(),sl.
-		 * getButtonPlayBuy(),sl.getButtonEndActions(),sl.getButtonEndBuys());
-		 * hb_stack_hand_endAction_endBuy.setAlignment(Pos.TOP_CENTER);
-		 * 
-		 * vb_bottom.getChildren().addAll(sl.getLabelNumberOfActionsAndBuys(),
-		 * hb_stack_hand_endAction_endBuy);
-		 * 
-		 * vb_bottom.setAlignment(Pos.TOP_CENTER);
-		 */
+	
 		root.setTop(hb_custom_menue);
 		root.setLeft(hb_wrapper_communityCards_Left);
 		root.setCenter(vb_wrapper_center);
@@ -656,31 +607,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 		root.setBottom(hb_wrapper_bottom);
 		root.setPadding(new Insets(0,20,0,0));
 		
-		this.scene = new Scene(root, 1850, 900);
+		this.scene = new Scene(root, 1850, 920);
 		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_playStage.css").toExternalForm());
-		// stage.initStyle(StageStyle.TRANSPARENT);
-
-		scene.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				// System.out.println("mouse click detected! " +
-				// mouseEvent.getSource());
-
-				// redraw community cards left
-
-			/*	hb_wrapper_lblBuyPower.getChildren().clear();
-				hb_wrapper_lblBuyPower.getChildren().addAll(lbl_descrBuyPower, croupier.getLbl_buyPower());
-
-				hb_wrapper_lblActions.getChildren().clear();
-				hb_wrapper_lblActions.getChildren().addAll(lbl_descrActions, croupier.getLbl_actions());
-
-				hb_wrapper_lblBuys.getChildren().clear();
-				hb_wrapper_lblBuys.getChildren().addAll(lbl_descrBuys, croupier.getLbl_buys());
-			*/
-			}
-		});
-		
-
+		 stage.initStyle(StageStyle.TRANSPARENT);
+	
 		return scene;
 	}
 
@@ -691,18 +621,12 @@ public class Client_View_playingStage extends View<Client_Model> {
 		for (int i = 0; i < croupier.getHoleCards().size(); i++) {
 			GameCard gc1 = croupier.getHoleCards().get(i);
 			hb_wrapper_holeCards.getChildren().add(gc1);
-			gc1.setPrefSize(180, 240);
+			gc1.setPrefSize(160, 260);
+			gc1.setMaxWidth(160);
+
 		}
 
-		// Zeichhne Game status Informationen neu (m�nzen, buy, actions)
-
-		hb_wrapper_ActionsBuysBuyPower.getChildren().clear();
-		hb_wrapper_ActionsBuysBuyPower.getChildren().addAll(
-				
-				lbl_descrActions, croupier.getLbl_actions()            	// actions label und Wert
-				,lbl_descrBuys, croupier.getLbl_buys()                  // buys label und Wert
-				,lbl_descrBuyPower, croupier.getLbl_buyPower());     	// buypower label und wert) 
-		
+	
 
 		
 	}

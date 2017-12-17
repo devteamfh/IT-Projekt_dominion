@@ -46,6 +46,7 @@ public class ServiceLocatorClient {
 
     private Logger logger = Logger.getLogger("");
     
+    private String playerName;
     private PlayerWithoutOS player_noOS;
     private PlayerWithOS player_OS;
     //we need this to save because we need to know which player is currently playing when we leave the game
@@ -55,7 +56,7 @@ public class ServiceLocatorClient {
     private ToggleGroup numberOfPlayersGroup;
     private TextField inputNumberOfRounds;
     
-    private TextArea ta_ChatLobby = new TextArea();
+    private TextArea ta_ChatLobby =new TextArea();
     private TextArea ta_ChatPlayingStage = new TextArea();
     private TextArea ta_gameHistory = new TextArea();
     
@@ -65,6 +66,7 @@ public class ServiceLocatorClient {
     private Client_View_playingStage view_playingStage;
     private Client_View_createGame view_createGame;
     private Client_View_lobby view_lobby;
+    private Client_Model model;
  
     private GameParty currentGameParty;
     
@@ -104,9 +106,16 @@ public class ServiceLocatorClient {
      * @return The singleton resource locator
      */
     public static ServiceLocatorClient getServiceLocator() {
-        if (serviceLocator == null)
-            serviceLocator = new ServiceLocatorClient();
+        if (serviceLocator == null){
+        	serviceLocator = new ServiceLocatorClient();
+        	System.out.println("SL war null");
+        }
+        	
         return serviceLocator;
+    }
+    
+    public static void setServiceLocatorClientNull(){
+    	serviceLocator=null;
     }
 
     /**
@@ -129,6 +138,14 @@ public class ServiceLocatorClient {
 
     public void setLogger(Logger logger) {
         this.logger = logger;
+    }
+    
+    public void setPlayerName(String name){
+    	this.playerName=name;
+    }
+    
+    public String getPlayerName(){
+    	return this.playerName;
     }
     
     //player without ObjectOutputStream
@@ -253,16 +270,16 @@ public class ServiceLocatorClient {
 			
 			//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
 			
-			this.numberOfActionsAndBuys.setText("Du bist am Zug.");
+			this.numberOfActionsAndBuys.setText("Du bist am Zug---");
 			
 			this.ta_gameHistory.appendText("Spiel beginnt\n");
-			this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
+			this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist am Zug\n");
 			this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
 		}else{
-			this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist an der Reihe: 1 Aktionen, 1 Käufe, 0 Geld");
+			this.numberOfActionsAndBuys.setText(party.getHost().getUsername()+" ist am Zug\n1 Aktionen, 1 Käufe, 0 Geld");
 			
 			this.ta_gameHistory.appendText("Spiel beginnt\n");
-			this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist an der Reihe\n");
+			this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist am Zug\n");
 			this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
 		}
 
@@ -433,15 +450,25 @@ public class ServiceLocatorClient {
 		return this.croupier;
 	}
 	
-	public void clearCurrentGameParty(){
-		this.currentGameParty = null;
+	/**public void clearCurrentGameParty(){
+		/**this.currentGameParty = null;
 		this.view_playingStage.stop();
 		this.view_playingStage.root.getChildren().clear();
 		//set croupier singleton null
 		this.croupier.clear();
 		this.ta_ChatPlayingStage.clear();
 		this.ta_gameHistory.clear();
-	}
+		
+		if(croupier ==null){
+			System.out.println("croupier null");
+		}
+		ServiceLocatorClient = null;
+		Croupier.setCroupierNull();
+		
+		
+	}*/
+	
+	
 	
 
 
