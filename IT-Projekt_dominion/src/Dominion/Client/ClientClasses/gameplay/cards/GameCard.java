@@ -95,8 +95,23 @@ public class GameCard extends Button implements Observer  {
 			this.getStyleClass().add("highlight2");
 		}
 		
+		//Highlighte alle Karten auf der Hand, welche im Umbaumodus weggeworfen werden können
+		if (croupier.isTrashModeRebuilding() == true && this.isHoleCard()){
+			this.getStyleClass().add("highlight2");
+		}
+		
+		//Highlighte alle Kupferkarten auf der Hand, die gegen +3Geld weggeworfen werden können (ActionCard Geldverleiher)
+		if (croupier.isTrashModeMoneylender() == true && this.isHoleCard() && this.getLbl_cardName().getText().equals("copper")){
+			this.getStyleClass().add("highlight2");
+		}
+		
 		//Highlighte alle MoneyCards, welche erworben werden können im Minen-Modus
 		if (croupier.isModeForMine() == true && this instanceof MoneyCard && !this.isHoleCard() && this.costs <= croupier.getSavedMCValueForMineMode()){
+			this.getStyleClass().add("highlight3");
+		}
+		
+		//Highlighte alle Karten zum Kauf, welche erworben werden können im Rebuilding-Modus
+		if (croupier.isModeForRebuilding() == true && !this.isHoleCard() && this.costs <= croupier.getCardValueForRebuildingMode()){
 			this.getStyleClass().add("highlight3");
 		}
 		

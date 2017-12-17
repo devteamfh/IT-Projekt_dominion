@@ -37,12 +37,16 @@ public class Croupier  extends Observable {
 	boolean trashModeChapel=false;
 	boolean trashModeMine = false;
 	boolean modeForMine = false;
+	boolean trashModeMoneylender =false;
+	boolean trashModeRebuilding=false;
+	boolean modeForRebuilding = false;
 	
 	int buyPower = 0;
 	int actions;
 	int buys;
-	int counterTrashedCards;
+	int counterTrashedCardsModeChapel;
 	int savedMCValueForMineMode;
+	int savedCardValueForRebuildingMode;
 	int discardCounter;
 	
 
@@ -333,7 +337,6 @@ public class Croupier  extends Observable {
 		return actionMode;
 	}
 
-
 	public void setActionMode(boolean actionMode) {
 		
 		this.actionMode = actionMode;
@@ -361,6 +364,26 @@ public class Croupier  extends Observable {
 		notifyObservers();
 	}
 	
+	public boolean isTrashModeMoneylender(){
+		return this.trashModeMoneylender;
+	}
+	
+	public void setTrashModeMoneylender(boolean trashMode){
+		this.trashModeMoneylender = trashMode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isTrashModeRebuilding(){
+		return this.trashModeRebuilding;
+	}
+	
+	public void setTrashModeRebuilding(boolean trashMode){
+		this.trashModeRebuilding = trashMode;
+		setChanged();
+		notifyObservers();
+	}
+	
 	public boolean isTrashModeMine(){
 		return this.trashModeMine;
 	}
@@ -381,8 +404,18 @@ public class Croupier  extends Observable {
 		notifyObservers();
 	}
 	
-	public void setTrashCounter(int counter){
-		this.counterTrashedCards = counter;
+	public boolean isModeForRebuilding(){
+		return this.modeForRebuilding;
+	}
+	
+	public void setModeForRebuilding(boolean mode){
+		this.modeForRebuilding = mode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void setTrashCounterModeChapel(int counter){
+		this.counterTrashedCardsModeChapel = counter;
 	}
 
 
@@ -612,11 +645,11 @@ public class Croupier  extends Observable {
 	}
 	
 	public void increaseTrashedCards(){
-		this.counterTrashedCards++;
+		this.counterTrashedCardsModeChapel++;
 	}
 	
 	public int getTrashCounter(){
-		return this.counterTrashedCards;
+		return this.counterTrashedCardsModeChapel;
 	}
 	
 	public void setMCValueForMineMode(int costs_MC){
@@ -627,12 +660,24 @@ public class Croupier  extends Observable {
 		return this.savedMCValueForMineMode;
 	}
 	
+	public void setCardValueForRebuildingMode(int costs){
+		this.savedCardValueForRebuildingMode = costs+2;
+	}
+	
+	public int getCardValueForRebuildingMode(){
+		return this.savedCardValueForRebuildingMode;
+	}
+	
 	public void increaseDiscardedCards(){
 		this.discardCounter++;
 	}
 	
 	public int getDiscrardCounter(){
 		return this.discardCounter;
+	}
+	
+	public void setDiscardedCounter(int value){
+		this.discardCounter=value;
 	}
 	
 }

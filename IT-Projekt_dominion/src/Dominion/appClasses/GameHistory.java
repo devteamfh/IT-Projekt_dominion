@@ -29,7 +29,7 @@ public class GameHistory extends GameObject{
 	public enum HistoryType {
 		 EndAction, EndBuy, LeaveGame, UpdateLobbyAfterLeave,
 		 EndGame, PlayCard, BuyPointCard, BuyNoPointCard,
-		 Trash, MineModeEnd
+		 Trash, MineModeEnd, Discard, RebuildingModeEnd
 		 };
 	
 	private static long nextMessageID() {		

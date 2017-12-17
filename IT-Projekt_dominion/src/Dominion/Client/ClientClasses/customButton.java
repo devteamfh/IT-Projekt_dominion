@@ -183,6 +183,48 @@ public class customButton extends Button implements Observer {
 			});	
 		}
 		
+		if (croupier.isTrashModeMine() == true) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Dominion");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
+		if (croupier.isTrashModeChapel() == true) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Wegwerfen beenden");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
+		if (croupier.isTrashModeMoneylender() == true) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Dominion");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
 		}
 	
 		

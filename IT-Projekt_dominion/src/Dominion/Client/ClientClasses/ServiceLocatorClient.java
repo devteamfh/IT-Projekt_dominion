@@ -86,6 +86,9 @@ public class ServiceLocatorClient {
 
     private Label lbl_errMsgView = new Label("");   
     private Label lbl_popUpMessage = new Label("");
+    
+    private StringBuilder strBuilderForTextArea = new StringBuilder();
+	private StringBuilder strBuilderForLabel = new StringBuilder();
    
     //if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
   	//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
@@ -450,27 +453,14 @@ public class ServiceLocatorClient {
 		return this.croupier;
 	}
 	
-	/**public void clearCurrentGameParty(){
-		/**this.currentGameParty = null;
-		this.view_playingStage.stop();
-		this.view_playingStage.root.getChildren().clear();
-		//set croupier singleton null
-		this.croupier.clear();
-		this.ta_ChatPlayingStage.clear();
-		this.ta_gameHistory.clear();
-		
-		if(croupier ==null){
-			System.out.println("croupier null");
-		}
-		ServiceLocatorClient = null;
-		Croupier.setCroupierNull();
-		
-		
-	}*/
+	public StringBuilder getStrBuilderTextArea(){
+		return this.strBuilderForTextArea;
+	}
 	
+	public StringBuilder getStrBuilderLabel(){
+		return this.strBuilderForLabel;
+	}
 	
-	
-
 
 
 }
