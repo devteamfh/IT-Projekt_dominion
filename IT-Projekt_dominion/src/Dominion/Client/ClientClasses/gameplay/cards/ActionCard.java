@@ -299,7 +299,10 @@ public class ActionCard extends GameCard{
 						case "rebuilding":
 							break;
 							
-						case "village":
+						case "village": //done
+							
+							croupier.getNewHoleCards(1);
+							
 							break;
 							
 						case "witch":
