@@ -242,7 +242,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                	sl.getButtonEndBuys().setDisable(false);
 						                	
 						                	strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Aktionsphase\n");
-						                	strBuilderLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+						                	strBuilderLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 						                	
 						                	//we don't send a card here, so set it null
 						                	GameHistory history2 = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndAction);
@@ -272,9 +272,11 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                	sl.getButtonEndBuys().setDisable(true);
 						
 						            		strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Kaufphase\n\n");
+						            		strBuilderLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+						                	
 						            		
 						            		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
-						            		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndBuy);
+						            		GameHistory history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString() ,sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndBuy);
 						
 						            		
 						            		//Restliche Karten in h�nden werden auf ablagestapel gelegt
@@ -330,7 +332,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             	sl.getButtonEndBuys().setDisable(false);
             	
             	strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Aktionsphase\n");
-            	strBuilderLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+            	strBuilderLabel.append("an der Reihe\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
             	
             	//we don't send a card here, so set it null
             	GameHistory history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndAction);

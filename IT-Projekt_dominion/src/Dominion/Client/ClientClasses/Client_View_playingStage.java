@@ -347,27 +347,11 @@ public class Client_View_playingStage extends View<Client_Model> {
 				//Leafes gameInformation
 				sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
 				
-				
-				hb_wrapper_ActionsBuysBuyPower = new HBox();
-				
-				hb_wrapper_ActionsBuysBuyPower.getChildren().addAll(
-					
-						lbl_descrActions, croupier.getLbl_actions()            	// actions label und Wert
-						,lbl_descrBuys, croupier.getLbl_buys()                  // buys label und Wert
-						,lbl_descrBuyPower, croupier.getLbl_buyPower());     	// buypower label und wert) 
-								
 						//LabelStyling
-						sl.getLabelNumberOfActionsAndBuys().getStyleClass().add("h1");
-						lbl_descrActions.getStyleClass().add("h2");
-						croupier.getLbl_actions().getStyleClass().add("h2");
-						lbl_descrBuys.getStyleClass().add("h2");
-						croupier.getLbl_buys().getStyleClass().add("h2");  
-						lbl_descrBuyPower.getStyleClass().add("h2");
-						croupier.getLbl_buyPower().getStyleClass().add("h2"); 
-						
+						sl.getLabelNumberOfActionsAndBuys().getStyleClass().add("h1");						
 										
 			vb_wrapper_gameInformation_content.getChildren().addAll(
-					sl.getLabelNumberOfActionsAndBuys(), hb_wrapper_ActionsBuysBuyPower);
+					sl.getLabelNumberOfActionsAndBuys());
 					
 									
 							
@@ -694,15 +678,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 			gc1.setPrefSize(180, 240);
 		}
 
-		// Zeichhne Game status Informationen neu (m�nzen, buy, actions)
-
-		hb_wrapper_ActionsBuysBuyPower.getChildren().clear();
-		hb_wrapper_ActionsBuysBuyPower.getChildren().addAll(
-				
-				lbl_descrActions, croupier.getLbl_actions()            	// actions label und Wert
-				,lbl_descrBuys, croupier.getLbl_buys()                  // buys label und Wert
-				,lbl_descrBuyPower, croupier.getLbl_buyPower());     	// buypower label und wert) 
-		
+	
 
 		
 	}

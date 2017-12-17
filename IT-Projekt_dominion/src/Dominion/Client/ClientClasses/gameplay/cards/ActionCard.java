@@ -108,7 +108,7 @@ public class ActionCard extends GameCard{
 
 				        		
 							}else{
-								strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+								strBuilderForLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 								history = new GameHistory (strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.lbl_cardName.getText(),ac.text_DE, GameHistory.HistoryType.BuyNoPointCard);
 								
 							}
@@ -148,7 +148,7 @@ public class ActionCard extends GameCard{
 						
 						case "basement": //to do
 							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte und gewinnt 1 Aktion.\nZusätzlich kann er beliebig viele Karten tauschen\n");
-							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							strBuilderForLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 							
 							croupier.setActionMode(false);
 							croupier.setDiscardMode(true); //achtung danach wieder auf false wenn action gemacht
@@ -160,7 +160,7 @@ public class ActionCard extends GameCard{
 							
 						case "chapel": //to do entsprechender allzweck button label setzen "Wegwerfen beenden"; methode bei if clause noch verfeinern
 							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte und darf bis 4 Karten aus der Hand wegwerfen\n");
-							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							strBuilderForLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 							
 							croupier.setActionMode(false);
 
@@ -169,7 +169,7 @@ public class ActionCard extends GameCard{
 							
 						case "forge": //done
 							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte und darf 3 neue Karten ziehen\n");
-							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							strBuilderForLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 							
 							//specific action
 							croupier.getNewHoleCards(3);
@@ -192,7 +192,7 @@ public class ActionCard extends GameCard{
 						case "funfair"://done
 							
 							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte: gewinnt 2 Aktionen, 1 Kauf und 2 Geld\n");
-							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							strBuilderForLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 							
 							//specific action
 							//done above
@@ -215,7 +215,7 @@ public class ActionCard extends GameCard{
 						case "laboratory"://done
 							
 							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte: darf 2 Karten ziehen und gewinnt 1 Aktion\n");
-							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							strBuilderForLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 							
 							//specific action
 							//+action done above
@@ -239,7 +239,7 @@ public class ActionCard extends GameCard{
 						case "lumberjack"://done
 							
 							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte: gewinnt 1 Kauf und 2 Geld\n");
-							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							strBuilderForLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 							
 							//specific action
 							//done above
@@ -262,7 +262,7 @@ public class ActionCard extends GameCard{
 						case "market"://done
 							
 							strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte: gewinnt je 1 Karte, Aktion, Kauf und Geld\n");
-							strBuilderForLabel.append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							strBuilderForLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 							
 							//specific action
 							//done above and...
