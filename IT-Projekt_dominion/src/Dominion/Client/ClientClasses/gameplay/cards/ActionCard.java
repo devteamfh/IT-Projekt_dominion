@@ -87,7 +87,7 @@ public class ActionCard extends GameCard{
 				            	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
 				            	croupier.setBuyPower(0);
 				            	
-				            	sl.getButtonEndBuys().setDisable(true);
+				            	//sl.getButtonEndBuys().setDisable(true);
 				            	
 				            	croupier.removeHoleCards();
 				            	
@@ -364,8 +364,18 @@ public class ActionCard extends GameCard{
 						case "village": //done
 							
 							croupier.getNewHoleCards(1);
+							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte: gewinnt 2 Aktionen und zieht 1 Karte nach\n");
+							sl.getStrBuilderLabel().append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+							
+							//specific action
+							croupier.getNewHoleCards(1);
+							
+							//not necessary that we send the card because the other players won't interact with this event
+							history = new GameHistory(sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.PlayCard);
+												
 							
 							break;
+
 							
 						case "witch":
 							break;
@@ -446,9 +456,9 @@ public class ActionCard extends GameCard{
 								
 								if(croupier.getActions()==0){
 									croupier.setBuyMode(true);
-									sl.getButtonEndActions().setDisable(true);
-									sl.getButtonEndBuys().setDisable(false);
+
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+
 								}else{
 									croupier.setActionMode(true);
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" hat noch weitere Aktionen\n");
@@ -583,8 +593,8 @@ public class ActionCard extends GameCard{
 			croupier.setActionMode(false);
 			croupier.setBuyMode(true);
         	
-        	sl.getButtonEndActions().setDisable(true);
-        	sl.getButtonEndBuys().setDisable(false);
+        	//sl.getButtonEndActions().setDisable(true);
+        	//sl.getButtonEndBuys().setDisable(false);
         	
         	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
 

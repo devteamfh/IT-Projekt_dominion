@@ -21,11 +21,8 @@
 	-fx-background-image: url('../img/backgrounds/bg_popUp.png');
 }
 
-/*
- um chatbox transaprtetn zu setzen by camillo
-.scroll-pane >.viewport{fx-background-color:transpartent}
-.scroll-pane {-fx-border-clor:transpartent}
-*/
+
+
 
 .lbl {
 	-fx-font-family: "Times New Roman";

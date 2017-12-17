@@ -101,7 +101,7 @@ public class VictoryCard extends GameCard{
 			            	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
 			            	croupier.setBuyPower(0);
 			            	
-			            	sl.getButtonEndBuys().setDisable(true);
+			            	//sl.getButtonEndBuys().setDisable(true);
 			            	
 			            	croupier.removeHoleCards();
 			            	
@@ -202,9 +202,11 @@ public class VictoryCard extends GameCard{
 							croupier.setTrashCounterModeChapel(0);
 							if(croupier.getActions()==0){
 								croupier.setBuyMode(true);
+
 								sl.getButtonEndActions().setDisable(true);
 								sl.getButtonEndBuys().setDisable(false);
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+
 							}else{
 								croupier.setActionMode(true);
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" hat noch weitere Aktionen\n");

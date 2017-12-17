@@ -262,7 +262,7 @@ public class ServiceLocatorClient {
 	public void prepareGame(GameParty party){		
 		if(party.getHost().getUsername().equals(this.player_noOS.getUsername())){
 			//this.playAction.setDisable(false);
-			this.endAction.setDisable(false);
+			//this.endAction.setDisable(false);
 			this.croupier.setActionMode(true);
 			this.croupier.setActions(1);
 			this.croupier.setBuys(1);
@@ -273,8 +273,9 @@ public class ServiceLocatorClient {
 			
 			//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
 			
-			this.numberOfActionsAndBuys.setText("Du bist am Zug---");
+			this.numberOfActionsAndBuys.setText("Du bist am Zug\n1 Aktionen, 1 Käufe, 0 Geld");
 			
+	
 			this.ta_gameHistory.appendText("Spiel beginnt\n");
 			this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist am Zug\n");
 			this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
