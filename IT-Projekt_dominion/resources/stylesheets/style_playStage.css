@@ -1,9 +1,19 @@
-
 /*author: kab */
 
+@font-face {
+	src: url('../fonts/VIVALDII.TTF');
+}
+@font-face  {
+	src: url('../fonts/trebuc.ttf');
+}
+@font-face {
+src: url('../fonts/Typewriter-Osf-MediumItalic.ttf');
+}
+
 .bg {
-	
-	
+	-fx-background-image: url('../img/backgrounds/bg6.png');	
+	-fx-background-size: stretch;
+	-fx-background-color: transparent;
 }
 
 .bg_gameInfo {
@@ -15,11 +25,52 @@
 
 
 
+.textBoard{
+	-fx-text-fill: white;
+}
+
+.textBoardInfo{
+		-fx-font-family: 'Typewriter-Osf';
+}
+
+.boardTitle {
+	-fx-font-family: Vivaldi;
+	-fx-font-size:30;
+}
+
+.boardChat {
+	-fx-font-family: 'Typewriter-Osf';
+}
+
+
+
+.text-area {
+	-fx-text-fill: white;
+
+    -fx-background-color: rgba(53,89,119,0);
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
 
 .btn {
-	-fx-background-repeat: stretch;
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: stretch;
 	-fx-background-color: transparent;
 }
+
+
 
 .lbl {  /* f�r Text Button Chat */
 	-fx-font-family: "Times New Roman";

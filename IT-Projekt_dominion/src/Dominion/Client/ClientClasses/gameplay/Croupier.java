@@ -43,7 +43,8 @@ public class Croupier  extends Observable {
 	int buys;
 	int counterTrashedCards;
 	
-
+	Label lbl_playerListStage = new Label();
+	
 	Label lbl_buyPower = new Label();
 	Label lbl_actions  = new Label();
 	Label lbl_buys     = new Label();
@@ -615,6 +616,14 @@ public class Croupier  extends Observable {
 	
 	public int getTrashCounter(){
 		return this.counterTrashedCards;
+	}
+
+	public Label getLbl_playerListStage() {
+		return lbl_playerListStage;
+	}
+
+	public void setLbl_playerListStage(Label lbl_playerListStage) {
+		this.lbl_playerListStage = lbl_playerListStage;
 	}
 
 

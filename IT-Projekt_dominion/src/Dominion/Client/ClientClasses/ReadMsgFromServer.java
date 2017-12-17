@@ -147,6 +147,8 @@ public class ReadMsgFromServer implements Runnable {
 						        	Label label = new Label(sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
 						        	Label allPlayer = new Label("Spieler dieser Partie:");
 									sl.getPlayingStage().vb_player.getChildren().addAll(allPlayer, label);
+									allPlayer.getStyleClass().addAll("textBoard","boardTitle");
+									label.getStyleClass().addAll("textBoard","textBoardInfo");
 						        }
 							}
 				           }
@@ -222,11 +224,14 @@ public class ReadMsgFromServer implements Runnable {
 								if(join.getSelectedGameParty().getID() == sl.getCurrentGameParty().getID()){
 									sl.getPlayingStage().vb_player.getChildren().clear();	
 									Label allPlayer = new Label("Spieler dieser Partie:");
+						
 									sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
-									
+									allPlayer.getStyleClass().addAll("textBoard","boardTitle");
 									for(int i =0; i<join.getSelectedGameParty().getArrayListOfPlayers().size();i++){
 										Label label = new Label(join.getSelectedGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+join.getSelectedGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
 										sl.getPlayingStage().vb_player.getChildren().add(label);
+										label.getStyleClass().addAll("textBoard","textBoardInfo");
+										
 									}	
 								}
 							}catch (NullPointerException e){
@@ -361,10 +366,13 @@ public class ReadMsgFromServer implements Runnable {
 										sl.getPlayingStage().vb_player.getChildren().clear();	
 										Label allPlayer = new Label("Spieler dieser Partie:");
 										sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+										allPlayer.getStyleClass().addAll("textBoard","boardTitle");
+										
 										
 										for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
 											Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+history.getGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
 											sl.getPlayingStage().vb_player.getChildren().add(label);
+											label.getStyleClass().addAll("textBoard","textBoardInfo");
 										}
 									}
 									
@@ -689,10 +697,13 @@ public class ReadMsgFromServer implements Runnable {
 								sl.getPlayingStage().vb_player.getChildren().clear();	
 								Label allPlayer = new Label("Spieler dieser Partie:");
 								sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+								allPlayer.getStyleClass().addAll("textBoard","boardTitle");
 								
 								for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
 									Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+history.getGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
 									sl.getPlayingStage().vb_player.getChildren().add(label);
+									label.getStyleClass().addAll("textBoard","textBoardInfo");
+									
 								}
 								
 					           }
@@ -735,10 +746,12 @@ public class ReadMsgFromServer implements Runnable {
 										sl.getPlayingStage().vb_player.getChildren().clear();	
 										Label allPlayer = new Label("Spieler dieser Partie:");
 										sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+										allPlayer.getStyleClass().addAll("textBoard","boardTitle");
 										
 										for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
 											Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+history.getGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
 											sl.getPlayingStage().vb_player.getChildren().add(label);
+											label.getStyleClass().addAll("textBoard","textBoardInfo");
 										}
 										
 							           }
