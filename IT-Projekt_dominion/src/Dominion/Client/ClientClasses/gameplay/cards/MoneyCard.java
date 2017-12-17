@@ -82,14 +82,6 @@ import javafx.stage.StageStyle;
 
 								newCard.setHoleCard(true);
 								
-
-								System.out.println("add zum ablagestapel gekaufte karte: "+mc.text_DE);
-								System.out.println("ablagestapel neu:////////////////////");
-								for(int i=0; i<croupier.getAblagestapel().size();i++){
-				            		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
-				            	}
-
-								
 								//send the buy information to server						
 								strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" kauft eine "+mc.text_DE+"-Karte\n");
 								
@@ -101,11 +93,6 @@ import javafx.stage.StageStyle;
 					            	croupier.setBuyPower(0);
 					            	
 					            	sl.getButtonEndBuys().setDisable(true);
-					            	
-					            	System.out.println("Nachziehstapel bevor neue Hand ausgeteilt wird/////////////////");
-					            	for(int i=0; i<croupier.getNachziehstapel().size();i++){
-					            		System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
-					            	}
 					            	
 					            	croupier.removeHoleCards();
 					            	
@@ -150,12 +137,6 @@ import javafx.stage.StageStyle;
 							croupier.setBuyPower(croupier.getBuyPower()+buyPower);
 							croupier.getHoleCards().remove(mc);
 							croupier.addToAblagestapel(mc);
-							
-							System.out.println("add zum ablagestapel gespielte karte: "+mc.text_DE);
-							System.out.println("ablagestapel neu:////////////////////");
-							for(int i=0; i<croupier.getAblagestapel().size();i++){
-			            		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
-			            	}
 							
 
 							String textForTextArea = sl.getPlayer_noOS().getUsername()+" spielt "+mc.text_DE+"-Karte und gewinnt "+buyPower+" Geld\n";
@@ -222,11 +203,13 @@ import javafx.stage.StageStyle;
 								
 								//trash the card
 								croupier.getHoleCards().remove(mc);
-								strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" wirft eine "+mc.text_DE+"-Karte weg\nund darf eine Geldkarte entsorgen.\nEr darf eine neue Geldkarte kaufen,\ndie bis zu 3 mehr Geld kostet als die Weggeworfene\n");
+								//save the value (f.e. he trashes a copper -> copper costs = 0 --> saved value 0+3 =3)
+								croupier.setMCValueForMineMode(mc.costs);
+								strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" wirft eine "+mc.text_DE+"-Karte weg\n");
 								//croupier.increaseTrashedCards();
 								
-								croupier.setModeForMine(true);
 								croupier.setTrashModeMine(false);
+								croupier.setModeForMine(true);
 								
 								GameHistory history = new GameHistory(strBuilderForTextArea.toString(),strBuilderForLabel.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.Trash);
 								
@@ -241,7 +224,48 @@ import javafx.stage.StageStyle;
 							
 							}
 							
-							//////////////////////////////////////weiterfahren mit Minen-Modus
+							//neue geldkarte erwerben im minen-modus und direkt auf die hand legen
+							if(!isHoleCard() && croupier.isModeForMine() && costs <= croupier.getSavedMCValueForMineMode()){	
+								System.out.println("saved MC value for mine mode"+croupier.getSavedMCValueForMineMode());
+								//to do: custom button deaktivieren?
+								MoneyCard newCard = new MoneyCard(mc.lbl_cardName,mc.buyPower,mc.costs,mc.text_DE);
+								newCard.setHoleCard(true);
+								newCard.assignPicture();
+								
+								croupier.addObserver(newCard);
+								croupier.addToHoleCards(newCard);
+								
+								croupier.setModeForMine(false);
+
+								strBuilderForTextArea.append(sl.getPlayer_noOS().getUsername()+" erwirbt eine "+newCard.text_DE+"-Karte und legt sie auf die Hand\n");
+								
+								GameHistory history=null;
+								
+								if(croupier.getActions()==0){
+									croupier.setBuyMode(true);
+						        	
+						        	sl.getButtonEndActions().setDisable(true);
+						        	sl.getButtonEndBuys().setDisable(false);
+						        	
+									strBuilderForTextArea.append(sl.getPlayerName()+" beendet Aktionsphase\n");
+
+									history = new GameHistory(strBuilderForTextArea.toString(), strBuilderForLabel.toString(), sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.MineModeEnd);
+								}else{
+									croupier.setActionMode(true);
+									strBuilderForTextArea.append(sl.getPlayerName()+" hat noch weitere Aktionen\n");
+									history = new GameHistory(strBuilderForTextArea.toString(), strBuilderForLabel.toString(), sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.MineModeEnd);
+								}
+																
+								try {
+									//sl.getPlayer_OS().getOut().reset();
+									sl.getPlayer_OS().getOut().writeObject(history);
+									sl.getPlayer_OS().getOut().flush();
+								} catch (IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							
+							}
 							
 							
 							//Gui aktualisieren
@@ -254,7 +278,6 @@ import javafx.stage.StageStyle;
 						//bei rechtsklick bild �ffnen
 						 if (e.getButton() == MouseButton.SECONDARY && mc.isHoleCard() == false) {
 			                    System.out.println("consuming right release button in cm filter");
-			                    
 			                    Pane pane = new Pane();
 			                    ImageView imgView = new ImageView();
 			                    Image img = new Image(getClass().getResource("/img/cards/big/"+mc.lbl_cardName.getText()+".png").toExternalForm());

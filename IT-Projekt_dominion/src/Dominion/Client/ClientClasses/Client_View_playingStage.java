@@ -392,7 +392,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 			hb_wrapper_windowGameHistory.getChildren().add(windowGameHistory);
 			
 			HBox hb_wrapper_btn_userInteraction = new HBox();
-			hb_wrapper_btn_userInteraction.setPadding(new Insets(20,0,0,10));
+			hb_wrapper_btn_userInteraction.setPadding(new Insets(15,0,0,10));
 			hb_wrapper_btn_userInteraction.getChildren().add(btn_userInteraction);
 			
 			
@@ -486,7 +486,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 	
 
 		tf_messagePlayingStage = new TextField();
-		tf_messagePlayingStage.setStyle("-fx-opacity: 0.70;");
+		tf_messagePlayingStage.setStyle("-fx-opacity: 0.60;");
 		tf_messagePlayingStage.setPrefSize(250, 40);
 
 

@@ -612,7 +612,6 @@ public class ReadMsgFromServer implements Runnable {
 								
 							case "mine":
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									
 									Platform.runLater(new Runnable() {
 
 										@Override 
@@ -761,6 +760,40 @@ public class ReadMsgFromServer implements Runnable {
 						}catch (NullPointerException e){
 							//catch if it wasn't trashed a point card
 						}
+						
+						break;
+						
+					case MineModeEnd:
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								
+								croupier.setStackSize(history.getGameCard_EN());
+								
+					           }
+					      });
+						
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
+									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+								}else{
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+								}	
+								
+					           }
+					      });
+						
+						//break case BuyNoPointCard
+						break;
 						
 						
 					}
