@@ -270,8 +270,9 @@ public class ServiceLocatorClient {
 			
 			//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
 			
-			this.numberOfActionsAndBuys.setText("Du bist am Zug");
+			this.numberOfActionsAndBuys.setText("Du bist am Zug\n1 Aktionen, 1 Käufe, 0 Geld");
 			
+	
 			this.ta_gameHistory.appendText("Spiel beginnt\n");
 			this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist am Zug\n");
 			this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
