@@ -115,6 +115,26 @@ public class GameCard extends Button implements Observer  {
 			this.getStyleClass().add("highlight3");
 		}
 		
+		//Highlighte alle Karten zum Kauf, welche erworben werden können im Rebuilding-Modus
+		if (croupier.isModeForWorkshop() == true && !this.isHoleCard() && this.costs <= 4){
+			this.getStyleClass().add("highlight3");
+		}
+		
+		//Highlighte alle Moat-Karten wenn ein Angriff gemacht worden ist
+		if (croupier.isReactionMode() == true && this.isHoleCard() && this.getLbl_cardName().getText().equals("moat")){
+			this.getStyleClass().add("highlight3");
+		}
+		
+		//Highlighte alle Moat-Karten wenn ein Angriff gemacht worden ist
+		if (croupier.isDiscardModeMilitia() == true && this.isHoleCard()){
+			this.getStyleClass().add("highlight2");
+		}
+		
+		//Highlighte alle Moat-Karten wenn ein Angriff gemacht worden ist
+		if (croupier.isModeForCurseCard() == true && !this.isHoleCard() && this.getLbl_cardName().getText().equals("curse")){
+			this.getStyleClass().add("highlight3");
+		}
+		
 		//Highlight wegnehmen wenn Trash Modus wieder verlassen wird (Kapelle, Mine)
 		//if ((croupier.isTrashModeChapel() == false && this.isHoleCard())   ||   (croupier.isTrashModeMine() == false && this.isHoleCard() && this instanceof MoneyCard)){
 			//this.getStyleClass().remove("highlight2");
@@ -176,9 +196,5 @@ public class GameCard extends Button implements Observer  {
 
 	public void setLbl_cardName(Label lbl_cardName) {
 		this.lbl_cardName = lbl_cardName;
-	}
-	
-
-	
-	
+	}	
 }

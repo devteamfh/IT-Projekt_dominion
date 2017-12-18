@@ -25,11 +25,13 @@ public class GameHistory extends GameObject{
 	private HistoryType type;
 	private String card_EN;
 	private String card_DE;
+	private PlayerWithoutOS playerForWitchMode;
 	
 	public enum HistoryType {
 		 EndAction, EndBuy, LeaveGame, UpdateLobbyAfterLeave,
 		 EndGame, PlayCard, BuyPointCard, BuyNoPointCard,
-		 Trash, MineModeEnd, Discard, RebuildingModeEnd
+		 Trash, MineModeEnd, Discard, RebuildingModeEnd,
+		 WorkshopModeEnd, Reaction, AttackEnd
 		 };
 	
 	private static long nextMessageID() {		
@@ -47,7 +49,7 @@ public class GameHistory extends GameObject{
 	}
 	
 	
-	//we use this constructor while playing (playing cards, ending action phase, ending buy phase, buying cards)
+	//we use this constructor while playing (playing cards, ending action phase, ending buy phase, buying cards etc)
 	public GameHistory(String textForTextArea, String textForLabel, GameParty party,PlayerWithoutOS currentPlayer,String card_EN,String card_DE, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
@@ -136,6 +138,15 @@ public class GameHistory extends GameObject{
 	
 	public PlayerWithoutOS getWinner(){
 		return this.winner;
+	}
+	
+	//we have to save here our own player when we have to pick up a curse card so the server knows where to take away a point
+	public void setPlayerForWitchMode(PlayerWithoutOS player){
+		 this.playerForWitchMode = player;
+	}
+	
+	public PlayerWithoutOS getPlayerForWitchMode(){
+		 return this.playerForWitchMode;
 	}
 
 }

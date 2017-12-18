@@ -169,8 +169,6 @@ import javafx.stage.StageStyle;
 									
 									if(croupier.getActions()==0){
 										croupier.setBuyMode(true);
-										sl.getButtonEndActions().setDisable(true);
-										sl.getButtonEndBuys().setDisable(false);
 										sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
 									}else{
 										croupier.setActionMode(true);
@@ -274,9 +272,6 @@ import javafx.stage.StageStyle;
 								if(croupier.getActions()==0){
 									croupier.setBuyMode(true);
 						        	
-						        	sl.getButtonEndActions().setDisable(true);
-						        	sl.getButtonEndBuys().setDisable(false);
-						        	
 						        	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
 
 									history = new GameHistory(sl.getStrBuilderTextArea().toString(), sl.getStrBuilderLabel().toString(), sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.MineModeEnd);
@@ -308,8 +303,6 @@ import javafx.stage.StageStyle;
 								
 								if(croupier.getActions()==0){
 									croupier.setBuyMode(true);
-									sl.getButtonEndActions().setDisable(true);
-									sl.getButtonEndBuys().setDisable(false);
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
 								}else{
 									croupier.setActionMode(true);
@@ -385,6 +378,70 @@ import javafx.stage.StageStyle;
 									history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.RebuildingModeEnd);
 								}
 																
+								try {
+									//sl.getPlayer_OS().getOut().reset();
+									sl.getPlayer_OS().getOut().writeObject(history);
+									sl.getPlayer_OS().getOut().flush();
+								} catch (IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							
+							}
+							
+							//neue Karte erwerben im Workshop-Modus
+							if(!isHoleCard() && croupier.isModeForWorkshop() && costs <= 4){	
+								MoneyCard newCard = new MoneyCard(mc.lbl_cardName,mc.buyPower,mc.costs,mc.text_DE);
+								croupier.addObserver(newCard);
+								newCard.setHoleCard(true);
+								croupier.addToAblagestapel(newCard);
+								newCard.assignPicture();
+								
+								croupier.setModeForWorkshop(false);
+								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" erwirbt eine "+newCard.text_DE+"-Karte\n");
+								
+								GameHistory history=null;
+								
+								if(croupier.getActions()==0){
+									croupier.setBuyMode(true);
+						        	
+						        	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
+
+									history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.WorkshopModeEnd);
+								}else{
+									croupier.setActionMode(true);
+									sl.getStrBuilderTextArea().append(sl.getPlayerName()+" hat noch weitere Aktionen\n");
+									history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.WorkshopModeEnd);
+								}
+																
+								try {
+									//sl.getPlayer_OS().getOut().reset();
+									sl.getPlayer_OS().getOut().writeObject(history);
+									sl.getPlayer_OS().getOut().flush();
+								} catch (IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							
+							}
+							
+							//discard Mode wenn ein Gegner eine Miliz-Karte gespielt hat
+							if(isHoleCard() == true && croupier.isDiscardModeMilitia()){		
+								croupier.getHoleCards().remove(mc);
+								croupier.addToAblagestapel(mc);
+								
+								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" legt eine "+mc.text_DE+" Karte ab\n");
+								GameHistory history=null;
+								if(croupier.getHoleCards().size() == 3){
+									croupier.setDiscardModeForMilitia(false);
+									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen\n");
+									history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),croupier.getCurrentPlayer(),null,null, GameHistory.HistoryType.Reaction);
+									
+								}else{
+									history = new GameHistory(sl.getStrBuilderTextArea().toString(),null,sl.getCurrentGameParty(),null,null,null, GameHistory.HistoryType.Discard);
+								}
+
+								
 								try {
 									//sl.getPlayer_OS().getOut().reset();
 									sl.getPlayer_OS().getOut().writeObject(history);

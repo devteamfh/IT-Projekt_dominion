@@ -76,8 +76,6 @@ public class ServiceLocatorClient {
     private Button provisorischCard3;	
     private Button playAction; //nur provisorisch
     private Button playBuy;    // nur provisorisch
-    private Button endAction;   //bleiben  
-    private Button endBuy;      //bleiben
     
     private boolean isHost=false;
     
@@ -405,23 +403,6 @@ public class ServiceLocatorClient {
 		this.playBuy = new Button (text);
 	}
 	
-	public Button getButtonEndActions(){
-		return this.endAction;
-	}
-	
-	public void setButtonEndActions(String text){
-		this.endAction = new Button (text);
-	}
-	
-	public Button getButtonEndBuys(){
-		return this.endBuy;
-	}
-	
-	public void setButtonEndBuys(String text){
-		this.endBuy = new Button (text);
-	}
-	
-
 	public Label getLbl_errMsgView() {
 		return lbl_errMsgView;
 	}

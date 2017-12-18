@@ -68,7 +68,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 	Button btn_close;
 
 	VictoryCard estate, duchy, province;
-	MoneyCard copper, silver, gold, curse;
+	MoneyCard copper, silver, gold;
+	VictoryCard curse;
 
 	ArrayList<GameCard> al_communityCards_left;
 	ArrayList<GameCard> al_allStartingCards;
@@ -180,12 +181,13 @@ public class Client_View_playingStage extends View<Client_Model> {
 		estate   = new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate(), "Anwesen");
 		duchy    = new VictoryCard(new Label("duchy"),croupier.getCostsDuchy(),croupier.getPointsDuchy(), "Herzogtum");
 		province = new VictoryCard(new Label("province"),croupier.getCostsPovince(),croupier.getPointsProvince(), "Provinz");
+		curse =    new VictoryCard(new Label("curse"),croupier.getCostsCurse(),croupier.getPointsCurse(), "Fluch");
 		
 		copper = new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper(),"Kupfer");
 		silver = new MoneyCard(new Label("silver"),croupier.getBuyPowerSilver(),croupier.getCostsSilver(), "Silber");
 		gold   = new MoneyCard(new Label("gold"),croupier.getBuyPowerGold(),croupier.getCostsGold(), "Gold");
 		
-		curse = new MoneyCard(new Label("curse"),croupier.getBuyPowerCurse(),croupier.getCostsCurse(), "Fluch");
+		//curse = new MoneyCard(new Label("curse"),croupier.getBuyPowerCurse(),croupier.getCostsCurse(), "Fluch");
 
 
 		al_communityCards_left = new ArrayList<GameCard>();

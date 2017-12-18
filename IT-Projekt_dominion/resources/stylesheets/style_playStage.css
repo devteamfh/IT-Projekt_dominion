@@ -150,15 +150,15 @@ src: url('../fonts/Typewriter-Osf-MediumItalic.ttf');
 }
 
 .highlight {
-	-fx-effect: dropshadow( gaussian , yellow , 7 , 0.7 , 0 , 0 );	
+	-fx-effect: dropshadow( gaussian , yellow , 10 , 0.7 , 0 , 0 );	
 }
 
 .highlight2 {
-	-fx-effect: dropshadow( gaussian , red , 7 , 0.7 , 0 , 0 );	
+	-fx-effect: dropshadow( gaussian , red , 10 , 0.7 , 0 , 0 );	
 }
 
 .highlight3 {
-	-fx-effect: dropshadow( gaussian , blue , 7 , 0.7 , 0 , 0 );	
+	-fx-effect: dropshadow( gaussian , blue , 10 , 0.7 , 0 , 0 );	
 }
 
 .cardback2 {

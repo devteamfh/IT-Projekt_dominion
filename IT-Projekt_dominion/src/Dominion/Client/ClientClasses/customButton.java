@@ -225,6 +225,62 @@ public class customButton extends Button implements Observer {
 			});	
 		}
 		
+		if (croupier.isModeForAttack() == true) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("warten auf Gegner");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
+		if (croupier.isReactionMode()) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Du kannst Angriff\nabwehren!");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
+		if (croupier.isDiscardModeMilitia()) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Du musst Karten\nablegen!");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
+		if (croupier.isModeForCurseCard()) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Du musst eine\nFluchkarte nehmen!");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
 		}
 	
 		
