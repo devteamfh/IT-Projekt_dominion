@@ -498,7 +498,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		btn_sendChatMsgPlayingStage = new customButton("senden");
 		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn", "btn_sendChatMsg");
 		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
-		btn_sendChatMsgPlayingStage.setPrefSize(95, 40);
+		btn_sendChatMsgPlayingStage.setPrefSize(103, 40);
 		
 		
 		VBox vb_wrapper_chat = new VBox();
