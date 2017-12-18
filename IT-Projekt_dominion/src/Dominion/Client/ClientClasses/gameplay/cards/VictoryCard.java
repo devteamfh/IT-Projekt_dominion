@@ -36,14 +36,10 @@ public class VictoryCard extends GameCard{
 		this.matchPoints=points;
 		this.addClickListener();
 	}
-	
-	
-	
+		
 	public int getMatchPoints() {
 		return matchPoints;
 	}
-
-
 
 	public void setMatchPoints(int matchPoints) {
 		this.matchPoints = matchPoints;
@@ -164,8 +160,6 @@ public class VictoryCard extends GameCard{
 							
 							if(croupier.getActions()==0){
 								croupier.setBuyMode(true);
-								sl.getButtonEndActions().setDisable(true);
-								sl.getButtonEndBuys().setDisable(false);
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
 							}else{
 								croupier.setActionMode(true);
@@ -205,8 +199,6 @@ public class VictoryCard extends GameCard{
 							if(croupier.getActions()==0){
 								croupier.setBuyMode(true);
 
-								sl.getButtonEndActions().setDisable(true);
-								sl.getButtonEndBuys().setDisable(false);
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
 
 							}else{
@@ -274,9 +266,6 @@ public class VictoryCard extends GameCard{
 						if(croupier.getActions()==0){
 							croupier.setBuyMode(true);
 				        	
-				        	sl.getButtonEndActions().setDisable(true);
-				        	sl.getButtonEndBuys().setDisable(false);
-				        	
 				        	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
 
 							history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.RebuildingModeEnd);
@@ -287,6 +276,100 @@ public class VictoryCard extends GameCard{
 						}
 														
 						try {
+							sl.getPlayer_OS().getOut().reset();
+							sl.getPlayer_OS().getOut().writeObject(history);
+							sl.getPlayer_OS().getOut().flush();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					
+					}
+					
+					//neue Karte erwerben im Workshop-Modus
+					if(!isHoleCard() && croupier.isModeForWorkshop() && costs <= 4){	
+						VictoryCard newCard = new VictoryCard(pc.lbl_cardName,pc.costs,pc.getMatchPoints(),pc.text_DE);
+						croupier.addObserver(newCard);
+						newCard.setHoleCard(true);
+						croupier.addToAblagestapel(newCard);
+						newCard.assignPicture();
+						
+						sl.getPlayer_noOS().increasePoints(newCard.getMatchPoints());
+						
+						croupier.setModeForWorkshop(false);
+						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" erwirbt eine "+newCard.text_DE+"-Karte\n");
+						
+						GameHistory history=null;
+						
+						if(croupier.getActions()==0){
+							croupier.setBuyMode(true);
+				        	
+				        	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
+
+							history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.WorkshopModeEnd);
+						}else{
+							croupier.setActionMode(true);
+							sl.getStrBuilderTextArea().append(sl.getPlayerName()+" hat noch weitere Aktionen\n");
+							history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.WorkshopModeEnd);
+						}
+														
+						try {
+							sl.getPlayer_OS().getOut().reset();
+							sl.getPlayer_OS().getOut().writeObject(history);
+							sl.getPlayer_OS().getOut().flush();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					
+					}
+					
+					//discard Mode wenn ein Gegner eine Miliz-Karte gespielt hat
+					if(isHoleCard() == true && croupier.isDiscardModeMilitia()){		
+						croupier.getHoleCards().remove(pc);
+						croupier.addToAblagestapel(pc);
+						
+						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" legt eine "+pc.text_DE+" Karte ab\n");
+						GameHistory history=null;
+						if(croupier.getHoleCards().size() == 3){
+							croupier.setDiscardModeForMilitia(false);
+							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen\n");
+							history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),croupier.getCurrentPlayer(),null,null, GameHistory.HistoryType.Reaction);
+							
+						}else{
+							history = new GameHistory(sl.getStrBuilderTextArea().toString(),null,sl.getCurrentGameParty(),null,null,null, GameHistory.HistoryType.Discard);
+						}
+
+						
+						try {
+							//sl.getPlayer_OS().getOut().reset();
+							sl.getPlayer_OS().getOut().writeObject(history);
+							sl.getPlayer_OS().getOut().flush();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					
+					}
+					
+					//SPieler ist gewzungen, eine Fluch-Karte aufzunehmen
+					if(!isHoleCard() == true && croupier.isModeForCurseCard() && getLbl_cardName().getText().equals("curse")){		
+						VictoryCard newCard = new VictoryCard(pc.lbl_cardName,pc.costs,pc.getMatchPoints(),pc.text_DE);
+						croupier.addObserver(newCard);
+						croupier.addToAblagestapel(newCard);
+						newCard.assignPicture(); 
+						newCard.setHoleCard(true);
+						
+						sl.getPlayer_noOS().increasePoints(pc.getMatchPoints());
+						
+		            	sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" kann nicht abwehren und nimmt eine Fluchkarte\n");
+		            	croupier.setModeCurseCard(false);
+		            	
+						GameHistory history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),croupier.getCurrentPlayer(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.Reaction);
+		            	history.setPlayerForWitchMode(sl.getPlayer_noOS());
+
+						try {
+							//reset needed
 							sl.getPlayer_OS().getOut().reset();
 							sl.getPlayer_OS().getOut().writeObject(history);
 							sl.getPlayer_OS().getOut().flush();

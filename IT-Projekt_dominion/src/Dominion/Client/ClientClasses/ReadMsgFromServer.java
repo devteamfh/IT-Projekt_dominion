@@ -340,7 +340,6 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
 									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
@@ -361,7 +360,7 @@ public class ReadMsgFromServer implements Runnable {
 									
 									croupier.setStackSize(history.getGameCard_EN());
 
-									if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
+									if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
 										
 										sl.getPlayingStage().vb_player.getChildren().clear();	
 										Label allPlayer = new Label("Spieler dieser Partie:");
@@ -654,10 +653,135 @@ public class ReadMsgFromServer implements Runnable {
 									
 								}
 								break;
+								
+							case "workshop":
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									Platform.runLater(new Runnable() {
+
+										@Override 
+								           public void run() {
+											croupier.setModeForWorkshop(true);
+											
+								           }
+								      });
+									
+									
+								}
+								break;
+								
+							case "militia":
+								
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									Platform.runLater(new Runnable() {
+
+										@Override 
+								           public void run() {
+											sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());											
+											croupier.setModeForAttack(true);
+											
+								           }
+								      });
+									
+									
+								}else{
+									
+									Platform.runLater(new Runnable() {
+
+										@Override 
+								           public void run() {
+											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+											//check if the opponents got a reaction card (moat)
+											boolean found = false;
+											for(int i=0; i<croupier.getHoleCards().size();i++){
+												if(croupier.getHoleCards().get(i).getLbl_cardName().getText().equals("moat")){
+													found = true;										
+												}
+											}
+											
+											//we have to save the current player (attacker) so we can send here the current player of the history object
+											croupier.saveCurrentPlayer(history.getCurrentPlayer());
+											if(found){
+												croupier.setReactionMode(true);	
+												
+												
+											}else{ 
+												//player doesnt have a moat card...he has to discard until he has 3 cards
+												
+												if(croupier.getHoleCards().size()<4){
+													sl.getStrBuilderTextArea().delete(0, sl.getStrBuilderTextArea().length());
+													sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" hat 3 oder weniger Karten und muss keine ablegen\n");
+													GameHistory history2 = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),history.getCurrentPlayer(),null,null, GameHistory.HistoryType.Reaction);
+													
+													try {
+														sl.getPlayer_OS().getOut().reset();
+														sl.getPlayer_OS().getOut().writeObject(history2);
+														sl.getPlayer_OS().getOut().flush();
+													} catch (IOException e) {
+														// TODO Auto-generated catch block
+														e.printStackTrace();
+													}
+												}else{
+													croupier.setDiscardModeForMilitia(true);
+												}
+												
+											}
+								           }
+								      });
+									
+																		
+								}
+								break;
+								
+							case "witch":
+								
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									Platform.runLater(new Runnable() {
+
+										@Override 
+								           public void run() {
+											sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());											
+											croupier.setModeForAttack(true);
+											
+								           }
+								      });
+									
+									
+								}else{
+									
+									Platform.runLater(new Runnable() {
+
+										@Override 
+								           public void run() {
+											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+											//check if the opponents got a reaction card (moat)
+											boolean found = false;
+											for(int i=0; i<croupier.getHoleCards().size();i++){
+												if(croupier.getHoleCards().get(i).getLbl_cardName().getText().equals("moat")){
+													found = true;										
+												}
+											}
+											
+											//we have to save the current player (attacker) so we can send here the current player of the history object
+											croupier.saveCurrentPlayer(history.getCurrentPlayer());
+											if(found){
+												croupier.setReactionMode(true);	
+												
+												
+											}else{ 
+												//player doesnt have a moat card...he has to pick up a curse card
+												
+												croupier.setModeCurseCard(true);
+																							
+											}
+								           }
+								      });
+									
+																		
+								}
+								break;
 
 							}
 						}
-					
 						
 						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
@@ -667,7 +791,6 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug");
 									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
@@ -675,6 +798,30 @@ public class ReadMsgFromServer implements Runnable {
 								
 					           }
 					      });
+						
+						/**try{
+							if(!history.getGameCard_EN().equals("militia")){
+								sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
+								sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+								
+								Platform.runLater(new Runnable() {
+
+									@Override 
+							           public void run() {
+										if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+											sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+										}else{
+											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+										}	
+										
+							           }
+							      });
+							}
+						}catch (NullPointerException e){
+							//
+						}*/
+						
+						
 						
 						
 						//break case PlayCard
@@ -700,8 +847,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug");
-									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
 								}	
@@ -747,8 +893,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug");
-									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
 								}	
@@ -763,7 +908,7 @@ public class ReadMsgFromServer implements Runnable {
 						
 						try{
 							
-							if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
+							if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
 								Platform.runLater(new Runnable() {
 
 									@Override 
@@ -794,7 +939,6 @@ public class ReadMsgFromServer implements Runnable {
 									@Override 
 							           public void run() {
 										if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-											//sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
 											sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
 										}else{
 											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
@@ -832,8 +976,7 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug.");
-									//sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug\n"+history.getTextForLabel());
 								}else{
 									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
 								}	
@@ -859,7 +1002,7 @@ public class ReadMsgFromServer implements Runnable {
 						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 						
-						if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
+						if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
 							Platform.runLater(new Runnable() {
 
 								@Override 
@@ -872,10 +1015,55 @@ public class ReadMsgFromServer implements Runnable {
 									sl.getPlayingStage().vb_player.getChildren().clear();	
 									Label allPlayer = new Label("Spieler dieser Partie:");
 									sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+									allPlayer.getStyleClass().addAll("textBoard","boardTitle");
 									
 									for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
 										Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+history.getGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
 										sl.getPlayingStage().vb_player.getChildren().add(label);
+										label.getStyleClass().addAll("textBoard","textBoardInfo");
+									}
+									
+						           }
+						      });
+						}
+						
+						
+						break;
+						
+					case WorkshopModeEnd:
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								
+								croupier.setStackSize(history.getGameCard_EN());
+								
+					           }
+					      });
+						
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
+							Platform.runLater(new Runnable() {
+
+								@Override 
+						           public void run() {
+									
+									//update the list of players (points) because there was a buy
+									sl.setCurrentGameParty(history.getGameParty());
+									
+									//updating the player list with the points
+									sl.getPlayingStage().vb_player.getChildren().clear();	
+									Label allPlayer = new Label("Spieler dieser Partie:");
+									sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+									allPlayer.getStyleClass().addAll("textBoard","boardTitle");
+									
+									for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
+										Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+history.getGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
+										sl.getPlayingStage().vb_player.getChildren().add(label);
+										label.getStyleClass().addAll("textBoard","textBoardInfo");
 									}
 									
 						           }
@@ -893,14 +1081,90 @@ public class ReadMsgFromServer implements Runnable {
 						
 						break;
 						
+					case Reaction:
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+						
+						Platform.runLater(new Runnable() {
+
+							@Override 
+					           public void run() {
+								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									croupier.increaseReactionCounter();
+									
+									if(croupier.getReactionCounter() == (sl.getCurrentGameParty().getNumberOfLoggedInPlayers()-1)){
+										croupier.setModeForAttack(false);
+										croupier.setCounterReactions(0);
+										
+										GameHistory history2;
+										
+										if(croupier.getActions()==0){
+											croupier.setBuyMode(true);
+								        	sl.getStrBuilderTextArea().delete(0, sl.getStrBuilderTextArea().length());
+								        	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
+
+											history2 = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.AttackEnd);
+										}else{
+											croupier.setActionMode(true);
+											sl.getStrBuilderTextArea().append(sl.getPlayerName()+" hat noch weitere Aktionen\n");
+											history2 = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.AttackEnd);
+										}
+										
+										try {
+											sl.getPlayer_OS().getOut().reset();
+											sl.getPlayer_OS().getOut().writeObject(history2);
+											sl.getPlayer_OS().getOut().flush();
+										} catch (IOException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+								
+									}
+									
+								}
+								
+								try{
+									if(history.getGameCard_EN().equals("curse")){
+										croupier.setStackSize(history.getGameCard_EN());
+										
+										//update the list of players (points) because there was a buy
+										sl.setCurrentGameParty(history.getGameParty());
+										
+										//updating the player list with the points
+										sl.getPlayingStage().vb_player.getChildren().clear();	
+										Label allPlayer = new Label("Spieler dieser Partie:");
+										sl.getPlayingStage().vb_player.getChildren().add(allPlayer);
+										allPlayer.getStyleClass().addAll("textBoard","boardTitle");
+										
+										for(int i =0; i<history.getGameParty().getArrayListOfPlayers().size();i++){
+											Label label = new Label(history.getGameParty().getArrayListOfPlayers().get(i).getUsername()+": "+history.getGameParty().getArrayListOfPlayers().get(i).getPoints()+" Punkte");
+											sl.getPlayingStage().vb_player.getChildren().add(label);
+											label.getStyleClass().addAll("textBoard","textBoardInfo");
+											
+										}
+										
+									}
+								}catch(NullPointerException e){
+									//
+								}
+					
+					           }
+					      });
+			
+						break;
+						
+					case AttackEnd:
+						sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
+						sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
+		
+						break;
+						
 						
 					}
 					
 					//break case GameHistory
 					break;
-					
-					
-								
+						
 				default:
 				}
 		
@@ -980,15 +1244,13 @@ public class ReadMsgFromServer implements Runnable {
 		if(history.getPlayerForGUIActivation().getUsername().equals(sl.getPlayer_noOS().getUsername())){
 			
 			//its the next players turn, so prepare his stage and croupier
-			sl.getButtonEndActions().setDisable(false);
 			croupier.setActionMode(true);
 			croupier.setBuyMode(false);
 			croupier.setActions(1);
 			croupier.setBuys(1);
 			croupier.setBuyPower(0);
 			
-			sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug");
-			//sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+			sl.getLabelNumberOfActionsAndBuys().setText("Du bist an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 
 		}else{
 			sl.getLabelNumberOfActionsAndBuys().setText(history.getPlayerForGUIActivation().getUsername()+" ist am Zug\n1 Aktionen, 1 K�ufe, 0 Geld");

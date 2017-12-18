@@ -310,8 +310,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						croupier.setTrashCounterModeChapel(0);
 						if(croupier.getActions()==0){
 							croupier.setBuyMode(true);
-							sl.getButtonEndActions().setDisable(true);
-							sl.getButtonEndBuys().setDisable(false);
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
 						}else{
 							croupier.setActionMode(true);
@@ -340,8 +338,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 					
 					if(croupier.getActions()==0){
 						croupier.setBuyMode(true);
-						sl.getButtonEndActions().setDisable(true);
-						sl.getButtonEndBuys().setDisable(false);
 						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
 					}else{
 						croupier.setActionMode(true);
