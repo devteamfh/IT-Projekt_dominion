@@ -83,8 +83,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 	Label lbl_descrBuys;
 	Label lbl_descrActions;
 
+	HBox hb_wrapper_stapel;
+	Button dummyCardAblagestapel;
+	Button nachziehstapel;
 	
-
 	
 	VBox vb_wrapper_gameInformation_content;
 	HBox hb_wrapper_ActionsBuysBuyPower;
@@ -203,7 +205,6 @@ public class Client_View_playingStage extends View<Client_Model> {
 			gc = al_communityCards_left.get(i);
 			croupier.addObserver(gc);
 			gc.setMinSize(120, 110);
-			// gc.setAlignment(Pos.BOTTOM_LEFT);
 			gc.assignStackSizeInfo();
 		}
 
@@ -414,9 +415,11 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		// ____________holecards  contorlbuttons   chat Window__________________________________________________________________//
 
-		customButton blank = new customButton();
-		blank.setMinSize(160, 260);
-		customButton nachziehstapel = new customButton();
+		dummyCardAblagestapel = new Button();
+		dummyCardAblagestapel.setMinSize(160, 260);
+		dummyCardAblagestapel.getStyleClass().add("dummyCardAblagestapel");
+		
+		nachziehstapel = new Button();
 		nachziehstapel.setMinSize(160, 260);
 
 		HBox hb_wrapper_bottom = new HBox();
@@ -425,14 +428,14 @@ public class Client_View_playingStage extends View<Client_Model> {
 		hb_wrapper_bottom.setMaxHeight(500);
 
 		// Ablage und Nachziehstapel
-		HBox hb_wrapper_stapel = new HBox();
+		hb_wrapper_stapel = new HBox();
 		hb_wrapper_stapel.setPadding(new Insets(0, 50, 0, 0));
 		HBox hb_wrapper_ablagestapel = new HBox();
 		hb_wrapper_ablagestapel.setPadding(new Insets(0,0,0,0));
 		HBox hb_wrapper_nachziehstapel = new HBox();
 
 		nachziehstapel.getStyleClass().addAll("card", "cardback2");
-		hb_wrapper_stapel.getChildren().addAll(blank, nachziehstapel);
+		hb_wrapper_stapel.getChildren().addAll(dummyCardAblagestapel, nachziehstapel);
 
 		// wrapper hole Cards
 		hb_wrapper_holeCards = new HBox();
@@ -634,6 +637,18 @@ public class Client_View_playingStage extends View<Client_Model> {
 			gc1.setPrefSize(160, 260);
 			gc1.setMaxWidth(160);
 
+			
+		// Zeichne Ablagekarte neu
+		hb_wrapper_stapel.getChildren().clear();
+		dummyCardAblagestapel.getStyleClass().clear();
+		try {
+			String cssSelector = new String(croupier.getAblagestapel().peekLast().getLbl_cardName().getText()+"_big");
+			
+			dummyCardAblagestapel.getStyleClass().addAll("card",cssSelector);
+			hb_wrapper_stapel.getChildren().addAll(dummyCardAblagestapel,nachziehstapel);	
+		} catch(Exception e){
+			hb_wrapper_stapel.getChildren().addAll(this.dummyCardAblagestapel,nachziehstapel);	
+			}			
 		}
 
 	

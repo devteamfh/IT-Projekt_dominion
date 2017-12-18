@@ -55,6 +55,9 @@ public class GameCard extends Button implements Observer  {
 		this.assignPicture();
 	}
 	
+	public GameCard(){
+	}
+	
 	GameCard gc = this;
 	
 	@Override
@@ -152,10 +155,12 @@ public class GameCard extends Button implements Observer  {
 	
 	public void assignPicture(){
 		if (this.holeCard == false)
-			this.getStyleClass().addAll("card",lbl_cardName.getText());
+			this.getStyleClass().addAll("card_mini",lbl_cardName.getText());
 		else 
 			this.getStyleClass().addAll("card",lbl_cardName.getText()+"_big");
 	}
+	
+
 	
 	
 	public boolean isHoleCard() {

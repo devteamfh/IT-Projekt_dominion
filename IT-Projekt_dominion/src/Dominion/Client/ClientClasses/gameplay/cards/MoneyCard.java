@@ -9,12 +9,14 @@ import Dominion.Client.ClientClasses.ServiceLocatorClient;
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.appClasses.GameHistory;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
@@ -405,29 +407,13 @@ import javafx.stage.StageStyle;
 						
 						
 						//bei rechtsklick bild �ffnen
-						 if (e.getButton() == MouseButton.SECONDARY && mc.isHoleCard() == false) {
-			                    System.out.println("consuming right release button in cm filter");
-			                    Pane pane = new Pane();
-			                    ImageView imgView = new ImageView();
-			                    Image img = new Image(getClass().getResource("/img/cards/big/"+mc.lbl_cardName.getText()+".png").toExternalForm());
-			                    imgView.setImage(img);
-			                    pane.getChildren().add(imgView);
-			                                       
-			                    Stage stage = new Stage ();
-			                    Scene scene = new Scene(pane,310,497);
-			                   
-			                    stage.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-			    					@Override public void handle(MouseEvent e1) {
-			    						stage.close();			
-			    					} 
-			    					});
-			                    
-			                    stage.setScene(scene);
-			            	    stage.initStyle(StageStyle.TRANSPARENT);   
-			                    stage.show();
-			                    }
-			                }
-						
+						 if (e.getButton() == MouseButton.SECONDARY) {
+			             
+							 ShowGameCard showGameCard = new ShowGameCard(mc);
+							 	
+						 }
+						 
+					}
 						
 						
 						
