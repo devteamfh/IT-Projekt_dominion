@@ -55,6 +55,9 @@ public class GameCard extends Button implements Observer  {
 		this.assignPicture();
 	}
 	
+	public GameCard(){
+	}
+	
 	GameCard gc = this;
 	
 	@Override
@@ -95,8 +98,43 @@ public class GameCard extends Button implements Observer  {
 			this.getStyleClass().add("highlight2");
 		}
 		
+		//Highlighte alle Karten auf der Hand, welche im Umbaumodus weggeworfen werden können
+		if (croupier.isTrashModeRebuilding() == true && this.isHoleCard()){
+			this.getStyleClass().add("highlight2");
+		}
+		
+		//Highlighte alle Kupferkarten auf der Hand, die gegen +3Geld weggeworfen werden können (ActionCard Geldverleiher)
+		if (croupier.isTrashModeMoneylender() == true && this.isHoleCard() && this.getLbl_cardName().getText().equals("copper")){
+			this.getStyleClass().add("highlight2");
+		}
+		
 		//Highlighte alle MoneyCards, welche erworben werden können im Minen-Modus
 		if (croupier.isModeForMine() == true && this instanceof MoneyCard && !this.isHoleCard() && this.costs <= croupier.getSavedMCValueForMineMode()){
+			this.getStyleClass().add("highlight3");
+		}
+		
+		//Highlighte alle Karten zum Kauf, welche erworben werden können im Rebuilding-Modus
+		if (croupier.isModeForRebuilding() == true && !this.isHoleCard() && this.costs <= croupier.getCardValueForRebuildingMode()){
+			this.getStyleClass().add("highlight3");
+		}
+		
+		//Highlighte alle Karten zum Kauf, welche erworben werden können im Rebuilding-Modus
+		if (croupier.isModeForWorkshop() == true && !this.isHoleCard() && this.costs <= 4){
+			this.getStyleClass().add("highlight3");
+		}
+		
+		//Highlighte alle Moat-Karten wenn ein Angriff gemacht worden ist
+		if (croupier.isReactionMode() == true && this.isHoleCard() && this.getLbl_cardName().getText().equals("moat")){
+			this.getStyleClass().add("highlight3");
+		}
+		
+		//Highlighte alle Moat-Karten wenn ein Angriff gemacht worden ist
+		if (croupier.isDiscardModeMilitia() == true && this.isHoleCard()){
+			this.getStyleClass().add("highlight2");
+		}
+		
+		//Highlighte alle Moat-Karten wenn ein Angriff gemacht worden ist
+		if (croupier.isModeForCurseCard() == true && !this.isHoleCard() && this.getLbl_cardName().getText().equals("curse")){
 			this.getStyleClass().add("highlight3");
 		}
 		
@@ -137,10 +175,12 @@ public class GameCard extends Button implements Observer  {
 	
 	public void assignPicture(){
 		if (this.holeCard == false)
-			this.getStyleClass().addAll("card",lbl_cardName.getText());
+			this.getStyleClass().addAll("card_mini",lbl_cardName.getText());
 		else 
 			this.getStyleClass().addAll("card",lbl_cardName.getText()+"_big");
 	}
+	
+
 	
 	
 	public boolean isHoleCard() {
@@ -161,9 +201,5 @@ public class GameCard extends Button implements Observer  {
 
 	public void setLbl_cardName(Label lbl_cardName) {
 		this.lbl_cardName = lbl_cardName;
-	}
-	
-
-	
-	
+	}	
 }

@@ -220,6 +220,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
         view.btn_userInteraction.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	GameHistory history;
             
             	System.out.println("button pressed");
             	switch (view.btn_userInteraction.getLbl().getText()) {
@@ -238,19 +239,19 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                		strBuilderLabel.delete(0, strBuilderLabel.length());
 						                	}
 						                	
-						                	sl.getButtonEndActions().setDisable(true);
-						                	sl.getButtonEndBuys().setDisable(false);
+						                	//sl.getButtonEndActions().setDisable(true);
+						                	//sl.getButtonEndBuys().setDisable(false);
 						                	
 						                	strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Aktionsphase\n");
 						                	strBuilderLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 						                	
 						                	//we don't send a card here, so set it null
-						                	GameHistory history2 = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndAction);
+						                	history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndAction);
 						
 						                	try {
 						                		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
 						                		//sl.getPlayer_OS().getOut().reset();
-						                		sl.getPlayer_OS().getOut().writeObject(history2);
+						                		sl.getPlayer_OS().getOut().writeObject(history);
 						                		sl.getPlayer_OS().getOut().flush();
 						            		} catch (IOException e) {
 						            			// TODO Auto-generated catch block
@@ -269,21 +270,23 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
 						                	croupier.setBuyPower(0);
 						                	
-						                	sl.getButtonEndBuys().setDisable(true);
+						                	//sl.getButtonEndBuys().setDisable(true);
 						
 						            		strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Kaufphase\n\n");
 						            		strBuilderLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 						                	
 						            		
 						            		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
-						            		GameHistory history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString() ,sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndBuy);
+						            		history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString() ,sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndBuy);
 						
 						            		
 						            		//Restliche Karten in h�nden werden auf ablagestapel gelegt
-						            		croupier.muckHoleCards();
+						            		//croupier.muckHoleCards();
 						            		
 						            		//es werden 5 neue Karten gezogen
-						            		croupier.drawHoleCards();
+						            		//croupier.drawHoleCards();
+						            		
+						            		croupier.removeHoleCards();
 						            		
 						            		
 						                	try {
@@ -297,7 +300,61 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						            		}
 						                	
 						                	break;
+						                	
+            	case "Wegwerfen beenden":
             		
+            		if(croupier.isTrashModeChapel()){
+            			
+            			sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Wegwerfen\n");
+            			croupier.setTrashModeChapel(false);
+						croupier.setTrashCounterModeChapel(0);
+						if(croupier.getActions()==0){
+							croupier.setBuyMode(true);
+							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+						}else{
+							croupier.setActionMode(true);
+							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" hat noch weitere Aktionen\n");
+						}
+						
+						history = new GameHistory(sl.getStrBuilderTextArea().toString(),null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.Trash);
+						
+						try {
+							//sl.getPlayer_OS().getOut().reset();
+							sl.getPlayer_OS().getOut().writeObject(history);
+							sl.getPlayer_OS().getOut().flush();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+            		}
+            		
+            		break;
+            		
+            	case "Tauschen beenden":
+            		croupier.setDiscardMode(false);
+					sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen und darf "+croupier.getDiscrardCounter()+" Karten nachziehen\n");
+					croupier.getNewHoleCards(croupier.getDiscrardCounter());
+					croupier.setDiscardedCounter(0);
+					
+					if(croupier.getActions()==0){
+						croupier.setBuyMode(true);
+						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Aktionsphase\n");
+					}else{
+						croupier.setActionMode(true);
+						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" hat noch weitere Aktionen\n");
+					}
+					
+					history = new GameHistory(sl.getStrBuilderTextArea().toString(),null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.Discard);
+					
+					try {
+						//sl.getPlayer_OS().getOut().reset();
+						sl.getPlayer_OS().getOut().writeObject(history);
+						sl.getPlayer_OS().getOut().flush();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+            		break;
             		
             	}
             	
@@ -310,112 +367,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
     
         
         
-        
-        sl.getButtonEndActions().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	
-            	croupier.setActionMode(false);
-            	croupier.setBuyMode(true);
-            	
-            	croupier.setActions(0);
-            	
-            	if(strBuilderTextArea != null){
-            		strBuilderTextArea.delete(0, strBuilderTextArea.length());
-            	}
-            	
-            	if(strBuilderLabel != null){
-            		strBuilderLabel.delete(0, strBuilderLabel.length());
-            	}
-            	
-            	sl.getButtonEndActions().setDisable(true);
-            	sl.getButtonEndBuys().setDisable(false);
-            	
-            	strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Aktionsphase\n");
-            	strBuilderLabel.append("an der Reihe\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
-            	
-            	//we don't send a card here, so set it null
-            	GameHistory history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString(), sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndAction);
-
-            	try {
-            		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
-            		//sl.getPlayer_OS().getOut().reset();
-            		sl.getPlayer_OS().getOut().writeObject(history);
-            		sl.getPlayer_OS().getOut().flush();
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-            }
-        });
-        
-        sl.getButtonEndBuys().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	
-            	if(strBuilderTextArea != null){
-            		strBuilderTextArea.delete(0, strBuilderTextArea.length());
-            	}
-            	
-            	croupier.setBuyMode(false);
-            	croupier.setBuys(0);
-            	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
-            	croupier.setBuyPower(0);
-            	
-            	sl.getButtonEndBuys().setDisable(true);
-            	
-////////////////////for loop wieder löschen///////////////////////
-						/**System.out.println("Ablagestapel: ");
-						for(int i=0; i< croupier.getAblagestapel().size();i++){
-							System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
-						}
-						
-						System.out.println("Nachziehstapel: ");
-						for(int i=0; i< croupier.getNachziehstapel().size();i++){
-							System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
-						}
-						
-						System.out.println("Hole cards: ");
-						for(int i=0; i< croupier.getHoleCards().size();i++){
-							System.out.println(croupier.getHoleCards().get(i).getLbl_cardName().getText());
-						}*/
-						
-
-            	croupier.removeHoleCards();
-            	
-            	
-////////////////////for loop wieder löschen///////////////////////
-					/**System.out.println("Ablagestapel: ");
-					for(int i=0; i< croupier.getAblagestapel().size();i++){
-						System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
-					}
-					
-					System.out.println("Nachziehstapel: ");
-					for(int i=0; i< croupier.getNachziehstapel().size();i++){
-						System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
-					}
-					
-					System.out.println("Hole cards: ");
-					for(int i=0; i< croupier.getHoleCards().size();i++){
-						System.out.println(croupier.getHoleCards().get(i).getLbl_cardName().getText());
-					}*/
-
-        		strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Kaufphase und zieht 5 neue Karten\n\n");
-        		
-        		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
-        		GameHistory history = new GameHistory(strBuilderTextArea.toString(), null,sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndBuy);
-
-            	try {
-            		//maybe reset needed because the GameParty object could have been changed (f.e. one player has left the game -> -1 player)
-            		//sl.getPlayer_OS().getOut().reset();
-            		sl.getPlayer_OS().getOut().writeObject(history);
-            		sl.getPlayer_OS().getOut().flush();
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-            }
-        });
+       
         
        /** sl.getButtonLeaveGamePlayer().setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -452,6 +404,9 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             }
         }); */ 
         
+        
+        
+        
     }
 
     protected void sendMessageToServer() {
@@ -471,6 +426,9 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 		view.tf_messagePlayingStage.clear();
 		view.tf_messagePlayingStage.requestFocus();	
 	}
+    
+    
 
 	
 }
+

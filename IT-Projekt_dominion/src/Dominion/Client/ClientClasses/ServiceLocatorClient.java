@@ -76,8 +76,6 @@ public class ServiceLocatorClient {
     private Button provisorischCard3;	
     private Button playAction; //nur provisorisch
     private Button playBuy;    // nur provisorisch
-    private Button endAction;   //bleiben  
-    private Button endBuy;      //bleiben
     
     private boolean isHost=false;
     
@@ -86,6 +84,9 @@ public class ServiceLocatorClient {
 
     private Label lbl_errMsgView = new Label("");   
     private Label lbl_popUpMessage = new Label("");
+    
+    private StringBuilder strBuilderForTextArea = new StringBuilder();
+	private StringBuilder strBuilderForLabel = new StringBuilder();
    
     //if the host ends his game before the GameParty is full, the game will end for the host and all other clients and will disappear on the ListView "Spielübersicht" in the lobby. 
   	//There will be no score for this GameParty. Once the GameParty is full, the GameParty will disappear on the ListView. While playing the game, each client is able to leave the GameParty. His score
@@ -259,7 +260,7 @@ public class ServiceLocatorClient {
 	public void prepareGame(GameParty party){		
 		if(party.getHost().getUsername().equals(this.player_noOS.getUsername())){
 			//this.playAction.setDisable(false);
-			this.endAction.setDisable(false);
+			//this.endAction.setDisable(false);
 			this.croupier.setActionMode(true);
 			this.croupier.setActions(1);
 			this.croupier.setBuys(1);
@@ -270,8 +271,9 @@ public class ServiceLocatorClient {
 			
 			//change the Label "warten bis Spiel voll ist..." for the players of this GameParty
 			
-			this.numberOfActionsAndBuys.setText("Du bist am Zug---");
+			this.numberOfActionsAndBuys.setText("Du bist am Zug\n1 Aktionen, 1 Käufe, 0 Geld");
 			
+	
 			this.ta_gameHistory.appendText("Spiel beginnt\n");
 			this.ta_gameHistory.appendText(party.getHost().getUsername()+" ist am Zug\n");
 			this.ta_gameHistory.selectPositionCaret(this.ta_gameHistory.getText().length());
@@ -401,23 +403,6 @@ public class ServiceLocatorClient {
 		this.playBuy = new Button (text);
 	}
 	
-	public Button getButtonEndActions(){
-		return this.endAction;
-	}
-	
-	public void setButtonEndActions(String text){
-		this.endAction = new Button (text);
-	}
-	
-	public Button getButtonEndBuys(){
-		return this.endBuy;
-	}
-	
-	public void setButtonEndBuys(String text){
-		this.endBuy = new Button (text);
-	}
-	
-
 	public Label getLbl_errMsgView() {
 		return lbl_errMsgView;
 	}
@@ -450,27 +435,14 @@ public class ServiceLocatorClient {
 		return this.croupier;
 	}
 	
-	/**public void clearCurrentGameParty(){
-		/**this.currentGameParty = null;
-		this.view_playingStage.stop();
-		this.view_playingStage.root.getChildren().clear();
-		//set croupier singleton null
-		this.croupier.clear();
-		this.ta_ChatPlayingStage.clear();
-		this.ta_gameHistory.clear();
-		
-		if(croupier ==null){
-			System.out.println("croupier null");
-		}
-		ServiceLocatorClient = null;
-		Croupier.setCroupierNull();
-		
-		
-	}*/
+	public StringBuilder getStrBuilderTextArea(){
+		return this.strBuilderForTextArea;
+	}
 	
+	public StringBuilder getStrBuilderLabel(){
+		return this.strBuilderForLabel;
+	}
 	
-	
-
 
 
 }

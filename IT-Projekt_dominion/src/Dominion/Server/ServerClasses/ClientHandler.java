@@ -329,7 +329,7 @@ public class ClientHandler implements Runnable {
 							//check first if there was a buy of a point card
 							try{  
 
-								if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
+								if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
 									//first search the corresponding GamePartyOnServer
 									GamePartyOnServer current2=null;
 									long id4 = history.getGameParty().getID();									
@@ -384,7 +384,6 @@ public class ClientHandler implements Runnable {
 							}
 							
 							//writing to all clients
-							
 							for (int i =0; i<current.getPlayerList().size();i++){
 								current.getPlayerList().get(i).getOut().reset();
 								current.getPlayerList().get(i).getOut().writeObject(history);
@@ -550,6 +549,7 @@ public class ClientHandler implements Runnable {
 						case PlayCard:
 							
 							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().reset();
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
 							}
@@ -566,7 +566,7 @@ public class ClientHandler implements Runnable {
 							break;
 							
 						case BuyPointCard:
-							if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
+							if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
 								//first search the corresponding GamePartyOnServer
 								long id4 = history.getGameParty().getID();
 								GamePartyOnServer current3=null;
@@ -605,8 +605,7 @@ public class ClientHandler implements Runnable {
 							
 							try{
 								
-								if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province")){
-									//first search the corresponding GamePartyOnServer
+								if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
 									long id4 = history.getGameParty().getID();
 									GamePartyOnServer current3=null;
 									for(int i =0; i<sl.getGameListFromServer().size();i++){
@@ -644,6 +643,145 @@ public class ClientHandler implements Runnable {
 							
 						case MineModeEnd:
 							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							break;
+							
+						case Discard:
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							break;
+							
+						case RebuildingModeEnd:
+							
+							try{
+								
+								if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
+									//first search the corresponding GamePartyOnServer
+									long id4 = history.getGameParty().getID();
+									GamePartyOnServer current3=null;
+									for(int i =0; i<sl.getGameListFromServer().size();i++){
+										if(id4 == (sl.getGameListFromServer().get(i).getGameParty().getID())){
+											current3 = sl.getGameListFromServer().get(i);
+											//break for loop
+											break;
+										}
+									}
+									
+									//search the player who gained points
+									String currentPlayer = history.getCurrentPlayer().getUsername();
+
+									for(int i=0; i<current3.getGameParty().getArrayListOfPlayers().size();i++){
+										if(currentPlayer.equals(current3.getGameParty().getArrayListOfPlayers().get(i).getUsername())){
+											current3.getGameParty().getArrayListOfPlayers().get(i).setPoints(history.getCurrentPlayer().getPoints());
+										}
+									}
+									
+									//set the updated GameParty within GameHistory
+									history.updateGameParty(current3.getGameParty());
+								}
+								
+							}catch (NullPointerException e){
+								//
+							}
+							
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							break;	
+							
+						case WorkshopModeEnd:
+							
+							try{
+								
+								if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
+									//first search the corresponding GamePartyOnServer
+									long id4 = history.getGameParty().getID();
+									GamePartyOnServer current3=null;
+									for(int i =0; i<sl.getGameListFromServer().size();i++){
+										if(id4 == (sl.getGameListFromServer().get(i).getGameParty().getID())){
+											current3 = sl.getGameListFromServer().get(i);
+											//break for loop
+											break;
+										}
+									}
+									
+									//search the player who gained points
+									String currentPlayer = history.getCurrentPlayer().getUsername();
+
+									for(int i=0; i<current3.getGameParty().getArrayListOfPlayers().size();i++){
+										if(currentPlayer.equals(current3.getGameParty().getArrayListOfPlayers().get(i).getUsername())){
+											current3.getGameParty().getArrayListOfPlayers().get(i).setPoints(history.getCurrentPlayer().getPoints());
+										}
+									}
+									
+									//set the updated GameParty within GameHistory
+									history.updateGameParty(current3.getGameParty());
+								}
+								
+							}catch (NullPointerException e){
+								//
+							}
+							
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().reset();
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							break;
+							
+						case Reaction:
+							
+							try{
+								if(history.getGameCard_EN().equals("curse")){
+									//first search the corresponding GamePartyOnServer
+									long id4 = history.getGameParty().getID();
+									GamePartyOnServer current3=null;
+									for(int i =0; i<sl.getGameListFromServer().size();i++){
+										if(id4 == (sl.getGameListFromServer().get(i).getGameParty().getID())){
+											current3 = sl.getGameListFromServer().get(i);
+											//break for loop
+											break;
+										}
+									}
+									
+									//search the player who gained points
+									String currentPlayer = history.getPlayerForWitchMode().getUsername();
+
+									for(int i=0; i<current3.getGameParty().getArrayListOfPlayers().size();i++){
+										if(currentPlayer.equals(current3.getGameParty().getArrayListOfPlayers().get(i).getUsername())){
+											current3.getGameParty().getArrayListOfPlayers().get(i).setPoints(history.getPlayerForWitchMode().getPoints());
+										}
+									}
+									
+									//set the updated GameParty within GameHistory
+									history.updateGameParty(current3.getGameParty());
+									
+								}
+							}catch (NullPointerException e){
+								//
+							}
+																	
+							for (int i =0; i<current.getPlayerList().size();i++){
+								current.getPlayerList().get(i).getOut().reset();
+								current.getPlayerList().get(i).getOut().writeObject(history);
+								current.getPlayerList().get(i).getOut().flush();
+							}
+							
+							break;
+							
+						case AttackEnd:
+							
+							for (int i =0; i<current.getPlayerList().size();i++){
+								//current.getPlayerList().get(i).getOut().reset();
 								current.getPlayerList().get(i).getOut().writeObject(history);
 								current.getPlayerList().get(i).getOut().flush();
 							}
@@ -749,6 +887,18 @@ public class ClientHandler implements Runnable {
 	}
 	
 	public void prepareNewRound(GameHistory history, PlayerWithoutOS nextPlayer){
+		//first search the corresponding GamePartyOnServer
+		GamePartyOnServer current=null;
+		for(int i=0; i<sl.getGameListFromServer().size();i++){
+			if(sl.getGameListFromServer().get(i).getGameParty().getID() == history.getGameParty().getID()){
+				current = sl.getGameListFromServer().get(i);
+				break;
+			}
+		}
+		
+		current.getGameParty().increasePlayedRounds();
+		history.updateGameParty(current.getGameParty());
+		
 		//only checked if we play with number of rounds. The game will end if true
 		if(history.getGameParty().withRounds() && history.getGameParty().getRoundCounter() == history.getGameParty().getRounds()){
 			history.getGameParty().setGameHasEnded(true);
@@ -777,9 +927,9 @@ public class ClientHandler implements Runnable {
 			
 		}else{
 			strBuilder.append(history.getTextForTextArea());
-			String update = "Runde "+(history.getGameParty().getRoundCounter())+" abgeschlossen\n_________________\nSpieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
+			String update = "Runde "+(history.getGameParty().getRoundCounter()-1)+" abgeschlossen\n_________________\nSpieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
 			strBuilder.append(update);
-			history.getGameParty().increasePlayedRounds();
+			//history.getGameParty().increasePlayedRounds();
 			history.updateTextForTextArea(strBuilder.toString());
 			strBuilder.delete(0, strBuilder.length());
 			

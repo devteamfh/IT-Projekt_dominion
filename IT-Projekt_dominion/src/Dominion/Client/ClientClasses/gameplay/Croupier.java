@@ -14,6 +14,7 @@ import Dominion.Client.ClientClasses.customButton;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Server.ServerClasses.ServiceLocatorServer;
+import Dominion.appClasses.PlayerWithoutOS;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -37,15 +38,27 @@ public class Croupier  extends Observable {
 	boolean trashModeChapel=false;
 	boolean trashModeMine = false;
 	boolean modeForMine = false;
+	boolean trashModeMoneylender =false;
+	boolean trashModeRebuilding=false;
+	boolean modeForRebuilding = false;
+	boolean modeForWorkshop = false;
+	boolean modeForAttack = false;
+	boolean reactionMode = false;
+	boolean modeForDiscardMilitia = false;
+	boolean modeForCurseCard = false;
 	
 	int buyPower = 0;
 	int actions;
 	int buys;
-	int counterTrashedCards;
+	int counterTrashedCardsModeChapel;
 	int savedMCValueForMineMode;
+	int savedCardValueForRebuildingMode;
 	int discardCounter;
+	int countReactions;
+	PlayerWithoutOS currentPlayer;
 	
-
+	Label lbl_playerListStage = new Label();
+	
 	Label lbl_buyPower = new Label();
 	Label lbl_actions  = new Label();
 	Label lbl_buys     = new Label();
@@ -55,14 +68,12 @@ public class Croupier  extends Observable {
 	int stackSizeEstate   = 10; int costsEstate  = 2; int pointsEstate =1;
 	int stackSizeDuchy    = 10; int costsDuchy   = 5; int pointsDuchy =3;
 	int stackSizeProvince = 10; int costsPovince = 8; int pointsProvince =6;
+	int stackSizeCurse    = 10; int costsCurse   = 0; int pointsCurse = -1;
 	
 	//# of money cards and cost of money cards;
 	int stackSizeCopper   = 50; int costsCopper  = 0; int buyPowerCopper = 1;
 	int stackSizeSilver   = 50; int costsSilver  = 3; int buyPowerSilver = 2;
 	int stackSizeGold     = 50; int costsGold    = 6; int buyPowerGold   = 3;
-
-	//# of curse cards and cost
-	int stackSizeCurse    = 10; int costsCurse   = 0; int buyPowerCurse = 0;
 	
 	//# of Community Action Cards on Board
 	ArrayList<Integer> al_stackSizeCommunityActionCards = new ArrayList<Integer>();
@@ -333,7 +344,6 @@ public class Croupier  extends Observable {
 		return actionMode;
 	}
 
-
 	public void setActionMode(boolean actionMode) {
 		
 		this.actionMode = actionMode;
@@ -361,6 +371,26 @@ public class Croupier  extends Observable {
 		notifyObservers();
 	}
 	
+	public boolean isTrashModeMoneylender(){
+		return this.trashModeMoneylender;
+	}
+	
+	public void setTrashModeMoneylender(boolean trashMode){
+		this.trashModeMoneylender = trashMode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isTrashModeRebuilding(){
+		return this.trashModeRebuilding;
+	}
+	
+	public void setTrashModeRebuilding(boolean trashMode){
+		this.trashModeRebuilding = trashMode;
+		setChanged();
+		notifyObservers();
+	}
+	
 	public boolean isTrashModeMine(){
 		return this.trashModeMine;
 	}
@@ -381,8 +411,68 @@ public class Croupier  extends Observable {
 		notifyObservers();
 	}
 	
-	public void setTrashCounter(int counter){
-		this.counterTrashedCards = counter;
+	public boolean isModeForRebuilding(){
+		return this.modeForRebuilding;
+	}
+	
+	public void setModeForRebuilding(boolean mode){
+		this.modeForRebuilding = mode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isModeForWorkshop(){
+		return this.modeForWorkshop;
+	}
+	
+	public void setModeForWorkshop(boolean mode){
+		this.modeForWorkshop = mode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isReactionMode(){
+		return this.reactionMode;
+	}
+	
+	public void setReactionMode(boolean mode){
+		this.reactionMode = mode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isModeForAttack(){
+		return this.modeForAttack;
+	}
+	
+	public void setModeForAttack(boolean mode){
+		this.modeForAttack = mode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isDiscardModeMilitia(){
+		return this.modeForDiscardMilitia;
+	}
+	
+	public void setDiscardModeForMilitia(boolean mode){
+		this.modeForDiscardMilitia = mode;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isModeForCurseCard(){
+		return this.modeForCurseCard;
+	}
+	
+	public void setModeCurseCard(boolean mode){
+		this.modeForCurseCard = mode;
+		setChanged();
+		notifyObservers();
+	}
+		
+	public void setTrashCounterModeChapel(int counter){
+		this.counterTrashedCardsModeChapel = counter;
 	}
 
 
@@ -504,12 +594,12 @@ public class Croupier  extends Observable {
 		this.costsCurse = costsCurse;
 	}
 
-	public int getBuyPowerCurse() {
-		return buyPowerCurse;
+	public int getPointsCurse() {
+		return pointsCurse;
 	}
 
-	public void setBuyPowerCurse(int buyPowerCurse) {
-		this.buyPowerCurse = buyPowerCurse;
+	public void setPointsCurse(int pointsCurse) {
+		this.pointsCurse = pointsCurse;
 	}
 
 	public Label getLbl_actions() {
@@ -612,13 +702,25 @@ public class Croupier  extends Observable {
 	}
 	
 	public void increaseTrashedCards(){
-		this.counterTrashedCards++;
+		this.counterTrashedCardsModeChapel++;
 	}
 	
 	public int getTrashCounter(){
-		return this.counterTrashedCards;
+		return this.counterTrashedCardsModeChapel;
 	}
-	
+
+
+	public Label getLbl_playerListStage() {
+		return lbl_playerListStage;
+	}
+
+	public void setLbl_playerListStage(Label lbl_playerListStage) {
+		this.lbl_playerListStage = lbl_playerListStage;
+	}
+
+
+
+
 	public void setMCValueForMineMode(int costs_MC){
 		this.savedMCValueForMineMode = costs_MC+3;
 	}
@@ -627,12 +729,44 @@ public class Croupier  extends Observable {
 		return this.savedMCValueForMineMode;
 	}
 	
+	public void setCardValueForRebuildingMode(int costs){
+		this.savedCardValueForRebuildingMode = costs+2;
+	}
+	
+	public int getCardValueForRebuildingMode(){
+		return this.savedCardValueForRebuildingMode;
+	}
+	
 	public void increaseDiscardedCards(){
 		this.discardCounter++;
 	}
 	
 	public int getDiscrardCounter(){
 		return this.discardCounter;
+	}
+
+	public void setDiscardedCounter(int value){
+		this.discardCounter=value;
+	}
+	
+	public void increaseReactionCounter(){
+		this.countReactions++;
+	}
+	
+	public int getReactionCounter(){
+		return this.countReactions;
+	}
+	
+	public void setCounterReactions(int value){
+		this.countReactions=value;
+	}
+	
+	public void saveCurrentPlayer(PlayerWithoutOS currentPlayer){
+		this.currentPlayer=currentPlayer;
+	}
+	
+	public PlayerWithoutOS getCurrentPlayer(){
+		return this.currentPlayer;
 	}
 	
 }

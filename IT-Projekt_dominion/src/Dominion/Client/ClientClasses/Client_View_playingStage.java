@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
 
+import Dominion.Client.ClientClasses.Client_View_start.Delta;
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.ClientClasses.gameplay.cards.ActionCard;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
@@ -17,6 +18,7 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -66,19 +68,26 @@ public class Client_View_playingStage extends View<Client_Model> {
 	Button btn_close;
 
 	VictoryCard estate, duchy, province;
-	MoneyCard copper, silver, gold, curse;
+	MoneyCard copper, silver, gold;
+	VictoryCard curse;
 
 	ArrayList<GameCard> al_communityCards_left;
 	ArrayList<GameCard> al_allStartingCards;
 
 	VBox vb_player;
-
+	
+	Label lbl_playerList;
+	
 	HBox hb_wrapper_holeCards;
-
+	
 	Label lbl_descrBuyPower;
 	Label lbl_descrBuys;
 	Label lbl_descrActions;
 
+	HBox hb_wrapper_stapel;
+	Button dummyCardAblagestapel;
+	Button nachziehstapel;
+	
 	
 	VBox vb_wrapper_gameInformation_content;
 	HBox hb_wrapper_ActionsBuysBuyPower;
@@ -93,12 +102,6 @@ public class Client_View_playingStage extends View<Client_Model> {
 	customButton btn_sendChatMsgPlayingStage;
 
 
-
-
-	
-	
-	
-	
 	
 	Button provisorischCard1;
 	Button provisorischCard2;
@@ -159,7 +162,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		//hb_endGameHost_endGamePlayer.getChildren().addAll(sl.getButtonEndGameHost(), sl.getButtonLeaveGamePlayer());
 
 		hb_custom_menue.getChildren().addAll(spacer, btn_close);
-		hb_custom_menue.setPadding(new Insets(5, 5, 5, 0));
+		hb_custom_menue.setPadding(new Insets(15, 0, 0, 0));
 
 		// Only the will get the button for ending the game until the game isn't
 		// full (example 3 of 4 players -> host can end the game)
@@ -176,30 +179,18 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		
 
-		//Community Cards auf der Linken seite Initialisieren	
+		//_________Community Cards auf der Linken seite Initialisieren___________//
 		estate   = new VictoryCard(new Label("estate"),croupier.getCostsEstate(),croupier.getPointsEstate(), "Anwesen");
 		duchy    = new VictoryCard(new Label("duchy"),croupier.getCostsDuchy(),croupier.getPointsDuchy(), "Herzogtum");
 		province = new VictoryCard(new Label("province"),croupier.getCostsPovince(),croupier.getPointsProvince(), "Provinz");
+		curse =    new VictoryCard(new Label("curse"),croupier.getCostsCurse(),croupier.getPointsCurse(), "Fluch");
 		
 		copper = new MoneyCard(new Label("copper"),croupier.getBuyPowerCopper(),croupier.getCostsCopper(),"Kupfer");
 		silver = new MoneyCard(new Label("silver"),croupier.getBuyPowerSilver(),croupier.getCostsSilver(), "Silber");
 		gold   = new MoneyCard(new Label("gold"),croupier.getBuyPowerGold(),croupier.getCostsGold(), "Gold");
 		
-		curse = new MoneyCard(new Label("curse"),croupier.getBuyPowerCurse(),croupier.getCostsCurse(), "Fluch");
+		//curse = new MoneyCard(new Label("curse"),croupier.getBuyPowerCurse(),croupier.getCostsCurse(), "Fluch");
 
-		
-		// ____Community Cards links -> L�ndereien und Geld, Curse_________________________//
-
-		// Community Cards auf der Linken seite Initialisieren
-		/**estate = new VictoryCard(new Label("estate"), croupier.getCostsEstate(), croupier.getPointsEstate());
-		duchy = new VictoryCard(new Label("duchy"), croupier.getCostsDuchy(), croupier.getPointsDuchy());
-		province = new VictoryCard(new Label("province"), croupier.getCostsPovince(), croupier.getPointsProvince());
-
-		copper = new MoneyCard(new Label("copper"), croupier.getBuyPowerCopper(), croupier.getCostsCopper());
-		silver = new MoneyCard(new Label("silver"), croupier.getBuyPowerSilver(), croupier.getCostsSilver());
-		gold = new MoneyCard(new Label("gold"), croupier.getBuyPowerGold(), croupier.getCostsGold());
-
-		curse = new MoneyCard(new Label("curse"), croupier.getBuyPowerCurse(), croupier.getCostsCurse());*/
 
 		al_communityCards_left = new ArrayList<GameCard>();
 		al_communityCards_left.add(estate);
@@ -216,13 +207,12 @@ public class Client_View_playingStage extends View<Client_Model> {
 			gc = al_communityCards_left.get(i);
 			croupier.addObserver(gc);
 			gc.setMinSize(120, 110);
-			// gc.setAlignment(Pos.BOTTOM_LEFT);
 			gc.assignStackSizeInfo();
 		}
 
 		// Branches
 		HBox hb_wrapper_communityCards_Left = new HBox();
-		hb_wrapper_communityCards_Left.setPadding(new Insets(0, 20, 20, 20));
+		hb_wrapper_communityCards_Left.setPadding(new Insets(0, 15, 0, 50));
 
 		VBox vb_wrapper_communityCards_Left_col1 = new VBox();
 		VBox vb_wrapper_communityCards_Left_col2 = new VBox();
@@ -281,8 +271,8 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 		// Branches
 		VBox vb_wrapper_center = new VBox();
-		vb_wrapper_center.setMinSize(1200, 600);
-		vb_wrapper_center.setPadding(new Insets(0, 50, 0, 30));
+		vb_wrapper_center.setMinSize(700, 600);
+		vb_wrapper_center.setPadding(new Insets(0, 0, 0, 25));
 
 		HBox hb_wrp_communityActionCardsBackRow = new HBox();
 		hb_wrp_communityActionCardsBackRow.setPadding(new Insets(30, 0, 0, 0));
@@ -369,16 +359,22 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		
 		
-		// ____________Spielverlauf rechte Seite__________________________________________________________________//
-
+		// ____________Spielverlauf Rechterhand__________________________________________________________________//
 		
 		vb_player = new VBox();
+		vb_player.setPadding(new Insets(0,0,0,10));
 		vb_player.setAlignment(Pos.TOP_LEFT);
-		vb_player.setPrefHeight(60.0);
-				
+		vb_player.setMaxHeight(130);
+		vb_player.setMinHeight(130);
+		
+		
+	
 		windowGameHistory = sl.getTextAreaGameHistory();
+		windowGameHistory.setPrefHeight(300);
 		windowGameHistory.setEditable(false);
-		windowGameHistory.setStyle("-fx-opacity: 0.80;");
+		windowGameHistory.getStyleClass().addAll("text-area","textBoardInfo");
+
+	
 
 		btn_userInteraction = new customButton("Dominion");
 		btn_userInteraction.setBtnTextEmpty(btn_userInteraction);
@@ -386,18 +382,20 @@ public class Client_View_playingStage extends View<Client_Model> {
 		btn_userInteraction.getLbl().getStyleClass().add("lbl_btnUserInteraction"); //�berschreibt Stylezuweisung in customButton
 		btn_userInteraction.setPrefSize(350, 89);
 		croupier.addObserver(btn_userInteraction);
-			
+		
+		
 		
 		VBox vb_wrapper_right = new VBox();
-		vb_wrapper_right.setMinWidth(350);
-		vb_wrapper_right.setMaxWidth(350);
+		vb_wrapper_right.setMinWidth(400);
+		vb_wrapper_right.setMaxWidth(400);
+		vb_wrapper_right.setPadding(new Insets(0,30,0,0));
 		
 		
 			HBox hb_wrapper_windowGameHistory = new HBox();
 			hb_wrapper_windowGameHistory.getChildren().add(windowGameHistory);
 			
 			HBox hb_wrapper_btn_userInteraction = new HBox();
-			hb_wrapper_btn_userInteraction.setPadding(new Insets(15,0,0,0));
+			hb_wrapper_btn_userInteraction.setPadding(new Insets(15,0,0,10));
 			hb_wrapper_btn_userInteraction.getChildren().add(btn_userInteraction);
 			
 			
@@ -405,34 +403,11 @@ public class Client_View_playingStage extends View<Client_Model> {
 			
 			
 			
-			//dieser bereich anschliessend l�schen
-			sl.setButtonPlayActions("Aktion spielen");
-			sl.getButtonPlayActions().setDisable(true);
-
-			sl.setButtonPlayBuy("Kauf spielen");
-			sl.getButtonPlayBuy().setDisable(true);
-
-			sl.setButtonEndActions("Aktionsphase beenden");
-			sl.getButtonEndActions().setDisable(true);
-
-			sl.setButtonEndBuys("Kaufphase beenden");
-			sl.getButtonEndBuys().setDisable(true);
-
 			
-			VBox vb_wrapper_gameController = new VBox();
-			VBox vb_wrapper_controlButtons = new VBox();
-
-			vb_wrapper_controlButtons.getChildren().addAll(sl.getButtonPlayActions(), sl.getButtonPlayBuy(),
-					sl.getButtonEndActions(), sl.getButtonEndBuys());
-
-			vb_wrapper_gameController.getChildren().addAll(vb_wrapper_controlButtons);
-			//////////////////////////////////////
-			
-			
-			
-				
+										
 		VBox vb_wrapper_spielverlauf_btn = new VBox();
-		vb_wrapper_spielverlauf_btn.getChildren().addAll(vb_player, hb_wrapper_windowGameHistory, hb_wrapper_btn_userInteraction,vb_wrapper_gameController);
+		vb_wrapper_spielverlauf_btn.setPadding(new Insets(0,0,0,0));
+		vb_wrapper_spielverlauf_btn.getChildren().addAll(vb_player, hb_wrapper_windowGameHistory, hb_wrapper_btn_userInteraction);
 
 		vb_wrapper_right.getChildren().addAll(vb_wrapper_spielverlauf_btn);
 		// --------------------------------------------------------------------------------------------------------------------------------------//
@@ -442,23 +417,27 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		// ____________holecards  contorlbuttons   chat Window__________________________________________________________________//
 
-		customButton blank = new customButton();
-		blank.setMinSize(160, 260);
-		customButton nachziehstapel = new customButton();
+		dummyCardAblagestapel = new Button();
+		dummyCardAblagestapel.setMinSize(160, 260);
+		dummyCardAblagestapel.getStyleClass().add("dummyCardAblagestapel");
+		
+		nachziehstapel = new Button();
 		nachziehstapel.setMinSize(160, 260);
 
 		HBox hb_wrapper_bottom = new HBox();
-		hb_wrapper_bottom.setPadding(new Insets(0, 20, 20, 20));
+		hb_wrapper_bottom.setPadding(new Insets(-50, 10, 0, 50)); 
 		hb_wrapper_bottom.setMinHeight(500);
+		hb_wrapper_bottom.setMaxHeight(500);
 
 		// Ablage und Nachziehstapel
-		HBox hb_wrapper_stapel = new HBox();
+		hb_wrapper_stapel = new HBox();
 		hb_wrapper_stapel.setPadding(new Insets(0, 50, 0, 0));
 		HBox hb_wrapper_ablagestapel = new HBox();
+		hb_wrapper_ablagestapel.setPadding(new Insets(0,0,0,0));
 		HBox hb_wrapper_nachziehstapel = new HBox();
 
 		nachziehstapel.getStyleClass().addAll("card", "cardback2");
-		hb_wrapper_stapel.getChildren().addAll(blank, nachziehstapel);
+		hb_wrapper_stapel.getChildren().addAll(dummyCardAblagestapel, nachziehstapel);
 
 		// wrapper hole Cards
 		hb_wrapper_holeCards = new HBox();
@@ -508,22 +487,24 @@ public class Client_View_playingStage extends View<Client_Model> {
 		
 		chatWindowPlayingStage = sl.getTextAreaChatPlayingStage();
 		chatWindowPlayingStage.setEditable(false);
-		chatWindowPlayingStage.setStyle("-fx-opacity: 0.80;");
+		chatWindowPlayingStage.getStyleClass().add("boardChat");
+	
 
 		tf_messagePlayingStage = new TextField();
-		tf_messagePlayingStage.setStyle("-fx-opacity: 0.80;");
+		tf_messagePlayingStage.setStyle("-fx-opacity: 0.60;");
 		tf_messagePlayingStage.setPrefSize(250, 40);
+
 
 		btn_sendChatMsgPlayingStage = new customButton("senden");
 		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn", "btn_sendChatMsg");
 		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
-		btn_sendChatMsgPlayingStage.setPrefSize(95, 40);
+		btn_sendChatMsgPlayingStage.setPrefSize(103, 40);
 		
 		
 		VBox vb_wrapper_chat = new VBox();
-		vb_wrapper_chat.setMinSize(330, 200);
-		vb_wrapper_chat.setMaxSize(330, 200);
-		vb_wrapper_chat.setPadding(new Insets(0,-20,0,0));
+		vb_wrapper_chat.setMinSize(335, 250);
+		vb_wrapper_chat.setMaxSize(335, 250);
+		vb_wrapper_chat.setPadding(new Insets(0,20,0,-50));
 		
 			HBox hb_wrapper_chatInput_btnSend = new HBox();
 			
@@ -598,6 +579,34 @@ public class Client_View_playingStage extends View<Client_Model> {
 		playedCards_hbox.getChildren().addAll(playedCard1, playedCard2, playedCard3);
 		vb_center.getChildren().add(playedCards_hbox);
 
+		
+		
+		 /**
+		  * @author kab: Fenster via Drag und Drop verschieben
+		  */
+	    final Delta dragDelta = new Delta();
+	    root.setOnMousePressed(new EventHandler<MouseEvent>() {
+	      @Override public void handle(MouseEvent mouseEvent) {
+	        // record a delta distance for the drag and drop operation.
+	        dragDelta.x = stage.getX() - mouseEvent.getScreenX();
+	        dragDelta.y = stage.getY() - mouseEvent.getScreenY();
+	        scene.setCursor(Cursor.MOVE);
+	      }
+	    });
+	    root.setOnMouseReleased(new EventHandler<MouseEvent>() {
+	      @Override public void handle(MouseEvent mouseEvent) {
+	        scene.setCursor(Cursor.DEFAULT);
+	      }
+	    });
+	    root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+	      @Override public void handle(MouseEvent mouseEvent) {
+	        stage.setX(mouseEvent.getScreenX() + dragDelta.x);
+	        stage.setY(mouseEvent.getScreenY() + dragDelta.y);
+	      }
+	    });
+		
+		
+		
 
 	
 		root.setTop(hb_custom_menue);
@@ -606,13 +615,19 @@ public class Client_View_playingStage extends View<Client_Model> {
 		root.setRight(vb_wrapper_right);
 		root.setBottom(hb_wrapper_bottom);
 		root.setPadding(new Insets(0,20,0,0));
+		root.getStyleClass().add("bg");
 		
-		this.scene = new Scene(root, 1850, 920);
+		this.scene = new Scene(root, 1850, 900);
 		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_playStage.css").toExternalForm());
-		 stage.initStyle(StageStyle.TRANSPARENT);
+		stage.initStyle(StageStyle.TRANSPARENT);
 	
 		return scene;
 	}
+
+	//F�rr Drag und Drop verschiebung: relative x und y Position herausfinden
+	class Delta { double x, y; }
+
+		
 
 	public void updateGUI() {
 
@@ -624,6 +639,18 @@ public class Client_View_playingStage extends View<Client_Model> {
 			gc1.setPrefSize(160, 260);
 			gc1.setMaxWidth(160);
 
+			
+		// Zeichne Ablagekarte neu
+		hb_wrapper_stapel.getChildren().clear();
+		dummyCardAblagestapel.getStyleClass().clear();
+		try {
+			String cssSelector = new String(croupier.getAblagestapel().peekLast().getLbl_cardName().getText()+"_big");
+			
+			dummyCardAblagestapel.getStyleClass().addAll("card",cssSelector);
+			hb_wrapper_stapel.getChildren().addAll(dummyCardAblagestapel,nachziehstapel);	
+		} catch(Exception e){
+			hb_wrapper_stapel.getChildren().addAll(this.dummyCardAblagestapel,nachziehstapel);	
+			}			
 		}
 
 	
@@ -635,4 +662,10 @@ public class Client_View_playingStage extends View<Client_Model> {
 		return al_communityCards_left;
 	}
 
+	
+
 }
+
+
+
+
