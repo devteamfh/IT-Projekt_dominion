@@ -95,19 +95,12 @@ public class ClientHandler implements Runnable {
 							current.writeObject(updateStatistics);
 							current.flush();
 						 }
-					
-					
-					
-					
-					
-					
+									
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			
-		
-			
+	
 		}
 	}
 	
