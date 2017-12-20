@@ -1,7 +1,9 @@
 package Dominion.Client.ClientClasses;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -115,7 +117,10 @@ public class ReadMsgFromServer implements Runnable {
 		
 
 					sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
+					System.out.println("grösse von zurückgsendetem playstatistics shit "+playerStatistics.getListOfStartInformationObjects().size());
 					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());				
+					
+					
 					
 					break;
 					 
@@ -1169,24 +1174,19 @@ public class ReadMsgFromServer implements Runnable {
 				}
 		
 			}
-		}  catch (IOException | ClassNotFoundException e) {
+		}  catch (Exception e) {
+			sl.getLogger().info("Exception catched:");
 			e.printStackTrace();
 			
 			try {
 				model.getInput().close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			try {
 				model.getOutput().close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			try {
 				model.client.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			}catch(Exception e2){
+			e2.printStackTrace();
 			}
+					
+			
 
 		}
 

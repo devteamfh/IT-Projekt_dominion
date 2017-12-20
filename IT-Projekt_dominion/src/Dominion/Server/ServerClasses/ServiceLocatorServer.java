@@ -104,6 +104,17 @@ public class ServiceLocatorServer {
     public void addNewStartInfoStatistics(StartInformation startInfo){
     	this.al_startInfoStatistics.add(startInfo);
     }
+
+    public void removeStartInfoStatistics(String username){
+    	
+    	for (int i = 0; i < al_startInfoStatistics.size();i++){
+    		if (al_startInfoStatistics.get(i).getUsername().equals(username)){
+    			al_startInfoStatistics.remove(i);
+    			System.out.println("Statistik mit nachfolgendem index in liste auf server gelöscht: "+i);
+    		} 	
+    		System.out.println("neue al_startinfostatarraylist grösse: "+al_startInfoStatistics.size());
+    	}	
+    }
     
     /**
      * @author: kab

@@ -65,18 +65,49 @@ public class ClientHandler implements Runnable {
 				sendToAllClients (obj);			
 			}
 		} catch (IOException | ClassNotFoundException e) {
+			sl.getLogger().info("Exception catched:");
 			e.printStackTrace();
 			list.remove(this.out);
 			sl.getConnectedPlayers().remove(PWOS_thisPlayer);
 			
-			//noch zu implementieren: neue statistik liste an alle versenden
-			
+			//verbindung des disconecteten client wird geschlossen
 			try { out.close();
-				  in.close();
-				  s.close();
+			  in.close();
+			  s.close();
 			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+					e1.printStackTrace();
+				}
+			
+			//Spieler Statistik Tabelle in Lobby muss upgedated werden, da ein Spieler spiel verlassen aht
+				
+				//hier wird der disconnectede Player gelöscht:
+				sl.removeStartInfoStatistics(PWOS_thisPlayer.getUsername());
+				System.out.println("Neue grösse der statinfo auf dem server: "+sl.get_al_AllStartInfoStatisitcsOnServer().size());
+				//hier wird ein neues StartInformationsobjekt generiert und die neue Liste mit den Usern wird versendet
+				StartInformation updateStatistics = new StartInformation();
+				updateStatistics.setListOfStartInformationObjects(sl.get_al_AllStartInfoStatisitcsOnServer());
+				
+				try {
+					Iterator<ObjectOutputStream> iterOut = this.list.iterator();
+					 while (iterOut.hasNext()){
+							ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+							current.reset();
+							current.writeObject(updateStatistics);
+							current.flush();
+						 }
+					
+					
+					
+					
+					
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
+		
+			
 		}
 	}
 	
