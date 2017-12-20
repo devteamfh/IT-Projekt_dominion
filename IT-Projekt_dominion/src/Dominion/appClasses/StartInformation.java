@@ -19,6 +19,8 @@ public class StartInformation extends GameObject {
 	//kab:True wenn ein User mit dem gleichen Namen bereits auf dem Server connected ist
 	private boolean bol_nameTaken;
 	
+	
+	
 	//Username und PW der Spieler, sowie Attribute für Statistik
 	private String 	username;
 	private String 	PW;
