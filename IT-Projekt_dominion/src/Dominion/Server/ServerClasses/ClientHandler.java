@@ -1021,6 +1021,44 @@ public class ClientHandler implements Runnable {
 
 			}else{
 				strBuilder.append("Unentschieden!");
+				
+				//kab: es Müssen noch die Spielerstatistiken upgedated werden nach einem Spiel
+				//@joel die methhode unten geht nur, wenn es nur einen gewinner gibt. wenn du jetzt in der zwischenzeit was umgebaut hast, dann muss ich meine methode dann auch noch anpassen
+				
+				//Finde heraus, welche Spieler so eben gespielt haben um dessen statistiken auf der lobby tabelle upzudaten
+				Iterator<StartInformation> iterStatisticsOnServer = sl.get_al_AllStartInfoStatisitcsOnServer().iterator();
+				//statistik aktualisieren
+				while (iterStatisticsOnServer.hasNext()){
+					StartInformation cursor = iterStatisticsOnServer.next();
+					
+					for (int i = 0; i < current.getGameParty().getArrayListOfPlayers().size();i++){
+						//jedem Spieler wird ein gespieltes Spiel hinzugefügt
+						if (current.getGameParty().getArrayListOfPlayers().get(i).getUsername().equals(cursor.getUsername())){
+							cursor.setGamesPlayed(cursor.getGamesPlayed()+1);
+							
+							//Falls der cursor auf dem gewinner steht wird ein gewonnenes Spiel hinzugefügt
+							for (int j = 0; j < winner.size(); j++){
+								if (winner.get(j).getUsername().equals(cursor.getUsername())){
+										cursor.setGamesWon(cursor.getGamesWon()+1);
+							}
+							
+							//falls der cursor nicht auf dem gewinner steht, wird ein verlorenes Spiel hinzugefügt
+							else {   
+								cursor.setGamesLost(cursor.getGamesLost()+1);
+							}
+							
+								//aktualiserung  noch das gewonnnene spiele in prozent verhältins
+							cursor.setWinLooseRatio(cursor.getGamesWon()*100/cursor.getGamesPlayed());
+
+						}
+					
+						}
+						
+					
+					}
+				}
+				
+				
 
 			}
 			history.setNewType(GameHistory.HistoryType.EndGame);
