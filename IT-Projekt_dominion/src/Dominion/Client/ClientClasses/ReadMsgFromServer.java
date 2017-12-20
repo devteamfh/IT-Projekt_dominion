@@ -36,6 +36,7 @@ public class ReadMsgFromServer implements Runnable {
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	Croupier croupier = Croupier.getCroupier();
 	Client_Model model;
+	String textAttackCard;
 	
 	public ReadMsgFromServer (ObjectInputStream in, Client_Model model){
 		this.in = in;	
@@ -676,7 +677,7 @@ public class ReadMsgFromServer implements Runnable {
 
 										@Override 
 								           public void run() {
-											sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());											
+											sl.getLabelNumberOfActionsAndBuys().setText("Gegner muss reagieren: abwehren\noder Karten ablegen!");
 											croupier.setModeForAttack(true);
 											
 								           }
@@ -689,7 +690,8 @@ public class ReadMsgFromServer implements Runnable {
 
 										@Override 
 								           public void run() {
-											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+											textAttackCard = history.getTextForLabel();
+											
 											//check if the opponents got a reaction card (moat)
 											boolean found = false;
 											for(int i=0; i<croupier.getHoleCards().size();i++){
@@ -702,10 +704,11 @@ public class ReadMsgFromServer implements Runnable {
 											croupier.saveCurrentPlayer(history.getCurrentPlayer());
 											if(found){
 												croupier.setReactionMode(true);	
-												
+												sl.getLabelNumberOfActionsAndBuys().setText("Du wirst angegriffen\nund kannst abwehren!");
 												
 											}else{ 
 												//player doesnt have a moat card...he has to discard until he has 3 cards
+												sl.getLabelNumberOfActionsAndBuys().setText("Du wirst angegriffen und musst Karten\nablegen, bis du noch 3 Karten hast!");
 												
 												if(croupier.getHoleCards().size()<4){
 													sl.getStrBuilderTextArea().delete(0, sl.getStrBuilderTextArea().length());
@@ -739,7 +742,7 @@ public class ReadMsgFromServer implements Runnable {
 
 										@Override 
 								           public void run() {
-											sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());											
+											sl.getLabelNumberOfActionsAndBuys().setText("Gegner muss reagieren: abwehren\noder Fluchkarte nehmen");
 											croupier.setModeForAttack(true);
 											
 								           }
@@ -752,7 +755,9 @@ public class ReadMsgFromServer implements Runnable {
 
 										@Override 
 								           public void run() {
-											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+											//save the Label text for later..
+											textAttackCard = history.getTextForLabel();
+											
 											//check if the opponents got a reaction card (moat)
 											boolean found = false;
 											for(int i=0; i<croupier.getHoleCards().size();i++){
@@ -765,12 +770,13 @@ public class ReadMsgFromServer implements Runnable {
 											croupier.saveCurrentPlayer(history.getCurrentPlayer());
 											if(found){
 												croupier.setReactionMode(true);	
-												
+												sl.getLabelNumberOfActionsAndBuys().setText("Du wirst angegriffen\nund kannst abwehren!");
 												
 											}else{ 
 												//player doesnt have a moat card...he has to pick up a curse card
 												
 												croupier.setModeCurseCard(true);
+												sl.getLabelNumberOfActionsAndBuys().setText("Du wirst angegriffen und\nmusst eine Fluchkarte nehmen!");
 																							
 											}
 								           }
@@ -790,11 +796,27 @@ public class ReadMsgFromServer implements Runnable {
 
 							@Override 
 					           public void run() {
-								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
-									sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
-								}else{
-									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
-								}	
+								
+								try{
+									if(!history.getGameCard_EN().equals("witch") && !(history.getGameCard_EN().equals("militia"))){
+										if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+											System.out.println("test if true != militia");
+											sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+										}else{
+											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+										}	
+									}
+								}catch (NullPointerException e){
+									if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+										sl.getLabelNumberOfActionsAndBuys().setText("Du bist "+history.getTextForLabel());
+									}else{
+										sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+									}
+								}
+								
+								
+								
+								
 								
 					           }
 					      });
@@ -1095,6 +1117,7 @@ public class ReadMsgFromServer implements Runnable {
 									if(croupier.getReactionCounter() == (sl.getCurrentGameParty().getNumberOfLoggedInPlayers()-1)){
 										croupier.setModeForAttack(false);
 										croupier.setCounterReactions(0);
+										sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 										
 										GameHistory history2;
 										
@@ -1121,6 +1144,8 @@ public class ReadMsgFromServer implements Runnable {
 								
 									}
 									
+								}else{
+									sl.getLabelNumberOfActionsAndBuys().setText(history.getCurrentPlayer().getUsername()+" ist "+textAttackCard);
 								}
 								
 								try{

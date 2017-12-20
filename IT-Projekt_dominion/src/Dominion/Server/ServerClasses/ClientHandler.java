@@ -6,9 +6,13 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import javax.swing.event.ListSelectionEvent;
+
+import com.sun.org.apache.bcel.internal.classfile.Attribute;
 
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
@@ -370,7 +374,6 @@ public class ClientHandler implements Runnable {
 							history.setPlayerForGUIActivation(nextPlayer);							
 							
 							if(indexOfNextPlayer ==0){
-								
 								//a new round will begin because the last player in the sequence has finished his buy phase
 								//in this method we also check if the max number of rounds is reached (when game party with mode "Rundenanzahl)...the game would end here
 								prepareNewRound(history,nextPlayer);
@@ -825,7 +828,7 @@ public class ClientHandler implements Runnable {
 		}
 	}
 	
-	private PlayerWithoutOS determineWinner(GameParty party){
+	private ArrayList<PlayerWithoutOS> determineWinner(GameParty party){
 		//first search the corresponding GamePartyOnServer
 		GamePartyOnServer currentParty =null;
 		for(int i=0; i<sl.getGameListFromServer().size();i++){
@@ -834,20 +837,36 @@ public class ClientHandler implements Runnable {
 			}
 		}
 		
-		PlayerWithoutOS winner =null;
-		PlayerWithoutOS current = null;
+		//PlayerWithoutOS winner =null;
+		//8PlayerWithoutOS current = null;
 		
-		for(int i=0; i<currentParty.getGameParty().getArrayListOfPlayers().size();i++){
-			current =currentParty.getGameParty().getArrayListOfPlayers().get(i);
-			for(int i2=0; i2<currentParty.getGameParty().getArrayListOfPlayers().size();i2++){
-				if(currentParty.getGameParty().getArrayListOfPlayers().get(i2).getPoints()>current.getPoints()){
-					winner=currentParty.getGameParty().getArrayListOfPlayers().get(i2);
-				}
+		ArrayList<Integer> pointsList = new ArrayList<Integer>();
+		
+		for(int i=0; i<party.getArrayListOfPlayers().size();i++){
+			pointsList.add(party.getArrayListOfPlayers().get(i).getPoints());
+		}
+		
+		int max = Collections.max(pointsList);
+				
+		ArrayList<PlayerWithoutOS> winnerList = new ArrayList<PlayerWithoutOS>();
+		
+		for(int i=0;i<currentParty.getGameParty().getArrayListOfPlayers().size();i++){
+			if(currentParty.getGameParty().getArrayListOfPlayers().get(i).getPoints() == max){
+				winnerList.add(currentParty.getGameParty().getArrayListOfPlayers().get(i));
 			}
 		}
 		
-		System.out.println(winner.getUsername());
-		return winner;
+		/**for(int i=0; i<currentParty.getGameParty().getArrayListOfPlayers().size();i++){
+			current =currentParty.getGameParty().getArrayListOfPlayers().get(i);
+			for(int i2=0; i2<currentParty.getGameParty().getArrayListOfPlayers().size();i2++){
+				if(currentParty.getGameParty().getArrayListOfPlayers().get(i2).getPoints()>=current.getPoints() && !(currentParty.getGameParty().getArrayListOfPlayers().get(i2).getUsername().equals(current.getUsername()))){
+					//winner=currentParty.getGameParty().getArrayListOfPlayers().get(i2);
+					winnerList.add(currentParty.getGameParty().getArrayListOfPlayers().get(i2));
+				}
+			}
+		}*/
+		
+		return winnerList;
 		
 		
 		/**PlayerWithoutOS winner =null;
@@ -865,14 +884,21 @@ public class ClientHandler implements Runnable {
 		return winner;*/
 	}
 	
-	private ArrayList <PlayerWithoutOS> determineLoser(PlayerWithoutOS winner, GameParty party){
+	private ArrayList <PlayerWithoutOS> determineLoser(ArrayList<PlayerWithoutOS> winnerList, GameParty party){
 		ArrayList <PlayerWithoutOS> loserList = cloneList(party.getArrayListOfPlayers());
 		
 		for(int i=0; i<loserList.size();i++){
-			if(winner.getUsername().equals(loserList.get(i).getUsername())){
-				loserList.remove(i);
-				break;
+			
+			for(int i2=0;i2<winnerList.size();i2++){
+				if(winnerList.get(i2).getUsername().equals(loserList.get(i).getUsername())){
+					loserList.remove(i);
+				}
 			}
+			
+			//if(winnerList.getUsername().equals(loserList.get(i).getUsername())){
+				////loserList.remove(i);
+				//break;
+			//}
 		}
 		return loserList;
 	}
@@ -904,30 +930,52 @@ public class ClientHandler implements Runnable {
 			history.getGameParty().setGameHasEnded(true);
 			history.clearText();
 			
-			PlayerWithoutOS winner = determineWinner(history.getGameParty());
+			ArrayList<PlayerWithoutOS> winner = determineWinner(history.getGameParty());
 			
-			if(winner !=null){
-				strBuilder.append("Gewinner ist: "+winner.getUsername()+"\n");
+			if(!(winner.size() == current.getGameParty().getMaxNumberOfPlayers())){
+				for(int i=0; i<winner.size();i++){
+					if(i != winner.size()-1){
+						strBuilder.append(winner.get(i).getUsername()+", ");
+					}else{
+						strBuilder.append(winner.get(i).getUsername());
+					}
+					
+				}
+				String winnerList= "Gewonnen hat: "+strBuilder.toString(); 
+
+				//winnerList.substring(0,winnerList.length());
+				strBuilder.delete(0, strBuilder.length());
+				//strBuilder.append("Gewinner ist: "+winner.getUsername()+"\n");
 				
 				ArrayList<PlayerWithoutOS> loser = determineLoser(winner,history.getGameParty());
-				strBuilder.append("Verloren haben: ");
+				
 				for(int i=0; i<loser.size();i++){
-					strBuilder.append(loser.get(i).getUsername()+",");
+					if(i != loser.size()-1){
+						strBuilder.append(loser.get(i).getUsername()+", ");
+					}else{
+						strBuilder.append(loser.get(i).getUsername());
+					}
 				}
+				
+				String loserList = "Verloren hat: "+strBuilder.toString();
+				strBuilder.delete(0, strBuilder.length());
+				
+				String result = winnerList+"\n"+loserList;
+				strBuilder.append(result);
 
 			}else{
 				strBuilder.append("Unentschieden!");
 
 			}
 			history.setNewType(GameHistory.HistoryType.EndGame);
-			history.setWinner(winner); //is null when all players have the same number of points
+			history.setWinnerList(winner); 
 			history.updateTextForTextArea(strBuilder.toString());
 			strBuilder.delete(0, strBuilder.length());
 			
 			
 		}else{
 			strBuilder.append(history.getTextForTextArea());
-			String update = "Runde "+(history.getGameParty().getRoundCounter()-1)+" abgeschlossen\n_________________\nSpieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
+			String update = "Runde "+(history.getGameParty().getRoundCounter())+" abgeschlossen\n_________________\nSpieler "+nextPlayer.getUsername()+" ist an der Reihe\n";
 			strBuilder.append(update);
 			//history.getGameParty().increasePlayedRounds();
 			history.updateTextForTextArea(strBuilder.toString());

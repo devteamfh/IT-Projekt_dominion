@@ -1,5 +1,7 @@
 package Dominion.appClasses;
 
+import java.util.ArrayList;
+
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 
@@ -21,7 +23,7 @@ public class GameHistory extends GameObject{
 	private PlayerWithoutOS playerForGUIActivation;
 	private PlayerWithoutOS currentPlayer;
 	private PlayerWithoutOS leavingPlayer;
-	private PlayerWithoutOS winner;
+	private ArrayList<PlayerWithoutOS> winner;
 	private HistoryType type;
 	private String card_EN;
 	private String card_DE;
@@ -132,11 +134,11 @@ public class GameHistory extends GameObject{
 		this.type=type;
 	}
 	
-	public void setWinner(PlayerWithoutOS winner){
+	public void setWinnerList(ArrayList<PlayerWithoutOS> winner){
 		this.winner=winner;
 	}
 	
-	public PlayerWithoutOS getWinner(){
+	public ArrayList<PlayerWithoutOS> getWinner(){
 		return this.winner;
 	}
 	
