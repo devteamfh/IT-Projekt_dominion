@@ -83,39 +83,39 @@ public class GameCard extends Button implements Observer  {
 			this.getStyleClass().add("highlight");
 		}
 		
-		//Highlighte alle HoleCards im Discardmodus
+		//Highlighte alle HoleCards im Discardmodus (basement)
 		if (croupier.isDiscardMode() == true && this.isHoleCard()){
-			this.getStyleClass().add("highlight2");
+			this.getStyleClass().add("highlight3");
 		}
 		
 		//Highlighte alle HoleCards im TrashModus Kapelle
 		if (croupier.isTrashModeChapel() == true && this.isHoleCard()){
-			this.getStyleClass().add("highlight2");
+			this.getStyleClass().add("highlight3");
 		}
 		
 		//Highlighte alle MoneyCards im TrashModus Mine
 		if (croupier.isTrashModeMine() == true && this instanceof MoneyCard && this.isHoleCard()){
-			this.getStyleClass().add("highlight2");
+			this.getStyleClass().add("highlight3");
 		}
 		
 		//Highlighte alle Karten auf der Hand, welche im Umbaumodus weggeworfen werden können
 		if (croupier.isTrashModeRebuilding() == true && this.isHoleCard()){
-			this.getStyleClass().add("highlight2");
+			this.getStyleClass().add("highlight3");
 		}
 		
 		//Highlighte alle Kupferkarten auf der Hand, die gegen +3Geld weggeworfen werden können (ActionCard Geldverleiher)
 		if (croupier.isTrashModeMoneylender() == true && this.isHoleCard() && this.getLbl_cardName().getText().equals("copper")){
-			this.getStyleClass().add("highlight2");
+			this.getStyleClass().add("highlight3");
 		}
 		
 		//Highlighte alle MoneyCards, welche erworben werden können im Minen-Modus
 		if (croupier.isModeForMine() == true && this instanceof MoneyCard && !this.isHoleCard() && this.costs <= croupier.getSavedMCValueForMineMode()){
-			this.getStyleClass().add("highlight3");
+			this.getStyleClass().add("highlight");
 		}
 		
 		//Highlighte alle Karten zum Kauf, welche erworben werden können im Rebuilding-Modus
 		if (croupier.isModeForRebuilding() == true && !this.isHoleCard() && this.costs <= croupier.getCardValueForRebuildingMode()){
-			this.getStyleClass().add("highlight3");
+			this.getStyleClass().add("highlight");
 		}
 		
 		//Highlighte alle Karten zum Kauf, welche erworben werden können im Rebuilding-Modus
@@ -135,7 +135,7 @@ public class GameCard extends Button implements Observer  {
 		
 		//Highlighte alle Moat-Karten wenn ein Angriff gemacht worden ist
 		if (croupier.isModeForCurseCard() == true && !this.isHoleCard() && this.getLbl_cardName().getText().equals("curse")){
-			this.getStyleClass().add("highlight3");
+			this.getStyleClass().add("highlight2");
 		}
 		
 		//Highlight wegnehmen wenn Trash Modus wieder verlassen wird (Kapelle, Mine)

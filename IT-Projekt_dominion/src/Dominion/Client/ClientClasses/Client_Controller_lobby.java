@@ -86,16 +86,16 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
             @Override
             public void handle(ActionEvent event) {
             
-            	model.t1.interrupt();
+            	/**model.t1.interrupt();
                 
                 try {
 					model.client.close();				
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
               
-                Platform.exit();
+                System.exit(0);
             }
             });
         

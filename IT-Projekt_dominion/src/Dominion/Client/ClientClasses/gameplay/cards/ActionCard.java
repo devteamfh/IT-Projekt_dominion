@@ -387,6 +387,7 @@ public class ActionCard extends GameCard{
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte und zieht 2 Karten nach.\nZusaetzlich muessen alle Gegenspieler eine Fluchkarte aufnehmen\n");
 							sl.getStrBuilderLabel().append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 							
+							
 							croupier.setActionMode(false);
 
 							history = new GameHistory(sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.getLbl_cardName().getText(),null, GameHistory.HistoryType.PlayCard);
