@@ -31,9 +31,8 @@ public class VictoryCard extends GameCard{
 	
 	public VictoryCard(Label cardName, int costs, int points, String text_DE) {
 		super(cardName,text_DE);
-		//this.int_matchPoints = matchPoints;
-		super.costs = costs;	
-		this.matchPoints=points;
+		super.costs = costs; // Kosten	
+		this.matchPoints=points; // Punkte
 		this.addClickListener();
 	}
 		
@@ -65,10 +64,10 @@ public class VictoryCard extends GameCard{
 					if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(pc) > 0){
 						croupier.setBuys(croupier.getBuys()-1);
 						
-						//buyPower reduzieren
+						//buyPower verkleinern
 						croupier.setBuyPower(croupier.getBuyPower()-pc.costs);
 						
-						//gekaufte Karte auf Ablagestapel legen
+						//gekaufte Karte auf den Ablagestapel legen
 						VictoryCard newCard = new VictoryCard(pc.lbl_cardName,pc.costs,pc.getMatchPoints(),pc.text_DE);
 						croupier.addObserver(newCard);
 						croupier.addToAblagestapel(newCard);
@@ -89,10 +88,9 @@ public class VictoryCard extends GameCard{
 						
 						if(croupier.getBuys()==0){
 							croupier.setBuyMode(false);
-			            	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
+			            	//stellt buyPower auch auf 0 wenn kein Kauf getätigt wird
 			            	croupier.setBuyPower(0);
 			            	
-			            	//sl.getButtonEndBuys().setDisable(true);
 			            	
 			            	croupier.removeHoleCards();
 			            	
@@ -129,15 +127,12 @@ public class VictoryCard extends GameCard{
 					}
 
 					
-					//wenn ich die Karte in der Hand spielen darf:
-					if(isHoleCard() == true && croupier.isBuyMode() && croupier.getBuys() > 0 ){		
-					
-					//keine Aktion möglich
-					
+					//Karte auf der Hand spielbar oder nicht
+					if(isHoleCard() == true && croupier.isBuyMode() && croupier.getBuys() > 0 ){	
 
 					}
 					
-					//wenn Karten auf den Ablagestapel geworfen werden können und von gleicher Anzahl vom Nachziehstapel genommen werden können
+					// Karten auf den Ablagestapel werfen können und zudem die gleiche Anzahl Karten vom Nachziehstapel genommen werden können
 					if(isHoleCard() == true && croupier.isDiscardMode()){		
 						croupier.getHoleCards().remove(pc);
 						croupier.addToAblagestapel(pc);
@@ -174,10 +169,10 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//wenn bis zu 4 Karten auf den Müll geworfen werden können
+					// bis zu 4 Karten auf den Müll werfen
 					if(isHoleCard() == true && croupier.isTrashModeChapel()){		
 						
-						//trash the card
+						//Karte auf den Muell
 						croupier.getHoleCards().remove(pc);
 						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" wirft eine "+pc.text_DE+"-Karte weg\n");
 						croupier.increaseTrashedCards();
@@ -213,12 +208,13 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//1 Karte kann man trashen, dafür kann man eine beliebige Karte kaufen, die bis zu 2 mehr kostet als die weggeworfene
+					//1 Karte kann man auf den Muell werfen
+					// dann beliebige Karte kaufen, die bis zu 2 mehr kostet als die weggeworfene Karte
 					if(isHoleCard() == true && croupier.isTrashModeRebuilding()){		
 						
-						//trash the card
+						//Karte auf den Muell
 						croupier.getHoleCards().remove(pc);
-						//save the value of the trashed card
+						//Wert dieser Karte speichern
 						croupier.setCardValueForRebuildingMode(pc.costs);
 						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" wirft eine "+pc.text_DE+"-Karte weg\n");
 						
@@ -241,7 +237,7 @@ public class VictoryCard extends GameCard{
 					}
 					
 					
-					//neue Karte erwerben im Rebuild-Modus
+					//neue Karte kaufen im Rebuild-Modus
 					if(!isHoleCard() && croupier.isModeForRebuilding() && costs <= croupier.getCardValueForRebuildingMode()){	
 						VictoryCard newCard = new VictoryCard(pc.lbl_cardName,pc.costs,pc.getMatchPoints(),pc.text_DE);
 						croupier.addObserver(newCard);
@@ -279,7 +275,7 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//neue Karte erwerben im Workshop-Modus
+					//neue Karte kaufen im Workshop-Modus
 					if(!isHoleCard() && croupier.isModeForWorkshop() && costs <= 4){	
 						VictoryCard newCard = new VictoryCard(pc.lbl_cardName,pc.costs,pc.getMatchPoints(),pc.text_DE);
 						croupier.addObserver(newCard);
@@ -317,7 +313,7 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//discard Mode wenn ein Gegner eine Miliz-Karte gespielt hat
+					//discard Mode, falls ein Gegner eine Miliz-Karte gespielt hat
 					if(isHoleCard() == true && croupier.isDiscardModeMilitia()){		
 						croupier.getHoleCards().remove(pc);
 						croupier.addToAblagestapel(pc);
@@ -381,7 +377,7 @@ public class VictoryCard extends GameCard{
 				
 				
 
-				//bei rechtsklick bild �ffnen
+				//bei rechtsklick bild oeffnen
 				 if (e.getButton() == MouseButton.SECONDARY) {
 	           
 					 ShowGameCard showGameCard = new ShowGameCard(pc);			
