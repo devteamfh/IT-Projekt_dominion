@@ -348,6 +348,7 @@ public class ServiceLocatorClient {
 	* @author kab: List information for Player Statistics Table
 	*/
 	public void add_AL_Statistics(ArrayList<StartInformation> statistics){
+
 		for(int i = 0;i<statistics.size();i++){
 			this.al_Statistics.add(statistics.get(i));
 		}

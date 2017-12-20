@@ -29,6 +29,7 @@ import javafx.scene.input.TouchPoint;
  * the ClientHandler is a server-side Runnable.
  * Each connected client gets an ClientHandler thread. Each ClientHandler reads messages from his client (via InputStream of the socket which was accepted by the ServerSocket in class
  * "Server_Model" and was passed on as parameter to the CLientHandler instance) and can send them to all clients by iterating through the ObjectOutputStream ArrayList.
+ *	@author kab: StartInformation
  */
 public class ClientHandler implements Runnable {
 	private Socket s; 
@@ -234,12 +235,14 @@ public class ClientHandler implements Runnable {
 			 //in das Objekt STartInformation wird die komplette Liste mit allen STart Info
 			 //Statistics auf dem Server gelegt
 			 start.setListOfStartInformationObjects(sl.get_al_AllStartInfoStatisitcsOnServer());
-		
 			 
 			 while (iterOut.hasNext()){
 					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+					current.reset();
 					current.writeObject(start);
 					current.flush();
+
+	
 				 }
 
 			 

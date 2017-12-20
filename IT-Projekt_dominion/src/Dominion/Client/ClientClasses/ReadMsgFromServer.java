@@ -69,7 +69,7 @@ public class ReadMsgFromServer implements Runnable {
 					 * @author kab: handles incoming StartInformation with player statistics and sends to  tbl_playerStats in the bloody lobby
 					 */
 				case StartInformation:
-					
+										
 					StartInformation playerStatistics = (StartInformation) obj;
 					
 					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gew�hrt
@@ -108,15 +108,15 @@ public class ReadMsgFromServer implements Runnable {
 						model.client.close();
 					}
 							
-				
+
 					
 					sl.getAl_Statistics().clear();
 					sl.getTbl_playerStats().getItems().clear();
 		
 
 					sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
-					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());
-				
+					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());				
+					
 					break;
 					 
 				case GameParty:
