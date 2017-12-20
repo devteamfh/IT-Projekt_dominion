@@ -42,9 +42,10 @@ import Dominion.ServiceLocator;
         public  void createNewDatabase() {
         	
         	try {
-        		File file = new File(url);
-        		file.delete();
-        		sl.getLogger().info("New Database created.");
+        		File file = new File(workingDirecotry+"/"+"user.db");
+        		if (file.exists()) {
+        			file.delete();
+        		}
         	} catch (Exception e){
         		sl.getLogger().info("Database not found.");
         	}
@@ -54,6 +55,7 @@ import Dominion.ServiceLocator;
             try (Connection conn = DriverManager.getConnection(url)) {
                 if (conn != null) {
                     DatabaseMetaData meta = conn.getMetaData();
+            		sl.getLogger().info("New Database created.");
                     sl.getLogger().info("The driver name is " + meta.getDriverName());
                     sl.getLogger().info("Connection to database established");
                 }
