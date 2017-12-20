@@ -1,6 +1,7 @@
 package Dominion.Server.ServerClasses;
 
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -39,13 +40,22 @@ import Dominion.ServiceLocator;
          * @param fileName name der Datenbank
          */
         public  void createNewDatabase() {
-
-
+        	
+        	try {
+        		File file = new File(url);
+        		file.delete();
+        		sl.getLogger().info("New Database created.");
+        	} catch (Exception e){
+        		sl.getLogger().info("Database not found.");
+        	}
+        	
+        	
+        	
             try (Connection conn = DriverManager.getConnection(url)) {
                 if (conn != null) {
                     DatabaseMetaData meta = conn.getMetaData();
                     sl.getLogger().info("The driver name is " + meta.getDriverName());
-                    sl.getLogger().info("A new Database has been created");
+                    sl.getLogger().info("Connection to database established");
                 }
 
             } catch (SQLException e) {
@@ -145,18 +155,7 @@ import Dominion.ServiceLocator;
 
 
 
-    /*    /**
-         * @author sqlitetutorial.net
-         * @param args the command line arguments
-         /
-        public static void main(String[] args) {
-
-            Database db = new Database();
-            db.createNewDatabase();
-            db.createTables();
-
-
-        }*/
+  
     }
 
 
