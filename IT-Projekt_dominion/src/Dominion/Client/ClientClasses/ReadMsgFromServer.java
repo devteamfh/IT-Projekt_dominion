@@ -39,6 +39,7 @@ public class ReadMsgFromServer implements Runnable {
 	Croupier croupier = Croupier.getCroupier();
 	Client_Model model;
 	
+	
 	public ReadMsgFromServer (ObjectInputStream in, Client_Model model){
 		this.in = in;	
 		this.model=model;
@@ -71,7 +72,59 @@ public class ReadMsgFromServer implements Runnable {
 					 * @author kab: handles incoming StartInformation with player statistics and sends to  tbl_playerStats in the bloody lobby
 					 */
 				case StartInformation:
-										
+							
+					 StartInformation playerStatistics = (StartInformation) obj;
+					
+					Platform.runLater(new Runnable() {
+						@Override 
+				           public void run() {
+							try{
+								
+								if(playerStatistics.isBol_nameTaken()){
+									//verhindert das starten der lobby
+					 				sl.getView_lobby().stop();
+					 				
+					 				//Restartet die lgoin view
+					 				Stage stge_start = new Stage();
+					 				Client_View_start view_start = new Client_View_start (stge_start, model);
+					 				new Client_Controller_start(model, view_start);
+					 				view_start.start();
+					 				
+					 				//gibt Meldung aus, dass die Username-Dieberei stattgefunden hat
+									sl.setLbl_popUpMessage(new Label("Der Spielername ist zur Zeit vergeben."));		
+									Stage popUp = new Stage();	
+									popUp.setResizable(false);
+									popUp.initModality(Modality.APPLICATION_MODAL);
+						        	Client_View_popUp view = new Client_View_popUp (popUp, model);
+						        	new Client_Controller_popUp(model, view); 
+						        	view.start();
+						        	
+
+								
+								} else{
+								
+									sl.getAl_Statistics().clear();
+									sl.getTbl_playerStats().getItems().clear();
+						
+
+									sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
+									System.out.println("grösse von zurückgsendetem playstatistics shit "+playerStatistics.getListOfStartInformationObjects().size());
+									sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());				
+									
+	
+								
+								}
+									
+									
+									
+								
+							}catch (NullPointerException e){
+							}
+							
+						}
+				      });
+					
+					/*
 					StartInformation playerStatistics = (StartInformation) obj;
 					
 					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gewï¿½hrt
@@ -108,9 +161,7 @@ public class ReadMsgFromServer implements Runnable {
 					
 						playerStatistics = null;
 						model.client.close();
-					}
-							
-
+					} 			
 					
 					sl.getAl_Statistics().clear();
 					sl.getTbl_playerStats().getItems().clear();
@@ -120,7 +171,7 @@ public class ReadMsgFromServer implements Runnable {
 					System.out.println("grösse von zurückgsendetem playstatistics shit "+playerStatistics.getListOfStartInformationObjects().size());
 					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());				
 					
-					
+							*/
 					
 					break;
 					 

@@ -82,24 +82,9 @@ public class ClientHandler implements Runnable {
 				
 				//hier wird der disconnectede Player gelöscht:
 				sl.removeStartInfoStatistics(PWOS_thisPlayer.getUsername());
-				System.out.println("Neue grösse der statinfo auf dem server: "+sl.get_al_AllStartInfoStatisitcsOnServer().size());
-				//hier wird ein neues StartInformationsobjekt generiert und die neue Liste mit den Usern wird versendet
-				StartInformation updateStatistics = new StartInformation();
-				updateStatistics.setListOfStartInformationObjects(sl.get_al_AllStartInfoStatisitcsOnServer());
 				
-				try {
-					Iterator<ObjectOutputStream> iterOut = this.list.iterator();
-					 while (iterOut.hasNext()){
-							ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
-							current.reset();
-							current.writeObject(updateStatistics);
-							current.flush();
-						 }
-									
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				//hier werden die derzeitigen Playerstatistics an alle Clients gesendet
+				updatePlayerStatistics();
 	
 		}
 	}
@@ -283,6 +268,7 @@ public class ClientHandler implements Runnable {
 			 
 			 //searching the correspondent GamePartyOnServer to write to the players of this GameParty
 			 long id2 = gamePartyToCancel.getID();
+			 	 
 			 
 			 //sending the CancelGame object to all clients so the game will be removed from their ListViews
 			 while (iterOut.hasNext()){
@@ -290,7 +276,7 @@ public class ClientHandler implements Runnable {
 					ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
 					current.reset();
 					current.writeObject(obj);
-					current.flush();			
+					current.flush();
 			 } 
 			 
 			 //remove also the GamePartyOnServer
@@ -300,6 +286,10 @@ public class ClientHandler implements Runnable {
 					 break;
 				 }
 			 }
+			 
+			 //sende die PlayerInfo Statistics erneut an alle Clients, da sobald ein Game Gecanceld wurde, die lobby gestoppt wurde.
+			 //ein wiedereröffnnen der lobby erforderd, dass die Palyer Statistics wieder gesendet werden
+				updatePlayerStatistics();
 			 
 			 
 		 break;
@@ -962,5 +952,26 @@ public class ClientHandler implements Runnable {
 			
 		}
 	}
+	
+	private void updatePlayerStatistics(){
+		
+		 StartInformation updateStatistics = new StartInformation();
+		 updateStatistics.setListOfStartInformationObjects(sl.get_al_AllStartInfoStatisitcsOnServer());
+		
+			try {
+				Iterator<ObjectOutputStream> iterOut = this.list.iterator();
+				 while (iterOut.hasNext()){
+						ObjectOutputStream current = (ObjectOutputStream) iterOut.next();
+						current.reset();
+						current.writeObject(updateStatistics);
+						current.flush();
+					 }
+								
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	}
+	
 	
 }
