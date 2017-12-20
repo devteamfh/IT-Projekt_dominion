@@ -19,7 +19,7 @@ import javafx.stage.StageStyle;
 
 
 /** 
- *@author kab: VictoryCard
+ *@author David: VictoryCard
 * @author Joel: only communication (creating GameHistory obj, sending them and doing the necessary work on server and client side after read)
 * 
 * 
@@ -31,9 +31,8 @@ public class VictoryCard extends GameCard{
 	
 	public VictoryCard(Label cardName, int costs, int points, String text_DE) {
 		super(cardName,text_DE);
-		//this.int_matchPoints = matchPoints;
-		super.costs = costs;	
-		this.matchPoints=points;
+		super.costs = costs; // Kosten	
+		this.matchPoints=points; // Punkte
 		this.addClickListener();
 	}
 		
@@ -61,28 +60,21 @@ public class VictoryCard extends GameCard{
 						sl.getStrBuilderLabel().delete(0, sl.getStrBuilderLabel().length());
 	            	}
 					
-					//Wenn die karte aus den communty cards gekauft wird
+					// Karte wird aus Community gekauft
 					if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(pc) > 0){
 						croupier.setBuys(croupier.getBuys()-1);
 						
-						//buyPower reduzieren
+						//buyPower verkleinern
 						croupier.setBuyPower(croupier.getBuyPower()-pc.costs);
 						
-						//gekaufte karte auf ablagestapel legen
+						//gekaufte Karte auf den Ablagestapel legen
 						VictoryCard newCard = new VictoryCard(pc.lbl_cardName,pc.costs,pc.getMatchPoints(),pc.text_DE);
 						croupier.addObserver(newCard);
 						croupier.addToAblagestapel(newCard);
 						newCard.assignPicture(); 
 						newCard.setHoleCard(true);
 						
-						//increase the points for this player within his current GameParty
-						/**for(int i=0; i<sl.getCurrentGameParty().getArrayListOfPlayers().size();i++){
-							if(sl.getPlayer_noOS().getUsername().equals(sl.getCurrentGameParty().getArrayListOfPlayers().get(i).getUsername())){
-								sl.getCurrentGameParty().getArrayListOfPlayers().get(i).increasePoints(pc.getMatchPoints());
-								break;
-							}
-						}*/
-						
+											
 						sl.getPlayer_noOS().increasePoints(pc.getMatchPoints());
 						
 						System.out.println("ablagestapel neu, karte gekauft und treasure cards verwendet");
@@ -96,10 +88,9 @@ public class VictoryCard extends GameCard{
 						
 						if(croupier.getBuys()==0){
 							croupier.setBuyMode(false);
-			            	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
+			            	//stellt buyPower auch auf 0 wenn kein Kauf getätigt wird
 			            	croupier.setBuyPower(0);
 			            	
-			            	//sl.getButtonEndBuys().setDisable(true);
 			            	
 			            	croupier.removeHoleCards();
 			            	
@@ -136,15 +127,12 @@ public class VictoryCard extends GameCard{
 					}
 
 					
-					//wenn ich die Karte in der Hand spielen darf:
-					if(isHoleCard() == true && croupier.isBuyMode() && croupier.getBuys() > 0 ){		
-					
-					//keine Aktion m�glich
-					
+					//Karte auf der Hand spielbar oder nicht
+					if(isHoleCard() == true && croupier.isBuyMode() && croupier.getBuys() > 0 ){	
 
 					}
 					
-					//wenn karten auf den ablagestapel geworfen werden können und von gleicher anzahl vom nachziehstapel genommen werden können
+					// Karten auf den Ablagestapel werfen können und zudem die gleiche Anzahl Karten vom Nachziehstapel genommen werden können
 					if(isHoleCard() == true && croupier.isDiscardMode()){		
 						croupier.getHoleCards().remove(pc);
 						croupier.addToAblagestapel(pc);
@@ -181,10 +169,10 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//wenn bis zu 4 karten auf den müll geworfen werden können
+					// bis zu 4 Karten auf den Müll werfen
 					if(isHoleCard() == true && croupier.isTrashModeChapel()){		
 						
-						//trash the card
+						//Karte auf den Muell
 						croupier.getHoleCards().remove(pc);
 						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" wirft eine "+pc.text_DE+"-Karte weg\n");
 						croupier.increaseTrashedCards();
@@ -220,12 +208,13 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//1 Karte kann man trashen, dafür kann man eine beliebige Karte kaufen, die bis zu 2 mehr kostet als die weggeworfene
+					//1 Karte kann man auf den Muell werfen
+					// dann beliebige Karte kaufen, die bis zu 2 mehr kostet als die weggeworfene Karte
 					if(isHoleCard() == true && croupier.isTrashModeRebuilding()){		
 						
-						//trash the card
+						//Karte auf den Muell
 						croupier.getHoleCards().remove(pc);
-						//save the value of the trashed card
+						//Wert dieser Karte speichern
 						croupier.setCardValueForRebuildingMode(pc.costs);
 						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" wirft eine "+pc.text_DE+"-Karte weg\n");
 						
@@ -248,7 +237,7 @@ public class VictoryCard extends GameCard{
 					}
 					
 					
-					//neue Karte erwerben im Rebuild-Modus
+					//neue Karte kaufen im Rebuild-Modus
 					if(!isHoleCard() && croupier.isModeForRebuilding() && costs <= croupier.getCardValueForRebuildingMode()){	
 						VictoryCard newCard = new VictoryCard(pc.lbl_cardName,pc.costs,pc.getMatchPoints(),pc.text_DE);
 						croupier.addObserver(newCard);
@@ -286,7 +275,7 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//neue Karte erwerben im Workshop-Modus
+					//neue Karte kaufen im Workshop-Modus
 					if(!isHoleCard() && croupier.isModeForWorkshop() && costs <= 4){	
 						VictoryCard newCard = new VictoryCard(pc.lbl_cardName,pc.costs,pc.getMatchPoints(),pc.text_DE);
 						croupier.addObserver(newCard);
@@ -324,7 +313,7 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//discard Mode wenn ein Gegner eine Miliz-Karte gespielt hat
+					//discard Mode, falls ein Gegner eine Miliz-Karte gespielt hat
 					if(isHoleCard() == true && croupier.isDiscardModeMilitia()){		
 						croupier.getHoleCards().remove(pc);
 						croupier.addToAblagestapel(pc);
@@ -336,7 +325,8 @@ public class VictoryCard extends GameCard{
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen\n");
 							history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),croupier.getCurrentPlayer(),null,null, GameHistory.HistoryType.Reaction);
 							
-						}else{
+						}
+						else{
 							history = new GameHistory(sl.getStrBuilderTextArea().toString(),null,sl.getCurrentGameParty(),null,null,null, GameHistory.HistoryType.Discard);
 						}
 
@@ -352,7 +342,7 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//SPieler ist gewzungen, eine Fluch-Karte aufzunehmen
+					//Spieler ist gewzungen, eine Fluch-Karte aufzunehmen
 					if(!isHoleCard() == true && croupier.isModeForCurseCard() && getLbl_cardName().getText().equals("curse")){		
 						VictoryCard newCard = new VictoryCard(pc.lbl_cardName,pc.costs,pc.getMatchPoints(),pc.text_DE);
 						croupier.addObserver(newCard);
@@ -387,7 +377,7 @@ public class VictoryCard extends GameCard{
 				
 				
 
-				//bei rechtsklick bild �ffnen
+				//bei rechtsklick bild oeffnen
 				 if (e.getButton() == MouseButton.SECONDARY) {
 	           
 					 ShowGameCard showGameCard = new ShowGameCard(pc);			

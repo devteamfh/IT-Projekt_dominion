@@ -101,16 +101,6 @@ public class Client_View_playingStage extends View<Client_Model> {
 	TextField tf_messagePlayingStage;
 	customButton btn_sendChatMsgPlayingStage;
 
-
-	
-	Button provisorischCard1;
-	Button provisorischCard2;
-	Button provisorischCard3;
-
-	Button provisorisch4;
-
-	Button action2;
-
 	Label stack;
 	Label yourHand;
 
@@ -498,7 +488,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		btn_sendChatMsgPlayingStage = new customButton("senden");
 		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn", "btn_sendChatMsg");
 		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
-		btn_sendChatMsgPlayingStage.setPrefSize(95, 40);
+		btn_sendChatMsgPlayingStage.setPrefSize(103, 40);
 		
 		
 		VBox vb_wrapper_chat = new VBox();
@@ -522,64 +512,15 @@ public class Client_View_playingStage extends View<Client_Model> {
 		vb_wrapper_chat.getChildren().addAll(chatWindowPlayingStage,hb_wrapper_chatInput_btnSend);
 		
 		
-		
-		
-		
-
-	
-		
-		
-		
-		VBox vb_wrapper_provisorische_buttons = new VBox();
-		this.provisorischCard1 = new Button("Buy Modus Aktivieren");
-		this.provisorischCard2 = new Button("Aktionsmodus Aktivieren");
-		this.provisorischCard3 = new Button("Geld Nachf�llen");
-		vb_wrapper_provisorische_buttons.getChildren().addAll(provisorischCard1,provisorischCard2,provisorischCard3);
-		
 		HBox spacer2 = new HBox();
 		HBox.setHgrow(spacer2, Priority.ALWAYS);
-		hb_wrapper_bottom.getChildren().addAll(hb_wrapper_stapel, hb_wrapper_holeCards,
-				vb_wrapper_provisorische_buttons,
-				spacer2,  vb_wrapper_chat);
+		hb_wrapper_bottom.getChildren().addAll(hb_wrapper_stapel, hb_wrapper_holeCards,	spacer2,  vb_wrapper_chat);
 
 		// --------------------------------------------------------------------------------------------------------------------------------------//
 
 		// ____________Community Action Cards (Mitte)__________________________________//
 		// --------------------------------------------------------------------------------------------------------------------------------------//
 
-		gold.addClickListener();
-
-		HBox hb_wrapper_buyPowerActionBuys = new HBox();
-		// croupier.setSimpleIntegerPropertyBuyPower();
-		// hb_wrapper_buyPowerActionBuys.getChildren().add(buyPower);
-
-		this.provisorischCard1.setDisable(false);
-
-		this.provisorischCard2.setDisable(false);
-
-		this.provisorischCard3.setDisable(false);
-
-		this.provisorisch4 = new Button("kjkjk");
-
-		
-
-		VBox vb_center = new VBox();
-		// GridPane gp_actionCards = new GridPane();
-
-		// Croupier.getCroupier().addObserver(gc1);
-
-		Label playedCards_label = new Label("gespielte Karten");
-		vb_center.getChildren().addAll(playedCards_label);
-
-		HBox playedCards_hbox = new HBox();
-		Button playedCard1 = new Button("playedCard");
-		Button playedCard2 = new Button("playedCard");
-		Button playedCard3 = new Button("playedCard");
-
-		playedCards_hbox.getChildren().addAll(playedCard1, playedCard2, playedCard3);
-		vb_center.getChildren().add(playedCards_hbox);
-
-		
 		
 		 /**
 		  * @author kab: Fenster via Drag und Drop verschieben
