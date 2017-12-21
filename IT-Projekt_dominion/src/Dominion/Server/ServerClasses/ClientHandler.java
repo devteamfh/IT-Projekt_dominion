@@ -989,9 +989,12 @@ public class ClientHandler implements Runnable {
 								cursor.setGamesLost(cursor.getGamesLost()+1);
 							}
 							
-								//aktualiserung  noch das gewonnnene spiele in prozent verhältins
+								//aktualiserung der gewonnnene spiele in prozent verhältins
 							cursor.setWinLooseRatio(cursor.getGamesWon()*100/cursor.getGamesPlayed());
 
+							//(kab: Player Statistik Tabelle auf allen Clients müssen auch noch upgedated werden
+							//dazu wird auf zeile 419 diese methode angestossen: updatePlayerStatistics();)
+							
 						}
 					
 						}
@@ -1047,6 +1050,9 @@ public class ClientHandler implements Runnable {
 							
 								//aktualiserung  noch das gewonnnene spiele in prozent 
 							cursor.setWinLooseRatio(cursor.getGamesWon()*100/cursor.getGamesPlayed());
+						
+							//(kab: Player Statistik Tabelle auf allen Clients müssen auch noch upgedated werden
+							//dazu wird auf zeile 419 diese methode angestossen: updatePlayerStatistics();)
 
 						}
 					

@@ -10,6 +10,7 @@
 src: url('../fonts/Typewriter-Osf-MediumItalic.ttf');
 }
 
+
 .bg {
 	-fx-background-image: url('../img/backgrounds/bg6.png');	
 	-fx-background-size: stretch;
@@ -121,7 +122,7 @@ src: url('../fonts/Typewriter-Osf-MediumItalic.ttf');
 	
 /*game information */
 .h1 {
-	-fx-font-family: "Kokila";
+	-fx-font-family: "Times New Roman";
 	-fx-font-size: 28px;
 	-fx-font-weight: bold;
 	-fx-text-fill: #996633;
@@ -130,7 +131,7 @@ src: url('../fonts/Typewriter-Osf-MediumItalic.ttf');
 	}
 	
 .h2 {
-	-fx-font-family: "Kokila";
+	-fx-font-family: "Times New Roman";
 	-fx-font-size: 26px;
 	-fx-font-weight: bold;
 	-fx-text-fill: #666666;
