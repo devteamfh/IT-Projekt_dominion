@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -70,7 +71,7 @@ public class Client_View_start extends View<Client_Model> {
 		    tf_ip = new TextField("127.0.0.1");  
 		    tf_port = new TextField("55"); 
 		    tf_userName = new TextField();
-		    tf_password = new TextField();
+		    tf_password = new PasswordField();
 		    
 		    lbl_IPAdress.getStyleClass().add("lbl_tfDescription");
 		    lbl_port.getStyleClass().add("lbl_tfDescription");

@@ -1037,6 +1037,7 @@ public class ClientHandler implements Runnable {
 						if (current.getGameParty().getArrayListOfPlayers().get(i).getUsername().equals(cursor.getUsername())){
 							cursor.setGamesPlayed(cursor.getGamesPlayed()+1);
 							
+							/* ------ @joel. dieser block habe ich ausgeklammret da unentschieden weder sieg noch niederlage gibt-------
 							//Falls der cursor auf dem gewinner steht wird ein gewonnenes Spiel hinzugefügt
 							for (int j = 0; j < winner.size(); j++){
 								if (winner.get(j).getUsername().equals(cursor.getUsername())){
@@ -1044,8 +1045,9 @@ public class ClientHandler implements Runnable {
 							}
 							
 							//falls der cursor nicht auf dem gewinner steht, wird ein verlorenes Spiel hinzugefügt
+							
 							else {   
-								cursor.setGamesLost(cursor.getGamesLost()+1);
+							cursor.setGamesLost(cursor.getGamesLost()+1);
 							}
 							
 								//aktualiserung  noch das gewonnnene spiele in prozent 
@@ -1054,7 +1056,8 @@ public class ClientHandler implements Runnable {
 							//(kab: Player Statistik Tabelle auf allen Clients müssen auch noch upgedated werden
 							//dazu wird auf zeile 419 diese methode angestossen: updatePlayerStatistics();)
 
-						}
+							}	
+							*///-----------------------------------------------------------------------------------------------------
 					
 						}
 						
