@@ -33,7 +33,7 @@ public class CheckUserData {
 
 		
 	/**
-	 * @author kab: überprüft, ob ein File mit Benutzerdaten existiert und erstellt, sofern nütig, eines
+	 * @author kab: überprüft, ob ein File mit Benutzerdaten existiert und erstellt, sofern nötig eines
 	 * 
 	 */
 	public boolean userFileExists(){
@@ -75,10 +75,12 @@ public class CheckUserData {
 			fw.close();
 			
 			getAl_currentUserandStats().add(tf1);getAl_currentUserandStats().add(tf2);
-			getAl_currentUserandStats().add("2");getAl_currentUserandStats().add("3");
-			getAl_currentUserandStats().add("4");getAl_currentUserandStats().add("5");
-			getAl_currentUserandStats().add("6");getAl_currentUserandStats().add("7");
-			getAl_currentUserandStats().add("8");getAl_currentUserandStats().add("9");
+			
+			//übrige attribute müssen noch ausgelesen werden und in die array list gelegt werden
+			getAl_currentUserandStats().add("0");getAl_currentUserandStats().add("0");
+			getAl_currentUserandStats().add("0");getAl_currentUserandStats().add("0");
+			getAl_currentUserandStats().add("0");getAl_currentUserandStats().add("0");
+			getAl_currentUserandStats().add("0");getAl_currentUserandStats().add("0");
 
 			sl.getLogger().info("Spieler erfolgreich registriert");
 			//Client_View_start.lbl_errMsg.setText("Spieler erfolgreich registriert");

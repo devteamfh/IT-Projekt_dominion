@@ -113,7 +113,34 @@ public class ReadMsgFromServer implements Runnable {
 									sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());				
 									
 									
-									//wenn der Server die Spielerstatistik aktualisiert hat, werden die Daten des Users in user.dat gespeichert
+									
+									
+									Platform.runLater(new Runnable() {
+								           @Override 
+								           public void run() {
+														//wenn der Server die Spielerstatistik aktualisiert hat, werden die Daten des Users auch user.dat aktualisiert
+														Iterator<StartInformation> iterRecievedStatistics = playerStatistics.getListOfStartInformationObjects().iterator();
+														for (int i = 0; i < playerStatistics.getListOfStartInformationObjects().size();i++){
+															System.out.println(playerStatistics.getListOfStartInformationObjects().get(i).getUsername());
+															System.out.println("modelname :"+model.playerName);
+															
+															if (playerStatistics.getListOfStartInformationObjects().get(i).getUsername().equals(model.playerName)){
+																
+																//speichere neue Statistikdaten in der Datei
+																SaveStats saveStats = new SaveStats(playerStatistics.getListOfStartInformationObjects().get(i));
+																try {
+																	saveStats.deleteDataRow();
+																	saveStats.saveData();
+																} catch (IOException e) {
+																	e.printStackTrace();
+																}	
+																
+															}
+														}
+									
+								           }
+									});
+									
 									
 									
 								}
