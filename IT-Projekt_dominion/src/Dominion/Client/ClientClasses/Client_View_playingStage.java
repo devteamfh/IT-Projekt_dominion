@@ -95,11 +95,11 @@ public class Client_View_playingStage extends View<Client_Model> {
 	
 	TextArea windowGameHistory;
 	
-	customButton btn_userInteraction;
+	CustomButton btn_userInteraction;
 	
 	TextArea chatWindowPlayingStage;
 	TextField tf_messagePlayingStage;
-	customButton btn_sendChatMsgPlayingStage;
+	CustomButton btn_sendChatMsgPlayingStage;
 
 	Label stack;
 	Label yourHand;
@@ -366,7 +366,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 
 	
 
-		btn_userInteraction = new customButton("Dominion");
+		btn_userInteraction = new CustomButton("Dominion");
 		btn_userInteraction.setBtnTextEmpty(btn_userInteraction);
 		btn_userInteraction.getStyleClass().addAll("btn","btn_userInteraction");
 		btn_userInteraction.getLbl().getStyleClass().add("lbl_btnUserInteraction"); //�berschreibt Stylezuweisung in customButton
@@ -485,7 +485,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		tf_messagePlayingStage.setPrefSize(250, 40);
 
 
-		btn_sendChatMsgPlayingStage = new customButton("senden");
+		btn_sendChatMsgPlayingStage = new CustomButton("senden");
 		btn_sendChatMsgPlayingStage.getStyleClass().addAll("btn", "btn_sendChatMsg");
 		btn_sendChatMsgPlayingStage.setBtnTextEmpty(btn_sendChatMsgPlayingStage);
 		btn_sendChatMsgPlayingStage.setPrefSize(103, 40);

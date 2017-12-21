@@ -36,9 +36,9 @@ import javafx.stage.StageStyle;
  */
 
 public class Client_View_start extends View<Client_Model> {
-			customButton btn_connect;
-			customButton btn_register;
-			customButton btn_login;
+			CustomButton btn_connect;
+			CustomButton btn_register;
+			CustomButton btn_login;
 			Button btn_close;
 			
 			TextField tf_port;
@@ -77,9 +77,9 @@ public class Client_View_start extends View<Client_Model> {
 		    lbl_userName.getStyleClass().add("lbl_tfDescription");
 		    lbl_password.getStyleClass().add("lbl_tfDescription");
 		    
-		    btn_connect = new customButton ("Verbinden");
-		    btn_register = new customButton ("Registrieren");
-		    btn_login  = new customButton ("Einloggen");
+		    btn_connect = new CustomButton ("Verbinden");
+		    btn_register = new CustomButton ("Registrieren");
+		    btn_login  = new CustomButton ("Einloggen");
 		    
 		    btn_connect.setBtnTextEmpty(btn_connect);
 		    btn_register.setBtnTextEmpty(btn_register);

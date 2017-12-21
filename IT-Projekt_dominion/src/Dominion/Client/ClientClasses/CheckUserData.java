@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class checkUserData {
+public class CheckUserData {
 
 	private Client_Model model;
 	private File userFile;
@@ -27,13 +27,13 @@ public class checkUserData {
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
 	
-	public checkUserData() {
+	public CheckUserData() {
 	}
 	
 
 		
 	/**
-	 * @author kab: überprüft, ob ein File mit Benutzerdaten existiert und erstellt, sofern nütig, eines
+	 * @author kab: ï¿½berprï¿½ft, ob ein File mit Benutzerdaten existiert und erstellt, sofern nï¿½tig, eines
 	 * 
 	 */
 	public boolean userFileExists(){
@@ -63,7 +63,7 @@ public class checkUserData {
 	
 	/**
 	 * @author kab: Benutzer wird Registriert (Daten des Benutzers werden in ein File geschrieben. 
-	 * 				Initialer Wert für Attribute 3-10 = 0
+	 * 				Initialer Wert fï¿½r Attribute 3-10 = 0
 	 */
 	public boolean enterUserData(String tf1, String tf2){
 		this.tf1 = tf1;
@@ -93,7 +93,7 @@ public class checkUserData {
 	
 	
 	/**
-	 * @author kab: registirert Benutzer und oder überprüft ob eingeloggt werden kann
+	 * @author kab: registirert Benutzer und oder ï¿½berprï¿½ft ob eingeloggt werden kann
 	 * 
 	 * 
 	 */
@@ -127,7 +127,7 @@ public class checkUserData {
 	
 	
 	/**
-	 * @author kab: prüft ob Benutzer existiert
+	 * @author kab: prï¿½ft ob Benutzer existiert
 	 * 				
 	 */
 	public boolean userExists(String tf1){
@@ -183,7 +183,7 @@ public class checkUserData {
 
 
 			/**
-			 * @auathor kab: überprüft ob Username und Passwort zu einander passen
+			 * @auathor kab: ï¿½berprï¿½ft ob Username und Passwort zu einander passen
 			 * 
 			 */
 	public boolean pwCorrect(String tf1, String tf2){
@@ -214,7 +214,7 @@ public class checkUserData {
                 for (int i = 0; i < strArr_userStats.length; i = i + MAX_NO_OF_ATTRIBUTES_PER_LINE) {
                     if ((this.tf1.equals(strArr_userStats[i].toString()) == true) && (this.tf2.equals(strArr_userStats[i + 1].toString()) == true)) {
                         bReader.close();
-                        sl.getLogger().info("Passwort korrekt. Eintritt gewührt.");
+                        sl.getLogger().info("Passwort korrekt. Eintritt gewï¿½hrt.");
                     	return true;
                     }
                 }
@@ -253,7 +253,7 @@ public class checkUserData {
 
 
 	/**
-	 * @author kab: zählt die Anzahl Zeilen in User.dat Datei
+	 * @author kab: zï¿½hlt die Anzahl Zeilen in User.dat Datei
 	 * 
 	 * 
 	 */

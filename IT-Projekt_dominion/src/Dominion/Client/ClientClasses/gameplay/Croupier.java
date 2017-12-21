@@ -10,7 +10,7 @@ import com.sun.glass.ui.View;
 
 import Dominion.Client.ClientClasses.Client_View_playingStage;
 import Dominion.Client.ClientClasses.ServiceLocatorClient;
-import Dominion.Client.ClientClasses.customButton;
+import Dominion.Client.ClientClasses.CustomButton;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Server.ServerClasses.ServiceLocatorServer;

@@ -15,23 +15,23 @@ import javafx.scene.input.MouseEvent;
 /**
  * @author Beda Kaufmann
  */
-public class customButton extends Button implements Observer {
+public class CustomButton extends Button implements Observer {
 	Croupier croupier = Croupier.getCroupier();
-	private customButton btn;
+	private CustomButton btn;
 	private Label lbl;
 	private String lblText;
 	
 	//constructor
-	public customButton() {
+	public CustomButton() {
 		super();
 	}
 	
-	public customButton(String s){
+	public CustomButton(String s){
 		super(s);
 	}
 	
 	//Text Property leeren und daf�r direkt das label lbl verwenden
-	public void setBtnTextEmpty(customButton btn){
+	public void setBtnTextEmpty(CustomButton btn){
 	this.btn=btn;
 	this.lblText = this.btn.getText();
 	this.lbl = new Label(this.lblText);
