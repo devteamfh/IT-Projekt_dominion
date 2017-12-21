@@ -179,7 +179,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             public void handle(ActionEvent event) {
             	GameHistory history;
             
-            	System.out.println("button pressed");
             	switch (view.btn_userInteraction.getLbl().getText()) {
             	
             	case "Aktionen beenden":
@@ -260,9 +259,13 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                	
             	case "Wegwerfen beenden":
             		
+            		if(sl.getStrBuilderTextArea() != null){
+                		sl.getStrBuilderTextArea().delete(0, sl.getStrBuilderTextArea().length());
+                	}
+            		
             		if(croupier.isTrashModeChapel()){
-            			
             			sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Wegwerfen\n");
+            			sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
             			croupier.setTrashModeChapel(false);
 						croupier.setTrashCounterModeChapel(0);
 						if(croupier.getActions()==0){
@@ -288,8 +291,14 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             		break;
             		
             	case "Tauschen beenden":
+            		
+            		if(sl.getStrBuilderTextArea() != null){
+                		sl.getStrBuilderTextArea().delete(0, sl.getStrBuilderTextArea().length());
+                	}
+            		
             		croupier.setDiscardMode(false);
 					sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen und darf "+croupier.getDiscrardCounter()+" Karten nachziehen\n");
+					sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 					croupier.getNewHoleCards(croupier.getDiscrardCounter());
 					croupier.setDiscardedCounter(0);
 					

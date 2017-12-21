@@ -54,7 +54,6 @@ import javafx.stage.StageStyle;
 					@Override public void handle(MouseEvent e) {
 						
 						if (e.getButton() == MouseButton.PRIMARY ){
-							//System.out.println("moneycard clicked");
 							
 							if(sl.getStrBuilderTextArea() != null){
 								sl.getStrBuilderTextArea().delete(0, sl.getStrBuilderTextArea().length());
@@ -111,7 +110,7 @@ import javafx.stage.StageStyle;
 					        		history = new GameHistory(sl.getStrBuilderTextArea().toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.lbl_cardName.getText(),mc.text_DE, GameHistory.HistoryType.EndBuy);
 					        		
 								}else{
-									sl.getStrBuilderLabel().append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+									sl.getStrBuilderLabel().append("am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" hat noch weitere Käufe\n");
 									history = new GameHistory (sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),mc.getLbl_cardName().getText(),mc.text_DE, GameHistory.HistoryType.BuyNoPointCard);
 									
@@ -165,6 +164,7 @@ import javafx.stage.StageStyle;
 								
 								if(croupier.getHoleCards().isEmpty()){
 									croupier.setDiscardMode(false);
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen und darf "+croupier.getDiscrardCounter()+" Karten nachziehen\n");
 									croupier.getNewHoleCards(croupier.getDiscrardCounter());
 									croupier.setDiscardedCounter(0);
@@ -202,6 +202,7 @@ import javafx.stage.StageStyle;
 								
 								if(croupier.getTrashCounter() ==4 || croupier.getHoleCards().isEmpty()){
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Wegwerfen\n");
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 									croupier.setTrashModeChapel(false);
 									croupier.setTrashCounterModeChapel(0);
 									if(croupier.getActions()==0){
@@ -256,7 +257,6 @@ import javafx.stage.StageStyle;
 							
 							//neue geldkarte erwerben im minen-modus und direkt auf die hand legen
 							if(!isHoleCard() && croupier.isModeForMine() && costs <= croupier.getSavedMCValueForMineMode()){	
-								System.out.println("saved MC value for mine mode"+croupier.getSavedMCValueForMineMode());
 								//to do: custom button deaktivieren?
 								MoneyCard newCard = new MoneyCard(mc.lbl_cardName,mc.buyPower,mc.costs,mc.text_DE);
 								newCard.setHoleCard(true);
@@ -311,7 +311,7 @@ import javafx.stage.StageStyle;
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" hat noch weitere Aktionen\n");
 								}
 								
-								sl.getStrBuilderLabel().append("an der Reihe:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
+								sl.getStrBuilderLabel().append("am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 								
 								GameHistory history = new GameHistory(sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),"moneylender",null, GameHistory.HistoryType.Trash);
 								
@@ -434,6 +434,7 @@ import javafx.stage.StageStyle;
 								
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" legt eine "+mc.text_DE+" Karte ab\n");
 								GameHistory history=null;
+								System.out.println(croupier.getHoleCards().size());
 								if(croupier.getHoleCards().size() == 3){
 									croupier.setDiscardModeForMilitia(false);
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen\n");
@@ -456,9 +457,12 @@ import javafx.stage.StageStyle;
 							}
 							
 							
-							//Gui aktualisieren
-							sl.getPlayingStage().updateGUI();
-							//System.out.println("updategui gesendet");	
+							// GUI wird aktualisiert
+							try{
+								sl.getPlayingStage().updateGUI();
+							}catch (Exception e2){
+								//
+							}
 						} 
 							
 						

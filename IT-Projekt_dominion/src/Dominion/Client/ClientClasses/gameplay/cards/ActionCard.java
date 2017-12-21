@@ -76,13 +76,7 @@ public class ActionCard extends GameCard{
 							croupier.addObserver(newCard);
 							newCard.setHoleCard(true);
 							croupier.addToAblagestapel(newCard);
-							newCard.assignPicture(); 
-							
-							
-							System.out.println("Ablagestapel neu, Karte gekauft und Geldkarte verwendet");
-			            	for(int i=0; i<croupier.getAblagestapel().size();i++){
-			            		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
-			            	}
+							newCard.assignPicture(); 				
 							
 			            	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" kauft eine "+ac.text_DE+"-Karte\n");
 							
@@ -95,11 +89,6 @@ public class ActionCard extends GameCard{
 				            	croupier.setBuyPower(0);
 				            			            	
 				            	croupier.removeHoleCards();
-				            	
-				            	System.out.println("Ablagestapel neu und Spielzug beendet");
-				            	for(int i=0; i<croupier.getAblagestapel().size();i++){
-				            		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
-				            	}
 				            	
 				            	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Kaufphase\n\n");
 				        		
@@ -148,13 +137,14 @@ public class ActionCard extends GameCard{
 						
 						case "basement":
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte und erhaelt 1 zusaetzliche Aktion.\nAusserdem kann er beliebig viele Karten tauschen\n");
+							//sl.getStrBuilderLabel().append("Tausche so viele Karten wie\ndu möchtest!");
 							sl.getStrBuilderLabel().append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 							
 							croupier.setActionMode(false);
 							croupier.setDiscardMode(true); // Wird wieder auf false gesetzt, sobald Action gespielt wurde
 							
 							// Diese Karte muessen die anderen Spieler nicht sehen, da sie durch diese Karte nicht betroffen sind
-							history = new GameHistory(sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.PlayCard);
+							history = new GameHistory(sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.lbl_cardName.getText(),null, GameHistory.HistoryType.PlayCard);
 							
 							try {
 								sl.getPlayer_OS().getOut().reset();
@@ -310,7 +300,7 @@ public class ActionCard extends GameCard{
 						case "mine":
 							croupier.setActionMode(false);
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte: darf eine Geldkarte entsorgen und eine neue erwerben,\ndie bis zu 3 Geld mehr kostet als die Weggeworfene.\nEr darf die erworbene Karte direkt auf die Hand nehmen\n");
-							sl.getStrBuilderLabel().append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
+							sl.getStrBuilderLabel().append("am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 							
 							history = new GameHistory(sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.getLbl_cardName().getText(),ac.text_DE, GameHistory.HistoryType.PlayCard);
 
@@ -342,7 +332,7 @@ public class ActionCard extends GameCard{
 							croupier.setActionMode(false);
 	
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte: darf eine Kupferkarte von der Hand wegwerfen\nund kriegt dafuer +3 Geld\n");
-							sl.getStrBuilderLabel().append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
+							sl.getStrBuilderLabel().append("am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 
 							history = new GameHistory(sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.getLbl_cardName().getText(),ac.text_DE, GameHistory.HistoryType.PlayCard);
 
@@ -352,7 +342,7 @@ public class ActionCard extends GameCard{
 						case "rebuilding":
 							croupier.setActionMode(false);
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" spielt "+ac.text_DE+"-Karte: darf eine Handkarte entsorgen\nund eine Neue erwerben, die bis zu 2 Geld\nmehr kostet als die Weggeworfene\n");
-							sl.getStrBuilderLabel().append("an der Reihe: "+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
+							sl.getStrBuilderLabel().append("am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 
 							history = new GameHistory(sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.getLbl_cardName().getText(),ac.text_DE, GameHistory.HistoryType.PlayCard);
 
@@ -441,6 +431,7 @@ public class ActionCard extends GameCard{
 							if(croupier.getHoleCards().isEmpty()){
 								croupier.setDiscardMode(false);
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen und darf "+croupier.getDiscrardCounter()+" Karten nachziehen\n");
+								sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 								croupier.getNewHoleCards(croupier.getDiscrardCounter());
 								croupier.setDiscardedCounter(0);
 								
@@ -473,11 +464,13 @@ public class ActionCard extends GameCard{
 							
 							// Karten wegwerfen
 							croupier.getHoleCards().remove(ac);
+
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" wirft eine "+ac.text_DE+"-Karte weg\n");
 							croupier.increaseTrashedCards();
 							
 							if(croupier.getTrashCounter() == 4 || croupier.getHoleCards().isEmpty()){
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Wegwerfen\n");
+								sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 								croupier.setTrashModeChapel(false);
 								croupier.setTrashCounterModeChapel(0);
 								
@@ -624,6 +617,7 @@ public class ActionCard extends GameCard{
 							
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" legt eine "+ac.text_DE+" Karte ab\n");
 							GameHistory history=null;
+							System.out.println(croupier.getHoleCards().size());
 							if(croupier.getHoleCards().size() == 3){
 								croupier.setDiscardModeForMilitia(false);
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen\n");
@@ -646,7 +640,12 @@ public class ActionCard extends GameCard{
 						
 						
 					// GUI wird aktualisiert
-					sl.getPlayingStage().updateGUI();
+					try{
+						sl.getPlayingStage().updateGUI();
+					}catch (Exception e2){
+						//
+					}
+					//sl.getPlayingStage().updateGUI();
 					} 
 					
 

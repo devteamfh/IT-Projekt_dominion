@@ -117,7 +117,6 @@ public class Croupier  extends Observable {
 		
 	public void setBuyPower() {
  		this.buyPower++;
- 		System.out.println("setbuypower: "+Thread.currentThread());
  		setChanged();
 		notifyObservers();
 		}	
@@ -145,12 +144,10 @@ public class Croupier  extends Observable {
 		
 		//dann ist es eine Community Action Card
 		for (int i = 0; i < getAl_communityActionCards().size();i++){
-			System.out.println(getAl_communityActionCards().get(i).getLbl_cardName().getText());
-			System.out.println("String label cardname: "+str_lbl_cardName);
 			//welche  hier u 1 reduziert wird
 			if (getAl_communityActionCards().get(i).getLbl_cardName().getText().equals(str_lbl_cardName)){
 			this.al_stackSizeCommunityActionCards.set(i,al_stackSizeCommunityActionCards.get(i)-1);
-			System.out.println("eine karte reduziert"); }
+			 }
 		}
 		setChanged();
 		notifyObservers();
@@ -637,23 +634,20 @@ public class Croupier  extends Observable {
 		while(!this.getHoleCards().isEmpty()){
     		this.getAblagestapel().add(this.getHoleCards().poll());
     	}
-		
 		this.getNewHoleCards(5);
+		
 	}
 	
 	/**
 	 * @author Joel: 
 	 */
 	public void getNewHoleCards (int number){
-		
 		//get new cards from "Nachziehstapel"
     	if(!(this.getNachziehstapel().size()<number)){
     		for(int i=0; i<number;i++){
     			this.getHoleCards().add(this.getNachziehstapel().poll());
-    			System.out.println("Nachziehstapel hatte mind. 5 Karten");
     		}
     	}else{
-    		System.out.println("Nachziehstapel hatte weniger als 5 karten");
     		int count=0;
     		//draw cards from Nachziehstapel until it is empty
     		while(!this.getNachziehstapel().isEmpty()){
@@ -662,39 +656,33 @@ public class Croupier  extends Observable {
     			
     		}
     		
-    		System.out.println("es wurden noch "+count+" Karten vom Nachziehstapel genommen");
-    		System.out.println("Nachziehstapel sollte nun leer sein...");
-    		for(int i=0; i<croupier.getNachziehstapel().size();i++){
-        		System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
-        	}
-    		
     		
     		//shuffle the "Ablagestapel"
     		Collections.shuffle(this.getAblagestapel());
     		//add the whole Ablagestapel to Nachziehstapel
-    		System.out.println("ablagestapel mischen; er sieht nun so aus///////");
-    		for(int i=0; i<croupier.getAblagestapel().size();i++){
-        		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
-        	}
-    		
-    		System.out.println("nachziehstapel nun neu befüllen, cards nehmen von ablage");
     		
     		while(!this.getAblagestapel().isEmpty()){
     			this.getNachziehstapel().add(this.getAblagestapel().poll());
-    			System.out.println("karte von ablagestapel auf den nachziehstapel gelegt");
+
     		}
-    		System.out.println("nachziehstapel sieht nun so aus//////");
-    		for(int i=0; i<croupier.getNachziehstapel().size();i++){
-        		System.out.println(croupier.getNachziehstapel().get(i).getLbl_cardName().getText());
-        	}
     		
-    		//adding the last cards
+    		if(this.getNachziehstapel().size()<5){
+    			while(!this.getNachziehstapel().isEmpty()){
+    				this.getHoleCards().add(this.getNachziehstapel().poll());
+    			}
+    		}else{
+    			//adding the last cards
+        		int numberOfDrawsNachziehstapel = number-count;
+        		for(int i=0; i<numberOfDrawsNachziehstapel;i++){
+        			this.getHoleCards().add(this.getNachziehstapel().poll());
+        		}
+    		}
+    		
+    		/**adding the last cards
     		int numberOfDrawsNachziehstapel = number-count;
-    		System.out.println("es fehlen noch "+numberOfDrawsNachziehstapel+" karten auf der hand");
     		for(int i=0; i<numberOfDrawsNachziehstapel;i++){
     			this.getHoleCards().add(this.getNachziehstapel().poll());
-    			System.out.println("karte von nachzieh auf hand gelegt");
-    		}
+    		}*/
     	}
 		
 		

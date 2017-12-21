@@ -576,9 +576,18 @@ public class Client_View_playingStage extends View<Client_Model> {
 		hb_wrapper_holeCards.getChildren().clear();
 		for (int i = 0; i < croupier.getHoleCards().size(); i++) {
 			GameCard gc1 = croupier.getHoleCards().get(i);
-			hb_wrapper_holeCards.getChildren().add(gc1);
+			
+			try{
+				hb_wrapper_holeCards.getChildren().add(gc1);
+				gc1.setPrefSize(160, 260);
+				gc1.setMaxWidth(160);
+			}catch (NullPointerException e){
+				//
+			}
+			
+			/**hb_wrapper_holeCards.getChildren().add(gc1);
 			gc1.setPrefSize(160, 260);
-			gc1.setMaxWidth(160);
+			gc1.setMaxWidth(160);*/
 
 			
 		// Zeichne Ablagekarte neu

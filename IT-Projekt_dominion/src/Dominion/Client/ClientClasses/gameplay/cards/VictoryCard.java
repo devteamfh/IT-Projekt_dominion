@@ -77,11 +77,6 @@ public class VictoryCard extends GameCard{
 											
 						sl.getPlayer_noOS().increasePoints(pc.getMatchPoints());
 						
-						System.out.println("ablagestapel neu, karte gekauft und treasure cards verwendet");
-		            	for(int i=0; i<croupier.getAblagestapel().size();i++){
-		            		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
-		            	}
-						
 		            	sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" kauft eine "+pc.text_DE+"-Karte und gewinnt "+pc.getMatchPoints()+" Punkte\n");
 						
 						GameHistory history;
@@ -93,11 +88,6 @@ public class VictoryCard extends GameCard{
 			            	
 			            	
 			            	croupier.removeHoleCards();
-			            	
-			            	System.out.println("ablagestapel neu turn beendet");
-			            	for(int i=0; i<croupier.getAblagestapel().size();i++){
-			            		System.out.println(croupier.getAblagestapel().get(i).getLbl_cardName().getText());
-			            	}
 			            	
 			            	sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Kaufphase\n\n");
 			        		
@@ -142,6 +132,7 @@ public class VictoryCard extends GameCard{
 						
 						if(croupier.getHoleCards().isEmpty()){
 							croupier.setDiscardMode(false);
+							sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen und darf "+croupier.getDiscrardCounter()+" Karten nachziehen\n");
 							croupier.getNewHoleCards(croupier.getDiscrardCounter());
 							croupier.setDiscardedCounter(0);
@@ -182,6 +173,7 @@ public class VictoryCard extends GameCard{
 						
 						if(croupier.getTrashCounter() ==4 || croupier.getHoleCards().isEmpty()){
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet Wegwerfen\n");
+							sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 							croupier.setTrashModeChapel(false);
 							croupier.setTrashCounterModeChapel(0);
 							if(croupier.getActions()==0){
@@ -320,6 +312,7 @@ public class VictoryCard extends GameCard{
 						
 						sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" legt eine "+pc.text_DE+" Karte ab\n");
 						GameHistory history=null;
+						System.out.println(croupier.getHoleCards().size());
 						if(croupier.getHoleCards().size() == 3){
 							croupier.setDiscardModeForMilitia(false);
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen\n");
@@ -370,9 +363,12 @@ public class VictoryCard extends GameCard{
 					
 					}
 					
-					//Gui aktualisieren
-					sl.getPlayingStage().updateGUI();
-					//System.out.println("updategui gesendet");	
+					// GUI wird aktualisiert
+					try{
+						sl.getPlayingStage().updateGUI();
+					}catch (Exception e2){
+						//
+					}
 				} 
 				
 				

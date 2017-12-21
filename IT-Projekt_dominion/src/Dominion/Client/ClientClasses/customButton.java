@@ -233,7 +233,7 @@ public class customButton extends Button implements Observer {
 			Platform.runLater(new Runnable() {
 		           @Override 
 		           public void run() {
-		   			lbl.setText("warten auf Gegner");
+		   			lbl.setText("Dominion");
 					btn.setGraphic(lbl);
 		           }
 			});	
@@ -247,7 +247,7 @@ public class customButton extends Button implements Observer {
 			Platform.runLater(new Runnable() {
 		           @Override 
 		           public void run() {
-		   			lbl.setText("Du kannst Angriff\nabwehren!");
+		   			lbl.setText("Dominion");
 					btn.setGraphic(lbl);
 		           }
 			});	
@@ -261,7 +261,7 @@ public class customButton extends Button implements Observer {
 			Platform.runLater(new Runnable() {
 		           @Override 
 		           public void run() {
-		   			lbl.setText("Du musst Karten\nablegen!");
+		   			lbl.setText("Dominion");
 					btn.setGraphic(lbl);
 		           }
 			});	
@@ -275,7 +275,7 @@ public class customButton extends Button implements Observer {
 			Platform.runLater(new Runnable() {
 		           @Override 
 		           public void run() {
-		   			lbl.setText("Du musst eine\nFluchkarte nehmen!");
+		   			lbl.setText("Dominion");
 					btn.setGraphic(lbl);
 		           }
 			});	
