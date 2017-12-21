@@ -34,8 +34,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
 	private InetAddress addr;
     private String str_Dot = ".";
     private ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
-    private checkUserData checkUserData;
-    private checkFields checkFields;
+    private CheckUserData checkUserData;
+    private CheckFields checkFields;
    
     
     public Client_Controller_start(Client_Model model, Client_View_start view) {
@@ -57,8 +57,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
          * edited @author kab: Neue Buttons btn_register und btn_login und diverse Pr�fmechanismen auf tf_ eingebaut (Klassen checkUserFields, checkUserData)
          */    
 
-        checkUserData = new checkUserData();
-        checkFields = new checkFields(this.model,this.checkUserData);
+        checkUserData = new CheckUserData();
+        checkFields = new CheckFields(this.model,this.checkUserData);
         
         	//connect button MouseHandler
 		view.btn_connect.addEventHandler(MouseEvent.MOUSE_ENTERED, 

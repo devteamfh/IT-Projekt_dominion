@@ -31,7 +31,7 @@ import javafx.stage.StageStyle;
 public class Client_View_popUp extends View<Client_Model> {
     Label lbl;
 	ServiceLocatorClient sl;
-	customButton btn_ok;
+	CustomButton btn_ok;
 	Button btn_close;
 
 	public Client_View_popUp(Stage stage, Client_Model model) {
@@ -56,7 +56,7 @@ public class Client_View_popUp extends View<Client_Model> {
 		lbl_message.getStyleClass().add("lbl_popUpMessage");
 		lbl_message.setAlignment(Pos.TOP_CENTER);
 	   	
-		btn_ok = new customButton("ok");
+		btn_ok = new CustomButton("ok");
 	    btn_ok.getStyleClass().addAll("btn","btn_sendChatMsg");
 	    btn_ok.setBtnTextEmpty(btn_ok);
 	    btn_ok.setPrefSize(202, 40);

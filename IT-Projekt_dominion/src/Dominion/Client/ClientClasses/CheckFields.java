@@ -15,7 +15,7 @@ import javafx.stage.StageStyle;
  *
  */
 
-public class checkFields {
+public class CheckFields {
 	private String btnStr;
 	private String tf1;
 	private String tf2;
@@ -25,18 +25,18 @@ public class checkFields {
 	private boolean userRegistred;
 	private boolean userPwOk;
 	
-	checkUserData checkUserData;
+	CheckUserData checkUserData;
 	
 	private Client_Model model;
 	
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
-	public checkFields(Client_Model m, checkUserData checkUserData){
+	public CheckFields(Client_Model m, CheckUserData checkUserData){
 		this.model = m;
 		this.checkUserData = checkUserData;
 	}
 	
-	public checkFields(){
+	public CheckFields(){
 
 	}
 
@@ -225,7 +225,7 @@ public class checkFields {
 		return true;			
 	}
 	
-	public checkUserData getCheckUserData(){
+	public CheckUserData getCheckUserData(){
 		return this.checkUserData;
 	
 	}

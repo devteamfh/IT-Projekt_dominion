@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class checkUserData {
+public class CheckUserData {
 
 	private Client_Model model;
 	private File userFile;
@@ -27,7 +27,7 @@ public class checkUserData {
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	
 	
-	public checkUserData() {
+	public CheckUserData() {
 	}
 	
 

@@ -45,9 +45,9 @@ import javafx.stage.StageStyle;
 
 
 public class Client_View_lobby extends View<Client_Model> {
-    customButton btn_sendChatMsg;
-    customButton btn_newGame;
-    customButton btn_enterGame;
+    CustomButton btn_sendChatMsg;
+    CustomButton btn_newGame;
+    CustomButton btn_enterGame;
     Button btn_close;
     
     TextField tf_message;
@@ -84,12 +84,12 @@ public class Client_View_lobby extends View<Client_Model> {
 		sl.setPlayer_noOS(player);
 		sl.setPlayer_OS(model.getPlayer_OS());
 
-		btn_newGame = new customButton ("neues Spiel");
+		btn_newGame = new CustomButton ("neues Spiel");
 		btn_newGame.getStyleClass().addAll("btn","btn_view");
 		btn_newGame.setBtnTextEmpty(btn_newGame);
 	    btn_newGame.setPrefSize(206, 54);
 		
-		btn_enterGame = new customButton ("Spiel beitreten");
+		btn_enterGame = new CustomButton ("Spiel beitreten");
 		btn_enterGame.getStyleClass().addAll("btn","btn_view");
 		btn_enterGame.setBtnTextEmpty(btn_enterGame);
 	    btn_enterGame.setPrefSize(206,54);
@@ -105,7 +105,7 @@ public class Client_View_lobby extends View<Client_Model> {
 		tf_message.setPrefSize(450,40);
 		tf_message.setStyle("-fx-opacity: 0.80;");
 		
-		btn_sendChatMsg = new customButton("senden");
+		btn_sendChatMsg = new CustomButton("senden");
 		btn_sendChatMsg.getStyleClass().addAll("btn","btn_sendChatMsg");
 		btn_sendChatMsg.setBtnTextEmpty(btn_sendChatMsg);
 		btn_sendChatMsg.setPrefSize(202, 40);

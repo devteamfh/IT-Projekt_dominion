@@ -104,16 +104,18 @@ public class ReadMsgFromServer implements Runnable {
 								
 								} else{
 								
+									//löscht Tabelle Spieler STatistik in der Lobby
 									sl.getAl_Statistics().clear();
 									sl.getTbl_playerStats().getItems().clear();
 						
-
+									//fügt Statistikinfos der Tablele Spieler Statistik in der Lobby hinztu
 									sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
-									System.out.println("grösse von zurückgsendetem playstatistics shit "+playerStatistics.getListOfStartInformationObjects().size());
 									sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());				
 									
-	
-								
+									
+									//wenn der Server die Spielerstatistik aktualisiert hat, werden die Daten des Users in user.dat gespeichert
+									
+									
 								}
 									
 									

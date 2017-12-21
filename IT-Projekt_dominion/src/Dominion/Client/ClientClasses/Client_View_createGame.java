@@ -63,7 +63,7 @@ public class Client_View_createGame extends View<Client_Model> {
 	Button btn_iRundenPLUS;
 	Button btn_iRundenMINUS;
 	
-	customButton btn_finish;
+	CustomButton btn_finish;
 
 	public Client_View_createGame(Stage stage, Client_Model model) {
 		super(stage, model);
@@ -159,7 +159,7 @@ public class Client_View_createGame extends View<Client_Model> {
 		    	btnRdo_mode2.setToggleGroup(sl.getToggleForEndOfGame());
 
 	    
-	    btn_finish  = new customButton("Fertig");
+	    btn_finish  = new CustomButton("Fertig");
 	    btn_finish.getStyleClass().addAll("btn","btn_sendChatMsg");
 	    btn_finish.setBtnTextEmpty(btn_finish);
 	    btn_finish.setPrefSize(202, 40);
