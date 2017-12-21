@@ -967,7 +967,6 @@ public class ClientHandler implements Runnable {
 			
 				
 			//kab: es Müssen noch die Spielerstatistiken upgedated werden nach einem Spiel
-				//@joel die methhode unten geht nur, wenn es nur einen gewinner gibt. wenn du jetzt in der zwischenzeit was umgebaut hast, dann muss ich meine methode dann auch noch anpassen
 				
 				//Finde heraus, welche Spieler so eben gespielt haben um dessen statistiken auf der lobby tabelle upzudaten
 				Iterator<StartInformation> iterStatisticsOnServer = sl.get_al_AllStartInfoStatisitcsOnServer().iterator();
@@ -1023,7 +1022,6 @@ public class ClientHandler implements Runnable {
 				strBuilder.append("Unentschieden!");
 				
 				//kab: es Müssen noch die Spielerstatistiken upgedated werden nach einem Spiel
-				//@joel die methhode unten geht nur, wenn es nur einen gewinner gibt. wenn du jetzt in der zwischenzeit was umgebaut hast, dann muss ich meine methode dann auch noch anpassen
 				
 				//Finde heraus, welche Spieler so eben gespielt haben um dessen statistiken auf der lobby tabelle upzudaten
 				Iterator<StartInformation> iterStatisticsOnServer = sl.get_al_AllStartInfoStatisitcsOnServer().iterator();
@@ -1047,7 +1045,7 @@ public class ClientHandler implements Runnable {
 								cursor.setGamesLost(cursor.getGamesLost()+1);
 							}
 							
-								//aktualiserung  noch das gewonnnene spiele in prozent verhältins
+								//aktualiserung  noch das gewonnnene spiele in prozent 
 							cursor.setWinLooseRatio(cursor.getGamesWon()*100/cursor.getGamesPlayed());
 
 						}
