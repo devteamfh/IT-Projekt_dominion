@@ -2,46 +2,28 @@ package Dominion.Client.ClientClasses;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Observable;
-import java.util.Observer;
-
-import Dominion.Client.ClientClasses.Client_View_start.Delta;
 import Dominion.Client.ClientClasses.gameplay.Croupier;
-import Dominion.Client.ClientClasses.gameplay.cards.ActionCard;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Client.ClientClasses.gameplay.cards.MoneyCard;
 import Dominion.Client.ClientClasses.gameplay.cards.VictoryCard;
 import Dominion.Client.abstractClasses.View;
 import Dominion.appClasses.GameParty;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import sun.misc.GC;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -256,7 +238,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		}
 
 		lbl_descrBuyPower = new Label(" Kaufkraft ");
-		lbl_descrBuys = new Label(" Kï¿½ufe ");
+		lbl_descrBuys = new Label(" Käufe ");
 		lbl_descrActions = new Label(" Aktionen ");
 
 		// Branches
@@ -328,7 +310,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 				sl.getLabelNumberOfActionsAndBuys().setText("warten bis Spiel voll ist...");
 				
 						//LabelStyling
-						sl.getLabelNumberOfActionsAndBuys().getStyleClass().add("h1");						
+						sl.getLabelNumberOfActionsAndBuys().getStyleClass().add("h2");						
 										
 			vb_wrapper_gameInformation_content.getChildren().addAll(
 					sl.getLabelNumberOfActionsAndBuys());

@@ -104,15 +104,45 @@ public class ReadMsgFromServer implements Runnable {
 								
 								} else{
 								
+									//l�scht Tabelle Spieler STatistik in der Lobby
 									sl.getAl_Statistics().clear();
 									sl.getTbl_playerStats().getItems().clear();
 						
-
+									//f�gt Statistikinfos der Tablele Spieler Statistik in der Lobby hinztu
 									sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
 									sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());				
 									
-	
-								
+									
+									
+									
+									Platform.runLater(new Runnable() {
+								           @Override 
+								           public void run() {
+														//wenn der Server die Spielerstatistik aktualisiert hat, werden die Daten des Users auch user.dat aktualisiert
+														Iterator<StartInformation> iterRecievedStatistics = playerStatistics.getListOfStartInformationObjects().iterator();
+														for (int i = 0; i < playerStatistics.getListOfStartInformationObjects().size();i++){
+															System.out.println(playerStatistics.getListOfStartInformationObjects().get(i).getUsername());
+															System.out.println("modelname :"+model.playerName);
+															
+																if (playerStatistics.getListOfStartInformationObjects().get(i).getUsername().equals(model.playerName)){
+																
+																//speichere neue Statistikdaten in der Datei
+																SaveStats saveStats = new SaveStats(playerStatistics.getListOfStartInformationObjects().get(i));
+																try {
+																	saveStats.deleteDataRow();
+																	saveStats.saveData();
+																} catch (IOException e) {
+																	e.printStackTrace();
+																}	
+																
+															}
+														}
+									
+								           }
+									});
+									
+									
+									
 								}
 									
 									
@@ -123,9 +153,10 @@ public class ReadMsgFromServer implements Runnable {
 							
 						}
 				      });
+					break;
 					
-					/*
-					StartInformation playerStatistics = (StartInformation) obj;
+					
+					/**StartInformation playerStatistics = (StartInformation) obj;
 					
 					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gew�hrt
 					if(playerStatistics.isBol_nameTaken()){
@@ -171,9 +202,8 @@ public class ReadMsgFromServer implements Runnable {
 					System.out.println("gr�sse von zur�ckgsendetem playstatistics shit "+playerStatistics.getListOfStartInformationObjects().size());
 					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());				
 					
-							*/
 					
-					break;
+					break;*/
 					 
 				case GameParty:
 					
@@ -364,10 +394,6 @@ public class ReadMsgFromServer implements Runnable {
 					break;
 				
 				case ChatMessagePlayingStage:			 	
-					
-					/**ChatMessagePlayingStage currentMsgPlay = (ChatMessagePlayingStage) obj;
-					ChatMessagePlayingStage msg_obj = new ChatMessagePlayingStage(currentMsgPlay.getName(), currentMsgPlay.getMsg(), currentMsgPlay.getGameParty());
-					msg_obj.setID2(currentMsgPlay.getID());*/
 					
 					ChatMessagePlayingStage msg_obj = (ChatMessagePlayingStage) obj;
 					

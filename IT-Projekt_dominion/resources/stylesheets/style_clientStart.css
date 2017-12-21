@@ -40,7 +40,7 @@
 }
 	
 .lbl_popUpMessage {
-		-fx-font-family: "Kokila";
+		-fx-font-family: "Times New Roman";
 	-fx-font-size: 28px;
 	-fx-font-weight: bold;
 	-fx-text-fill: #666666;
@@ -63,8 +63,17 @@
 	)
 	}
 	
+	.h2 {
+	-fx-font-family: "Times New Roman";
+	-fx-font-size: 26px;
+	-fx-font-weight: bold;
+	-fx-text-fill: #666666;
+	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
+	)
+}
+	
 .lbl_menuPoint {
-	-fx-font-family: "Kokila";
+	-fx-font-family: "Times New Roman";
 	-fx-font-size: 24px;
 	-fx-font-weight: bold;
 	-fx-text-fill: #666666;
@@ -73,7 +82,7 @@
 }
 
 .lbl_iRunden {
-	-fx-font-family: "Kokila";
+	-fx-font-family: "Times New Roman";
 	-fx-font-size: 50px;
 	-fx-text-fill: #666666;
 	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */

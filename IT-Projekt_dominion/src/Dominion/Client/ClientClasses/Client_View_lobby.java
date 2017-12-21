@@ -182,7 +182,7 @@ public class Client_View_lobby extends View<Client_Model> {
 					column03.setMinWidth(150);
 					column03.setCellValueFactory(new PropertyValueFactory<>("gamesLost"));
 					
-					TableColumn<StartInformation,Integer> column04 = new TableColumn<StartInformation,Integer>("Win/Loose Ratio");
+					TableColumn<StartInformation,Double> column04 = new TableColumn<StartInformation,Double>("Winner in %");
 					column04.setMinWidth(150);
 					column04.setCellValueFactory(new PropertyValueFactory<>("winLooseRatio"));
 				

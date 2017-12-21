@@ -9,11 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-
 import javax.swing.event.ListSelectionEvent;
-
-import com.sun.org.apache.bcel.internal.classfile.Attribute;
-
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
 import Dominion.appClasses.ChatMessagePlayingStage;
@@ -241,7 +237,7 @@ public class ClientHandler implements Runnable {
 			 sl.addConnectedPlayer(newPlayer);
 		
 			 sl.db_addPlayer(username, PW, gamesPlayed, gamesWon, gamesLost, winLooseRto, att6,att7,att8,att9); 
-			 
+				 
 			 //hier werden alle Start Ifno STatistics, die der Server mal erhalten hat in eine StartInfoSTatistics Array List hineingelegt
 			 sl.addNewStartInfoStatistics(start);
 
@@ -415,6 +411,10 @@ public class ClientHandler implements Runnable {
 								for(int i=0; i<sl.getGameListFromServer().size();i++){
 									if(history.getGameParty().getID() == sl.getGameListFromServer().get(i).getGameParty().getID()){
 										sl.getGameListFromServer().remove(i);
+										
+										//kab: Player Statistik Tabelle auf allen Clients müssen auch noch upgedated werden
+										updatePlayerStatistics();
+										
 									}
 								}
 							}
@@ -964,6 +964,47 @@ public class ClientHandler implements Runnable {
 				strBuilder.delete(0, strBuilder.length());
 				//strBuilder.append("Gewinner ist: "+winner.getUsername()+"\n");
 				
+			
+				
+			//kab: es Müssen noch die Spielerstatistiken upgedated werden nach einem Spiel
+				
+				//Finde heraus, welche Spieler so eben gespielt haben um dessen statistiken auf der lobby tabelle upzudaten
+				Iterator<StartInformation> iterStatisticsOnServer = sl.get_al_AllStartInfoStatisitcsOnServer().iterator();
+				while (iterStatisticsOnServer.hasNext()){
+					StartInformation cursor = iterStatisticsOnServer.next();
+					
+					for (int i = 0; i < current.getGameParty().getArrayListOfPlayers().size();i++){
+						//jedem Spieler wird ein gespieltes Spiel hinzugefügt
+						if (current.getGameParty().getArrayListOfPlayers().get(i).getUsername().equals(cursor.getUsername())){
+							cursor.setGamesPlayed(cursor.getGamesPlayed()+1);
+							
+							//Falls der cursor auf dem gewinner steht wird ein gewonnenes Spiel hinzugefügt
+							for (int j = 0; j < winner.size(); j++){
+								if (winner.get(j).getUsername().equals(cursor.getUsername())){
+										cursor.setGamesWon(cursor.getGamesWon()+1);
+							}
+							
+							//falls der cursor nicht auf dem gewinner steht, wird ein verlorenes Spiel hinzugefügt
+							else {   
+								cursor.setGamesLost(cursor.getGamesLost()+1);
+							}
+							
+								//aktualiserung der gewonnnene spiele in prozent verhältins
+							cursor.setWinLooseRatio(cursor.getGamesWon()*100/cursor.getGamesPlayed());
+
+							//(kab: Player Statistik Tabelle auf allen Clients müssen auch noch upgedated werden
+							//dazu wird auf zeile 419 diese methode angestossen: updatePlayerStatistics();)
+							
+						}
+					
+						}
+						
+					
+					}
+				}
+			
+				
+				
 				ArrayList<PlayerWithoutOS> loser = determineLoser(winner,history.getGameParty());
 				
 				for(int i=0; i<loser.size();i++){
@@ -982,6 +1023,49 @@ public class ClientHandler implements Runnable {
 
 			}else{
 				strBuilder.append("Unentschieden!");
+				
+				//kab: es Müssen noch die Spielerstatistiken upgedated werden nach einem Spiel
+				
+				//Finde heraus, welche Spieler so eben gespielt haben um dessen statistiken auf der lobby tabelle upzudaten
+				Iterator<StartInformation> iterStatisticsOnServer = sl.get_al_AllStartInfoStatisitcsOnServer().iterator();
+				//statistik aktualisieren
+				while (iterStatisticsOnServer.hasNext()){
+					StartInformation cursor = iterStatisticsOnServer.next();
+					
+					for (int i = 0; i < current.getGameParty().getArrayListOfPlayers().size();i++){
+						//jedem Spieler wird ein gespieltes Spiel hinzugefügt
+						if (current.getGameParty().getArrayListOfPlayers().get(i).getUsername().equals(cursor.getUsername())){
+							cursor.setGamesPlayed(cursor.getGamesPlayed()+1);
+							
+							/* ------ @joel. dieser block habe ich ausgeklammret da unentschieden weder sieg noch niederlage gibt-------
+							//Falls der cursor auf dem gewinner steht wird ein gewonnenes Spiel hinzugefügt
+							for (int j = 0; j < winner.size(); j++){
+								if (winner.get(j).getUsername().equals(cursor.getUsername())){
+										cursor.setGamesWon(cursor.getGamesWon()+1);
+							}
+							
+							//falls der cursor nicht auf dem gewinner steht, wird ein verlorenes Spiel hinzugefügt
+							
+							else {   
+							cursor.setGamesLost(cursor.getGamesLost()+1);
+							}
+							
+								//aktualiserung  noch das gewonnnene spiele in prozent 
+							cursor.setWinLooseRatio(cursor.getGamesWon()*100/cursor.getGamesPlayed());
+						
+							//(kab: Player Statistik Tabelle auf allen Clients müssen auch noch upgedated werden
+							//dazu wird auf zeile 419 diese methode angestossen: updatePlayerStatistics();)
+
+							}	
+							*///-----------------------------------------------------------------------------------------------------
+					
+						}
+						
+					
+					}
+				}
+				
+				
 
 			}
 			history.setNewType(GameHistory.HistoryType.EndGame);
@@ -999,6 +1083,7 @@ public class ClientHandler implements Runnable {
 			strBuilder.delete(0, strBuilder.length());
 			
 		}
+		
 	}
 	
 	private void updatePlayerStatistics(){
