@@ -25,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -166,9 +167,12 @@ public class Client_View_lobby extends View<Client_Model> {
 					
 					
 			    	tbl_playerStats = sl.getTbl_playerStats();
+					tbl_playerStats.setId("tbl_stats");
+					
 					TableColumn<StartInformation,String> column00 = new TableColumn<StartInformation,String>("Spieler");
 					column00.setMinWidth(200);
 					column00.setCellValueFactory(new PropertyValueFactory<>("username"));
+					column00.setStyle( "-fx-alignment: CENTER-LEFT;");
 					
 					TableColumn<StartInformation,Integer> column01 = new TableColumn<StartInformation,Integer>("Gespielte Spiele");
 					column01.setMinWidth(150);
@@ -188,11 +192,13 @@ public class Client_View_lobby extends View<Client_Model> {
 				
 					TableColumn<StartInformation,Integer> column05 = new TableColumn<StartInformation,Integer>("Rang");
 					column05.setMinWidth(250);
+					column05.setStyle( "-fx-alignment: CENTER-LEFT;");
 					column05.setCellValueFactory(new PropertyValueFactory<>("att6"));
 					
 					tbl_playerStats.getColumns().addAll(column00,column01,column02,column03,column04,column05);
 					tbl_playerStats.setPrefSize(1250, 200);
 					tbl_playerStats.setStyle("-fx-opacity: 0.80;");
+
 					
 
 					/*Upperhalf zusammenf�hren*/
@@ -330,6 +336,7 @@ public class Client_View_lobby extends View<Client_Model> {
 		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_clientStart.css").toExternalForm());
 	
 	    stage.initStyle(StageStyle.TRANSPARENT);     
+	    stage.getIcons().add(new Image(getClass().getResource("/img/icons/castle_s.png").toExternalForm()));
         return scene;
         
       		

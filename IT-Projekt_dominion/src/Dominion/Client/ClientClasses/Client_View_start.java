@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -202,6 +203,7 @@ public class Client_View_start extends View<Client_Model> {
 			this.scene = new Scene (root);
 			scene.getStylesheets().add(getClass().getResource("/stylesheets/style_clientStart.css").toExternalForm());
 		    stage.initStyle(StageStyle.TRANSPARENT); 
+		    stage.getIcons().add(new Image(getClass().getResource("/img/icons/castle_s.png").toExternalForm()));
 		    
 			return scene;
 

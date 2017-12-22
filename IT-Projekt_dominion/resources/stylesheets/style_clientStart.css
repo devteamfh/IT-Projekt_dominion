@@ -56,7 +56,7 @@
 
 .h1 {
 	-fx-font-family: "Times New Roman";
-	-fx-font-size: 32px;
+	-fx-font-size: 28px;
 	-fx-font-weight: bold;
 	-fx-text-fill: #996633;
 	-fx-effect: dropshadow( one-pass-box, black , 10, 0.2 , 3 , 3 /*blur, dicke, offsetx, offxety */
@@ -155,8 +155,15 @@
 
 .btn_close_hover {
 	-fx-background-image: url('../img/btns/btn_close_normal.png'); }
-/*---------------------------------------------------------------------------------------- */
-/*Client View Start -END- */
+
+
+#tbl_stats .column-header .label {
+    -fx-alignment: TOP_LEFT;
+}
+
+#tbl_stats .table-column {
+  -fx-alignment: CENTER;
+}
 
 
 
