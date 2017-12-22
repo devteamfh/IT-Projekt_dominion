@@ -224,6 +224,7 @@ public class ClientHandler implements Runnable {
 					 start.setBol_nameTaken(true);
 					 sl.getConnectedPlayers().remove(current);
 					 
+					 
 					 this.out.reset();
 					 out.writeObject(start);
 					 out.flush();
