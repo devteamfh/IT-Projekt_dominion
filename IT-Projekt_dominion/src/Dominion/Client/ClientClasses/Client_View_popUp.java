@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -106,6 +107,7 @@ public class Client_View_popUp extends View<Client_Model> {
 		this.scene = new Scene (root, 600,180);
 		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_clientStart.css").toExternalForm());
 	    stage.initStyle(StageStyle.TRANSPARENT);   
+	    stage.getIcons().add(new Image(getClass().getResource("/img/icons/victory_130.png").toExternalForm()));
 	    
         return scene;
 	}

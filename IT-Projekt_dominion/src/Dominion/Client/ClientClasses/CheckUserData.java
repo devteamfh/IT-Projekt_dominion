@@ -62,7 +62,7 @@ public class CheckUserData {
 	public boolean enterUserData(String tf1, String tf2){
 		this.tf1 = tf1;
 		this.tf2 = tf2;
-		String str_initialStats = ";0;0;0;0;0;0;0;0";   //initiale Statsitik Werte	
+		String str_initialStats = ";0;0;0;0;Jungspieler;0;0;0";   //initiale Statsitik Werte	
 		try {
 			FileWriter fw = new FileWriter(this.userFile, true);
 			fw.write(this.tf1+";"+this.tf2+str_initialStats+System.getProperty("line.separator"));
@@ -73,7 +73,7 @@ public class CheckUserData {
 			//�brige attribute m�ssen noch ausgelesen werden und in die array list gelegt werden
 			getAl_currentUserandStats().add("0");getAl_currentUserandStats().add("0");
 			getAl_currentUserandStats().add("0");getAl_currentUserandStats().add("0");
-			getAl_currentUserandStats().add("0");getAl_currentUserandStats().add("0");
+			getAl_currentUserandStats().add("Jungspieler");getAl_currentUserandStats().add("0");
 			getAl_currentUserandStats().add("0");getAl_currentUserandStats().add("0");
 
 			sl.getLogger().info("Spieler erfolgreich registriert");

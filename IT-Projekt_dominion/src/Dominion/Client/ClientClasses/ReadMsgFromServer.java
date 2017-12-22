@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import Dominion.Client.Client;
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
+import Dominion.Client.abstractClasses.Model;
 import Dominion.Server.ServerClasses.GamePartyOnServer;
 import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessageLobby;
@@ -86,12 +87,24 @@ public class ReadMsgFromServer implements Runnable {
 					 				sl.getView_lobby().stop();
 					 				
 					 				//Restartet die lgoin view
+					 				//ServiceLocatorClient.setServiceLocatorClientNull();
+					 				try {
+										model.out.close();
+										model.client.close();
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+					 				
+					 				
+					 				
 					 				Stage stge_start = new Stage();
 					 				Client_View_start view_start = new Client_View_start (stge_start, model);
 					 				new Client_Controller_start(model, view_start);
 					 				view_start.start();
 					 				
 					 				//gibt Meldung aus, dass die Username-Dieberei stattgefunden hat
+					 				//ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 									sl.setLbl_popUpMessage(new Label("Der Spielername ist zur Zeit vergeben."));		
 									Stage popUp = new Stage();	
 									popUp.setResizable(false);
@@ -99,6 +112,8 @@ public class ReadMsgFromServer implements Runnable {
 						        	Client_View_popUp view = new Client_View_popUp (popUp, model);
 						        	new Client_Controller_popUp(model, view); 
 						        	view.start();
+						        
+						        	
 						        	
 
 								

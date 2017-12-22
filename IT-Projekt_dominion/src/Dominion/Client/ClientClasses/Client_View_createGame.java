@@ -17,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -254,7 +255,8 @@ public class Client_View_createGame extends View<Client_Model> {
 		
 		this.scene = new Scene (root, 750, 410);
 		scene.getStylesheets().add(getClass().getResource("/stylesheets/style_clientStart.css").toExternalForm());
-	    stage.initStyle(StageStyle.TRANSPARENT);     
+	    stage.initStyle(StageStyle.TRANSPARENT);
+	    stage.getIcons().add(new Image(getClass().getResource("/img/icons/settings.png").toExternalForm()));
         return scene;
 		
 	}
