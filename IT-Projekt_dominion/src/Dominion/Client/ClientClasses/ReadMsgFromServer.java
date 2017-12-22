@@ -121,8 +121,6 @@ public class ReadMsgFromServer implements Runnable {
 														//wenn der Server die Spielerstatistik aktualisiert hat, werden die Daten des Users auch user.dat aktualisiert
 														Iterator<StartInformation> iterRecievedStatistics = playerStatistics.getListOfStartInformationObjects().iterator();
 														for (int i = 0; i < playerStatistics.getListOfStartInformationObjects().size();i++){
-															System.out.println(playerStatistics.getListOfStartInformationObjects().get(i).getUsername());
-															System.out.println("modelname :"+model.playerName);
 															
 																if (playerStatistics.getListOfStartInformationObjects().get(i).getUsername().equals(model.playerName)){
 																
@@ -440,8 +438,9 @@ public class ReadMsgFromServer implements Runnable {
 					           public void run() {
 								
 								try{
-									
-									croupier.setStackSize(history.getGameCard_EN());
+									if(!history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+										croupier.setStackSize(history.getGameCard_EN());
+									}
 
 									if(history.getGameCard_EN().equals("estate") || history.getGameCard_EN().equals("duchy") || history.getGameCard_EN().equals("province") || history.getGameCard_EN().equals("curse")){
 										
@@ -584,7 +583,7 @@ public class ReadMsgFromServer implements Runnable {
 									case "chapel":
 										if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
 											croupier.setTrashModeChapel(true);
-											sl.getLabelNumberOfActionsAndBuys().setText("Wirf so viele Karten weg\nwie du möchtest!");
+											sl.getLabelNumberOfActionsAndBuys().setText("Wirf bis zu 4 Karten weg!");
 																						
 										}else{
 											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());										
@@ -605,25 +604,40 @@ public class ReadMsgFromServer implements Runnable {
 									case "mine":
 										if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
 											croupier.setTrashModeMine(true);
+											sl.getLabelNumberOfActionsAndBuys().setText("Wähle eine Geldkarte aus der Hand\nund erwirb eine Neue!");
+										}else{
+											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+										
 										}
 										break;
 										
 									case "moneylender":
 										if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
 											croupier.setTrashModeMoneylender(true);
+											sl.getLabelNumberOfActionsAndBuys().setText("Wirf eine Kupferkarte weg\nund gewinne +3 Geld!");
 											
+											
+										}else{
+											sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+										
 										}
 										break;
 										
 									case "rebuilding":
 										if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
 											croupier.setTrashModeRebuilding(true);
+											sl.getLabelNumberOfActionsAndBuys().setText("Wirf eine Karte weg und\nerwerbe eine Neue!");
+											
+									}else{
+										sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+										
 									}
 										break;
 										
 									case "workshop":
 										if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
 											croupier.setModeForWorkshop(true);
+											sl.getLabelNumberOfActionsAndBuys().setText("Erwirb eine neue Karte,\ndie bis zu 4 Geld kostet!");
 
 										}
 										break;
@@ -710,13 +724,30 @@ public class ReadMsgFromServer implements Runnable {
 												
 											}else{ 
 												//player doesnt have a moat card...he has to pick up a curse card
-												
-												croupier.setModeCurseCard(true);
-												sl.getLabelNumberOfActionsAndBuys().setText("Du wirst angegriffen und\nmusst eine Fluchkarte nehmen!");
+												if(croupier.getStackSizeCurse()==0){
+													
+													sl.getStrBuilderTextArea().delete(0, sl.getStrBuilderTextArea().length());
+													sl.getStrBuilderTextArea().append("Es hatte keine Fluchkarten mehr für "+sl.getPlayer_noOS().getUsername());
+													GameHistory history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),croupier.getCurrentPlayer(),null,null, GameHistory.HistoryType.Reaction);
+
+													try {
+														//reset needed
+														sl.getPlayer_OS().getOut().reset();
+														sl.getPlayer_OS().getOut().writeObject(history);
+														sl.getPlayer_OS().getOut().flush();
+													} catch (IOException e1) {
+														// TODO Auto-generated catch block
+														e1.printStackTrace();
+													}
+												}else{
+													croupier.setModeCurseCard(true);
+													sl.getLabelNumberOfActionsAndBuys().setText("Du wirst angegriffen und\nmusst eine Fluchkarte nehmen!\n");
+												}
 																							
 											}
 																			
 										}
+										//break case witch
 										break;
 
 									}
@@ -747,8 +778,11 @@ public class ReadMsgFromServer implements Runnable {
 
 							@Override 
 					           public void run() {
+								if(!history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									croupier.setStackSize(history.getGameCard_EN());
+								}
 								
-								croupier.setStackSize(history.getGameCard_EN());
+								//croupier.setStackSize(history.getGameCard_EN());
 								sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 								sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 								
@@ -770,7 +804,9 @@ public class ReadMsgFromServer implements Runnable {
 
 							@Override 
 					           public void run() {
-								croupier.setStackSize(history.getGameCard_EN());
+								if(!history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									croupier.setStackSize(history.getGameCard_EN());
+								}
 								
 								//update the list of players (points) because there was a buy
 								sl.setCurrentGameParty(history.getGameParty());
@@ -855,15 +891,17 @@ public class ReadMsgFromServer implements Runnable {
 
 							@Override 
 					           public void run() {
-								
-								croupier.setStackSize(history.getGameCard_EN());
+								if(!history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									croupier.setStackSize(history.getGameCard_EN());
+								}
+
 								sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 								sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 								
 								if(history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
 									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug\n"+history.getTextForLabel());
 								}else{
-									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist "+history.getTextForLabel());
+									sl.getLabelNumberOfActionsAndBuys().setText(currentPlayer.getUsername()+" ist am Zug:\n"+history.getTextForLabel());
 								}	
 					           }
 					      });
@@ -878,7 +916,10 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								
-								croupier.setStackSize(history.getGameCard_EN());
+								if(!history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									croupier.setStackSize(history.getGameCard_EN());
+								}
+								
 								sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 								sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 								
@@ -911,7 +952,10 @@ public class ReadMsgFromServer implements Runnable {
 							@Override 
 					           public void run() {
 								
-								croupier.setStackSize(history.getGameCard_EN());
+								if(!history.getCurrentPlayer().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+									croupier.setStackSize(history.getGameCard_EN());
+								}
+
 								sl.getTextAreaGameHistory().appendText(history.getTextForTextArea()); //to do: noch farblich abheben je player
 								sl.getTextAreaGameHistory().selectPositionCaret(sl.getTextAreaGameHistory().getText().length());
 								
@@ -993,7 +1037,9 @@ public class ReadMsgFromServer implements Runnable {
 								
 								try{
 									if(history.getGameCard_EN().equals("curse")){
-										croupier.setStackSize(history.getGameCard_EN());
+										if(!history.getPlayerForWitchMode().getUsername().equals(sl.getPlayer_noOS().getUsername())){
+											croupier.setStackSize(history.getGameCard_EN());
+										}
 										
 										//update the list of players (points) because there was a buy
 										sl.setCurrentGameParty(history.getGameParty());

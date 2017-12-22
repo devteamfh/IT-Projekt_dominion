@@ -36,6 +36,7 @@ import javafx.stage.StageStyle;
 import sun.misc.GC;
 
 public class GameCard extends Button implements Observer  {
+	protected static final boolean MoneyCard = false;
 	ServiceLocatorClient sl = ServiceLocatorClient.getServiceLocator();
 	Croupier croupier = Croupier.getCroupier();
 	
@@ -62,14 +63,13 @@ public class GameCard extends Button implements Observer  {
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		
-		
+				
 		getStyleClass().remove("highlight");
 		getStyleClass().remove("highlight2");
 		getStyleClass().remove("highlight3");
 		
 		//Highlighte alle Karten im Kaufmodus, welche ich mit der aktuelln Buypower und buys kaufen kann
-		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard() && croupier.getBuys() > 0){
+		if (croupier.isBuyMode() == true && croupier.getBuyPower() >= this.costs && !this.isHoleCard() && croupier.getBuys() > 0 && croupier.getStackSize(gc)!=0){
 			this.getStyleClass().add("highlight");
 		}
 		
@@ -107,19 +107,19 @@ public class GameCard extends Button implements Observer  {
 		if (croupier.isTrashModeMoneylender() == true && this.isHoleCard() && this.getLbl_cardName().getText().equals("copper")){
 			this.getStyleClass().add("highlight3");
 		}
-		
-		//Highlighte alle MoneyCards, welche erworben werden können im Minen-Modus
-		if (croupier.isModeForMine() == true && this instanceof MoneyCard && !this.isHoleCard() && this.costs <= croupier.getSavedMCValueForMineMode()){
+		 
+		//Highlighte alle MoneyCards, welche erworben werden können im Minen-Modus 
+		if (croupier.isModeForMine() == true && this instanceof MoneyCard && !this.isHoleCard() && this.costs <= croupier.getSavedMCValueForMineMode()&&croupier.getStackSize(gc)!=0){
 			this.getStyleClass().add("highlight");
 		}
 		
 		//Highlighte alle Karten zum Kauf, welche erworben werden können im Rebuilding-Modus
-		if (croupier.isModeForRebuilding() == true && !this.isHoleCard() && this.costs <= croupier.getCardValueForRebuildingMode()){
+		if (croupier.isModeForRebuilding() == true && !this.isHoleCard() && this.costs <= croupier.getCardValueForRebuildingMode()&& croupier.getStackSize(gc)!=0){
 			this.getStyleClass().add("highlight");
 		}
 		
 		//Highlighte alle Karten zum Kauf, welche erworben werden können im Rebuilding-Modus
-		if (croupier.isModeForWorkshop() == true && !this.isHoleCard() && this.costs <= 4){
+		if (croupier.isModeForWorkshop() == true && !this.isHoleCard() && this.costs <= 4 && croupier.getStackSize(gc)!=0){
 			this.getStyleClass().add("highlight3");
 		}
 		
@@ -138,19 +138,9 @@ public class GameCard extends Button implements Observer  {
 			this.getStyleClass().add("highlight2");
 		}
 		
-		//Highlight wegnehmen wenn Trash Modus wieder verlassen wird (Kapelle, Mine)
-		//if ((croupier.isTrashModeChapel() == false && this.isHoleCard())   ||   (croupier.isTrashModeMine() == false && this.isHoleCard() && this instanceof MoneyCard)){
-			//this.getStyleClass().remove("highlight2");
-		//}
-		
-		//Highlight wegnehmen wenn Minen-Modus wieder verlassen wird
-		//if ((croupier.isModeForMine() == false && !this.isHoleCard())  && this instanceof MoneyCard){
-			//this.getStyleClass().remove("highlight3");
-		//}
-		
 		//wenn stacksize auf 0, wird highlighting ebenfalls deaktiviert
-		if (croupier.getStackSize(gc) == 0) {
-			this.getStyleClass().remove("highlight");
+		if (croupier.getStackSize(gc) == 0 && !this.isHoleCard()) {
+			this.getStyleClass().add("highlight4");
 		}
 	
 		//update das STackSize infoLabel auf der Karte		

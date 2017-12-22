@@ -1,10 +1,13 @@
 package Dominion.Client.ClientClasses.gameplay;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.sound.midi.Synthesizer;
 
 import com.sun.glass.ui.View;
 
@@ -14,6 +17,7 @@ import Dominion.Client.ClientClasses.CustomButton;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 import Dominion.Server.ServerClasses.ServiceLocatorServer;
+import Dominion.appClasses.GameHistory;
 import Dominion.appClasses.PlayerWithoutOS;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -46,6 +50,7 @@ public class Croupier  extends Observable {
 	boolean reactionMode = false;
 	boolean modeForDiscardMilitia = false;
 	boolean modeForCurseCard = false;
+	int numberOfEmptyStacks=0;
 	
 	int buyPower = 0;
 	int actions;
@@ -64,13 +69,13 @@ public class Croupier  extends Observable {
 	Label lbl_buys     = new Label();
 	
 
-	//# of match cards and cost of match cards;
+	//# of match cards and cost of match cards; 10
 	int stackSizeEstate   = 10; int costsEstate  = 2; int pointsEstate =1;
 	int stackSizeDuchy    = 10; int costsDuchy   = 5; int pointsDuchy =3;
 	int stackSizeProvince = 10; int costsPovince = 8; int pointsProvince =6;
 	int stackSizeCurse    = 10; int costsCurse   = 0; int pointsCurse = -1;
 	
-	//# of money cards and cost of money cards;
+	//# of money cards and cost of money cards; 50
 	int stackSizeCopper   = 50; int costsCopper  = 0; int buyPowerCopper = 1;
 	int stackSizeSilver   = 50; int costsSilver  = 3; int buyPowerSilver = 2;
 	int stackSizeGold     = 50; int costsGold    = 6; int buyPowerGold   = 3;
@@ -122,23 +127,41 @@ public class Croupier  extends Observable {
 		}	
 	
 	public void setStackSize(String str_lbl_cardName){
-
+				
 		//ist es eine action Karte links (province, curse, money?)
 		switch (str_lbl_cardName) {
 		
 		case "estate":    setStackSizeEstate(stackSizeEstate-1);
+		if(stackSizeEstate == 0){
+			this.numberOfEmptyStacks++;
+		}
 			break;
 		case "duchy":     setStackSizeDuchy(stackSizeDuchy-1);
+		if(stackSizeDuchy == 0){
+			this.numberOfEmptyStacks++;
+		}
 			break;
 		case "province":  setStackSizeProvince(stackSizeProvince-1);
 			break;
 		case "copper":    setStackSizeCopper(stackSizeCopper-1);
+		if(stackSizeCopper == 0){
+			this.numberOfEmptyStacks++;
+		}
 			break;
 		case "silver":    setStackSizeSilver(stackSizeSilver-1);
+		if(stackSizeSilver == 0){
+			this.numberOfEmptyStacks++;
+		}
 			break;
 		case "gold":      setStackSizeGold(stackSizeGold-1);
+		if(stackSizeGold == 0){
+			this.numberOfEmptyStacks++;
+		}
 			break;
 		case "curse": 	  setStackSizeCurse(stackSizeCurse-1);
+		if(stackSizeCurse == 0){
+			this.numberOfEmptyStacks++;
+		}
 			break;
 		}
 		
@@ -147,11 +170,33 @@ public class Croupier  extends Observable {
 			//welche  hier u 1 reduziert wird
 			if (getAl_communityActionCards().get(i).getLbl_cardName().getText().equals(str_lbl_cardName)){
 			this.al_stackSizeCommunityActionCards.set(i,al_stackSizeCommunityActionCards.get(i)-1);
+			if(this.al_stackSizeCommunityActionCards.get(i)==0){
+				this.numberOfEmptyStacks++;
+				
+			}
+			break;
 			 }
 		}
-		setChanged();
-		notifyObservers();
-    	sl.getPlayingStage().updateGUI();
+		
+		
+		
+		if((this.numberOfEmptyStacks==3 || this.stackSizeProvince ==0) && sl.getCurrentGameParty().getSelectedMode().equals("Provinzkarten")){
+			sl.getCurrentGameParty().setGameHasEnded(true);
+			GameHistory history = new GameHistory(null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),str_lbl_cardName,GameHistory.HistoryType.EndGameModeProvince);
+			try {
+				sl.getPlayer_OS().getOut().reset();
+				sl.getPlayer_OS().getOut().writeObject(history);
+				sl.getPlayer_OS().getOut().flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			setChanged();
+			notifyObservers();
+	    	sl.getPlayingStage().updateGUI();
+		}
+		
 	}
 	
 	public int getStackSize(GameCard gc){
@@ -755,6 +800,10 @@ public class Croupier  extends Observable {
 	
 	public PlayerWithoutOS getCurrentPlayer(){
 		return this.currentPlayer;
+	}
+	
+	public int getNumberOfEmptyStacks(){
+		return this.numberOfEmptyStacks;
 	}
 	
 }

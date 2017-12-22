@@ -65,55 +65,58 @@ public class ActionCard extends GameCard{
 						// Anzahl verbleibende Kaeufe ist ausreichend <Buys>
 						// Genuegend Karten sind vorhanden <StackSize>
 						if(isHoleCard() == false && croupier.isBuyMode() && costs <= croupier.getBuyPower() && croupier.getBuys() > 0 && croupier.getStackSize(ac)>0){
+							croupier.setStackSize(ac.getLbl_cardName().getText());
 							
-							croupier.setBuys(croupier.getBuys()-1);
-							
-							// Kauf wird von verbleibender Anzahl Kaeufen abgezogen
-							croupier.setBuyPower(croupier.getBuyPower()-ac.costs);
-							
-							// Gekaufte Karte wird auf den Ablagestapel gelegt
-							ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower,ac.text_DE);
-							croupier.addObserver(newCard);
-							newCard.setHoleCard(true);
-							croupier.addToAblagestapel(newCard);
-							newCard.assignPicture(); 				
-							
-			            	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" kauft eine "+ac.text_DE+"-Karte\n");
-							
-							GameHistory history;
-							
-							if(croupier.getBuys()==0){
-								croupier.setBuyMode(false);
-				            	
-						// Geld wird auf 0 gesetzt, falls der Spieler Geldkarten benutzt, aber nichts kauft
-				            	croupier.setBuyPower(0);
-				            			            	
-				            	croupier.removeHoleCards();
-				            	
-				            	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Kaufphase\n\n");
-				        		
-				        		// Das Label auf der Spiel-Stage wird spaeter generiert, weil zuerst der naechste Spieler bestimmt werden muss in der Sequenz serverseitig
-
-				        		history = new GameHistory(sl.getStrBuilderTextArea().toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.lbl_cardName.getText(),ac.text_DE, GameHistory.HistoryType.EndBuy);
-
-				        		
-							}else{
-								sl.getStrBuilderLabel().append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
-								history = new GameHistory (sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.lbl_cardName.getText(),ac.text_DE, GameHistory.HistoryType.BuyNoPointCard);
+							if(sl.getCurrentGameParty().getGameHasEnded()==false){
+								croupier.setBuys(croupier.getBuys()-1);
 								
-							}
-							
-							
+								// Kauf wird von verbleibender Anzahl Kaeufen abgezogen
+								croupier.setBuyPower(croupier.getBuyPower()-ac.costs);
+								
+								// Gekaufte Karte wird auf den Ablagestapel gelegt
+								ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower,ac.text_DE);
+								croupier.addObserver(newCard);
+								croupier.addToAblagestapel(newCard);
+								newCard.assignPicture(); 
+								newCard.setHoleCard(true);				
+								
+				            	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" kauft eine "+ac.text_DE+"-Karte\n");
+								
+								GameHistory history;
+								
+								if(croupier.getBuys()==0){
+									croupier.setBuyMode(false);
+					            	
+							// Geld wird auf 0 gesetzt, falls der Spieler Geldkarten benutzt, aber nichts kauft
+					            	croupier.setBuyPower(0);
+					            			            	
+					            	croupier.removeHoleCards();
+					            	
+					            	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Kaufphase\n\n");
+					        		
+					        		// Das Label auf der Spiel-Stage wird spaeter generiert, weil zuerst der naechste Spieler bestimmt werden muss in der Sequenz serverseitig
 
-							try {
-								// Reset durchfuehren
-								sl.getPlayer_OS().getOut().reset();
-								sl.getPlayer_OS().getOut().writeObject(history);
-								sl.getPlayer_OS().getOut().flush();
-							} catch (IOException e1) {
-								e1.printStackTrace();
+					        		history = new GameHistory(sl.getStrBuilderTextArea().toString(), null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.lbl_cardName.getText(),ac.text_DE, GameHistory.HistoryType.EndBuy);
+
+					        		
+								}else{
+									sl.getStrBuilderLabel().append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
+									history = new GameHistory (sl.getStrBuilderTextArea().toString(),sl.getStrBuilderLabel().toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),ac.lbl_cardName.getText(),ac.text_DE, GameHistory.HistoryType.BuyNoPointCard);
+									
+								}
+								
+								
+
+								try {
+									// Reset durchfuehren
+									sl.getPlayer_OS().getOut().reset();
+									sl.getPlayer_OS().getOut().writeObject(history);
+									sl.getPlayer_OS().getOut().flush();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
 							}
-							
+			
 						}
 
 						
@@ -448,7 +451,8 @@ public class ActionCard extends GameCard{
 							GameHistory history = new GameHistory(sl.getStrBuilderTextArea().toString(),null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.Discard);
 							
 							try {
-								//sl.getPlayer_OS().getOut().reset();
+								//reset?
+								sl.getPlayer_OS().getOut().reset();
 								sl.getPlayer_OS().getOut().writeObject(history);
 								sl.getPlayer_OS().getOut().flush();
 							} catch (IOException e1) {
@@ -488,7 +492,8 @@ public class ActionCard extends GameCard{
 							GameHistory history = new GameHistory(sl.getStrBuilderTextArea().toString(),null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.Trash);
 							
 							try {
-								//sl.getPlayer_OS().getOut().reset();
+								//reset?
+								sl.getPlayer_OS().getOut().reset();
 								sl.getPlayer_OS().getOut().writeObject(history);
 								sl.getPlayer_OS().getOut().flush();
 							} catch (IOException e1) {
@@ -514,7 +519,8 @@ public class ActionCard extends GameCard{
 							GameHistory history = new GameHistory(sl.getStrBuilderTextArea().toString(),null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),null,null, GameHistory.HistoryType.Trash);
 							
 							try {
-								//sl.getPlayer_OS().getOut().reset();
+								//reset?
+								sl.getPlayer_OS().getOut().reset();
 								sl.getPlayer_OS().getOut().writeObject(history);
 								sl.getPlayer_OS().getOut().flush();
 							} catch (IOException e1) {
@@ -525,72 +531,87 @@ public class ActionCard extends GameCard{
 						
 						
 						// Neue Karte kann erworben werden (Rebuild-Modus)
-						if(!isHoleCard() && croupier.isModeForRebuilding() && costs <= croupier.getCardValueForRebuildingMode()){	
+						if(!isHoleCard() && croupier.isModeForRebuilding() && costs <= croupier.getCardValueForRebuildingMode() && croupier.getStackSize(ac)>0){	
 							ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower,ac.text_DE);
-							croupier.addObserver(newCard);
-							newCard.setHoleCard(true);
-							croupier.addToAblagestapel(newCard);
-							newCard.assignPicture();
+							croupier.setStackSize(ac.getLbl_cardName().getText());
 							
-							croupier.setModeForRebuilding(false);
-							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" erwirbt eine "+newCard.text_DE+"-Karte\n");
-							
-							GameHistory history=null;
-							
-							if(croupier.getActions()==0){
-								croupier.setBuyMode(true);
-					        	
-					        	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
+							if(sl.getCurrentGameParty().getGameHasEnded()==false){
+								croupier.addObserver(newCard);
+								newCard.setHoleCard(true);
+								croupier.addToAblagestapel(newCard);
+								newCard.assignPicture();
+								
+								croupier.setModeForRebuilding(false);
+								sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
+								
+								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" erwirbt eine "+newCard.text_DE+"-Karte\n");
+								
+								GameHistory history=null;
+								
+								if(croupier.getActions()==0){
+									croupier.setBuyMode(true);
+						        	
+						        	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
 
-								history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.RebuildingModeEnd);
-							}else{
-								croupier.setActionMode(true);
-								sl.getStrBuilderTextArea().append(sl.getPlayerName()+" hat noch weitere Aktionen\n");
-								history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.RebuildingModeEnd);
+									history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.RebuildingModeEnd);
+								}else{
+									croupier.setActionMode(true);
+									sl.getStrBuilderTextArea().append(sl.getPlayerName()+" hat noch weitere Aktionen\n");
+									history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.RebuildingModeEnd);
+								}
+																
+								try {
+									//reset?
+									sl.getPlayer_OS().getOut().reset();
+									sl.getPlayer_OS().getOut().writeObject(history);
+									sl.getPlayer_OS().getOut().flush();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
 							}
-															
-							try {
-								//sl.getPlayer_OS().getOut().reset();
-								sl.getPlayer_OS().getOut().writeObject(history);
-								sl.getPlayer_OS().getOut().flush();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						
+							
+												
 						}
 						
 						// Neue Karte kann erworben werden (Workshop-Modus)
-						if(!isHoleCard() && croupier.isModeForWorkshop() && costs <= 4){	
+						if(!isHoleCard() && croupier.isModeForWorkshop() && costs <= 4 && croupier.getStackSize(ac)>0){	
 							ActionCard newCard = new ActionCard(ac.lbl_cardName,ac.costs,ac.adtnlActions,ac.adtnlBuys,ac.adtnlBuyPower,ac.text_DE);
-							croupier.addObserver(newCard);
-							newCard.setHoleCard(true);
-							croupier.addToAblagestapel(newCard);
-							newCard.assignPicture();
+							croupier.setStackSize(ac.getLbl_cardName().getText());
 							
-							croupier.setModeForWorkshop(false);
-							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" erwirbt eine "+newCard.text_DE+"-Karte\n");
-							
-							GameHistory history=null;
-							
-							if(croupier.getActions()==0){
-								croupier.setBuyMode(true);
-					        	
-					        	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
+							if(sl.getCurrentGameParty().getGameHasEnded()==false){
+								croupier.addObserver(newCard);
+								newCard.setHoleCard(true);
+								croupier.addToAblagestapel(newCard);
+								newCard.assignPicture();
+								
+								croupier.setModeForWorkshop(false);
+								sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
+								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" erwirbt eine "+newCard.text_DE+"-Karte\n");
+								
+								GameHistory history=null;
+								
+								if(croupier.getActions()==0){
+									croupier.setBuyMode(true);
+						        	
+						        	sl.getStrBuilderTextArea().append(sl.getPlayerName()+" beendet Aktionsphase\n");
 
-								history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.WorkshopModeEnd);
-							}else{
-								croupier.setActionMode(true);
-								sl.getStrBuilderTextArea().append(sl.getPlayerName()+" hat noch weitere Aktionen\n");
-								history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.WorkshopModeEnd);
+									history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.WorkshopModeEnd);
+								}else{
+									croupier.setActionMode(true);
+									sl.getStrBuilderTextArea().append(sl.getPlayerName()+" hat noch weitere Aktionen\n");
+									history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),sl.getPlayer_noOS(),newCard.getLbl_cardName().getText(),null, GameHistory.HistoryType.WorkshopModeEnd);
+								}
+																
+								try {
+									//reset?
+									sl.getPlayer_OS().getOut().reset();
+									sl.getPlayer_OS().getOut().writeObject(history);
+									sl.getPlayer_OS().getOut().flush();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
 							}
-															
-							try {
-								//sl.getPlayer_OS().getOut().reset();
-								sl.getPlayer_OS().getOut().writeObject(history);
-								sl.getPlayer_OS().getOut().flush();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
+													
 						
 						}
 						
@@ -601,7 +622,8 @@ public class ActionCard extends GameCard{
 							GameHistory history = new GameHistory(sl.getStrBuilderTextArea().toString(), null, sl.getCurrentGameParty(),croupier.getCurrentPlayer(),null,null, GameHistory.HistoryType.Reaction);
 							
 							try {
-								//sl.getPlayer_OS().getOut().reset();
+								//reset?
+								sl.getPlayer_OS().getOut().reset();
 								sl.getPlayer_OS().getOut().writeObject(history);
 								sl.getPlayer_OS().getOut().flush();
 							} catch (IOException e1) {
@@ -614,10 +636,12 @@ public class ActionCard extends GameCard{
 						if(isHoleCard() && croupier.isDiscardModeMilitia()){		
 							croupier.getHoleCards().remove(ac);
 							croupier.addToAblagestapel(ac);
+							System.out.println("hole cards"+croupier.getHoleCards().size());
+							System.out.println("ablagestapel"+croupier.getAblagestapel().size());
 							
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" legt eine "+ac.text_DE+" Karte ab\n");
 							GameHistory history=null;
-							System.out.println(croupier.getHoleCards().size());
+							
 							if(croupier.getHoleCards().size() == 3){
 								croupier.setDiscardModeForMilitia(false);
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen\n");
@@ -629,7 +653,8 @@ public class ActionCard extends GameCard{
 
 							
 							try {
-								//sl.getPlayer_OS().getOut().reset();
+								//reset?
+								sl.getPlayer_OS().getOut().reset();
 								sl.getPlayer_OS().getOut().writeObject(history);
 								sl.getPlayer_OS().getOut().flush();
 							} catch (IOException e1) {
@@ -640,11 +665,13 @@ public class ActionCard extends GameCard{
 						
 						
 					// GUI wird aktualisiert
-					try{
-						sl.getPlayingStage().updateGUI();
-					}catch (Exception e2){
-						//
-					}
+						if(sl.getCurrentGameParty().getGameHasEnded()==false){
+							try{
+								sl.getPlayingStage().updateGUI();
+							}catch (Exception e2){
+								//
+							}
+						}
 					//sl.getPlayingStage().updateGUI();
 					} 
 					

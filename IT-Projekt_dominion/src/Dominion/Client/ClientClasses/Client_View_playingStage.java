@@ -238,7 +238,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 		}
 
 		lbl_descrBuyPower = new Label(" Kaufkraft ");
-		lbl_descrBuys = new Label(" Käufe ");
+		lbl_descrBuys = new Label(" Kï¿½ufe ");
 		lbl_descrActions = new Label(" Aktionen ");
 
 		// Branches
@@ -566,10 +566,6 @@ public class Client_View_playingStage extends View<Client_Model> {
 			}catch (NullPointerException e){
 				//
 			}
-			
-			/**hb_wrapper_holeCards.getChildren().add(gc1);
-			gc1.setPrefSize(160, 260);
-			gc1.setMaxWidth(160);*/
 
 			
 		// Zeichne Ablagekarte neu
@@ -584,10 +580,7 @@ public class Client_View_playingStage extends View<Client_Model> {
 			hb_wrapper_stapel.getChildren().addAll(this.dummyCardAblagestapel,nachziehstapel);	
 			}			
 		}
-
 	
-
-		
 	}
 
 	public ArrayList<GameCard> getAl_communityCards_left() {

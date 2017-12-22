@@ -169,6 +169,10 @@ src: url('../fonts/Typewriter-Osf-MediumItalic.ttf');
 	-fx-effect: dropshadow( gaussian , blue , 15 , 0.7 , 0 , 0 );	
 }
 
+.highlight4 {
+	-fx-effect: dropshadow( gaussian , black , 15 , 0.7 , 0 , 0 );	
+}
+
 .cardback2 {
 		-fx-background-image: url('../img/cards/big/cardback3.png');
 }

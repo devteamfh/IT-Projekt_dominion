@@ -23,7 +23,7 @@ public class GameParty extends GameObject{
 	private int numberOfLoggedInPlayers = 0;
 	private ArrayList <PlayerWithoutOS> playersOfThisGameParty = new ArrayList <PlayerWithoutOS>();
 	private int rounds;
-	private int roundCounter = 9;
+	private int roundCounter = 0;
 	private boolean gameHasStarted;
 	private int numberOfCardSet;
 	private boolean gameHasEnded;

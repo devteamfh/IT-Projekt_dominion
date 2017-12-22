@@ -197,6 +197,48 @@ public class CustomButton extends Button implements Observer {
 			});	
 		}
 		
+		if (croupier.isModeForMine() == true) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Dominion");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
+		if (croupier.isModeForWorkshop() == true) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Dominion");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
+		if (croupier.isModeForRebuilding() == true) {
+			//System.out.println("isactionmode observed true");
+
+		
+			
+			Platform.runLater(new Runnable() {
+		           @Override 
+		           public void run() {
+		   			lbl.setText("Dominion");
+					btn.setGraphic(lbl);
+		           }
+			});	
+		}
+		
 		if (croupier.isTrashModeChapel() == true) {
 			//System.out.println("isactionmode observed true");
 

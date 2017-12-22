@@ -33,7 +33,7 @@ public class GameHistory extends GameObject{
 		 EndAction, EndBuy, LeaveGame, UpdateLobbyAfterLeave,
 		 EndGame, PlayCard, BuyPointCard, BuyNoPointCard,
 		 Trash, MineModeEnd, Discard, RebuildingModeEnd,
-		 WorkshopModeEnd, Reaction, AttackEnd
+		 WorkshopModeEnd, Reaction, AttackEnd, EndGameModeProvince
 		 };
 	
 	private static long nextMessageID() {		
@@ -63,6 +63,17 @@ public class GameHistory extends GameObject{
 		this.card_DE=card_DE;
 		this.type=type;
 	}
+	
+	//constructor only for end the game in Mode "Provinzkarte"
+		public GameHistory(String textPopUp,GameParty party,PlayerWithoutOS currentPlayer,String card_EN, HistoryType type){
+			super(GameObject.ObjectType.GameHistory);
+			this.id=-1;
+			this.textForTextArea = textPopUp;
+			this.party=party;
+			this.currentPlayer=currentPlayer;
+			this.card_EN=card_EN;
+			this.type=type;
+		}
 	
 	public void setID(){
 		if (this. id == -1){
