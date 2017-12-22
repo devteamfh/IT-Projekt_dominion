@@ -48,7 +48,7 @@ public class ShowGameCard {
      
      stage.setScene(scene);
 	    stage.initStyle(StageStyle.TRANSPARENT);   
-
+	    stage.getIcons().add(new Image(getClass().getResource("/img/icons/coin.png").toExternalForm()));
      stage.show();
 }
 	
