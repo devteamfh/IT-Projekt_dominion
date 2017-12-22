@@ -85,6 +85,7 @@ public class ClientHandler implements Runnable {
 				
 				//hier werden die derzeitigen Playerstatistics an alle Clients gesendet
 				updatePlayerStatistics();
+			
 	
 		}
 	}
@@ -228,9 +229,30 @@ public class ClientHandler implements Runnable {
 					 this.out.reset();
 					 out.writeObject(start);
 					 out.flush();
+					
 					 break; 
 					 }
-			 } if (start.isBol_nameTaken())  break;
+			 } if (start.isBol_nameTaken()){
+				//übriger remove des spielers von listen
+					list.remove(this.out);
+					
+					try {
+						in.close();
+						out.close();
+						s.close();
+						
+						
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				 break; 
+			 }
+				 
+				 
+				 
+				 
+				
 			 
 			 PlayerWithOS newPlayer = new PlayerWithOS (username, this.out);
 			 this.PWOS_thisPlayer = newPlayer;
@@ -252,8 +274,10 @@ public class ClientHandler implements Runnable {
 					current.writeObject(start);
 					current.flush();
 
-	
 				 }
+			 
+			 
+			
 
 			 
 			
