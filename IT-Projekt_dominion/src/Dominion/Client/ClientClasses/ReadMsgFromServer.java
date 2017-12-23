@@ -167,56 +167,7 @@ public class ReadMsgFromServer implements Runnable {
 						}
 				      });
 					break;
-					
-					
-					/**StartInformation playerStatistics = (StartInformation) obj;
-					
-					//wenn bereits ein Spieler mit dem glelichen Benutzernamen existiert, wird kein Eintritt in die Lobby gew�hrt
-					if(playerStatistics.isBol_nameTaken()){
-						
-						Platform.runLater(new Runnable() {
-							@Override 
-					           public void run() {
-								try{
-				        	
-				        	//verhindert das starten der lobby
-			 				sl.getView_lobby().stop();
-			 				
-			 				//Restartet die lgoin view
-			 				Stage stge_start = new Stage();
-			 				Client_View_start view_start = new Client_View_start (stge_start, model);
-			 				new Client_Controller_start(model, view_start);
-			 				view_start.start();
-			 				
-			 				//gibt Meldung aus, dass die Username-Dieberei stattgefunden hat
-							sl.setLbl_popUpMessage(new Label("Der Spielername ist zur Zeit vergeben."));		
-							Stage popUp = new Stage();	
-							popUp.setResizable(false);
-							popUp.initModality(Modality.APPLICATION_MODAL);
-				        	Client_View_popUp view = new Client_View_popUp (popUp, model);
-				        	new Client_Controller_popUp(model, view); 
-				        	view.start();
-			 				
-								}catch (NullPointerException e){
-								}
-								
-							}
-					      });
-					
-						playerStatistics = null;
-						model.client.close();
-					} 			
-					
-					sl.getAl_Statistics().clear();
-					sl.getTbl_playerStats().getItems().clear();
-		
 
-					sl.add_AL_Statistics(playerStatistics.getListOfStartInformationObjects());
-					System.out.println("gr�sse von zur�ckgsendetem playstatistics shit "+playerStatistics.getListOfStartInformationObjects().size());
-					sl.getTbl_playerStats().getItems().addAll(sl.getAl_Statistics());				
-					
-					
-					break;*/
 					 
 				case GameParty:
 					

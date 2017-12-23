@@ -636,8 +636,6 @@ public class ActionCard extends GameCard{
 						if(isHoleCard() && croupier.isDiscardModeMilitia()){		
 							croupier.getHoleCards().remove(ac);
 							croupier.addToAblagestapel(ac);
-							System.out.println("hole cards"+croupier.getHoleCards().size());
-							System.out.println("ablagestapel"+croupier.getAblagestapel().size());
 							
 							sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" legt eine "+ac.text_DE+" Karte ab\n");
 							GameHistory history=null;

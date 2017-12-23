@@ -10,6 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
  
+/**
+ * 
+ * @author kab
+ *
+ */
 public class TaskTest extends Application {
   public static void main(String[] args) throws Exception { launch(args); }
   public void start(final Stage stage) throws Exception {

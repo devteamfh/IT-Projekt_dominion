@@ -428,7 +428,7 @@ import javafx.stage.StageStyle;
 									newCard.setHoleCard(true);
 									
 									croupier.setModeForWorkshop(false);
-									
+									sl.getLabelNumberOfActionsAndBuys().setText("Du bist am Zug:\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Kaeufe, "+croupier.getBuyPower()+" Geld");
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" erwirbt eine "+newCard.text_DE+"-Karte\n");
 									
 									GameHistory history=null;
@@ -465,7 +465,6 @@ import javafx.stage.StageStyle;
 								
 								sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" legt eine "+mc.text_DE+" Karte ab\n");
 								GameHistory history=null;
-								System.out.println(croupier.getHoleCards().size());
 								if(croupier.getHoleCards().size() == 3){
 									croupier.setDiscardModeForMilitia(false);
 									sl.getStrBuilderTextArea().append(sl.getPlayer_noOS().getUsername()+" beendet das Ablegen\n");

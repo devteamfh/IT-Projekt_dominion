@@ -3,7 +3,7 @@ package Dominion.appClasses;
 import java.util.ArrayList;
 
 /**
- * @author Joel Henz
+ * @author Joel Henz and Beda Kaufmann (kab; where mentioned)
  */
 public class StartInformation extends GameObject {
 	
@@ -13,7 +13,7 @@ public class StartInformation extends GameObject {
 	// Generator for a unique message ID
 	private static long messageID = 0;
 	
-	//Liste von StartInformationsobjekten vom Server
+	//Liste von StartInformationsobjekten vom Server (kab)
 	private ArrayList<StartInformation> listOfStatrtInformation = new ArrayList <StartInformation>();
 	
 	//kab:True wenn ein User mit dem gleichen Namen bereits auf dem Server connected ist
@@ -21,7 +21,7 @@ public class StartInformation extends GameObject {
 	
 	
 	
-	//Username und PW der Spieler, sowie Attribute für Statistik
+	//Username und PW der Spieler, sowie Attribute fï¿½r Statistik(kab)
 	private String 	username;
 	private String 	PW;
 	private int 	gamesPlayed;
@@ -62,6 +62,7 @@ public class StartInformation extends GameObject {
 		return this.username;
 	}
 	
+	//(kab from here until last line)
 	public String getPW(){
 		return this.PW;
 	}

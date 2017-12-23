@@ -179,7 +179,9 @@ public class Croupier  extends Observable {
 		}
 		
 		
-		
+		/**
+		 * @author Joel: 
+		 */
 		if((this.numberOfEmptyStacks==3 || this.stackSizeProvince ==0) && sl.getCurrentGameParty().getSelectedMode().equals("Provinzkarten")){
 			sl.getCurrentGameParty().setGameHasEnded(true);
 			GameHistory history = new GameHistory(null,sl.getCurrentGameParty(),sl.getPlayer_noOS(),str_lbl_cardName,GameHistory.HistoryType.EndGameModeProvince);
@@ -392,17 +394,17 @@ public class Croupier  extends Observable {
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	public boolean isDiscardMode(){
 		return this.discardMode;
 	}
-	
+
 	public void setDiscardMode(boolean discardMode){
 		this.discardMode = discardMode;
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	public boolean isTrashModeChapel(){
 		return this.trashModeChapel;
 	}
@@ -723,11 +725,6 @@ public class Croupier  extends Observable {
         		}
     		}
     		
-    		/**adding the last cards
-    		int numberOfDrawsNachziehstapel = number-count;
-    		for(int i=0; i<numberOfDrawsNachziehstapel;i++){
-    			this.getHoleCards().add(this.getNachziehstapel().poll());
-    		}*/
     	}
 		
 		
@@ -750,9 +747,6 @@ public class Croupier  extends Observable {
 	public void setLbl_playerListStage(Label lbl_playerListStage) {
 		this.lbl_playerListStage = lbl_playerListStage;
 	}
-
-
-
 
 	public void setMCValueForMineMode(int costs_MC){
 		this.savedMCValueForMineMode = costs_MC+3;

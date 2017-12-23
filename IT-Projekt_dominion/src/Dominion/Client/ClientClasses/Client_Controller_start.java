@@ -26,7 +26,7 @@ import javafx.stage.WindowEvent;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards (MVC), Joel Henz (events), Beda Kaufmann (database, events)
+ * @author Brad Richards (MVC), Joel Henz (events), Beda Kaufmann (database, events, styling)
  */
 public class Client_Controller_start extends Controller<Client_Model, Client_View_start> {
     
@@ -75,7 +75,8 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
   		        	view.btn_connect.getStyleClass().addAll("btn_view");
   		        }
   		});
-      		    		
+  		
+      	//kab	    		
         view.btn_connect.setOnAction(new EventHandler<ActionEvent>() { 
             @Override
             public void handle(ActionEvent event) {  
@@ -88,10 +89,11 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	if (checkFields.getRdyToConnect())
             	
             	   	try { 
+            	   		
+            	   		//joel
                 		addr = InetAddress.getByName(view.tf_ip.getText());
                 		int portNr = Integer.parseInt(view.tf_port.getText());
-                    	//String name = view.tf_userName.getText();
-                    	//model.setName(name);
+
         				model.connectToServer(addr,portNr);	
         				
         				if (model.connected){
@@ -230,7 +232,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             	checkFields.checkfields(view.btn_login.toString(), view.tf_userName.getText(),view.tf_password.getText());
             	
             	            	
-            	//Wenn PW falsch Felder zur�cksetzen
+            	//Wenn PW falsch Felder zur�cksetzen (kab)
             	if(model.connected && !checkFields.getUserPwOk()){
             		view.tf_password.clear();
             		//view.tf_userName.clear();
@@ -244,7 +246,7 @@ public class Client_Controller_start extends Controller<Client_Model, Client_Vie
             		
             	}
             	
-            	//weiter zur lobby, sofern connected, user registiert und pw ok
+            	//weiter zur lobby, sofern connected, user registiert und pw ok (kab)
             	if (model.connected && checkFields.getUserPwOk()) {
 
 	            	view.btn_login.getStyleClass().removeAll("btn_view", "btn_view_hover");

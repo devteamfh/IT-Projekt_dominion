@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards (MVC), Joel Henz (events), kab
+ * @author Brad Richards (MVC), Joel Henz (events), kab (styling)
  */
 public class Client_Controller_popUp extends Controller<Client_Model, Client_View_popUp> {
       ServiceLocatorClient sl;

@@ -32,7 +32,7 @@ import javafx.stage.StageStyle;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards (MVC Pattern), Joel Henz (GUI)
+ * @author Brad Richards (MVC Pattern), Joel Henz (GUI raw), kab (styling, anordnung)
  */
 public class Client_View_createGame extends View<Client_Model> {
 	ServiceLocatorClient sl;

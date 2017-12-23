@@ -14,6 +14,9 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * @author kab
+ */
 public class CheckUserData {
 
 	private Client_Model model;

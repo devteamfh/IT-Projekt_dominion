@@ -1,37 +1,20 @@
 package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Enumeration;
-import java.util.Iterator;
 
-import com.sun.glass.ui.View;
-
-import Dominion.ServiceLocator;
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.ClientClasses.gameplay.cards.Cards;
 import Dominion.Client.abstractClasses.Controller;
-import Dominion.appClasses.ChatMessageLobby;
-import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
-import Dominion.appClasses.PlayerWithOS;
 import Dominion.appClasses.PlayerWithoutOS;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -49,8 +32,8 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
     private Croupier croupier = Croupier.getCroupier();
        
     /**
-     * @author Joel Henz
-     * @author Kab
+     * @author Joel Henz (lines 253 - 285)
+     * @author Kab: styling
      * */
     public Client_Controller_createGame(Client_Model model, Client_View_createGame view) {
         super(model, view);
@@ -275,8 +258,6 @@ public class Client_Controller_createGame extends Controller<Client_Model, Clien
             	try {
             		sl.getPlayer_OS().getOut().writeObject(newParty);
             		sl.getPlayer_OS().getOut().flush();
-					//model.out.writeObject(newParty);
-					//model.out.flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

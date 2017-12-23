@@ -1,16 +1,11 @@
 package Dominion.Client.ClientClasses;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Iterator;
 
 import Dominion.Client.abstractClasses.Controller;
 import Dominion.appClasses.ChatMessageLobby;
-import Dominion.appClasses.GameObject;
 import Dominion.appClasses.GameParty;
 import Dominion.appClasses.JoinGameParty;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -18,14 +13,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards (MVC), Joel Henz (Events)
+ * @author Brad Richards (MVC), Joel Henz (Events; where mentioned); kab (styling)
  */
 public class Client_Controller_lobby extends Controller<Client_Model, Client_View_lobby> {
 	private ServiceLocatorClient sl;
@@ -65,7 +59,7 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
         
         
         
-     // Button Close Style Hover und Action press
+     // Button Close Style Hover und Action press (kab)
     	view.btn_close.addEventHandler(MouseEvent.MOUSE_ENTERED, 
       		    new EventHandler<MouseEvent>() {
       		        @Override public void handle(MouseEvent e) {
@@ -163,7 +157,9 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
 				
 			}
 		});
-       
+       /**
+        * @author Joel Henz
+        * */
        view.btn_enterGame.setOnAction(new EventHandler<ActionEvent>() {
            @Override
            public void handle(ActionEvent event) {
@@ -172,9 +168,6 @@ public class Client_Controller_lobby extends Controller<Client_Model, Client_Vie
         	   JoinGameParty gameToJoin = new JoinGameParty(joinGame,model.getName());
         	   
         	   try {
-        		   //model.out.reset(); //in case a player joins a game, leaves and rejoins the same game party (after leaving it is possible that another player has joined game before the leaving player rejoins)
-        		   //model.out.writeObject(gameToJoin);
-        		   //model.out.flush();
         		   sl.getPlayer_OS().getOut().reset();//in case a player joins a game, leaves and rejoins the same game party (after leaving it is possible that another player has joined game before the leaving player rejoins)
         		   sl.getPlayer_OS().getOut().writeObject(gameToJoin);
         		   sl.getPlayer_OS().getOut().flush();

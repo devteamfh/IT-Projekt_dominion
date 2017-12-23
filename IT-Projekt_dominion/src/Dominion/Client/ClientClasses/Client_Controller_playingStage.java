@@ -13,13 +13,6 @@ import Dominion.appClasses.CancelGame;
 import Dominion.appClasses.ChatMessagePlayingStage;
 import Dominion.appClasses.GameHistory;
 import Dominion.appClasses.GameParty;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
@@ -34,7 +27,7 @@ import javafx.stage.Stage;
  * is licensed under the terms of the BSD 3-clause license (see the file
  * license.txt).
  * 
- * @author Brad Richards (MVC), Joel Henz (events)
+ * @author Brad Richards (MVC), Joel Henz (events), kab (styling)
  */
 public class Client_Controller_playingStage extends Controller<Client_Model, Client_View_playingStage> {
 	private ServiceLocatorClient sl;
@@ -195,9 +188,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                		strBuilderLabel.delete(0, strBuilderLabel.length());
 						                	}
 						                	
-						                	//sl.getButtonEndActions().setDisable(true);
-						                	//sl.getButtonEndBuys().setDisable(false);
-						                	
 						                	strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Aktionsphase\n");
 						                	strBuilderLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
 						                	
@@ -226,7 +216,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						                	//set also buy power = 0 in case the player uses treasure cards but doesn't buy anything
 						                	croupier.setBuyPower(0);
 						                	
-						                	//sl.getButtonEndBuys().setDisable(true);
 						
 						            		strBuilderTextArea.append(model.getPlayer().getUsername()+" beendet Kaufphase\n\n");
 						            		strBuilderLabel.append("am Zug\n"+croupier.getActions()+" Aktionen, "+croupier.getBuys()+" Käufe, "+croupier.getBuyPower()+" Geld");
@@ -235,12 +224,6 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
 						            		//we will create the Label on playing stage later....because we first have to determine the next player in the sequence on server-side
 						            		history = new GameHistory(strBuilderTextArea.toString(), strBuilderLabel.toString() ,sl.getCurrentGameParty(),model.getPlayer(),null,null, GameHistory.HistoryType.EndBuy);
 						
-						            		
-						            		//Restliche Karten in h�nden werden auf ablagestapel gelegt
-						            		//croupier.muckHoleCards();
-						            		
-						            		//es werden 5 neue Karten gezogen
-						            		//croupier.drawHoleCards();
 						            		
 						            		croupier.removeHoleCards();
 						            		
@@ -330,49 +313,7 @@ public class Client_Controller_playingStage extends Controller<Client_Model, Cli
             
         });
      
-    
-        
-        
-       
-        
-       /** sl.getButtonLeaveGamePlayer().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	
-            	if(strBuilder != null){
-            		strBuilder.delete(0, strBuilder.length());
-            	}
-            	
-            	sl.getButtonLeaveGamePlayer().setDisable(true);
-            	strBuilder.append(sl.getPlayer_noOS().getUsername()+" verlässt das Spiel\n\n");
-            	//here we set current_player of the playing stage as null so we don't overwrite the current_player saved on server-side (instance variable in class ClientHandler)
-            	GameHistory history;
-            	if(sl.getButtonEndActions().isDisabled() && sl.getButtonEndBuys().isDisabled()){
-            		//here we set current player as null
-            		history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),null,GameHistory.HistoryType.LeaveGame);
-            		history.setID();
-                	history.setLeavingPlayer(sl.getPlayer_noOS());
-            	}else{
-            		//the leaving player is also the current player
-            		history = new GameHistory (strBuilder.toString(),sl.getCurrentGameParty(),sl.getPlayer_noOS(),GameHistory.HistoryType.LeaveGame);
-            		//history.setID();
-                	history.setLeavingPlayer(sl.getPlayer_noOS());
-            	}
-           	
-            	try {
-            		sl.getPlayer_OS().getOut().writeObject(history);
-            		sl.getPlayer_OS().getOut().flush();
-        		} catch (IOException e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-            	
-            }
-        }); */ 
-        
-        
-        
-        
+     
     }
 
     protected void sendMessageToServer() {
