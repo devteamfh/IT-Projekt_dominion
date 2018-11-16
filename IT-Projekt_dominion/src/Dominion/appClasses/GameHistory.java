@@ -2,6 +2,8 @@ package Dominion.appClasses;
 
 import java.util.ArrayList;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 import Dominion.Client.ClientClasses.gameplay.Croupier;
 import Dominion.Client.ClientClasses.gameplay.cards.GameCard;
 
@@ -55,6 +57,7 @@ public class GameHistory extends GameObject{
 	public GameHistory(String textForTextArea, String textForLabel, GameParty party,PlayerWithoutOS currentPlayer,String card_EN,String card_DE, HistoryType type){
 		super(GameObject.ObjectType.GameHistory);
 		this.id=-1;
+		System.out.println("gamehistory zeile 60");
 		this.textForTextArea=textForTextArea;
 		this.textForLabel=textForLabel;
 		this.party=party;

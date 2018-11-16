@@ -651,7 +651,7 @@ public class ReadMsgFromServer implements Runnable {
 														sl.getPlayer_OS().getOut().reset();
 														sl.getPlayer_OS().getOut().writeObject(history2);
 														sl.getPlayer_OS().getOut().flush();
-													} catch (IOException e) {
+													} catch (Exception e) {
 														// TODO Auto-generated catch block
 														e.printStackTrace();
 													}
